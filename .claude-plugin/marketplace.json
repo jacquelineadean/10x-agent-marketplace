@@ -1,0 +1,24 @@
+{
+  "name": "10x-agent-marketplace",
+  "owner": {
+    "name": "Jacqueline Dean",
+    "url": "https://github.com/jacquelineadean"
+  },
+  "metadata": {
+    "description": "Jacqueline Dean's Claude Code plugins: impact-review and future agent extensions.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "impact-review",
+      "source": "./plugins/impact-review",
+      "description": "Turn one person's GitHub activity over a timeframe into metrics, a dashboard, a self-evaluation draft, resume bullets and interview stories.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jacqueline Dean"
+      },
+      "category": "productivity",
+      "keywords": ["github", "performance-review", "resume", "metrics"]
+    }
+  ]
+}

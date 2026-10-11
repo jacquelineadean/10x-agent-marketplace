@@ -1,0 +1,122 @@
+{
+ "data": {
+  "viewer": {
+   "contributionsCollection": {
+    "pullRequestContributions": {
+     "pageInfo": {
+      "hasNextPage": true,
+      "endCursor": "cursor-1"
+     },
+     "nodes": [
+      {
+       "pullRequest": {
+        "number": 101,
+        "title": "feat: add rate limiter",
+        "url": "https://github.com/acme/api/pull/101",
+        "state": "MERGED",
+        "isDraft": false,
+        "createdAt": "2026-02-03T10:00:00Z",
+        "mergedAt": "2026-02-05T10:00:00Z",
+        "closedAt": "2026-02-05T10:00:00Z",
+        "additions": 420,
+        "deletions": 35,
+        "changedFiles": 6,
+        "repository": {
+         "nameWithOwner": "acme/api",
+         "isPrivate": true,
+         "owner": {
+          "login": "acme"
+         },
+         "primaryLanguage": {
+          "name": "Python"
+         }
+        },
+        "labels": {
+         "nodes": [
+          {
+           "name": "enhancement"
+          }
+         ]
+        },
+        "reviews": {
+         "nodes": [
+          {
+           "author": {
+            "login": "jdean"
+           },
+           "state": "COMMENTED",
+           "submittedAt": "2026-02-03T12:00:00Z"
+          },
+          {
+           "author": {
+            "login": "bob"
+           },
+           "state": "APPROVED",
+           "submittedAt": "2026-02-03T16:00:00Z"
+          },
+          {
+           "author": {
+            "login": "carol"
+           },
+           "state": "COMMENTED",
+           "submittedAt": "2026-02-04T09:00:00Z"
+          }
+         ]
+        },
+        "comments": {
+         "totalCount": 3
+        }
+       }
+      },
+      {
+       "pullRequest": {
+        "number": 118,
+        "title": "fix: null pointer in auth",
+        "url": "https://github.com/acme/api/pull/118",
+        "state": "MERGED",
+        "isDraft": false,
+        "createdAt": "2026-03-10T09:00:00Z",
+        "mergedAt": "2026-03-10T15:00:00Z",
+        "closedAt": "2026-03-10T15:00:00Z",
+        "additions": 12,
+        "deletions": 4,
+        "changedFiles": 2,
+        "repository": {
+         "nameWithOwner": "acme/api",
+         "isPrivate": true,
+         "owner": {
+          "login": "acme"
+         },
+         "primaryLanguage": {
+          "name": "Python"
+         }
+        },
+        "labels": {
+         "nodes": [
+          {
+           "name": "bug"
+          }
+         ]
+        },
+        "reviews": {
+         "nodes": [
+          {
+           "author": {
+            "login": "bob"
+           },
+           "state": "APPROVED",
+           "submittedAt": "2026-03-10T11:00:00Z"
+          }
+         ]
+        },
+        "comments": {
+         "totalCount": 1
+        }
+       }
+      }
+     ]
+    }
+   }
+  }
+ }
+}

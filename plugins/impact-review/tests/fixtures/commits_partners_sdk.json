@@ -1,0 +1,41 @@
+{
+ "data": {
+  "repository": {
+   "defaultBranchRef": {
+    "name": "main",
+    "target": {
+     "history": {
+      "pageInfo": {
+       "hasNextPage": false,
+       "endCursor": null
+      },
+      "nodes": [
+       {
+        "oid": "s1",
+        "committedDate": "2026-05-12T10:00:00Z",
+        "messageHeadline": "Go client v2 fixes",
+        "additions": 30,
+        "deletions": 10,
+        "changedFilesIfAvailable": 2,
+        "associatedPullRequests": {
+         "nodes": []
+        }
+       },
+       {
+        "oid": "s2",
+        "committedDate": "2026-05-13T10:00:00Z",
+        "messageHeadline": "Bump deps",
+        "additions": 5,
+        "deletions": 5,
+        "changedFilesIfAvailable": 1,
+        "associatedPullRequests": {
+         "nodes": []
+        }
+       }
+      ]
+     }
+    }
+   }
+  }
+ }
+}

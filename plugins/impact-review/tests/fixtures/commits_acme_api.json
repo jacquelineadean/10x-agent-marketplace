@@ -1,0 +1,60 @@
+{
+ "data": {
+  "repository": {
+   "defaultBranchRef": {
+    "name": "main",
+    "target": {
+     "history": {
+      "pageInfo": {
+       "hasNextPage": false,
+       "endCursor": null
+      },
+      "nodes": [
+       {
+        "oid": "a1",
+        "committedDate": "2026-02-05T10:00:00Z",
+        "messageHeadline": "feat: add rate limiter (#101)",
+        "additions": 420,
+        "deletions": 35,
+        "changedFilesIfAvailable": 6,
+        "associatedPullRequests": {
+         "nodes": [
+          {
+           "number": 101
+          }
+         ]
+        }
+       },
+       {
+        "oid": "a2",
+        "committedDate": "2026-03-10T15:00:00Z",
+        "messageHeadline": "fix: null pointer in auth (#118)",
+        "additions": 12,
+        "deletions": 4,
+        "changedFilesIfAvailable": 2,
+        "associatedPullRequests": {
+         "nodes": [
+          {
+           "number": 118
+          }
+         ]
+        }
+       },
+       {
+        "oid": "a3",
+        "committedDate": "2026-06-02T09:00:00Z",
+        "messageHeadline": "ci: pin python 3.12",
+        "additions": 3,
+        "deletions": 3,
+        "changedFilesIfAvailable": 1,
+        "associatedPullRequests": {
+         "nodes": []
+        }
+       }
+      ]
+     }
+    }
+   }
+  }
+ }
+}

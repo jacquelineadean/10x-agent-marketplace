@@ -10,3 +10,7 @@ dev = [
     "pytest>=9.1.1",
     "ruff>=0.16.10",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["plugins/impact-review/tests"]
+pythonpath = ["plugins/impact-review/src"]

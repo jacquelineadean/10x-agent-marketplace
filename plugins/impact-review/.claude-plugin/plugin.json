@@ -1,0 +1,11 @@
+{
+  "name": "impact-review",
+  "version": "0.1.0",
+  "description": "Turn one person's GitHub activity over a timeframe into metrics, a dashboard, a self-evaluation draft, resume bullets and interview stories. Read-only, local, standard-library Python.",
+  "author": {
+    "name": "Jacqueline Dean"
+  },
+  "repository": "https://github.com/jacquelineadean/10x-agent-marketplace",
+  "license": "MIT",
+  "keywords": ["github", "performance-review", "resume", "metrics"]
+}
