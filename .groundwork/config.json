@@ -1,0 +1,15 @@
+{
+  "standard": "0.7.0",
+  "layout": {
+    "mode": "standard",
+    "profile": "cli",
+    "root": "plugins/impact-review/src/impact_review",
+    "decided_by": "noreply@anthropic.com",
+    "decided": "2026-10-07"
+  },
+  "quality": {
+    "mode": "standard",
+    "decided_by": "noreply@anthropic.com",
+    "decided": "2026-10-07"
+  }
+}
