@@ -1,0 +1,85 @@
+{
+ "data": {
+  "viewer": {
+   "contributionsCollection": {
+    "pullRequestReviewContributions": {
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": null
+     },
+     "nodes": [
+      {
+       "pullRequestReview": {
+        "state": "APPROVED",
+        "submittedAt": "2026-02-20T10:00:00Z",
+        "comments": {
+         "totalCount": 2
+        },
+        "pullRequest": {
+         "number": 130,
+         "title": "Add retry to client",
+         "url": "https://github.com/acme/api/pull/130",
+         "author": {
+          "login": "bob"
+         },
+         "repository": {
+          "nameWithOwner": "acme/api",
+          "owner": {
+           "login": "acme"
+          }
+         }
+        }
+       }
+      },
+      {
+       "pullRequestReview": {
+        "state": "CHANGES_REQUESTED",
+        "submittedAt": "2026-03-01T10:00:00Z",
+        "comments": {
+         "totalCount": 5
+        },
+        "pullRequest": {
+         "number": 131,
+         "title": "Rewrite auth middleware",
+         "url": "https://github.com/acme/api/pull/131",
+         "author": {
+          "login": "carol"
+         },
+         "repository": {
+          "nameWithOwner": "acme/api",
+          "owner": {
+           "login": "acme"
+          }
+         }
+        }
+       }
+      },
+      {
+       "pullRequestReview": {
+        "state": "COMMENTED",
+        "submittedAt": "2026-05-12T10:00:00Z",
+        "comments": {
+         "totalCount": 1
+        },
+        "pullRequest": {
+         "number": 9,
+         "title": "Go client v2",
+         "url": "https://github.com/partners/sdk/pull/9",
+         "author": {
+          "login": "erin"
+         },
+         "repository": {
+          "nameWithOwner": "partners/sdk",
+          "owner": {
+           "login": "partners"
+          }
+         }
+        }
+       }
+      }
+     ]
+    }
+   }
+  }
+ }
+}

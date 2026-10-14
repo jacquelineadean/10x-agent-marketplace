@@ -14,5 +14,5 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["plugins"]
-pythonpath = ["plugins/chronicle/src"]
+testpaths = ["plugins/impact-review/tests", "plugins/chronicle/tests"]
+pythonpath = ["plugins/impact-review/src", "plugins/chronicle/src"]

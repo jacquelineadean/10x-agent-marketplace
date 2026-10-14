@@ -1,0 +1,161 @@
+{
+ "data": {
+  "viewer": {
+   "contributionsCollection": {
+    "totalCommitContributions": 7,
+    "totalPullRequestContributions": 4,
+    "totalPullRequestReviewContributions": 3,
+    "totalIssueContributions": 1,
+    "restrictedContributionsCount": 2,
+    "contributionCalendar": {
+     "weeks": [
+      {
+       "contributionDays": [
+        {
+         "date": "2025-12-31",
+         "contributionCount": 5
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-01-01",
+         "contributionCount": 0
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-02-03",
+         "contributionCount": 3
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-02-04",
+         "contributionCount": 1
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-02-05",
+         "contributionCount": 2
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-03-10",
+         "contributionCount": 4
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-04-01",
+         "contributionCount": 1
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-05-12",
+         "contributionCount": 1
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-06-01",
+         "contributionCount": 1
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-09-20",
+         "contributionCount": 2
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-09-21",
+         "contributionCount": 1
+        }
+       ]
+      }
+     ]
+    },
+    "commitContributionsByRepository": [
+     {
+      "repository": {
+       "nameWithOwner": "acme/api",
+       "isPrivate": true,
+       "owner": {
+        "login": "acme"
+       },
+       "primaryLanguage": {
+        "name": "Python"
+       },
+       "defaultBranchRef": {
+        "name": "main"
+       }
+      },
+      "contributions": {
+       "totalCount": 3
+      }
+     },
+     {
+      "repository": {
+       "nameWithOwner": "acme/web",
+       "isPrivate": false,
+       "owner": {
+        "login": "acme"
+       },
+       "primaryLanguage": {
+        "name": "TypeScript"
+       },
+       "defaultBranchRef": {
+        "name": "main"
+       }
+      },
+      "contributions": {
+       "totalCount": 2
+      }
+     },
+     {
+      "repository": {
+       "nameWithOwner": "partners/sdk",
+       "isPrivate": true,
+       "owner": {
+        "login": "partners"
+       },
+       "primaryLanguage": {
+        "name": "Go"
+       },
+       "defaultBranchRef": {
+        "name": "main"
+       }
+      },
+      "contributions": {
+       "totalCount": 2
+      }
+     }
+    ]
+   }
+  }
+ }
+}

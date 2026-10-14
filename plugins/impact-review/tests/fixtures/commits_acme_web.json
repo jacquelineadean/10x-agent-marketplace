@@ -1,0 +1,41 @@
+{
+ "data": {
+  "repository": {
+   "defaultBranchRef": {
+    "name": "main",
+    "target": {
+     "history": {
+      "pageInfo": {
+       "hasNextPage": false,
+       "endCursor": null
+      },
+      "nodes": [
+       {
+        "oid": "w1",
+        "committedDate": "2026-04-20T10:00:00Z",
+        "messageHeadline": "docs: update readme",
+        "additions": 20,
+        "deletions": 2,
+        "changedFilesIfAvailable": 1,
+        "associatedPullRequests": {
+         "nodes": []
+        }
+       },
+       {
+        "oid": "w2",
+        "committedDate": "2026-05-02T10:00:00Z",
+        "messageHeadline": "test: add dashboard snapshot tests",
+        "additions": 150,
+        "deletions": 0,
+        "changedFilesIfAvailable": 3,
+        "associatedPullRequests": {
+         "nodes": []
+        }
+       }
+      ]
+     }
+    }
+   }
+  }
+ }
+}

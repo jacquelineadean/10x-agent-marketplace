@@ -1,0 +1,92 @@
+{
+ "data": {
+  "viewer": {
+   "contributionsCollection": {
+    "pullRequestContributions": {
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": null
+     },
+     "nodes": [
+      {
+       "pullRequest": {
+        "number": 57,
+        "title": "Refactor dashboard components",
+        "url": "https://github.com/acme/web/pull/57",
+        "state": "CLOSED",
+        "isDraft": false,
+        "createdAt": "2026-04-01T08:00:00Z",
+        "mergedAt": null,
+        "closedAt": "2026-04-05T08:00:00Z",
+        "additions": 900,
+        "deletions": 700,
+        "changedFiles": 20,
+        "repository": {
+         "nameWithOwner": "acme/web",
+         "isPrivate": false,
+         "owner": {
+          "login": "acme"
+         },
+         "primaryLanguage": {
+          "name": "TypeScript"
+         }
+        },
+        "labels": {
+         "nodes": []
+        },
+        "reviews": {
+         "nodes": []
+        },
+        "comments": {
+         "totalCount": 0
+        }
+       }
+      },
+      {
+       "pullRequest": {
+        "number": 60,
+        "title": "chore(deps): bump react to 19",
+        "url": "https://github.com/acme/web/pull/60",
+        "state": "OPEN",
+        "isDraft": false,
+        "createdAt": "2026-09-20T08:00:00Z",
+        "mergedAt": null,
+        "closedAt": null,
+        "additions": 1500,
+        "deletions": 1400,
+        "changedFiles": 40,
+        "repository": {
+         "nameWithOwner": "acme/web",
+         "isPrivate": false,
+         "owner": {
+          "login": "acme"
+         },
+         "primaryLanguage": {
+          "name": "TypeScript"
+         }
+        },
+        "labels": {
+         "nodes": []
+        },
+        "reviews": {
+         "nodes": [
+          {
+           "author": {
+            "login": "dave"
+           },
+           "state": "CHANGES_REQUESTED",
+           "submittedAt": "2026-09-21T09:00:00Z"
+          }
+         ]
+        },
+        "comments": {
+         "totalCount": 2
+        }
+       }
+      }
+     ]
+    }
+   }
+  }
+ }
+}

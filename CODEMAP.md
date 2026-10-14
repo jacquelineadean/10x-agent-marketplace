@@ -7,39 +7,51 @@ Read this before searching the code: it says where each kind of code lives.
 
 **Layout:** standard (cli profile, root plugins/impact-review/src/impact_review)
 New code goes in its role folder; `groundwork.py layout` shows the rules.
-**Languages:** no code yet
+**Languages:** Python (collector, tests), Markdown (skills, agents, prompts), JSON (manifests, fixtures)
 
 ## Folders
 
 | Folder | Role | Code files | Holds |
 | --- | --- | --- | --- |
-| — | — | 0 | no code yet |
+| `plugins/impact-review/src/impact_review/core` | core | 12 | Pure rules: domain records (`models.py`), timeframe parsing and year chunks, the `ActivitySource` port, metric rules (`metrics.py`, `cadence.py`, `highlights.py`, `themes.py`, `stats.py`), `report.py` (metrics.json shape), `digest.md` renderer with the 12 KB cap, dashboard and SVG charts, token budget |
+| `plugins/impact-review/src/impact_review/connectors/github` | connectors | 7 | Every GitHub call: host endpoints, token lookup (`gh auth token` fallback), the https transport with retries and SSO detection, GraphQL documents, the `raw/` cache, payload parsing, and `GitHubSource` (collection with year chunking, paging and org filter) |
+| `plugins/impact-review/src/impact_review/entrypoints/cli` | entrypoints | 1 | `collect` command: flags, run folder, writes the seven output files, prints at most 15 lines, exit codes 0/1/2 |
+| `plugins/impact-review/src/impact_review/config` | config | 1 | The only environment reads: token names, `IMPACT_REVIEW_HOST`, `IMPACT_REVIEW_RUNS`, and the standard-library `.env` reader |
+| `plugins/impact-review/src/impact_review/prompts` | prompts | 0 | `rubric.md`, the default five-area self-evaluation rubric copied into each run folder |
+| `plugins/impact-review/tests` | tests | 8 | pytest suite with a fake HTTP opener; `fixtures/` holds recorded GitHub responses |
+| `plugins/impact-review/skills/report` | plugin | 0 | `SKILL.md` for `/impact-review:report` |
+| `plugins/impact-review/agents` | plugin | 0 | `impact-writer.md`, the Sonnet subagent that writes the synthesis files |
 
 ## Outside systems (where they are called)
 
-None found.
+| System | Called from |
+| --- | --- |
+| GitHub GraphQL and REST APIs | `connectors/github/http.py` (transport), `connectors/github/source.py` (queries) |
+| GitHub CLI (`gh auth token`) | `connectors/github/token.py` |
 
 ## Settings (where environment variables are read)
 
-None found.
+| Name | Read in |
+| --- | --- |
+| `GITHUB_TOKEN`, `GH_TOKEN` | `config/settings.py` (names), used by `connectors/github/token.py` |
+| `IMPACT_REVIEW_HOST`, `IMPACT_REVIEW_RUNS` | `config/settings.py` |
 
 Secrets: read from environment variables; locally from `.env` (git-ignored); names listed in `.env.example`.
 
 ## Entry and wiring files
 
-None found.
+- `plugins/impact-review/src/impact_review/__main__.py`: builds the GitHub connector and calls the CLI (`python -m impact_review`).
+- `plugins/impact-review/src/impact_review/entrypoints/cli/main.py`: argument parsing and the `collect` command.
 
 ## Tests
 
-None found.
+- `plugins/impact-review/tests/`: `uv run pytest` from the repo root; `pyproject.toml` sets the test path and `pythonpath`.
 
 ## Notes
 
-_Conventions an agent should know about this structure (optional)._
-
-The facts above describe `plugins/impact-review` only; the groundwork engine was not available
-when the chronicle plugin was added, so rerun `groundwork.py codemap` to fold it in.
-chronicle follows the same cli layout under `plugins/chronicle/src/chronicle/`:
+- Import rules: `core` imports nothing outside itself; `connectors` and `entrypoints` import `core` and `config`; only `__main__.py` imports both `connectors` and `entrypoints`.
+- `groundwork.py` is not vendored in this repo; this map was updated by hand on 2026-10-14 and the facts hash is stale until the next `groundwork.py codemap` run.
+- The facts above describe `plugins/impact-review` only. chronicle follows the same cli layout under `plugins/chronicle/src/chronicle/`:
 
 | Folder | Holds |
 | --- | --- |

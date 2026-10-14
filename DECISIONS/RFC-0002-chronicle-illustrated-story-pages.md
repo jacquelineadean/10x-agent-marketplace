@@ -115,7 +115,7 @@ The skill reads its references on demand (about 6,000 tokens). The gatherer's to
 - **The JS runtime has no unit tests.** Python tests cover the HTML and data; the page was checked in Chromium at 1280 and 390 pixels in both themes. A browser test suite is future work.
 
 ## 7. Impact
-**Repos touched:** 10x-agent-marketplace only. Adds `.claude-plugin/marketplace.json` (impact-review joins it once it has a manifest).
+**Repos touched:** 10x-agent-marketplace only. Registers chronicle in `.claude-plugin/marketplace.json` beside impact-review.
 **Constitution check:**
 - Principle 1 (scripts compute, Claude writes): the renderer, derive table and painter compute; Claude writes the story. **Conflict:** the gatherer subagent reads raw MCP responses. Proposed amendment: raw source data may be read inside a subagent whose only output is a facts file.
 - Principle 2 (every number has a source): met by tokens, `derive` and the check command.
