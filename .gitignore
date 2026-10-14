@@ -2,3 +2,10 @@
 .env
 .env.*
 !.env.example
+
+# Python bytecode
+__pycache__/
+
+# chronicle: run folders hold gathered company data; build output is regenerated
+chronicle-runs/
+plugins/*/examples/*/build/

@@ -1,0 +1,20 @@
+{
+  "name": "10x-agent-marketplace",
+  "owner": {
+    "name": "Jacqueline Dean",
+    "url": "https://github.com/jacquelineadean"
+  },
+  "metadata": {
+    "description": "Jacqueline Dean's Claude Code plugins: agent extensions for engineering leadership work."
+  },
+  "plugins": [
+    {
+      "name": "chronicle",
+      "source": "./plugins/chronicle",
+      "description": "Illustrated, interactive story pages (Artifacts) from a brief and facts gathered from connected tools.",
+      "version": "0.1.0",
+      "category": "productivity",
+      "keywords": ["artifact", "storytelling", "status report", "data visualization"]
+    }
+  ]
+}

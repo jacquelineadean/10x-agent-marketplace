@@ -11,13 +11,14 @@ Instructions for coding agents in this standalone repo. Humans: read PROJECT.md 
 
 ## Commands
 **Python uses `uv`, never `pip`.** `uv add --dev <pkg>` for dev tools, `uv sync` to install, `uv run <cmd>` to run.
-Commit `uv.lock`; never edit it by hand. Plugin runtime code uses the standard library only (CONSTITUTION.md).
+Commit `uv.lock`; never edit it by hand. Plugin runtime code uses the standard library only (CONSTITUTION.md); chronicle's painter adds NumPy and OpenCV, pending RFC-0002.
 
 ```bash
 uv sync                                    # install dev tools (ruff, mypy, pytest)
 uv run pytest                              # tests
 uv run ruff format --check . && uv run ruff check .
 uv run mypy plugins/impact-review/src/impact_review
+uv run mypy plugins/chronicle/src/chronicle
 claude plugin validate .                   # marketplace and plugin manifests
 claude --plugin-dir plugins/impact-review  # try one plugin in a session
 ```
@@ -43,7 +44,7 @@ add an ignore comment or skip a test to make it pass; an ignore needs a reason o
 
 - format: `uv run ruff format --check .`
 - lint: `uv run ruff check .`
-- types: `uv run mypy plugins/impact-review/src/impact_review`
+- types: `uv run mypy plugins/impact-review/src/impact_review` and `uv run mypy plugins/chronicle/src/chronicle`
 - test: `uv run pytest`
 
 1. Reuse before writing: look in CODEMAP.md and search for an existing function first. Never copy-paste a block.

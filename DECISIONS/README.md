@@ -6,3 +6,4 @@ ADR (`ADR-NNNN-slug.md`). Numbers never change or get reused.
 | ID | Title | State | Notes |
 | --- | --- | --- | --- |
 | [RFC-0001](RFC-0001-impact-review-github.md) | impact-review plugin: GitHub contribution metrics and review synthesis | draft | Awaiting Jacqueline Dean's approval |
+| [RFC-0002](RFC-0002-chronicle-illustrated-story-pages.md) | chronicle plugin: illustrated, interactive story pages | draft | Built ahead of approval at the owner's request; awaiting Jacqueline Dean's approval |
