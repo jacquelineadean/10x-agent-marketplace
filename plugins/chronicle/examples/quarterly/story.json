@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "meta": {
+    "title": "Lantern Bay",
+    "kicker": "Support desk · Q3 2026 review",
+    "dek": "A rough August and a calmer September: {{desk.tickets_total}} tickets in the quarter, and replies now arrive in {{desk.first_reply_now}}.",
+    "byline": ["Customer Support, quarterly review", "Demonstration: the desk and every figure here are invented"],
+    "description": "A short illustrated quarterly review for a support team, built by chronicle from invented data.",
+    "colophon": "Built by the chronicle plugin from invented data, as a second example beside Keystone."
+  },
+  "sources": [
+    {"id": "helpdesk", "label": "Help desk", "detail": "Ticket counts and reply times by week.", "as_of": "1 Oct 2026"},
+    {"id": "survey", "label": "Satisfaction survey", "detail": "Post-ticket survey, monthly.", "as_of": "30 Sep 2026"}
+  ],
+  "art": {
+    "hero": {"preset": "valley", "params": {"mood": "dawn"}, "alt": "Watercolor of a river valley at dawn between two green banks."}
+  },
+  "hero": {
+    "art": "hero",
+    "stats": [
+      {"label": "Tickets in Q3", "value": "{{desk.tickets_total}}", "spark": "@desk.tickets"},
+      {"label": "Median first reply", "value": "{{desk.first_reply_now}}", "delta": "{{desk.reply_change|signed}} since July", "trend": "good", "spark": "@desk.first_reply_hours"},
+      {"label": "Customers satisfied", "value": "{{desk.csat_now}}", "delta": "September", "trend": "neutral"}
+    ]
+  },
+  "chapters": [
+    {
+      "id": "volume",
+      "short": "Volume",
+      "kicker": "What came in",
+      "title": "One bad week in August",
+      "blocks": [
+        {"type": "prose", "text": "Volume peaked at {{desk.peak_tickets}} tickets in the week the pricing page went down, then settled back toward July's level."},
+        {"type": "chart", "chart": "bars", "title": "Tickets opened per week", "source": "helpdesk", "format": {"y": "int"},
+         "data": {"categories": "@desk.week", "series": [{"name": "Tickets", "values": "@desk.tickets", "color": "accent"}]}}
+      ]
+    },
+    {
+      "id": "speed",
+      "short": "Speed",
+      "kicker": "How fast we answered",
+      "title": "Replies got faster after the surge",
+      "blocks": [
+        {"type": "chart", "chart": "line", "title": "Median hours to first reply, by week", "source": "helpdesk", "unit": "h", "y_min": 0,
+         "data": {"x": "@desk.week", "series": [{"name": "First reply", "values": "@desk.first_reply_hours"}]},
+         "notes": [{"x": "2026-08-10", "text": "Pricing-page outage"}]},
+        {"type": "chart", "chart": "multiples", "title": "Satisfaction held in every channel", "source": "survey",
+         "format": {"y": "pct"}, "y_min": 70, "y_max": 100,
+         "data": {"x": "@desk.month", "items": "@desk.csat_by_channel"}}
+      ]
+    }
+  ]
+}

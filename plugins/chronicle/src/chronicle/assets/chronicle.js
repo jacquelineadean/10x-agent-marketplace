@@ -65,7 +65,11 @@
   }
   var ROLES = { accent: "var(--s1)", legacy: "var(--legacy)", muted: "var(--muted)", bad: "var(--bad)", good: "var(--good)" };
   function seriesColor(i, s) {
-    if (s && s.color) return ROLES[s.color] || (/^s[1-6]$/.test(s.color) ? "var(--" + s.color + ")" : s.color);
+    if (s && s.color) {
+      if (ROLES[s.color]) return ROLES[s.color];
+      if (/^s[1-6]$/.test(s.color)) return "var(--" + s.color + ")";
+      if (/^var\(--[a-z0-9-]+\)$/.test(s.color) || /^#[0-9a-fA-F]{3,8}$/.test(s.color)) return s.color;
+    }
     return "var(--s" + ((i % 6) + 1) + ")";
   }
   function fmt(v, kind) {
@@ -115,6 +119,10 @@
   }
   function tickX(x, withYear) {
     var s = String(x);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+      var day = parseDate(s);
+      return day.getUTCDate() + " " + MONTHS[day.getUTCMonth()] + (withYear ? " " + day.getUTCFullYear() : "");
+    }
     if (/^\d{4}-\d{2}/.test(s)) {
       var d = parseDate(s), m = d.getUTCMonth();
       return withYear ? MONTHS[m] + " " + d.getUTCFullYear() : MONTHS[m];

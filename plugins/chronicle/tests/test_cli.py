@@ -37,3 +37,12 @@ def test_bad_story_fails_with_a_message(
     code = main(["check", str(path), "--facts", str(example_dir / "facts.json")])
     assert code == 1
     assert "no fact 'nowhere.at_all'" in capsys.readouterr().err
+
+
+def test_second_example_uses_no_bridge_scenes(example_dir: Path, tmp_path: Path) -> None:
+    quarterly = example_dir.parent / "quarterly" / "story.json"
+    assert main(["check", str(quarterly)]) == 0
+    assert main(["build", str(quarterly), "--out", str(tmp_path), "--scale", "0.12"]) == 0
+    page = (tmp_path / "index.html").read_text(encoding="utf-8")
+    assert "<title>Lantern Bay</title>" in page
+    assert "12,501" in page

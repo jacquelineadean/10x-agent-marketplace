@@ -1,0 +1,24 @@
+{
+ "desk": {
+  "name": "Lantern Bay support desk",
+  "as_of": {"value": "2026-10-01", "source": "helpdesk"},
+  "agents": {"value": 14, "unit": "agents", "source": "helpdesk"},
+  "week": ["2026-07-06", "2026-07-13", "2026-07-20", "2026-07-27", "2026-08-03", "2026-08-10", "2026-08-17", "2026-08-24", "2026-08-31", "2026-09-07", "2026-09-14", "2026-09-21", "2026-09-28"],
+  "tickets": [812, 790, 845, 901, 1240, 1310, 1185, 990, 930, 905, 880, 862, 851],
+  "first_reply_hours": [6.1, 5.8, 6.4, 7.0, 11.2, 12.5, 9.8, 6.9, 5.2, 4.4, 3.9, 3.6, 3.4],
+  "month": ["2026-07", "2026-08", "2026-09"],
+  "csat_by_channel": [
+   {"name": "Email", "values": [88, 84, 90]},
+   {"name": "Chat", "values": [91, 86, 93]},
+   {"name": "Phone", "values": [85, 83, 87]}
+  ],
+  "first_reply_then": {"value": 6.1, "unit": "hours", "source": "helpdesk", "note": "median, week of 6 Jul"},
+  "first_reply_now": {"value": 3.4, "unit": "hours", "source": "helpdesk", "note": "median, week of 28 Sep"},
+  "peak_tickets": {"value": 1310, "source": "helpdesk", "note": "week of 10 Aug, the pricing-page outage"},
+  "csat_now": {"value": 90, "unit": "%", "source": "survey", "note": "satisfied or very satisfied, September, all channels"}
+ },
+ "derive": {
+  "desk.tickets_total": {"fn": "total", "of": "desk.tickets", "source": "helpdesk", "note": "tickets opened in Q3"},
+  "desk.reply_change": {"fn": "pct_change", "from": "desk.first_reply_then", "to": "desk.first_reply_now", "unit": "%", "source": "helpdesk"}
+ }
+}

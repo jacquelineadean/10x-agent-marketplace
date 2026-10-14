@@ -19,8 +19,9 @@ chronicle returns one long-form page in the manner of a newspaper graphics featu
   numbers come from code in a `derive` table, never from the model.
 - **Light and dark themes**, phone layouts, keyboard access and reduced motion.
 
-The worked example, `examples/keystone/`, is a status page for an invented order-platform
-migration at an invented retailer.
+Two worked examples ship with the plugin, both with invented data: `examples/keystone/`, a
+status page for an order-platform migration told through a bridge being built, and
+`examples/quarterly/`, a short support-desk review on a generic valley painting.
 
 ## Install
 
@@ -70,7 +71,7 @@ scripts/chronicle motifs                                 # presets and motifs fo
 | `src/chronicle/assets/` | the page's stylesheet and runtime script |
 | `src/chronicle/connectors/files/` | every file read and write |
 | `src/chronicle/entrypoints/cli/` | the command line |
-| `examples/keystone/` | example `story.json` and `facts.json` with invented data |
+| `examples/keystone/`, `examples/quarterly/` | example `story.json` and `facts.json` files with invented data |
 | `tests/` | pytest suite |
 
 ## Privacy
