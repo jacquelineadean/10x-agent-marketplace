@@ -30,7 +30,7 @@ arches built means `"built": 3.0`).
 | --- | --- | --- |
 | `bridge-hero` | `arches`, `built` (finished arches; a fraction waits for its keystone), `mood` | keystone descends into its slot as the reader scrolls; birds drift; anchors `hook`, `load`, `slot` |
 | `bridge-old-crossing` | none | anchors `patch`, `queue` |
-| `bridge-piers` | `arches` | anchor `centre` |
+| `bridge-piers` | `arches` | anchor `center` |
 | `bridge-flood` | `arches`, `built` | rain falls; anchor `centering` |
 | `bridge-span` | `arches`, `built` | traffic crosses the deck |
 | `road-ahead` | `milestones` (number of flags), `mood` | anchors `m1` (nearest) to `mN`; birds drift |

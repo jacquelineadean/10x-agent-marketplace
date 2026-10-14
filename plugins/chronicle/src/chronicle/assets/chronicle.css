@@ -157,7 +157,7 @@ figure { margin: 0; }
 }
 .stage .overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
 .stage .overlay .cable { stroke: #2B231D; stroke-width: 1.6; fill: none; }
-/* first arrival: the painting develops from a pencil sketch into colour */
+/* first arrival: the painting develops from a pencil sketch into color */
 .stage.develop.pre { filter: grayscale(1) contrast(1.15) brightness(1.04); }
 .stage.develop.go { transition: filter 2.2s cubic-bezier(.45, .05, .35, 1); }
 .plate figcaption, .fig-note {

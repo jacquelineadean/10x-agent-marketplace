@@ -301,7 +301,7 @@ def bridge_piers(params: Mapping[str, Any], scale: float) -> Painting:
             )
         if i < 3:
             structures.figure(c, px + pier_w / 2, top + 1, 13, coat="vermilion")
-    centre = x0 + 2 * (span + pier_w) + pier_w + span / 2
+    center = x0 + 2 * (span + pier_w) + pier_w + span / 2
     c.pencil([[x0, water - 260], [x1 + pier_w, water - 260]])
     for i in range(arches):
         cx = x0 + i * (span + pier_w) + pier_w + span / 2
@@ -329,7 +329,7 @@ def bridge_piers(params: Mapping[str, Any], scale: float) -> Painting:
     )
     nature.tree(c, 60, 520, 200)
     painting = Painting(w, h, c.finish("deckle"))
-    painting.anchors["centre"] = (centre, water - 150)
+    painting.anchors["center"] = (center, water - 150)
     return painting
 
 
@@ -477,7 +477,7 @@ def road_ahead(params: Mapping[str, Any], scale: float) -> Painting:
     c.drybrush([meadow], "olive", opacity=0.3, angle=-4, coverage=0.25)
     nature.treeline(c, -20, 760, 552, 22, pigment="viridian", pigment2="lavender", opacity=0.35)
     nature.treeline(c, 1300, w + 20, 556, 26, pigment="viridian", pigment2="lavender", opacity=0.35)
-    centre: list[list[float]] = [
+    center: list[list[float]] = [
         [600, h + 40],
         [800, 750],
         [980, 668],
@@ -485,7 +485,7 @@ def road_ahead(params: Mapping[str, Any], scale: float) -> Painting:
         [1052, 570],
         [1060, 545],
     ]
-    samples = structures.road(c, centre, near=340, far=4, horizon=538)
+    samples = structures.road(c, center, near=340, far=4, horizon=538)
     anchors: dict[str, tuple[float, float]] = {}
     ys = np.array([sample[1] for sample in samples])
     depths = np.linspace(0.78, 0.1, stops)
@@ -519,7 +519,7 @@ def road_ahead(params: Mapping[str, Any], scale: float) -> Painting:
 
 
 def keystone_spot(params: Mapping[str, Any], scale: float) -> Painting:
-    """A small vignette of one arch whose keystone is the only stone in full colour."""
+    """A small vignette of one arch whose keystone is the only stone in full color."""
     w, h = 460, 340
     c = Canvas(w, h, seed=int(params.get("seed", 71)), scale=scale)
     cx, spring, r, ring = 230.0, 270.0, 120.0, 46.0

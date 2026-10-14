@@ -38,7 +38,7 @@ class BridgePlan:
     parapet_top: float
     spring: float
     radius: float
-    centres: list[float] = field(default_factory=list)
+    centers: list[float] = field(default_factory=list)
     keystone: Poly = field(default_factory=list)
     keystone_slot: tuple[float, float] = (0.0, 0.0)
     built_right: float = 0.0
@@ -79,14 +79,14 @@ def arch_bridge(
     full = int(math.floor(built))
     frac = built - full
     pier_x = [x0 + i * (span + pier_w) for i in range(n + 1)]
-    centres = [pier_x[i] + pier_w + r for i in range(n)]
-    plan = BridgePlan(deck=deck, parapet_top=parapet_top, spring=spring, radius=r, centres=centres)
+    centers = [pier_x[i] + pier_w + r for i in range(n)]
+    plan = BridgePlan(deck=deck, parapet_top=parapet_top, spring=spring, radius=r, centers=centers)
 
     body_right = pier_x[full] + pier_w if full > 0 else x0
     plan.built_right = body_right
     openings = [
-        arc(centres[i], spring, r, 180, 0)
-        + [[centres[i] + r, base + 4], [centres[i] - r, base + 4]]
+        arc(centers[i], spring, r, 180, 0)
+        + [[centers[i] + r, base + 4], [centers[i] - r, base + 4]]
         for i in range(full)
     ]
     body = rect(x0, parapet_top, body_right, base) if full > 0 else []
@@ -101,7 +101,7 @@ def arch_bridge(
     gap = 4.5
     if frac > 0.02 and full < n:
         reach = min(90.0 - gap, frac * 90.0)
-        cx = centres[full]
+        cx = centers[full]
         partial = [
             band(cx, spring, r, r + ring, 180, 180 - reach),
             band(cx, spring, r, r + ring, reach, 0),
@@ -109,14 +109,14 @@ def arch_bridge(
         plan.keystone_slot = (cx, spring - r - ring / 2)
         plan.keystone = band(cx, spring, r - 1, r + ring + 3, 90 + gap, 90 - gap)
     elif full > 0:
-        cx = centres[full - 1]
+        cx = centers[full - 1]
         plan.keystone_slot = (cx, spring - r - ring / 2)
         plan.keystone = band(cx, spring, r - 1, r + ring + 3, 90 + gap, 90 - gap)
 
     masonry = ([body] if body else []) + stubs + partial
     if not masonry:
         if sketch_unbuilt:
-            for cx in centres:
+            for cx in centers:
                 c.pencil(arc(cx, spring, r, 180, 0))
                 c.pencil(arc(cx, spring, r + ring, 180, 0))
             c.pencil([[x0, parapet_top], [x1, parapet_top]])
@@ -157,14 +157,14 @@ def arch_bridge(
 
     for i in range(full):
         c.wash(
-            [band(centres[i], spring, r, r + ring, 180, 0)],
+            [band(centers[i], spring, r, r + ring, 180, 0)],
             stone2,
             opacity=0.3,
             edge=0.4,
             wobble_px=0.5,
         )
-        soffit = arc(centres[i], spring, r, 180, 0) + arc(
-            centres[i], spring + r * 0.22, r * 0.98, 0, 180
+        soffit = arc(centers[i], spring, r, 180, 0) + arc(
+            centers[i], spring + r * 0.22, r * 0.98, 0, 180
         )
         c.wash([soffit], shadow, pigment2="indigo", opacity=0.6, edge=0.3, wet=0.15, wobble_px=0.5)
     piers_drawn = range(n + 1) if full == 0 else range(full + 1 if frac <= 0.02 else full + 2)
@@ -189,13 +189,13 @@ def arch_bridge(
 
     _bridge_ink(c, plan, pier_x, pier_w, full, frac, ring, base, detail)
     if frac > 0.02 and full < n:
-        _centering(c, centres[full], spring, r, base)
+        _centering(c, centers[full], spring, r, base)
         _scaffold(c, pier_x[full] - 6, pier_x[full + 1] + pier_w + 6, parapet_top - 10, base, 4)
     if sketch_unbuilt:
         start = full + (1 if frac > 0.02 else 0)
         for i in range(start, n):
-            c.pencil(arc(centres[i], spring, r, 180, 0))
-            c.pencil(arc(centres[i], spring, r + ring, 180, 0))
+            c.pencil(arc(centers[i], spring, r, 180, 0))
+            c.pencil(arc(centers[i], spring, r + ring, 180, 0))
         if start < n:
             c.pencil([[body_right, parapet_top], [x1, parapet_top]])
             c.pencil([[body_right, deck], [x1, deck]])
@@ -217,7 +217,7 @@ def _bridge_ink(
     spring = plan.spring
     rng = c.rng
     for i in range(full + (1 if frac > 0.02 else 0)):
-        cx = plan.centres[i]
+        cx = plan.centers[i]
         limit = 90.0 if i < full else min(85.5, frac * 90.0)
         spans = [(180.0, 0.0)] if i < full else [(180.0, 180.0 - limit), (limit, 0.0)]
         for a0, a1 in spans:
@@ -465,19 +465,19 @@ def crane(
 
 def road(
     c: Canvas,
-    centre: list[list[float]],
+    center: list[list[float]],
     near: float,
     far: float,
     pigment: str = "yellow-ochre",
     pigment2: str | None = "raw-sienna",
     horizon: float | None = None,
 ) -> list[tuple[float, float, float]]:
-    """A road along a centreline from near (first point) to far, narrowing with distance.
+    """A road along a centerline from near (first point) to far, narrowing with distance.
 
     With `horizon` set, width follows perspective: proportional to the distance below the
     horizon line. Returns (x, y, half width) samples so markers can stand beside it.
     """
-    line: Points = smooth(np.asarray(centre, dtype=np.float64), closed=False, samples=10)
+    line: Points = smooth(np.asarray(center, dtype=np.float64), closed=False, samples=10)
     n = len(line)
     if horizon is not None:
         depth = np.clip((line[:, 1] - horizon) / max(float(line[0, 1]) - horizon, 1.0), 0.0, 1.0)

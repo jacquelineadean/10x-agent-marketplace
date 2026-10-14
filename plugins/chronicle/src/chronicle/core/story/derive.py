@@ -108,7 +108,12 @@ def _burnup(facts: Mapping[str, Any], args: Args) -> tuple[int, date]:
     if len(done) <= window or len(scope) <= window:
         raise FactError(f"burnup needs more than {window} sprints of done and scope")
     velocity = round((done[-1] - done[-1 - window]) / window)
-    growth = round((scope[-1] - scope[-1 - window]) / window)
+    # A fixed growth, such as 0 for "scope frozen", replaces the recent average.
+    growth = (
+        round(float(args["growth"]))
+        if "growth" in args
+        else round((scope[-1] - scope[-1 - window]) / window)
+    )
     if velocity <= growth:
         raise FactError("scope grows as fast as work is done; the burnup never finishes")
     sprints = math.ceil((scope[-1] - done[-1]) / (velocity - growth))
@@ -127,10 +132,31 @@ def burnup_finish(facts: Mapping[str, Any], args: Args) -> Any:
     return _burnup(facts, args)[1].isoformat()
 
 
-def weeks_between(facts: Mapping[str, Any], args: Args) -> Any:
-    """Whole weeks from date `from` to date `to` (negative when `to` is earlier)."""
+def maximum(facts: Mapping[str, Any], args: Args) -> Any:
+    """Largest value of a series."""
+    return _tidy(max(_series(facts, args["of"])))
+
+
+def minimum(facts: Mapping[str, Any], args: Args) -> Any:
+    """Smallest value of a series."""
+    return _tidy(min(_series(facts, args["of"])))
+
+
+def _dates(facts: Mapping[str, Any], args: Args) -> tuple[date, date]:
     start = date.fromisoformat(str(lookup(facts, args["from"]).value))
     end = date.fromisoformat(str(lookup(facts, args["to"]).value))
+    return start, end
+
+
+def days_between(facts: Mapping[str, Any], args: Args) -> Any:
+    """Days from date `from` to date `to` (negative when `to` is earlier)."""
+    start, end = _dates(facts, args)
+    return (end - start).days
+
+
+def weeks_between(facts: Mapping[str, Any], args: Args) -> Any:
+    """Whole weeks from date `from` to date `to` (negative when `to` is earlier)."""
+    start, end = _dates(facts, args)
     return round((end - start).days / 7)
 
 
@@ -143,8 +169,11 @@ FUNCTIONS: dict[str, Callable[[Mapping[str, Any], Args], Any]] = {
     "diff": diff,
     "share": share,
     "total": total,
+    "max": maximum,
+    "min": minimum,
     "burnup_sprints": burnup_sprints,
     "burnup_finish": burnup_finish,
+    "days_between": days_between,
     "weeks_between": weeks_between,
 }
 RECORD_KEYS = ("unit", "source", "note")

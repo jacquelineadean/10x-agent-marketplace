@@ -16,7 +16,7 @@ The Keystone example follows this plan.
 | Status | Where things stand against plan | scrolly on the main trend, multiples for health, burnup |
 | Challenges | What went wrong and what was learned | plate, stepper for the worst incident, quote, lesson, matrix of open risks |
 | Outcomes and opportunities | What the work bought and what it will buy | line chart with notes, bars for cost, savings model |
-| Team | Who did it and how they are organised | prose, team |
+| Team | Who did it and how they are organized | prose, team |
 | Roadmap | What is next and what is needed | plate with spots, roadmap, forecast model, prose with the decisions asked |
 
 ## Quarterly or business review

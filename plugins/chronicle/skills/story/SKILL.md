@@ -33,7 +33,7 @@ Find out, asking only what the request leaves open (one AskUserQuestion, at most
 - **Window**: the period the story covers; default from project start to today.
 - **Sources**: which connected tools, files or pasted notes to use.
 
-When the user asks for a demonstration or mock data, invent a plausible organisation and
+When the user asks for a demonstration or mock data, invent a plausible organization and
 say so on the page: the byline and colophon both state that the data is invented.
 
 ## 2. Gather facts

@@ -375,11 +375,11 @@ class Canvas:
         for (x, y), r, on in zip(pts, radii, keep, strict=True):
             if not on:
                 continue
-            centre = (
+            center = (
                 int(round((x - box.x0) * factor * 16)),
                 int(round((y - box.y0) * factor * 16)),
             )
-            cv2.circle(layer, centre, max(int(r * factor * 16), 8), 255, -1, cv2.LINE_AA, 4)
+            cv2.circle(layer, center, max(int(r * factor * 16), 8), 255, -1, cv2.LINE_AA, 4)
         stroke = cv2.resize(layer, (box.width, box.height), interpolation=cv2.INTER_AREA)
         tooth = self.paper.height[box.y0 : box.y1, box.x0 : box.x1]
         density = stroke.astype(np.float32) / 255.0 * opacity * (0.8 + 0.35 * tooth)

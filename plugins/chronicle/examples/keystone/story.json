@@ -3,7 +3,7 @@
   "meta": {
     "title": "Keystone",
     "kicker": "Fernhill Outfitters · Order platform migration · Status on {{project.as_of|date}}",
-    "dek": "Fernhill has spent {{project.months_in}} moving its order system off a {{project.monolith_year}} monolith, one service at a time, while customers kept buying. {{project.services_live|plain}} of the {{project.services_total|plain}} services now carry all of their traffic. The fourth is on the hook.",
+    "dek": "Fernhill has spent {{project.months_in}} moving its order system off a {{project.monolith_year}} monolith, one service at a time, while customers kept buying. {{project.services_live|plain}} of the {{project.services_total|plain}} services now carry all of their traffic. The fourth, payments, cuts over on {{migration.payments_cutover|date}}.",
     "byline": [
       "Prepared for the Q4 portfolio review",
       "Platform Engineering, Fernhill Outfitters",
@@ -11,22 +11,22 @@
     ],
     "description": "An illustrated status report on Keystone, the migration of Fernhill's order platform from a monolith to services.",
     "nav": "arches",
-    "colophon": "Built by the chronicle plugin from two files: a facts file gathered from the sources above, and a story file that arranges them. Every number on the page comes from the facts file; hover or tap one to see its source. The watercolors are painted by a short OpenCV program: washes, pen lines and paper texture, no stock art.\n\nDemonstration data. Fernhill Outfitters, its staff, its systems and every figure on this page are invented for this example."
+    "colophon": "Built by the chronicle plugin from two files: a facts file gathered from the sources above, and a story file that arranges them. Every figure on the page comes from the facts file, and computed figures come from code; hover or tap a figure to see its source. The watercolors are painted by a short OpenCV program: washes, pen lines and paper texture, no stock art.\n\nDemonstration data. Fernhill Outfitters, its staff, its systems and every figure on this page are invented for this example."
   },
   "sources": [
-    {"id": "github", "label": "GitHub", "detail": "fernhill organisation, 14 repositories: pull requests, deployments and commit history.", "as_of": "14 Oct 2026"},
+    {"id": "github", "label": "GitHub", "detail": "fernhill organization, 14 repositories: pull requests, deployments and commit history.", "as_of": "14 Oct 2026"},
     {"id": "jira", "label": "Jira", "detail": "KEY project: sprints 1 to 42, epics, story points and change tickets.", "as_of": "14 Oct 2026"},
     {"id": "datadog", "label": "Datadog", "detail": "Service level objectives, APM latency, traffic share by service, incidents and postmortems.", "as_of": "14 Oct 2026"},
     {"id": "analytics", "label": "Product analytics", "detail": "Checkout funnel conversion and abandoned-cart estimates.", "as_of": "30 Sep 2026"},
-    {"id": "finance", "label": "Finance", "detail": "Monthly cloud invoices, data-centre allocation and the monolith licence schedule.", "as_of": "30 Sep 2026"}
+    {"id": "finance", "label": "Finance", "detail": "Monthly cloud invoices, data center allocation and the monolith license schedule.", "as_of": "30 Sep 2026"}
   ],
   "art": {
     "hero": {"preset": "bridge-hero", "params": {"arches": 5, "built": 3.75, "mood": "dawn"}, "alt": "Watercolor of a stone arch bridge going up beside an old timber trestle at dawn. Three arches are finished; the fourth stands on timber centering while a tower crane holds its keystone overhead."},
-    "old": {"preset": "bridge-old-crossing", "params": {}, "alt": "Watercolor of a long timber trestle in morning mist with a queue of trucks on its deck and a red emergency brace on one bent. Pencil lines sketch a stone bridge behind it."},
+    "old": {"preset": "bridge-old-crossing", "params": {}, "alt": "Watercolor of a long timber trestle at dawn with a queue of trucks on its deck, a red emergency brace on one bent and a load-limit sign at the approach. Pencil lines sketch a stone bridge behind it."},
     "piers": {"preset": "bridge-piers", "params": {"arches": 5}, "alt": "Watercolor of six stone piers rising from a river inside timber cofferdams, with pencil arches sketched above them and a crane on the far bank."},
     "flood": {"preset": "bridge-flood", "params": {"built": 2.6}, "alt": "Watercolor of a storm over the half-built stone bridge, the river brown and high, rain driving across."},
     "span": {"preset": "bridge-span", "params": {"built": 4.0}, "alt": "Watercolor of the stone bridge with four arches finished and trucks crossing; the old trestle is half taken down behind it."},
-    "road": {"preset": "road-ahead", "params": {"milestones": 4}, "alt": "Watercolor of a dirt road winding across a meadow toward mountains at dusk, with four red marker flags along it."},
+    "road": {"preset": "road-ahead", "params": {"milestones": 4}, "alt": "Watercolor of a dirt road crossing a meadow toward mountains at dusk, with four red marker flags along it."},
     "keystone": {"preset": "keystone-spot", "params": {}, "alt": ""}
   },
   "hero": {
@@ -46,13 +46,13 @@
       "kicker": "Why we started",
       "title": "The old crossing",
       "art": "old",
-      "caption": "The order system Fernhill built in {{project.monolith_year}}. It still carries every request Keystone has not moved yet, which is why it cannot come down early.",
+      "caption": "The order system Fernhill built in {{project.monolith_year}}. It still carries every request Keystone has not moved yet, so it stays up until the last service crosses.",
       "blocks": [
-        {"type": "prose", "dropcap": true, "text": "Fernhill's order management system went live in {{project.monolith_year}}. By early 2025 it held {{project.monolith_loc|compact}} lines of Java in a single repository and shipped {{delivery.deploys_then}}, each release a weekend of work. A change took a median {{delivery.lead_then}} to reach customers, and {{delivery.cfr_then}} of releases needed a fix or a rollback.\n\nThe cost showed up at the checkout. Its slowest requests took {{experience.p95_then}}, and every peak season began with a code freeze because nobody trusted a release in November."},
+        {"type": "prose", "dropcap": true, "text": "Fernhill's order management system went live in {{project.monolith_year}}. By early 2025 it held {{project.monolith_loc|compact}} lines of Java in a single repository and shipped {{delivery.deploys_then|plain}} releases a week, each release a weekend of work. A change took a median {{delivery.lead_then}} to reach customers, and {{delivery.cfr_then}} of releases needed a fix or a rollback.\n\nThe cost showed up at the checkout. Its 95th-percentile response time was {{experience.p95_then}}."},
         {"type": "prose", "text": "Keystone's plan was the **strangler pattern**: build new services beside the old system, move traffic one capability at a time, and keep the monolith running as the fallback until the last capability has crossed. The paintings on this page take that literally. The old trestle stays up until the new stone span can carry everything it carries."},
         {
           "type": "timeline",
-          "title": "Nineteen months, five crossings",
+          "title": "{{project.services_live|plain}} crossings in {{project.months_in}}",
           "subtitle": "Tap an event for the detail. Shaded bands are the project's phases.",
           "source": "jira",
           "today": "2026-10-14",
@@ -63,15 +63,15 @@
             {"from": "2026-03-01", "to": "2026-11-30", "label": "Checkout and payments"}
           ],
           "events": [
-            {"date": "2025-03-03", "kind": "milestone", "title": "Kickoff", "text": "Sprint 1. A plan for five services, sized at {{plan.scope_start}}."},
+            {"date": "2025-03-03", "kind": "milestone", "title": "Kickoff", "text": "Sprint 1. A plan for {{project.services_total}}, sized at {{plan.scope_start}}."},
             {"date": "2025-05-19", "kind": "milestone", "title": "The paved road opens", "text": "Pipelines, Kubernetes clusters, a Kafka event bus and tracing, ready for the first service team."},
             {"date": "2025-07-21", "kind": "launch", "title": "Catalog crosses", "text": "The catalog read API takes shadow traffic, then all product reads."},
-            {"date": "2025-10-06", "kind": "launch", "title": "Cart crosses", "text": "Carts move to the new platform eight weeks before peak season."},
-            {"date": "2025-11-28", "kind": "incident", "title": "Black Friday incident", "text": "A retry storm floods the cart service for {{reliability.incident_minutes}}. Traffic falls back to the monolith."},
-            {"date": "2026-01-12", "kind": "milestone", "title": "Reliability reset ends", "text": "Every service ships with an SLO, an error budget and a load test. {{reliability.incident_actions}} postmortem actions closed."},
-            {"date": "2026-03-16", "kind": "launch", "title": "Checkout crosses", "text": "The new checkout takes all traffic; latency drops the same week."},
+            {"date": "2025-10-06", "kind": "launch", "title": "Cart crosses", "text": "Carts move to the new platform {{reliability.weeks_after_cart}} before Black Friday."},
+            {"date": "2025-11-28", "kind": "incident", "title": "Black Friday incident", "text": "A retry storm floods the cart service for {{reliability.incident_minutes}}. Cart traffic falls back to the monolith."},
+            {"date": "2026-02-27", "kind": "milestone", "title": "Reliability reset ends", "text": "Every service now has an SLO, an error budget and a load test. All {{reliability.incident_actions}} postmortem actions were closed by {{reliability.actions_closed|date}}."},
+            {"date": "2026-03-16", "kind": "launch", "title": "Checkout crosses", "text": "The new checkout takes all checkout traffic."},
             {"date": "2026-06-08", "kind": "launch", "title": "Payments dual-run", "text": "Payments run on both platforms side by side, reconciled nightly."},
-            {"date": "2026-11-03", "kind": "planned", "title": "Payments cutover", "text": "The keystone: the last payment path moves and the dual-run ends."}
+            {"date": "2026-11-03", "kind": "planned", "title": "Payments cutover", "text": "The keystone: the last payment path moves and the dual-run ends. The monolith path stays on standby through {{migration.standby_end|date}}."}
           ]
         }
       ]
@@ -84,7 +84,7 @@
       "art": "piers",
       "caption": "The first phase moved no traffic at all. It built the parts every later service stands on.",
       "blocks": [
-        {"type": "prose", "text": "Nothing a customer could see shipped in the first phase. The team built a paved road instead: one pipeline template, shared clusters, an event bus and tracing that follows an order across services. Every service since has started from that template on its first day.\n\nThe payoff is in the four delivery measures the industry tracks. Deploys went from {{delivery.deploys_then}} to {{delivery.deploys_now}}, about {{delivery.deploy_ratio}} as many. Lead time fell from {{delivery.lead_then}} to {{delivery.lead_now}}."},
+        {"type": "prose", "text": "Nothing a customer could see shipped in the first phase. The team built a paved road instead: one pipeline template, shared clusters, an event bus and tracing that follows an order across services. Every service since has started from that template.\n\nThe payoff shows in the four delivery measures the industry tracks. Deploys went from {{delivery.deploys_then}} to {{delivery.deploys_now}}, about {{delivery.deploy_ratio}} as many. Lead time fell from {{delivery.lead_then}} to {{delivery.lead_now}}. The share of changes that fail fell from {{delivery.cfr_then}} to {{delivery.cfr_now}}, and time to restore from {{delivery.mttr_then}} to {{delivery.mttr_now}}."},
         {
           "type": "chart",
           "chart": "slope",
@@ -122,7 +122,7 @@
             {"label": "Recover from a bad change", "before": "{{delivery.mttr_then}}, often a restore from backup", "after": "{{delivery.mttr_now}}", "note": "Automatic rollback on failed health checks"}
           ]
         },
-        {"type": "lesson", "art": "keystone", "text": "Foundations first cost a third of the first year and bought every later step. Each service team since has reached production in its first sprint, because the road was already paved."}
+        {"type": "lesson", "art": "keystone", "text": "The foundations took {{project.foundations_months}} before the first service carried traffic. Every service team since has started from the same template instead of building its own road."}
       ]
     },
     {
@@ -150,11 +150,11 @@
             }
           },
           "steps": [
-            {"text": "**July 2025.** The catalog read API goes first, in shadow mode, answering requests the monolith also answers so the two can be compared. Product pages are the bulk of all traffic, so the share jumps once reads switch over.", "focus": {"from": "2025-07", "to": "2025-09"}},
-            {"text": "**October 2025.** Carts cross. For the first time the new platform holds customer state, not just reads.", "focus": {"from": "2025-10", "to": "2025-10"}},
-            {"text": "**November to February.** The share stands still. Black Friday exposed a retry storm between the two systems, and the team spent three months on reliability before moving anything else.", "focus": {"from": "2025-11", "to": "2026-02"}},
-            {"text": "**March 2026.** Checkout crosses, the hardest move so far, and the share passes half.", "focus": {"from": "2026-03", "to": "2026-03"}},
-            {"text": "**Since June.** Payments run on both platforms, {{migration.payments_dual_run}} of authorisations on the new one. The cutover on {{migration.payments_cutover|date}} finishes the fourth arch.", "focus": {"from": "2026-06", "to": "2026-09"}}
+            {"text": "**July 2025.** The catalog read API goes first, in shadow mode, answering requests the monolith also answers so the two can be compared. Product pages are the largest slice of traffic, so the share jumps once reads switch over.", "focus": {"from": "2025-07", "to": "2025-09"}},
+            {"text": "**October 2025.** Carts cross. For the first time the new platform holds customer state as well as reads.", "focus": {"from": "2025-10", "to": "2025-10"}},
+            {"text": "**November to February.** The share creeps from {{migration.share.4}}% to {{migration.share.7}}%. Black Friday exposed a retry storm between the two systems, and the team spent {{reliability.reset_months}} on reliability before moving another service.", "focus": {"from": "2025-11", "to": "2026-02"}},
+            {"text": "**March 2026.** Checkout crosses and the share passes half.", "focus": {"from": "2026-03", "to": "2026-03"}},
+            {"text": "**Since June.** Payments run on both platforms, {{migration.payments_dual_run}} of authorizations on the new one. The cutover on {{migration.payments_cutover|date}} finishes the fourth arch.", "focus": {"from": "2026-06", "to": "2026-09"}}
           ]
         },
         {
@@ -173,7 +173,7 @@
           "type": "chart",
           "chart": "burnup",
           "title": "{{plan.done_pct}} of the planned work is done, and the plan keeps growing",
-          "subtitle": "Story points by sprint. Scope has grown {{plan.scope_growth_pct}} since kickoff. Dashed lines project the last six sprints forward; the fan spans a faster and a slower pace.",
+          "subtitle": "Story points by sprint. Scope has grown {{plan.scope_growth_pct}} since kickoff. Dashed lines project the last {{plan.window}} forward; the fan spans a faster and a slower pace.",
           "source": "jira",
           "data": {
             "x": "@plan.sprint_end",
@@ -193,10 +193,10 @@
       "art": "flood",
       "caption": "Black Friday 2025, a little before ten in the morning.",
       "blocks": [
-        {"type": "prose", "text": "Seven weeks after carts crossed, the busiest morning of the year found the gap between the two systems. A slow response from the monolith's inventory sync triggered retries, the retries multiplied, and the flood of events backed up into the cart service until its database had no connections left.\n\nCheckout errors peaked at {{reliability.incident_peak_err}}. Customers felt it for {{reliability.incident_minutes}}, and analytics estimates {{reliability.incident_carts}} carts were abandoned in that window."},
+        {"type": "prose", "text": "{{reliability.weeks_after_cart}} after carts crossed, Black Friday morning found the gap between the two systems. A slow response from the monolith's inventory sync triggered retries, the retries multiplied, and the flood of events backed up into the cart service until its database had no connections left.\n\nCart API errors peaked at {{reliability.incident_peak_err}}. Customers felt it for {{reliability.incident_minutes}}, and analytics estimates {{reliability.incident_carts}} carts were abandoned in that window."},
         {
           "type": "stepper",
-          "title": "Forty-seven minutes, step by step",
+          "title": "{{reliability.incident_minutes}}, step by step",
           "subtitle": "Cart API error rate, Eastern time. Step through the response.",
           "source": "datadog",
           "chart": {
@@ -205,28 +205,28 @@
             "data": {"x": "@reliability.incident_x", "series": [{"name": "Cart API error rate", "values": "@reliability.incident_err"}]}
           },
           "steps": [
-            {"time": "09:41", "title": "The retries start", "text": "The monolith's inventory sync times out and retries without backoff. Event volume on the cart topic rises eightfold.", "focus": {"from": "09:41", "to": "09:44"}},
+            {"time": "09:41", "title": "The retries start", "text": "The monolith's inventory sync times out and retries without backoff. Events on the cart topic rise to {{reliability.incident_multiple}} their normal rate.", "focus": {"from": "09:41", "to": "09:44"}},
             {"time": "09:44", "title": "The queue backs up", "text": "Consumer lag on cart events passes {{reliability.incident_lag|compact}} messages.", "focus": {"from": "09:44", "to": "09:47"}},
             {"time": "09:47", "title": "The pool runs dry", "text": "All {{reliability.incident_pool}} database connections in the cart service are in use. Requests queue, then fail.", "focus": {"from": "09:47", "to": "09:52"}},
-            {"time": "09:52", "title": "The page fires", "text": "The SLO burn-rate alert pages the on-call engineer, who acknowledges within a minute and opens an incident.", "focus": {"from": "09:52", "to": "10:06"}},
-            {"time": "10:06", "title": "Walk the traffic back", "text": "The incident commander routes cart traffic back to the monolith, which the strangler design kept warm for exactly this. Errors start to fall.", "focus": {"from": "10:06", "to": "10:19"}},
+            {"time": "09:52", "title": "The page fires", "text": "The SLO burn-rate alert pages the on-call engineer, who acknowledges it and opens an incident.", "focus": {"from": "09:52", "to": "10:06"}},
+            {"time": "10:06", "title": "Walk the traffic back", "text": "The incident commander routes cart traffic back to the monolith, which the strangler design kept running for exactly this. Errors start to fall.", "focus": {"from": "10:06", "to": "10:19"}},
             {"time": "10:19", "title": "Stop the flood", "text": "The inventory sync is paused at the source and the lag drains.", "focus": {"from": "10:19", "to": "10:28"}},
-            {"time": "10:28", "title": "Recovered", "text": "Errors are back under one percent. The postmortem produced {{reliability.incident_actions}} actions; all were closed by the end of January.", "focus": {"from": "10:28", "to": "10:45"}}
+            {"time": "10:28", "title": "Recovered", "text": "Errors are back to their normal level. The postmortem produced {{reliability.incident_actions}} actions; the last closed on {{reliability.actions_closed|date}}.", "focus": {"from": "10:28", "to": "10:45"}}
           ]
         },
         {"type": "quote", "text": "We didn't fix the new bridge that morning. We walked the traffic back across the old one, and then we fixed it.", "who": "Diego Ramírez", "role": "incident commander, Cart and Checkout lead"},
-        {"type": "lesson", "art": "keystone", "text": "Keep the old path warm until the new one has survived a peak. The fallback route turned what could have been a day-long outage into {{reliability.incident_minutes}}, and this year's load test ran at {{reliability.loadtest_multiple}} last year's peak."},
+        {"type": "lesson", "art": "keystone", "text": "Keep the old path running until the new one has survived a peak. The fallback route ended the outage in {{reliability.incident_minutes}}, and this year's load test ran at {{reliability.loadtest_multiple}} last year's peak."},
         {
           "type": "matrix",
           "title": "What could still go wrong",
           "subtitle": "Open risks by likelihood and impact. Select one for the mitigation.",
           "source": "jira",
           "items": [
-            {"id": "R1", "title": "Payments cutover lands just before peak season", "likelihood": 3, "impact": 5, "trend": "flat", "owner": "Owner: Mei-Lin Zhou, Payments", "text": "The cutover is set for {{migration.payments_cutover|date}}, thirteen days before the code freeze. Mitigation: the dual-run stays live through December so payments can fall back in minutes."},
-            {"id": "R2", "title": "Monolith licence renews if decommission slips", "likelihood": 3, "impact": 4, "trend": "up", "owner": "Owner: Finance and Platform", "text": "Missing the June 2027 exit triggers a {{migration.license_renewal}} renewal. Mitigation: negotiate a three-month extension option now."},
-            {"id": "R3", "title": "Scope keeps growing", "likelihood": 4, "impact": 3, "trend": "up", "owner": "Owner: Programme lead", "text": "Scope has grown {{plan.scope_growth_pct}} since kickoff, about {{plan.growth_recent}} a sprint lately. Mitigation: freeze fulfillment scope at the current epics."},
-            {"id": "R4", "title": "Two people hold the ledger knowledge", "likelihood": 2, "impact": 4, "trend": "down", "owner": "Owner: Mei-Lin Zhou, Payments", "text": "Reconciliation logic lives in two engineers' heads. Mitigation: pairing rotation and written runbooks, half done."},
-            {"id": "R5", "title": "Third-party logistics API limits", "likelihood": 3, "impact": 3, "trend": "flat", "owner": "Owner: Tomás Novák, Fulfillment", "text": "The 3PL partner caps requests per minute below our projected peak. Mitigation: batching and a queue in the adapter."},
+            {"id": "R1", "title": "Payments cutover lands just before peak season", "likelihood": 3, "impact": 5, "trend": "flat", "owner": "Owner: Mei-Lin Zhou, Payments", "text": "The cutover on {{migration.payments_cutover|date}} is {{migration.cutover_to_freeze_days}} before the peak-season freeze. Mitigation: the monolith payment path stays on standby through {{migration.standby_end|date}}, so payments can move back."},
+            {"id": "R2", "title": "Monolith license renews if switch-off slips", "likelihood": 3, "impact": 4, "trend": "up", "owner": "Owner: Finance and Platform", "text": "Missing the {{migration.decommission_target|month}} switch-off triggers a {{migration.license_renewal}} renewal on {{migration.renewal_date|date}}. Mitigation: negotiate a short extension option now."},
+            {"id": "R3", "title": "Scope keeps growing", "likelihood": 4, "impact": 3, "trend": "up", "owner": "Owner: Program lead", "text": "Scope has grown {{plan.scope_growth_pct}} since kickoff, {{plan.growth_recent}} a sprint over the last {{plan.window}}. Mitigation: freeze fulfillment scope at the current epics."},
+            {"id": "R4", "title": "Two people hold the ledger knowledge", "likelihood": 2, "impact": 4, "trend": "down", "owner": "Owner: Mei-Lin Zhou, Payments", "text": "Reconciliation logic lives in two engineers' heads. Mitigation: a pairing rotation and written runbooks, both under way."},
+            {"id": "R5", "title": "Logistics partner API limits", "likelihood": 3, "impact": 3, "trend": "flat", "owner": "Owner: Tomás Novák, Fulfillment", "text": "The logistics partner caps requests per minute below our projected peak. Mitigation: batching and a queue in the adapter."},
             {"id": "R6", "title": "Peak-season capacity", "likelihood": 1, "impact": 5, "trend": "down", "owner": "Owner: Amara Okafor, Platform", "text": "Load tested at {{reliability.loadtest_multiple}} last year's peak in September. Watch item only."}
           ]
         }
@@ -238,13 +238,13 @@
       "kicker": "What the span carries",
       "title": "Faster checkout, then a cheaper one",
       "art": "span",
-      "caption": "A preview, not yet true: four arches carrying traffic after the payments cutover, with the trestle coming down behind them.",
+      "caption": "A preview of the state after the payments cutover: four arches carrying traffic, with the trestle coming down behind them.",
       "blocks": [
-        {"type": "prose", "text": "The clearest result is at the checkout. Its slowest requests took {{experience.p95_then}} when the project began and take {{experience.p95_now}} now; most of that drop came the week checkout moved in March. Conversion followed: {{experience.conversion_then}} before, {{experience.conversion_now}} now, a gain of {{experience.conversion_gain}}."},
+        {"type": "prose", "text": "The clearest result is at the checkout. Its 95th-percentile response time was {{experience.p95_then}} when the project began and is {{experience.p95_now}} now; most of that drop came in March and April, as checkout moved. Conversion rose over the same months, from {{experience.conversion_then}} to {{experience.conversion_now}}, a gain of {{experience.conversion_gain}}."},
         {
           "type": "chart",
           "chart": "line",
-          "title": "Checkout latency fell the week checkout moved",
+          "title": "Checkout latency fell in the two months after checkout moved",
           "subtitle": "95th percentile response time, milliseconds, monthly",
           "source": "datadog",
           "format": {"y": "int"},
@@ -256,7 +256,7 @@
             {"x": "2026-03", "text": "Checkout moves to Keystone"}
           ]
         },
-        {"type": "prose", "text": "The bill has not followed yet. For as long as both systems run, Fernhill pays for both: {{cost.dual_run}} a month in cloud spend on top of the data centre. The saving arrives only when the monolith is switched off, so every month of delay has a price."},
+        {"type": "prose", "text": "The bill has not followed yet. For as long as both systems run, Fernhill pays for both: {{cost.dual_run}} a month in cloud spend on top of the data center. Most of the saving, {{cost.monthly_saving}} a month, arrives only when the monolith is switched off, so every month of delay has a price."},
         {
           "type": "chart",
           "chart": "bars",
@@ -289,7 +289,7 @@
             "last": "2027-12",
             "year": 2027
           },
-          "text": "Assumes today's run cost until switch-off and the projected cost after it. The renewal covers twelve months of licence and support."
+          "text": "Assumes today's run cost until switch-off and the projected cost after it. The renewal buys a year of license and support."
         }
       ]
     },
@@ -302,13 +302,13 @@
         {"type": "prose", "text": "{{project.engineers}} work on Keystone in {{project.squads}} squads, each owning its services from design to pager. In the last year {{project.contributors}} people merged code across {{project.repos}} repositories, {{delivery.prs_merged}} pull requests since kickoff. The median wait for a first review fell from {{delivery.review_hours_then}} to {{delivery.review_hours_now}}."},
         {
           "type": "team",
-          "title": "Five squads, one paved road",
+          "title": "{{project.squads|plain}} squads, one paved road",
           "subtitle": "Hover or tap a squad to see what it owns.",
           "source": "jira",
           "squads": [
             {"name": "Platform", "lead": "Amara Okafor", "focus": "The paved road: pipelines, clusters, the event bus, tracing and SLO tooling.", "members": ["Amara Okafor", "Jonas Lindqvist", "Rhea Kapoor", "Sam Whitfield", "Yusuf Demir", "Lena Hoffmann"], "owns": ["Pipelines", "Kubernetes", "Event bus", "Observability"]},
             {"name": "Cart and Checkout", "lead": "Diego Ramírez", "focus": "Carts, checkout and pricing. Ran the Black Friday incident.", "members": ["Diego Ramírez", "Hana Sato", "Kwame Mensah", "Olivia Brandt", "Marco Bellini", "Aisha Farouk"], "owns": ["Cart", "Checkout", "Pricing"]},
-            {"name": "Payments", "lead": "Mei-Lin Zhou", "focus": "Authorisation, ledger and reconciliation. Owns the keystone cutover.", "members": ["Mei-Lin Zhou", "Arjun Mehta", "Clara Dubois", "Noah Fischer", "Sofia Petrova"], "owns": ["Payments", "Ledger", "Fraud checks"]},
+            {"name": "Payments", "lead": "Mei-Lin Zhou", "focus": "Authorization, ledger and reconciliation. Owns the keystone cutover.", "members": ["Mei-Lin Zhou", "Arjun Mehta", "Clara Dubois", "Noah Fischer", "Sofia Petrova"], "owns": ["Payments", "Ledger", "Fraud checks"]},
             {"name": "Catalog and Search", "lead": "Priya Raman", "focus": "Product data and search. First team across the river.", "members": ["Priya Raman", "Tom Gallagher", "Ines Duarte", "Ben Adeyemi"], "owns": ["Catalog API", "Search index"]},
             {"name": "Fulfillment", "lead": "Tomás Novák", "focus": "Warehouse and carrier integration, returns. The fifth arch.", "members": ["Tomás Novák", "Grace Liu", "Mateo Silva", "Eva Kowalski"], "owns": ["Fulfillment", "Returns", "Carrier adapters"]}
           ]
@@ -321,16 +321,16 @@
       "kicker": "What comes next",
       "title": "The road ahead",
       "blocks": [
-        {"type": "prose", "text": "Two arches are left: payments, which needs only its keystone, and fulfillment, which is still pencil on paper. After them the monolith goes read-only, then dark."},
+        {"type": "prose", "text": "Two arches are left: payments, which needs only its final cutover, and fulfillment, which starts this month. After them the monolith goes read-only, then is switched off."},
         {
           "type": "plate",
           "art": "road",
           "caption": "Each flag is a milestone. Select one for its date and what it depends on.",
           "spots": [
-            {"anchor": "m1", "label": "Payments cutover", "title": "Payments cutover, {{migration.payments_cutover|date}}", "text": "The keystone. Ends the dual-run; the monolith stops taking payments."},
-            {"anchor": "m2", "label": "Peak freeze", "title": "Peak-season freeze, {{migration.freeze_start|date}} to {{migration.freeze_end|date}}", "text": "No production changes outside incident fixes."},
-            {"anchor": "m3", "label": "Fulfillment and returns", "title": "Fulfillment and returns, by {{migration.fulfillment_target|date}}", "text": "The fifth arch. At risk if scope keeps growing at the recent rate."},
-            {"anchor": "m4", "label": "Switch-off", "title": "Monolith switch-off, {{migration.decommission_target|month}}", "text": "Read-only in April, dark in June, before the licence renews."}
+            {"anchor": "m1", "label": "Payments cutover", "title": "Payments cutover, {{migration.payments_cutover|date}}", "text": "The keystone. Ends the dual-run; the monolith payment path stays on standby through {{migration.standby_end|date}}."},
+            {"anchor": "m2", "label": "Peak-season freeze", "title": "Peak-season freeze, {{migration.freeze_start|date}} to {{migration.freeze_end|date}}", "text": "No production changes outside incident fixes."},
+            {"anchor": "m3", "label": "Fulfillment and returns", "title": "Fulfillment and returns, target {{migration.fulfillment_target|date}}", "text": "The fifth arch. At the recent pace and scope growth it lands on {{plan.forecast_finish|date}}."},
+            {"anchor": "m4", "label": "Switch-off", "title": "Monolith switch-off, {{migration.decommission_target|month}}", "text": "Read-only once fulfillment lands, switched off before the license renews on {{migration.renewal_date|date}}."}
           ]
         },
         {
@@ -344,13 +344,13 @@
           "lanes": ["Payments", "Fulfillment", "Platform", "Switch-off"],
           "items": [
             {"lane": "Payments", "title": "Dual-run to cutover", "start": "2026-06-08", "end": "2026-11-03", "confidence": "committed", "when": "Jun to 3 Nov 2026", "text": "Ends with the payments cutover."},
-            {"lane": "Payments", "title": "Fallback window", "start": "2026-11-03", "end": "2026-12-31", "confidence": "committed", "when": "Nov to Dec 2026", "text": "The dual-run path stays warm through peak season."},
-            {"lane": "Platform", "title": "Peak freeze", "start": "2026-11-16", "end": "2026-12-02", "confidence": "committed", "when": "16 Nov to 2 Dec 2026", "text": "Incident fixes only."},
+            {"lane": "Payments", "title": "Standby", "start": "2026-11-03", "end": "2026-12-31", "confidence": "committed", "when": "Nov to Dec 2026", "text": "The monolith payment path stays on standby through peak season."},
+            {"lane": "Platform", "title": "Peak-season freeze", "start": "2026-11-16", "end": "2026-12-02", "confidence": "committed", "when": "16 Nov to 2 Dec 2026", "text": "Incident fixes only."},
             {"lane": "Fulfillment", "title": "Fulfillment service", "start": "2026-10-19", "end": "2027-03-31", "confidence": "likely", "when": "Oct 2026 to Mar 2027", "text": "Warehouse and carrier integration."},
             {"lane": "Fulfillment", "title": "Returns", "start": "2027-01-11", "end": "2027-03-31", "confidence": "likely", "when": "Jan to Mar 2027", "text": "Returns and refunds move with fulfillment."},
             {"lane": "Fulfillment", "title": "Same-day promise API", "start": "2027-04-01", "end": "2027-06-30", "confidence": "exploring", "when": "Q2 2027", "text": "An opportunity the event bus makes cheap: a delivery promise at checkout."},
-            {"lane": "Switch-off", "title": "Monolith read-only", "start": "2027-04-01", "end": "2027-05-31", "confidence": "likely", "when": "Apr to May 2027", "text": "Historic orders served read-only while data is archived."},
-            {"lane": "Switch-off", "title": "Switch-off", "start": "2027-06-01", "end": "2027-06-30", "confidence": "exploring", "when": "Jun 2027", "text": "Before the licence renewal on {{migration.renewal_date|date}}."}
+            {"lane": "Switch-off", "title": "Monolith read-only", "start": "2027-04-01", "end": "2027-05-31", "confidence": "likely", "when": "Apr to May 2027", "text": "Planned for April; starts once fulfillment lands. Historic orders are served read-only while data is archived."},
+            {"lane": "Switch-off", "title": "Switch-off", "start": "2027-06-01", "end": "2027-06-30", "confidence": "exploring", "when": "Jun 2027", "text": "Before the license renews on {{migration.renewal_date|date}}."}
           ]
         },
         {
@@ -368,9 +368,9 @@
             "done": "@plan.done",
             "scope": "@plan.scope"
           },
-          "text": "A straight-line projection from the last six sprints; it ignores holidays and the peak freeze, so treat the date as the earliest likely."
+          "text": "A straight-line projection from the last {{plan.window}}. It ignores holidays and the peak-season freeze, so treat the date as the earliest likely."
         },
-        {"type": "prose", "text": "**Three decisions for this review.** First, confirm the payments cutover on {{migration.payments_cutover|date}} with the fallback kept warm through December. Second, freeze fulfillment scope at its current epics; at the recent pace the last arch lands on {{plan.forecast_finish|date}}, {{plan.forecast_weeks_late}} after the March target. Third, approve the licence extension option, so a slip past June costs a quarter of a renewal instead of a full year."}
+        {"type": "prose", "text": "**Three decisions for this review.** First, confirm the payments cutover on {{migration.payments_cutover|date}}, with the monolith payment path on standby through {{migration.standby_end|date}}. Second, freeze fulfillment scope at its current epics: at the recent pace and scope growth the last arch lands on {{plan.forecast_finish|date}}, {{plan.forecast_weeks_late}} after the March target, and with scope frozen the same pace lands it on {{plan.forecast_finish_frozen|date}}. Third, negotiate a license extension option now, so a short slip past {{migration.decommission_target|month}} does not force a full {{migration.license_renewal}} renewal."}
       ]
     }
   ]

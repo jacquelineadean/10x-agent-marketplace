@@ -1150,8 +1150,8 @@
         var r = costFor(idx);
         var delta = r.total - planCost.total;
         var renewed = r.off > renewal;
-        tiles([[year + " run cost", compactMoney(r.total), ""], ["Against plan", (delta === 0 ? "On plan" : (delta > 0 ? "+" : "−") + compactMoney(Math.abs(delta)).replace(/^−/, "")), delta > 0 ? "bad" : (delta < 0 ? "good" : "")], ["Licence renewal", renewed ? compactMoney(Number(d.renewal)) : "Avoided", renewed ? "bad" : "good"], ["Saving once off", compactMoney(Number(d.now) - Number(d.after)) + "/mo", "good"]]);
-        sentence(["Switching the monolith off at the end of ", [fmtDate(r.off, "month")], " puts " + year + " run cost at ", [compactMoney(r.total)], delta === 0 ? ", the plan." : (delta > 0 ? ", " + compactMoney(delta) + " more than plan" : ", " + compactMoney(-delta) + " less than plan"), renewed ? ", including the " + compactMoney(Number(d.renewal)) + " licence renewal." : (delta === 0 ? "" : ".")]);
+        tiles([[year + " run cost", compactMoney(r.total), ""], ["Against plan", (delta === 0 ? "On plan" : (delta > 0 ? "+" : "−") + compactMoney(Math.abs(delta)).replace(/^−/, "")), delta > 0 ? "bad" : (delta < 0 ? "good" : "")], ["License renewal", renewed ? compactMoney(Number(d.renewal)) : "Avoided", renewed ? "bad" : "good"], ["Saving once off", compactMoney(Number(d.now) - Number(d.after)) + "/mo", "good"]]);
+        sentence(["Switching the monolith off at the end of ", [fmtDate(r.off, "month")], " puts " + year + " run cost at ", [compactMoney(r.total)], delta === 0 ? ", the plan." : (delta > 0 ? ", " + compactMoney(delta) + " more than plan" : ", " + compactMoney(-delta) + " less than plan"), renewed ? ", including the " + compactMoney(Number(d.renewal)) + " license renewal." : (delta === 0 ? "" : ".")]);
         drawSavings(r);
       };
       var drawSavings = function (r) {
@@ -1173,7 +1173,7 @@
           }
           txt(f.svg, x + bw / 2, f.height - 8, MONTHS[m.date.getUTCMonth()].slice(0, f.narrow ? 1 : 3), { "text-anchor": "middle", "class": "axis" }).style.fill = "var(--muted)";
         });
-        legend(mount, [{ name: "Both platforms running", color: "var(--legacy)" }, { name: "Keystone only", color: "var(--s1)" }, { name: "Licence renewal", color: "var(--bad)" }], "bar");
+        legend(mount, [{ name: "Both platforms running", color: "var(--legacy)" }, { name: "Keystone only", color: "var(--s1)" }, { name: "License renewal", color: "var(--bad)" }], "bar");
       };
       ms.input.addEventListener("input", updateS);
       updateS();

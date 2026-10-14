@@ -69,9 +69,9 @@ def test_scene_elements_paint_and_name_bad_input() -> None:
     assert painting.layers[0].name == "birds"
     with pytest.raises(SceneError, match="unknown motif 'castle'"):
         paint_elements({"size": [400, 240], "elements": [{"motif": "castle"}]}, scale=0.3)
-    with pytest.raises(SceneError, match="has no parameter colour"):
+    with pytest.raises(SceneError, match="has no parameter color"):
         paint_elements(
-            {"size": [400, 240], "elements": [{"motif": "sky", "horizon": 100, "colour": "red"}]},
+            {"size": [400, 240], "elements": [{"motif": "sky", "horizon": 100, "color": "red"}]},
             scale=0.3,
         )
 

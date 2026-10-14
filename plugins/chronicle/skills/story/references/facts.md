@@ -58,15 +58,16 @@ and optional `unit`, `source` and `note` copied onto the result.
 | --- | --- | --- |
 | `last` | `of` (series) | final value |
 | `total` | `of` (series) | sum |
+| `max`, `min` | `of` (series) | largest or smallest value |
 | `mean_last` | `of`, `n` (default 6) | mean of the last n values, whole units |
 | `growth_last` | `of` (cumulative series), `n` | average step over the last n steps |
 | `diff` | `of`, `minus` | of minus minus |
 | `ratio` | `of`, `to` | of divided by to; one decimal below 10 |
 | `share` | `of`, `to` | of as a whole percent of to |
 | `pct_change` | `from`, `to` | whole percent change |
-| `burnup_sprints` | `done`, `scope`, `dates`, `window`, `sprint_days` | sprints until done meets scope at the recent pace |
+| `burnup_sprints` | `done`, `scope`, `dates`, `window`, `sprint_days`, optional `growth` | sprints until done meets scope at the recent pace; `growth: 0` projects a frozen scope |
 | `burnup_finish` | same | ISO date of that crossing, matching the page's burnup chart |
-| `weeks_between` | `from`, `to` (dates) | whole weeks, negative when `to` is earlier |
+| `days_between`, `weeks_between` | `from`, `to` (dates) | days or whole weeks, negative when `to` is earlier |
 
 Need a calculation that is not listed? Compute it in a short script, store the result as a
 plain fact and put the method in its `note`.

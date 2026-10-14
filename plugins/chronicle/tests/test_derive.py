@@ -62,3 +62,12 @@ def test_keystone_forecast(facts: dict[str, Any]) -> None:
     plan = facts["plan"]
     assert plan["forecast_finish"]["value"] == "2027-04-25"
     assert plan["forecast_weeks_late"]["value"] == 4
+
+
+def test_frozen_scope_and_extremes() -> None:
+    args = {"done": "plan.done", "scope": "plan.scope", "dates": "plan.end", "window": 3}
+    # Frozen scope: 630 points at 100 a sprint still needs 7 sprints.
+    assert run({"fn": "burnup_sprints", "growth": 0, **args})["value"] == 7
+    assert run({"fn": "max", "of": "plan.scope"})["value"] == 1030
+    assert run({"fn": "min", "of": "plan.done"})["value"] == 100
+    assert run({"fn": "days_between", "from": "plan.end.0", "to": "plan.target"})["value"] == 109

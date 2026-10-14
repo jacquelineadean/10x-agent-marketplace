@@ -20,7 +20,7 @@ edit; it names each problem with its path, such as `chapters[2].blocks[1]`.
 | Key | Holds |
 | --- | --- |
 | `meta.title` | The page name: a short proper noun, also the browser title. Required. |
-| `meta.kicker` | One line above the title: organisation, subject, "Status on {{project.as_of\|date}}". |
+| `meta.kicker` | One line above the title: organization, subject, "Status on {{project.as_of\|date}}". |
 | `meta.dek` | Two or three sentences under the title that state the point of the page. |
 | `meta.byline` | List of short lines: who prepared it, for which forum, a demo notice if invented. |
 | `meta.description` | One sentence for the gallery card and the meta description. |
@@ -84,7 +84,7 @@ per page.
 ### stats
 `{"type": "stats", "title": "optional", "items": [{"label", "value", "delta", "trend", "spark"}]}`.
 A row of big numbers. `value` and `delta` are text with tokens; `trend` is `good`, `bad` or
-`neutral` (colours the delta); `spark` is a series reference drawn as a sparkline.
+`neutral` (colors the delta); `spark` is a series reference drawn as a sparkline.
 Two to four items.
 
 ### lesson
@@ -110,7 +110,7 @@ said or wrote; never invent a quote about real people.
 
 `x` values are `YYYY-MM`, `YYYY-MM-DD` or plain labels such as `"09:41"`; points are
 evenly spaced. `color` takes `accent` (the new thing), `legacy` (the old thing), `muted`,
-`good`, `bad` or `s1` to `s6`; series are coloured in order otherwise. Never put two
+`good`, `bad` or `s1` to `s6`; series are colored in order otherwise. Never put two
 measures with different units on one chart: use two charts or `slope`. Y formats:
 `int`, `dec1`, `pct`, `pct1`, `pct2`, `money`, `money_k` (values in thousands), `ms`,
 `compact`. Every chart gets hover readouts and a "Show the numbers" table.

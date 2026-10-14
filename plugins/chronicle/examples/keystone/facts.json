@@ -55,6 +55,12 @@
   "squads": {
    "value": 5,
    "source": "jira"
+  },
+  "foundations_months": {
+   "value": 4.5,
+   "unit": "months",
+   "source": "jira",
+   "note": "kickoff on 3 Mar 2025 to the first service on 21 Jul 2025"
   }
  },
  "migration": {
@@ -102,7 +108,7 @@
    "value": 85,
    "unit": "%",
    "source": "datadog",
-   "note": "payment authorisations on the new service, 7-day average"
+   "note": "payment authorizations on the new service, 7-day average"
   },
   "payments_cutover": {
    "value": "2026-11-03",
@@ -121,7 +127,7 @@
    "value": 1900000.0,
    "unit": "$",
    "source": "finance",
-   "note": "monolith licence and support, due 30 Jun 2027"
+   "note": "monolith license and support, due 30 Jun 2027"
   },
   "monolith_share": [
    97,
@@ -152,6 +158,28 @@
   "renewal_date": {
    "value": "2027-06-30",
    "source": "finance"
+  },
+  "cart_live": {
+   "value": "2025-10-06",
+   "source": "jira",
+   "note": "cart cutover change ticket"
+  },
+  "catalog_live": {
+   "value": "2025-07-21",
+   "source": "jira"
+  },
+  "checkout_live": {
+   "value": "2026-03-16",
+   "source": "jira"
+  },
+  "dual_run_start": {
+   "value": "2026-06-08",
+   "source": "jira"
+  },
+  "standby_end": {
+   "value": "2026-12-31",
+   "source": "jira",
+   "note": "monolith payment path kept on standby through peak season"
   }
  },
  "delivery": {
@@ -729,7 +757,7 @@
    1650,
    1600,
    1580,
-   610,
+   1120,
    520,
    480,
    455,
@@ -889,12 +917,6 @@
    "unit": "min",
    "source": "datadog",
    "note": "customer impact, 28 Nov 2025"
-  },
-  "incident_peak_err": {
-   "value": 31,
-   "unit": "%",
-   "source": "datadog",
-   "note": "cart API error rate, 09:58"
   },
   "incident_carts": {
    "value": 3900,
@@ -1077,6 +1099,36 @@
    "unit": "x",
    "source": "datadog",
    "note": "last Black Friday peak, load test of 22 Sep 2026"
+  },
+  "incident_multiple": {
+   "value": 8,
+   "unit": "x",
+   "source": "datadog",
+   "note": "events on the cart topic against a normal Friday morning"
+  },
+  "incident_date": {
+   "value": "2025-11-28",
+   "source": "datadog",
+   "note": "Black Friday 2025"
+  },
+  "reset_start": {
+   "value": "2025-12-01",
+   "source": "jira"
+  },
+  "reset_end": {
+   "value": "2026-02-28",
+   "source": "jira"
+  },
+  "reset_months": {
+   "value": 3,
+   "unit": "months",
+   "source": "jira",
+   "note": "reliability reset, Dec 2025 to Feb 2026"
+  },
+  "actions_closed": {
+   "value": "2026-01-30",
+   "source": "jira",
+   "note": "last postmortem action closed"
   }
  },
  "plan": {
@@ -1269,6 +1321,12 @@
   "sprints_done": {
    "value": 42,
    "source": "jira"
+  },
+  "window": {
+   "value": 6,
+   "unit": "sprints",
+   "source": "jira",
+   "note": "sprints averaged for pace and scope growth"
   }
  },
  "cost": {
@@ -1438,6 +1496,25 @@
    "source": "jira",
    "note": "projected finish against the fulfillment target"
   },
+  "plan.forecast_finish_frozen": {
+   "fn": "burnup_finish",
+   "done": "plan.done",
+   "scope": "plan.scope",
+   "dates": "plan.sprint_end",
+   "window": 6,
+   "sprint_days": 14,
+   "growth": 0,
+   "source": "jira",
+   "note": "same pace, no scope added"
+  },
+  "plan.forecast_weeks_early_frozen": {
+   "fn": "weeks_between",
+   "from": "plan.forecast_finish_frozen",
+   "to": "migration.fulfillment_target",
+   "unit": "weeks",
+   "source": "jira",
+   "note": "frozen-scope finish against the fulfillment target"
+  },
   "delivery.deploys_year": {
    "fn": "total",
    "of": "delivery.calendar",
@@ -1466,6 +1543,28 @@
    "unit": "pts",
    "source": "analytics",
    "note": "checkout conversion, September 2026 against February 2026"
+  },
+  "reliability.incident_peak_err": {
+   "fn": "max",
+   "of": "reliability.incident_err",
+   "unit": "%",
+   "source": "datadog",
+   "note": "cart API error rate, highest one-minute value"
+  },
+  "reliability.weeks_after_cart": {
+   "fn": "weeks_between",
+   "from": "migration.cart_live",
+   "to": "reliability.incident_date",
+   "unit": "weeks",
+   "source": "jira",
+   "note": "cart cutover to Black Friday"
+  },
+  "migration.cutover_to_freeze_days": {
+   "fn": "days_between",
+   "from": "migration.payments_cutover",
+   "to": "migration.freeze_start",
+   "unit": "days",
+   "source": "jira"
   }
  }
 }
