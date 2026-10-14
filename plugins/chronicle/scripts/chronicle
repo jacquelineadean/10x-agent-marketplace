@@ -1,0 +1,12 @@
+#!/bin/sh
+# Runs the chronicle command line from wherever the plugin is installed.
+# Painting needs NumPy and OpenCV; uv fetches them into its cache on first use, so the
+# user's own Python environment is never modified.
+here="$(cd "$(dirname "$0")/.." && pwd)"
+export PYTHONPATH="$here/src${PYTHONPATH:+:$PYTHONPATH}"
+if command -v uv >/dev/null 2>&1; then
+  exec uv run --quiet --no-project --python ">=3.11" \
+    --with "numpy>=2.0" --with "opencv-python-headless>=4.10" \
+    python -m chronicle "$@"
+fi
+exec python3 -m chronicle "$@"

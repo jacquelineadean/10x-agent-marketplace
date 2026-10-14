@@ -5,7 +5,7 @@
     "url": "https://github.com/jacquelineadean"
   },
   "metadata": {
-    "description": "Jacqueline Dean's Claude Code plugins: impact-review and future agent extensions.",
+    "description": "Jacqueline Dean's Claude Code plugins: agent extensions for engineering leadership work.",
     "version": "0.1.0"
   },
   "plugins": [
@@ -19,6 +19,17 @@
       },
       "category": "productivity",
       "keywords": ["github", "performance-review", "resume", "metrics"]
+    },
+    {
+      "name": "chronicle",
+      "source": "./plugins/chronicle",
+      "description": "Illustrated, interactive story pages (Artifacts) from a brief and facts gathered from connected tools.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jacqueline Dean"
+      },
+      "category": "productivity",
+      "keywords": ["artifact", "storytelling", "status report", "data visualization"]
     }
   ]
 }

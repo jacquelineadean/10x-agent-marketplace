@@ -7,10 +7,12 @@ dependencies = []
 [dependency-groups]
 dev = [
     "mypy>=2.4.0",
+    "numpy>=2.4.6",
+    "opencv-python-headless>=5.0.0.93",
     "pytest>=9.1.1",
     "ruff>=0.16.10",
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["plugins/impact-review/tests"]
-pythonpath = ["plugins/impact-review/src"]
+testpaths = ["plugins/impact-review/tests", "plugins/chronicle/tests"]
+pythonpath = ["plugins/impact-review/src", "plugins/chronicle/src"]

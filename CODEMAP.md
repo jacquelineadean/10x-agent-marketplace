@@ -50,4 +50,14 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 ## Notes
 
 - Import rules: `core` imports nothing outside itself; `connectors` and `entrypoints` import `core` and `config`; only `__main__.py` imports both `connectors` and `entrypoints`.
-- `groundwork.py` is not vendored in this repo; this map was updated by hand on 2026-10-11 and the facts hash is stale until the next `groundwork.py codemap` run.
+- `groundwork.py` is not vendored in this repo; this map was updated by hand on 2026-10-14 and the facts hash is stale until the next `groundwork.py codemap` run.
+- The facts above describe `plugins/impact-review` only. chronicle follows the same cli layout under `plugins/chronicle/src/chronicle/`:
+
+| Folder | Holds |
+| --- | --- |
+| `core/story/` | facts and tokens, derive table, story checks, HTML renderer and block renderers |
+| `core/watercolor/` | painting engine (paper, washes, ink), motifs, presets and the scene language |
+| `connectors/files/` | every file read and write: JSON, HTML, WebP, bundled assets |
+| `entrypoints/cli/` | the `chronicle` command: check, paint, build, motifs |
+| `assets/` | the page stylesheet and runtime script, embedded into each page |
+| `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |

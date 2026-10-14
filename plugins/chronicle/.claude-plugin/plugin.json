@@ -1,0 +1,11 @@
+{
+  "name": "chronicle",
+  "version": "0.1.0",
+  "description": "Turns a brief plus facts gathered from GitHub, Jira, Confluence, Datadog or pasted notes into an illustrated, interactive story page: watercolor plates painted in code, editorial charts, scrollytelling, and a source behind every number.",
+  "author": {
+    "name": "Jacqueline Dean",
+    "url": "https://github.com/jacquelineadean"
+  },
+  "repository": "https://github.com/jacquelineadean/10x-agent-marketplace",
+  "keywords": ["artifact", "storytelling", "data visualization", "status report", "watercolor"]
+}

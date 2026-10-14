@@ -8,6 +8,7 @@
 A Claude Code plugin marketplace that holds Jacqueline Dean's agent extensions: plugins, skills, agents and commands.
 Teammates add it once with `/plugin marketplace add` and install the plugins they want.
 The first plugin, **impact-review**, turns one person's GitHub activity over a date range into metrics and written material for performance reviews, resumes and job interviews.
+The second, **chronicle** (RFC-0002, draft), turns a brief plus facts from connected tools or pasted notes into an illustrated, interactive story page, such as a project's status, history and roadmap for a steering committee.
 
 ## Who it is for
 - Jacqueline Dean, who uses the plugins daily and runs impact-review against a corporate GitHub Enterprise account.
@@ -25,7 +26,7 @@ Success for impact-review, phase 1:
 - Every number in the written output traces back to a value in the collected GitHub data.
 
 ## Scope
-**In scope:** the marketplace scaffold; the impact-review plugin with GitHub data collection, computed metrics, a local dashboard and written synthesis.
+**In scope:** the marketplace scaffold; the impact-review plugin with GitHub data collection, computed metrics, a local dashboard and written synthesis; the chronicle plugin with story pages published as private Artifacts after the user confirms (pending RFC-0002).
 **Explicitly out of scope:** other data sources (Claude, Cursor, Datadog, ServiceNow, PagerDuty, Jira, Confluence) and cross-source correlation, planned for phase 2; any hosted dashboard or server; storing or sending collected corporate data anywhere outside the user's machine.
 
 ## Who works on what
@@ -50,3 +51,9 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Digest:** the compact Markdown summary the collector writes for Claude to read.
 - **Synthesis:** the written outputs Claude produces from the digest: self-evaluation draft, resume bullets, interview stories.
 - **Run folder:** the local, never-committed folder holding one run's data and outputs.
+- **Story:** chronicle's `story.json`: the chapters and blocks of one page, with numbers only as fact tokens.
+- **Facts file:** chronicle's `facts.json`: every number and date on a page, each with its source and a note.
+- **Derive table:** the part of a facts file that names numbers computed by code from other facts.
+- **Plate:** a watercolor painting on a story page; it can carry moving layers and hotspots.
+- **Preset:** a named, composed painting such as `bridge-hero`; **motif:** a paintable element such as `sky` or `arch_bridge`.
+- **Artifact:** a web page hosted privately on claude.ai, where a story page is published.
