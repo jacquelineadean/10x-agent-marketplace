@@ -1,0 +1,39 @@
+{
+ "data": {
+  "viewer": {
+   "contributionsCollection": {
+    "issueContributions": {
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": null
+     },
+     "nodes": [
+      {
+       "issue": {
+        "number": 140,
+        "title": "Flaky test in CI",
+        "url": "https://github.com/acme/api/issues/140",
+        "state": "OPEN",
+        "createdAt": "2026-06-01T10:00:00Z",
+        "closedAt": null,
+        "repository": {
+         "nameWithOwner": "acme/api",
+         "owner": {
+          "login": "acme"
+         }
+        },
+        "labels": {
+         "nodes": [
+          {
+           "name": "ci"
+          }
+         ]
+        }
+       }
+      }
+     ]
+    }
+   }
+  }
+ }
+}
