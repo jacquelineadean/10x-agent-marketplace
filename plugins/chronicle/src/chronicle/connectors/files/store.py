@@ -29,6 +29,14 @@ def read_json(path: Path) -> Any:
         raise StoreError(f"{path}:{exc.lineno}:{exc.colno}: invalid JSON, {exc.msg}") from exc
 
 
+def read_text(path: Path) -> str:
+    """Read a UTF-8 text file such as an SVG drawing or a widget script."""
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise StoreError(f"cannot read {path}: {exc.strerror}") from exc
+
+
 def write_json(path: Path, data: Any) -> None:
     write_text(path, json.dumps(data, indent=1, ensure_ascii=False) + "\n")
 
@@ -42,8 +50,15 @@ def write_text(path: Path, text: str) -> None:
 
 
 def asset(name: str) -> str:
-    """Read a bundled runtime file (stylesheet or script)."""
+    """Read a bundled runtime file (stylesheet, script or data)."""
     return resources.files("chronicle.assets").joinpath(name).read_text(encoding="utf-8")
+
+
+def asset_parts(folder: str, suffix: str) -> str:
+    """Join every bundled file in `folder` ending in `suffix`, in name order."""
+    base = resources.files("chronicle.assets").joinpath(folder)
+    names = sorted(entry.name for entry in base.iterdir() if entry.name.endswith(suffix))
+    return "\n".join(base.joinpath(name).read_text(encoding="utf-8") for name in names)
 
 
 def write_webp(path: Path, image: npt.NDArray[np.uint8], quality: int = 82) -> int:

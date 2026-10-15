@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cfd8d2"/>
+      <stop offset="1" stop-color="#ece4d2"/>
+    </linearGradient>
+    <linearGradient id="table" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d4a46b"/>
+      <stop offset="1" stop-color="#b9864f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- wall: a loose wet wash that fades out at the top -->
+  <path d="M-20 80 C300 40 900 70 1620 30 L1620 610 L-20 625 Z" fill="url(#wall)" fill-opacity="0.75" data-paint="wet" data-shade="0" stroke="none"/>
+
+  <!-- wall calendar: the peak-season freeze circled -->
+  <g transform="rotate(-2 270 250)">
+    <path d="M268 112 L272 96" stroke="#2b231d" stroke-width="2" fill="none"/>
+    <circle cx="270" cy="96" r="5" fill="#d6512f" stroke="#2b231d" stroke-width="1.6"/>
+    <rect x="160" y="112" width="220" height="250" fill="#fbf6ea" stroke="#2b231d" stroke-width="2.2" data-shade="0.15"/>
+    <rect x="160" y="112" width="220" height="44" fill="#b5652b" stroke="#2b231d" stroke-width="2.2"/>
+    <g stroke="#8d857b" stroke-width="1.1" fill="none" data-line="pencil">
+      <path d="M160 196 L380 196 M160 236 L380 236 M160 276 L380 276 M160 316 L380 316"/>
+      <path d="M191 156 L191 362 M222 156 L222 362 M254 156 L254 362 M285 156 L285 362 M317 156 L317 362 M348 156 L348 362"/>
+    </g>
+    <path d="M232 256 C220 230 268 228 300 240 C340 252 372 248 368 266 C364 288 300 292 258 290 C226 288 218 272 232 256" fill="none" stroke="#c23a2c" stroke-width="3"/>
+    <text x="270" y="145" font-size="24" text-anchor="middle" data-label="label" fill="#fbf6ea">November</text>
+    <text x="300" y="330" font-size="22" data-label="hand" fill="#a83125" text-anchor="middle">freeze</text>
+  </g>
+
+  <!-- back shelf with spare parcels -->
+  <g stroke="#2b231d" stroke-width="2.2">
+    <path d="M1010 262 L1620 254 L1620 280 L1010 288 Z" fill="#b98d5f" data-shade="0.4"/>
+    <path d="M1080 288 L1100 288 L1100 330 L1080 316 Z M1520 281 L1540 281 L1540 324 L1520 310 Z" fill="#8f6640"/>
+    <path d="M1060 262 L1060 170 L1190 170 L1190 262 Z" fill="#c99a68" data-shade="0.5"/>
+    <path d="M1060 170 L1100 150 L1228 150 L1190 170 Z" fill="#dcb07c"/>
+    <path d="M1190 170 L1228 150 L1228 244 L1190 262 Z" fill="#a8774a"/>
+    <path d="M1205 262 L1205 204 L1300 204 L1300 262 Z" fill="#d2a777" data-shade="0.5"/>
+    <path d="M1205 204 L1232 190 L1326 190 L1300 204 Z" fill="#e2bd8e"/>
+    <path d="M1300 204 L1326 190 L1326 250 L1300 262 Z" fill="#b08052"/>
+    <path d="M1372 262 L1372 214 L1394 214 L1394 262 Z M1400 262 L1400 222 L1420 222 L1420 262 Z" fill="#6f8f3c" data-shade="0.4"/>
+    <path d="M1430 262 L1436 196 L1462 196 L1468 262 Z" fill="#8f86b8" data-shade="0.4"/>
+  </g>
+  <path d="M1128 214 L1170 214 M1240 232 L1270 232" stroke="#2b231d" stroke-width="1.4" fill="none"/>
+
+  <!-- the table -->
+  <path d="M-20 612 L1620 596 L1620 920 L-20 920 Z" fill="url(#table)" stroke="#2b231d" stroke-width="2.4" data-shade="0.3"/>
+  <g fill="none" stroke="#6c4a34" stroke-width="1.3" data-line="pencil">
+    <path d="M-20 700 C400 694 900 690 1620 680"/>
+    <path d="M-20 806 C500 800 1100 794 1620 790"/>
+  </g>
+
+  <!-- cast shadows -->
+  <path d="M440 776 L930 790 L1110 724 L1080 700 L900 760 L460 752 Z" fill="#5d3f2b" fill-opacity="0.42" data-paint="glaze" data-wet="0.7" stroke="none"/>
+  <path d="M1170 790 L1440 800 L1520 760 L1300 744 Z" fill="#5d3f2b" fill-opacity="0.38" data-paint="glaze" data-wet="0.7" stroke="none"/>
+
+  <!-- box: back flap, opening, contents -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <path d="M612 372 L1042 372 L1066 236 L634 246 Z" fill="#c99a68" data-shade="0.55"/>
+    <path d="M472 432 L902 432 L1042 372 L612 372 Z" fill="#6a452b" data-shade="0.3"/>
+  </g>
+  <!-- the Fernhill catalog, standing in the box -->
+  <g stroke="#2b231d" stroke-width="2.2">
+    <path d="M604 432 L622 300 L722 308 L712 432 Z" fill="#e9dfc6" data-shade="0.4"/>
+    <path d="M622 300 L722 308 L719 328 L619 320 Z" fill="#3e6b45"/>
+    <path d="M644 352 C654 338 676 338 680 354 C672 352 666 362 658 370 Z" fill="#3e6b45" stroke-width="1.6"/>
+  </g>
+  <text x="612" y="404" font-size="16" data-label="label" fill="#2b231d" transform="rotate(5 612 404)">Catalog</text>
+  <!-- camp lantern standing in the box -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <path d="M736 236 C736 168 852 168 852 236" fill="none" stroke-width="3"/>
+    <path d="M728 268 L860 268 L846 236 L742 236 Z" fill="#2f5e45" data-shade="0.5"/>
+    <path d="M752 268 L836 268 C846 300 846 360 836 392 L752 392 C742 360 742 300 752 268 Z" fill="#f4e4a6" data-shade="0.45"/>
+    <path d="M786 322 C778 340 784 360 794 362 C806 360 810 340 798 322 C796 336 790 336 786 322 Z" fill="#e3803a" stroke-width="1.6"/>
+    <path d="M736 392 L852 392 L860 432 L728 432 Z" fill="#2f5e45" data-shade="0.5"/>
+    <path d="M752 268 L752 392 M836 268 L836 392 M794 268 L794 300" fill="none" stroke-width="2"/>
+  </g>
+  <path d="M768 290 C762 320 762 350 768 372" fill="none" stroke="#ffffff" stroke-width="7" data-line="lift"/>
+  <!-- rolled sleeping pad -->
+  <g stroke="#2b231d" stroke-width="2.4">
+    <path d="M880 318 L1004 286 C1030 280 1046 316 1034 344 L924 388 Z" fill="#5f8a2e" data-shade="0.55"/>
+    <ellipse cx="900" cy="354" rx="21" ry="36" transform="rotate(-18 900 354)" fill="#8db35c"/>
+    <path d="M893 340 C905 336 912 350 904 360 C896 366 888 356 896 350" fill="none" stroke-width="1.6"/>
+    <path d="M944 302 L972 372 M972 295 L1000 362" stroke="#3b5a1d" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- box: side and front faces, flaps -->
+  <g stroke="#2b231d" stroke-width="2.8">
+    <path d="M902 432 L1042 372 L1042 712 L902 772 Z" fill="#a8774a" data-shade="0.55"/>
+    <path d="M472 432 L902 432 L902 772 L472 772 Z" fill="#c99a68" data-shade="0.5"/>
+    <path d="M472 432 L612 372 L520 300 L372 362 Z" fill="#b98957" data-shade="0.4"/>
+    <path d="M902 432 L1042 372 L1158 424 L1020 492 Z" fill="#d6ab7a" data-shade="0.3"/>
+    <path d="M472 432 L902 432 L908 508 L466 508 Z" fill="#d2a575" data-shade="0.35"/>
+  </g>
+  <!-- packing tape over the seam -->
+  <path d="M652 432 L722 432 L724 508 L650 508 Z" fill="#e2b54a" fill-opacity="0.55" data-paint="glaze" stroke="#9b7432" stroke-width="1"/>
+  <path d="M650 508 L724 508 L726 600 L652 604 Z" fill="#e2b54a" fill-opacity="0.5" data-paint="glaze" stroke="#9b7432" stroke-width="1"/>
+  <!-- shipping label -->
+  <g transform="rotate(-1.5 640 680)">
+    <rect x="520" y="604" width="250" height="140" rx="4" fill="#fbf6ea" stroke="#2b231d" stroke-width="2" data-shade="0.12"/>
+    <path d="M540 628 C552 612 576 612 582 630 C572 628 566 640 556 648 Z" fill="#3e6b45" stroke="#1f3a24" stroke-width="1.6"/>
+    <path d="M556 648 C560 636 568 628 580 626" fill="none" stroke="#1f3a24" stroke-width="1.4"/>
+    <path d="M540 706 L540 730 M546 706 L546 730 M550 706 L550 730 M558 706 L558 730 M563 706 L563 730 M571 706 L571 730 M574 706 L574 730 M583 706 L583 730 M590 706 L590 730 M594 706 L594 730 M602 706 L602 730 M609 706 L609 730 M613 706 L613 730 M621 706 L621 730 M627 706 L627 730 M636 706 L636 730 M640 706 L640 730" stroke="#2b231d" stroke-width="2.6" fill="none" data-jitter="0.2"/>
+    <path d="M700 700 L714 680 L740 680 L754 700 Z" fill="#2f6b4f" stroke="#1d3d2e" stroke-width="1.5"/>
+    <text x="592" y="640" font-size="25" data-label="label" fill="#2b231d">Fernhill</text>
+    <text x="540" y="690" font-size="17" data-label="mono" fill="#4a4038">SHIP TO: THE PORCH</text>
+    <text x="727" y="726" font-size="13" text-anchor="middle" data-label="label" fill="#2f6b4f">Keystone</text>
+  </g>
+
+  <!-- small box with the clipboard leaning on it -->
+  <g stroke="#2b231d" stroke-width="2.4">
+    <path d="M1150 600 L1370 600 L1370 790 L1150 790 Z" fill="#c99a68" data-shade="0.5"/>
+    <path d="M1150 600 L1212 570 L1430 570 L1370 600 Z" fill="#dcb07c"/>
+    <path d="M1370 600 L1430 570 L1430 754 L1370 790 Z" fill="#a8774a" data-shade="0.4"/>
+  </g>
+  <g transform="rotate(-7 1300 560)">
+    <rect x="1168" y="300" width="292" height="430" rx="12" fill="#9b6a3e" stroke="#2b231d" stroke-width="2.6" data-shade="0.55"/>
+    <rect x="1190" y="338" width="248" height="374" fill="#fdfaf2" stroke="#2b231d" stroke-width="1.8" data-shade="0.08"/>
+    <rect x="1262" y="288" width="104" height="40" rx="8" fill="#a3aaae" stroke="#2b231d" stroke-width="2.2" data-shade="0.5"/>
+    <path d="M1210 384 L1418 384" stroke="#8d857b" stroke-width="1.2" fill="none" data-line="pencil"/>
+    <g fill="#fdfaf2" stroke="#2b231d" stroke-width="2">
+      <rect x="1212" y="408" width="26" height="26"/>
+      <rect x="1212" y="468" width="26" height="26"/>
+      <rect x="1212" y="528" width="26" height="26"/>
+      <rect x="1212" y="588" width="26" height="26"/>
+      <rect x="1212" y="648" width="26" height="26"/>
+    </g>
+    <g fill="none" stroke="#2f6b4f" stroke-width="4.6">
+      <path d="M1214 420 L1225 432 L1248 398"/>
+      <path d="M1214 480 L1225 492 L1248 458"/>
+      <path d="M1214 540 L1225 552 L1248 518"/>
+    </g>
+    <path d="M1213 613 L1237 589 L1237 613 Z" fill="#b5652b" stroke="none"/>
+    <text x="1210" y="370" font-size="22" data-label="label" fill="#4a4038">Packing slip</text>
+    <text x="1252" y="430" font-size="31" fill="#2b231d">Catalog</text>
+    <text x="1252" y="490" font-size="31" fill="#2b231d">Cart</text>
+    <text x="1252" y="550" font-size="31" fill="#2b231d">Checkout</text>
+    <text x="1252" y="608" font-size="31" fill="#2b231d">Payments</text>
+    <text x="1384" y="607" font-size="24" fill="#9a4f1f">{{migration.payments_dual_run|int}}</text>
+    <text x="1252" y="670" font-size="31" fill="#6b6a68">Fulfillment</text>
+  </g>
+  <!-- pencil on the slip -->
+  <g transform="translate(-90 70) rotate(-24 1350 740)">
+    <rect x="1250" y="732" width="170" height="14" fill="#e6b23c" stroke="#2b231d" stroke-width="1.8"/>
+    <path d="M1420 732 L1446 739 L1420 746 Z" fill="#f1dcb5" stroke="#2b231d" stroke-width="1.6"/>
+    <rect x="1236" y="732" width="14" height="14" fill="#cf5f7a" stroke="#2b231d" stroke-width="1.6"/>
+  </g>
+
+  <!-- coffee mug -->
+  <g transform="translate(-60 40)" stroke="#2b231d" stroke-width="2.4">
+    <path d="M1460 742 C1508 726 1530 772 1488 796" fill="none" stroke-width="9" stroke="#2f6b4f"/>
+    <path d="M1460 742 C1508 726 1530 772 1488 796" fill="none" stroke-width="2"/>
+    <path d="M1380 700 L1470 700 L1464 812 C1450 826 1398 826 1386 812 Z" fill="#2f6b4f" data-shade="0.55"/>
+    <ellipse cx="1425" cy="700" rx="45" ry="11" fill="#4a3426"/>
+    <path d="M1414 744 C1420 734 1434 734 1438 746 C1430 744 1426 752 1420 758 Z" fill="#e9e1cf" stroke="none"/>
+  </g>
+  <g data-layer="steam" data-motion="drift" data-travel="6" transform="translate(-60 40)" fill="none" stroke="#9a9187" stroke-width="2.2" data-line="pencil">
+    <path d="M1410 684 C1396 660 1424 646 1410 620 C1400 602 1414 588 1408 572"/>
+    <path d="M1438 682 C1452 656 1426 640 1442 614"/>
+  </g>
+
+  <!-- tape gun: a roll of tape on a pistol grip, with a toothed blade -->
+  <g transform="translate(110 640) rotate(-8)" stroke="#2b231d" stroke-width="2.4">
+    <path d="M60 128 L96 128 L120 236 C122 248 112 254 100 252 L82 250 C72 248 68 240 66 230 Z" fill="#c23a2c" data-shade="0.5"/>
+    <path d="M20 120 L236 120 L250 96 L236 82 L70 82 Z" fill="#8b9593" data-shade="0.5"/>
+    <circle cx="96" cy="70" r="64" fill="#d9b26a" data-shade="0.5"/>
+    <circle cx="96" cy="70" r="36" fill="#efe2c4"/>
+    <circle cx="96" cy="70" r="10" fill="#8b9593"/>
+    <path d="M150 104 C190 110 220 112 248 106" fill="none" stroke="#c49a5a" stroke-width="6"/>
+    <path d="M236 82 L242 88 L238 92 L244 98 L240 102 L246 108" fill="none" stroke-width="2"/>
+  </g>
+  <path d="M84 640 C80 650 82 662 90 668" fill="none" stroke="#ffffff" stroke-width="6" data-line="lift"/>
+</svg>

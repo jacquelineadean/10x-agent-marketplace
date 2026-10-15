@@ -15,9 +15,23 @@ if TYPE_CHECKING:
 Block = Mapping[str, Any]
 
 
-def render_block(b: Builder, block: Block) -> str:
-    """Dispatch one block to its renderer; model.check has already validated the type."""
-    return RENDERERS[str(block["type"])](b, block)
+ROLES = ("accent", "legacy", "muted", "good", "bad", "warn", "ink")
+
+
+def css_color(name: Any, index: int) -> str:
+    """A story color name as CSS: a role, s1 to s6 or a theme color; else a series color.
+
+    The default skips s1 and s2, which belong to the new and the old system, so group
+    colors (squads, teams) never read as status.
+    """
+    value = str(name or "")
+    if value in ROLES:
+        return f"var(--{value})"
+    if len(value) == 2 and value[0] == "s" and value[1] in "123456":
+        return f"var(--{value})"
+    if value.replace("-", "").isalnum() and value[:1].isalpha():
+        return f"var(--c-{value.removeprefix('c-')})"
+    return f"var(--s{(index + 2) % 6 + 1})"
 
 
 def mount(b: Builder, label: Any = "") -> str:
@@ -32,6 +46,8 @@ def prose(b: Builder, block: Block) -> str:
 
 
 def stats(b: Builder, block: Block) -> str:
+    """Big numbers: ruled columns, cards, or a printed receipt or ticket stub."""
+    style = str(block.get("style") or b.theme.stats)
     items = ""
     sparks: dict[str, Any] = {}
     for k, item in enumerate(block["items"]):
@@ -56,8 +72,19 @@ def stats(b: Builder, block: Block) -> str:
         )
     fid = b.register({"type": "stats", "sparks": sparks})
     title = tag("h3", b.inline(block["title"]), class_="stats-title") if block.get("title") else ""
+    sub = tag("p", b.inline(block["subtitle"]), class_="stats-sub") if block.get("subtitle") else ""
+    if style in ("receipt", "ticket"):
+        paper = tag(
+            "div",
+            title + sub + tag("div", items, class_="stats") + tag("p", class_="rc-code"),
+            class_="rc-paper",
+        )
+        return tag("div", paper, class_=f"stats-wrap stats-{style}", data_fig=fid)
     return tag(
-        "div", title + tag("div", items, class_="stats"), class_="stats-wrap wide", data_fig=fid
+        "div",
+        title + sub + tag("div", items, class_="stats"),
+        class_=f"stats-wrap wide stats-{style}",
+        data_fig=fid,
     )
 
 
@@ -297,7 +324,7 @@ def team(b: Builder, block: Block) -> str:
             + tag("ul", owns, class_="owns", aria_label="Owns"),
             class_="squad",
             data_i=k,
-            style=f"--squad:var(--s{k % 6 + 1})",
+            style=f"--squad:{css_color(squad.get('color'), k)}",
         )
     return tag(
         "figure",

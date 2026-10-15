@@ -1,7 +1,7 @@
 {
   "name": "chronicle",
-  "version": "0.1.0",
-  "description": "Turns a brief plus facts gathered from GitHub, Jira, Confluence, Datadog or pasted notes into an illustrated, interactive story page: watercolor plates painted in code, editorial charts, scrollytelling, and a source behind every number.",
+  "version": "0.2.0",
+  "description": "Turns a brief plus facts gathered from GitHub, Jira, Confluence, Datadog or pasted notes into an illustrated, interactive story page designed for its subject: a theme and progress bar from the subject's world, ink-and-watercolor drawings painted in code, editorial charts, maps, flows, diagrams, quizzes, and a source behind every number.",
   "author": {
     "name": "Jacqueline Dean",
     "url": "https://github.com/jacquelineadean"

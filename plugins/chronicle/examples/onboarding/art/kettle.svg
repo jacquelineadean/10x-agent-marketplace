@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- a gooseneck kettle: pour slowly, in circles -->
+  <g stroke="#2b231d" stroke-width="2.8">
+    <path d="M190 470 L410 470 L400 300 C396 270 204 270 200 300 Z" fill="#a7b0ae" data-shade="0.55"/>
+    <path d="M220 280 C220 240 380 240 380 280 Z" fill="#8b9593"/>
+    <path d="M300 236 L300 216" fill="none" stroke-width="10" stroke="#2b231d"/>
+    <path d="M396 320 C470 300 450 220 500 196 L510 210 C470 236 486 330 404 360" fill="#a7b0ae" data-shade="0.4"/>
+    <path d="M200 330 C150 330 140 420 196 430" fill="none" stroke-width="10" stroke="#2b231d"/>
+  </g>
+  <path d="M236 320 C232 360 232 400 238 440" fill="none" stroke="#ffffff" stroke-width="7" data-line="lift"/>
+  <path d="M508 214 C520 260 512 320 520 380" fill="none" stroke="#4c93c4" stroke-width="3" data-line="ink"/>
+</svg>

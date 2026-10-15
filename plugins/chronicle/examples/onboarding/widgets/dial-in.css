@@ -1,0 +1,14 @@
+.w-dial-in .widget-root { max-width: 40rem; padding: 1rem 1.1rem 1.1rem; background: var(--surface); border-radius: 10px; }
+.w-dial-in .dial-row { display: grid; grid-template-columns: auto 1fr; gap: .9rem; align-items: center; }
+.w-dial-in .dial-label { font: 600 .9rem/1 var(--f-ui); color: var(--ink); }
+.w-dial-in .dial-range { width: 100%; accent-color: var(--accent); }
+.w-dial-in .dial-ends { display: flex; justify-content: space-between; margin: .2rem 0 .4rem 3.6rem; font: 500 .74rem/1 var(--f-ui); color: var(--muted); }
+.w-dial-in .dial-chart { display: block; width: 100%; height: auto; overflow: visible; }
+.w-dial-in .dial-track { fill: var(--rule-2); }
+.w-dial-in .dial-band { fill: var(--accent-wash); stroke: var(--accent); stroke-width: 1.5; }
+.w-dial-in .dial-tick { font: 600 12px var(--f-ui); fill: var(--accent-text); }
+.w-dial-in .dial-marker line { stroke: var(--ink); }
+.w-dial-in .dial-marker circle { fill: var(--c-copper); stroke: var(--paper); }
+.w-dial-in .dial-marker.good circle { fill: var(--accent); }
+.w-dial-in .dial-value { font: 700 13px var(--f-mono); fill: var(--ink); }
+.w-dial-in .dial-out { margin: .6rem 0 0; font: 400 1.02rem/1.5 var(--f-body); color: var(--ink-2); min-height: 3em; }

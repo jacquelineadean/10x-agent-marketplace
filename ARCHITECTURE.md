@@ -30,8 +30,8 @@ a Python **collector** does every API call and every calculation, and Claude rea
          self-evaluation.md, resume-bullets.md, interview-stories.md
 ```
 
-The second plugin, chronicle (RFC-0002, draft), builds illustrated story pages the same way:
-code computes and paints, Claude writes.
+The second plugin, chronicle (RFC-0002 and RFC-0003, drafts), builds illustrated story pages the same way:
+code computes and paints, Claude writes and draws.
 
 ```
  user ──/chronicle:story──▶ Claude Code (skill)
@@ -39,7 +39,8 @@ code computes and paints, Claude writes.
                               ▼
             run folder chronicle-runs/<slug>/ (local, never committed)
               facts.json   every number: value, unit, source, note; derive table
-              story.json   chapters and blocks written by Claude; numbers as {{tokens}}
+              story.json   theme, chapters and blocks written by Claude; numbers as {{tokens}}
+              art/*.svg    drawings by Claude; diagrams/*.svg, widgets/*.js optional
                               │ 2. scripts/chronicle build
                               ▼
               derive (code computes) → check → paint (OpenCV) → render (stdlib)
@@ -57,7 +58,7 @@ code computes and paints, Claude writes.
 | impact-review collector `plugins/impact-review/src/impact_review/` | Calls GitHub, caches responses, computes metrics, renders dashboard and digest | Python 3.11+, standard library only at runtime | Jacqueline Dean |
 
 | chronicle plugin shell `plugins/chronicle/` (`.claude-plugin/plugin.json`, `skills/story/`, `agents/chronicle-gatherer.md`, `scripts/chronicle`) | The story workflow: brief, gather, write, build, publish | Markdown, POSIX sh | Jacqueline Dean |
-| chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story checks, HTML renderer, page runtime (CSS and JS), watercolor engine | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting | Jacqueline Dean |
+| chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story and widget checks, themes, diagram sanitizer, HTML renderer, page runtime (CSS and JS), SVG reader and watercolor painter | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting | Jacqueline Dean |
 
 The collector follows the standard `cli` layout (see CODEMAP.md):
 `core/` holds metric rules with no I/O, `connectors/github/` holds every GitHub call,
@@ -75,14 +76,14 @@ The collector follows the standard `cli` layout (see CODEMAP.md):
 chronicle uses the same layout under `plugins/chronicle/src/chronicle/`: `core/story/` and
 `core/watercolor/` hold the rules and the painting (no I/O), `connectors/files/` does every
 file read and write, `entrypoints/cli/` parses arguments, and `assets/` holds the page's
-stylesheet and script.
+stylesheet and script parts and the font list.
 
 ## Tech stack and tools
 - Python 3.11+; runtime uses the standard library only (`urllib`, `json`), so installs need no package downloads.
 - `uv` manages the dev environment: `ruff` (format and lint), `mypy` strict, `pytest`.
 - GitHub GraphQL API v4 (contribution collection, search) and REST API v3 (repository contributor statistics).
 - Claude Code plugin system: marketplace, plugins, skills, agents.
-- chronicle: NumPy and OpenCV (painting only, fetched by `uv run --with`), vanilla JavaScript and SVG in the page, Google Fonts (Instrument Serif, Source Serif 4, Libre Franklin).
+- chronicle: NumPy and OpenCV (painting only, fetched by `uv run --with`), vanilla JavaScript and SVG in the page, Google Fonts chosen per page by the theme from `assets/fonts.json`.
 
 ## Deployment and environments
 - No hosted environment; plugins run on each user's machine.

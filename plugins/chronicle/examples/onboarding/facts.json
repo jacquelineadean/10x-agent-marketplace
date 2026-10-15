@@ -1,0 +1,116 @@
+{
+ "company": {
+  "name": "Saltmarsh Coffee Roasters",
+  "founded": {
+   "value": 2014,
+   "source": "handbook",
+   "note": "first roast in a rented garage"
+  },
+  "cafes": {
+   "value": 6,
+   "unit": "cafes",
+   "source": "handbook"
+  },
+  "staff": {
+   "value": 48,
+   "unit": "people",
+   "source": "people",
+   "note": "roasters, baristas, bakers and office, October 2026"
+  },
+  "origins": {
+   "value": 8,
+   "unit": "origins",
+   "source": "sourcing",
+   "note": "countries we buy green coffee from this year"
+  },
+  "batches_week": {
+   "value": 22,
+   "unit": "batches",
+   "source": "roastery",
+   "note": "roast batches in an average week, 2026"
+  },
+  "batch_kg": {
+   "value": 15,
+   "unit": "kg",
+   "source": "roastery",
+   "note": "green coffee per batch in the 15-kilo drum"
+  },
+  "as_of_year": {
+   "value": 2026,
+   "source": "handbook"
+  }
+ },
+ "brew": {
+  "dose": {
+   "value": 18,
+   "unit": "g",
+   "source": "handbook",
+   "note": "ground coffee in a double basket"
+  },
+  "yield": {
+   "value": 36,
+   "unit": "g",
+   "source": "handbook",
+   "note": "espresso in the cup"
+  },
+  "time_low": {
+   "value": 25,
+   "unit": "s",
+   "source": "handbook",
+   "note": "shortest good shot time"
+  },
+  "time_high": {
+   "value": 30,
+   "unit": "s",
+   "source": "handbook",
+   "note": "longest good shot time"
+  },
+  "rest_days": {
+   "value": 5,
+   "unit": "days",
+   "source": "roastery",
+   "note": "minimum rest after roasting before espresso"
+  },
+  "cupping_bar": {
+   "value": 84,
+   "unit": "points",
+   "source": "sourcing",
+   "note": "lowest cupping score we buy"
+  }
+ },
+ "origins": {
+  "kg_2026": {
+   "ET": 9200,
+   "KE": 6400,
+   "RW": 3100,
+   "CO": 11800,
+   "GT": 5200,
+   "BR": 14500,
+   "PE": 4300,
+   "ID": 2600
+  },
+  "total_kg": {
+   "value": 57100,
+   "unit": "kg",
+   "source": "sourcing",
+   "note": "green coffee bought for 2026, all origins"
+  }
+ },
+ "derive": {
+  "brew.ratio": {
+   "fn": "ratio",
+   "of": "brew.yield",
+   "to": "brew.dose",
+   "unit": "x",
+   "source": "handbook",
+   "note": "espresso out over coffee in"
+  },
+  "company.years": {
+   "fn": "diff",
+   "of": "company.as_of_year",
+   "minus": "company.founded",
+   "unit": "years",
+   "source": "handbook"
+  }
+ }
+}

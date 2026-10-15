@@ -19,6 +19,47 @@ The Keystone example follows this plan.
 | Team | Who did it and how they are organized | prose, team |
 | Roadmap | What is next and what is needed | plate with spots, roadmap, forecast model, prose with the decisions asked |
 
+Tailor it: the Keystone example tells a migration as an order's path (a packing slip for
+the hero, a cabinet for the monolith, a jammed conveyor for the incident, a route map for
+the roadmap) and adds a `flow` for the order journey and a `tilemap` for the rollout.
+
+## Product or feature launch
+
+| Chapter | Job | Blocks |
+| --- | --- | --- |
+| Hero | The product on launch day, and the numbers that matter | plate of the product in use, stats |
+| The problem | What users struggled with before | prose, compare (before and after), quote |
+| What shipped | The feature, shown working | diagram with steps, flow of the user's path, plate |
+| Adoption | Who took it up, where and how fast | line or area chart, tilemap by region, calendar |
+| What users did | Behavior and feedback | multiples or bars, quotes the user supplied |
+| What is next | Follow-ups and open questions | roadmap, prose |
+
+## Onboarding, handbook or training
+
+| Chapter | Job | Blocks |
+| --- | --- | --- |
+| Hero | Welcome: the place, the people, the first day | plate of the workplace, stats (team size, sites, products) |
+| How we work | The few rules and rituals that matter | prose, lesson, diagram of how work flows |
+| The product or craft | What the company makes and how | flow, plates with spots on the tools of the trade |
+| Your first week | What to do, in order | checklist, flow of the week |
+| Who is who | Teams and where to find them | team, tilemap of offices or a custom floor layout |
+| Check yourself | Make it stick | quiz (one per chapter for longer handbooks) |
+
+Progress: `steps` or a device from the trade (flags for a golf company, a tape measure
+for a builder). Marks: `step` or `tag`.
+
+## Guide from a podcast, talk, book or course
+
+| Chapter | Job | Blocks |
+| --- | --- | --- |
+| Hero | The source in one picture and the one idea it argues | plate of the setting, stats (length, chapters, key numbers) |
+| One chapter per idea | The idea, the example the source gives, the lesson | prose, quote (only real quotes from the source), diagram, lesson |
+| Practice | Let the reader try the idea | quiz, widget, model |
+| Summary | The ideas on one screen | table or compare, checklist |
+
+Progress: `clock` or `tape` with `total` set to the length in minutes and each chapter's
+`at` its start time. Credit the source in the byline and link it.
+
 ## Quarterly or business review
 
 Hero (the quarter in four numbers), Goals against results (slope or bars, one panel per
@@ -52,3 +93,8 @@ claim title), What it means (prose, compare), Caveats (prose with sources), Next
 | history | timeline |
 | roadmap, next steps | roadmap, plate with spots, forecast model |
 | team, engineering org | team, stats |
+| a process, a journey, a request path | flow, diagram |
+| regions, stores, offices, rollouts | tilemap |
+| a mechanism, an architecture | diagram with steps |
+| training, onboarding, a guide | quiz, checklist, steps progress |
+| something interactive no block does | widget |

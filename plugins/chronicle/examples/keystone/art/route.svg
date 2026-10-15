@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 860">
+  <!-- a delivery route map spread on the dispatch desk: the stops left before switch-off -->
+  <path d="M-20 -20 L1620 -20 L1620 880 L-20 880 Z" fill="#b98d5f" fill-opacity="0.85" data-paint="wet" data-shade="0.3" stroke="none"/>
+  <path d="M120 820 L1540 800 L1560 760 L110 780 Z" fill="#4a3426" fill-opacity="0.35" data-paint="glaze" data-wet="0.7" stroke="none"/>
+  <!-- the map, folded in quarters -->
+  <g stroke="#2b231d" stroke-width="2.4">
+    <path d="M190 110 L800 96 L790 440 L150 452 Z" fill="#f4eedb" data-shade="0.25"/>
+    <path d="M800 96 L1420 90 L1470 430 L790 440 Z" fill="#ece5cf" data-shade="0.3"/>
+    <path d="M150 452 L790 440 L780 790 L100 800 Z" fill="#ece5cf" data-shade="0.3"/>
+    <path d="M790 440 L1470 430 L1520 780 L780 790 Z" fill="#f4eedb" data-shade="0.25"/>
+  </g>
+  <!-- terrain: a river, forests, roads -->
+  <path d="M170 300 C320 280 360 360 520 340 C680 320 700 220 880 230 C1040 240 1100 330 1300 300 C1380 290 1430 250 1450 240" fill="none" stroke="#4c93c4" stroke-width="12" data-jitter="0.4"/>
+  <g fill="#6f8f3c" fill-opacity="0.75" data-paint="glaze" stroke="none" data-wet="0.4">
+    <path d="M300 160 C340 130 420 140 430 180 C440 220 360 240 320 220 C280 210 270 180 300 160 Z"/>
+    <path d="M1100 140 C1160 120 1240 140 1240 180 C1240 210 1160 220 1120 200 C1090 190 1080 160 1100 140 Z"/>
+    <path d="M980 620 C1040 590 1120 610 1120 650 C1120 690 1040 700 1000 680 C960 670 950 640 980 620 Z"/>
+    <path d="M220 560 C260 540 320 550 320 580 C320 610 260 620 230 600 C200 590 200 570 220 560 Z"/>
+  </g>
+  <g fill="none" stroke="#9a9187" stroke-width="3" data-line="pencil">
+    <path d="M160 520 C400 500 700 520 1480 480"/>
+    <path d="M620 110 C600 300 640 600 610 790"/>
+    <path d="M1180 92 C1160 300 1220 560 1200 790"/>
+  </g>
+  <!-- the route, drawn in marker -->
+  <path d="M280 680 C380 640 440 560 520 540 C610 520 680 640 770 620 C880 596 900 470 1010 440 C1120 410 1180 330 1290 280" fill="none" stroke="#c23a2c" stroke-width="6" stroke-dasharray="14 10" data-jitter="0.8"/>
+  <!-- the freeze: a gate across the road -->
+  <g stroke="#2b231d" stroke-width="2.2">
+    <rect x="720" y="584" width="100" height="18" fill="#f4f1e8" transform="rotate(-12 770 593)"/>
+    <path d="M742 588 L752 604 M766 584 L776 600 M790 580 L800 596" stroke="#c23a2c" stroke-width="6" fill="none" transform="rotate(-12 770 593)"/>
+  </g>
+  <!-- pins -->
+  <g stroke="#2b231d" stroke-width="2.2">
+    <path d="M520 540 C500 510 498 496 498 488 A22 22 0 1 1 542 488 C542 496 540 510 520 540 Z" fill="#2f6b4f"/>
+    <path d="M1010 440 C990 410 988 396 988 388 A22 22 0 1 1 1032 388 C1032 396 1030 410 1010 440 Z" fill="#b8820c"/>
+    <path d="M1290 280 L1290 190" fill="none" stroke-width="3"/>
+    <path d="M1290 190 L1350 206 L1290 222 Z" fill="#c23a2c"/>
+  </g>
+  <!-- compass rose -->
+  <g stroke="#2b231d" stroke-width="1.8">
+    <path d="M1360 640 L1376 690 L1360 740 L1344 690 Z" fill="#f4f1e8"/>
+    <path d="M1310 690 L1360 674 L1410 690 L1360 706 Z" fill="#f4f1e8"/>
+    <path d="M1360 640 L1376 690 L1360 690 Z" fill="#2b231d"/>
+  </g>
+  <text x="1360" y="632" font-size="20" text-anchor="middle" data-label="label" fill="#2b231d">N</text>
+  <!-- the depot and a toy van -->
+  <g stroke="#2b231d" stroke-width="2.2">
+    <path d="M220 700 L300 700 L300 660 L260 636 L220 660 Z" fill="#b5652b"/>
+  </g>
+  <g data-layer="van" data-motion="bob" data-travel="3" stroke="#2b231d" stroke-width="2.4">
+    <path d="M330 700 L330 650 Q330 640 340 640 L410 640 L430 662 L452 668 L452 700 Z" fill="#2f6b4f" data-shade="0.5"/>
+    <path d="M410 644 L410 664 L428 664" fill="none"/>
+    <circle cx="356" cy="702" r="12" fill="#2b231d"/>
+    <circle cx="430" cy="702" r="12" fill="#2b231d"/>
+  </g>
+  <text x="482" y="450" font-size="26" text-anchor="end" data-label="hand" fill="#1f4a36">{{migration.payments_cutover|date}}</text>
+  <text x="700" y="660" font-size="26" data-label="hand" fill="#a83125">freeze</text>
+  <text x="1040" y="478" font-size="26" data-label="hand" fill="#7a5408">{{migration.fulfillment_target|month}}</text>
+  <text x="1200" y="170" font-size="26" data-label="hand" fill="#a83125">switch-off</text>
+  <text x="250" y="740" font-size="22" data-label="hand" fill="#2b231d">today</text>
+  <circle cx="520" cy="488" r="1" fill="none" stroke="none" data-anchor="m1"/>
+  <circle cx="770" cy="593" r="1" fill="none" stroke="none" data-anchor="m2"/>
+  <circle cx="1010" cy="388" r="1" fill="none" stroke="none" data-anchor="m3"/>
+  <circle cx="1310" cy="206" r="1" fill="none" stroke="none" data-anchor="m4"/>
+</svg>

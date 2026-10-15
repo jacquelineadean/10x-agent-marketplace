@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9c4bb"/>
+      <stop offset="1" stop-color="#dcdccd"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a7b0ae"/>
+      <stop offset="1" stop-color="#8b9593"/>
+    </linearGradient>
+  </defs>
+  <!-- wall and floor -->
+  <path d="M-20 40 C400 70 1100 20 1620 50 L1620 730 L-20 740 Z" fill="url(#wall)" fill-opacity="0.8" data-paint="wet" data-shade="0" stroke="none"/>
+  <path d="M-20 736 L1620 726 L1620 920 L-20 920 Z" fill="#a39a88" data-shade="0.3" stroke="#2b231d" stroke-width="2.2"/>
+  <g stroke="#6b6a68" stroke-width="1.2" fill="none" data-line="pencil">
+    <path d="M200 736 L120 920 M520 734 L480 920 M840 732 L840 920 M1160 730 L1200 920 M1460 728 L1560 920"/>
+  </g>
+  <!-- shadow of the cabinet -->
+  <path d="M400 760 L860 770 L960 730 L820 720 Z" fill="#4a3f33" fill-opacity="0.4" data-paint="glaze" data-wet="0.6" stroke="none"/>
+
+  <!-- wall clock: three in the morning -->
+  <g stroke="#2b231d" stroke-width="2.4">
+    <circle cx="1260" cy="190" r="70" fill="#f6f1e4" data-shade="0.2"/>
+    <circle cx="1260" cy="190" r="70" fill="none" stroke-width="5" stroke="#4a5565"/>
+    <path d="M1260 190 L1260 142 M1260 190 L1296 202" fill="none" stroke-width="4"/>
+    <path d="M1260 128 L1260 136 M1322 190 L1314 190 M1260 252 L1260 244 M1198 190 L1206 190" fill="none" stroke-width="2"/>
+  </g>
+
+  <!-- the cabinet: one steel case holding every part of the order system -->
+  <g stroke="#2b231d" stroke-width="2.8">
+    <path d="M760 170 L830 136 L830 716 L760 760 Z" fill="#7d8786" data-shade="0.4"/>
+    <path d="M420 170 L490 136 L830 136 L760 170 Z" fill="#b8c0bd"/>
+    <rect x="420" y="170" width="340" height="590" fill="url(#steel)" data-shade="0.45"/>
+  </g>
+  <g stroke="#2b231d" stroke-width="2.2" fill="#9aa3a1" data-shade="0.3">
+    <rect x="436" y="186" width="308" height="106"/>
+    <rect x="436" y="302" width="308" height="106"/>
+    <rect x="436" y="418" width="308" height="106"/>
+    <rect x="436" y="650" width="308" height="100"/>
+  </g>
+  <!-- papers crammed into the drawer gaps -->
+  <g stroke="#2b231d" stroke-width="1.8">
+    <path d="M470 300 L520 286 L560 300 Z" fill="#f4ecd6"/>
+    <path d="M600 302 L640 280 L700 296 L690 304 Z" fill="#efe2a8"/>
+    <path d="M520 418 L560 398 L600 410 L590 420 Z" fill="#f4ecd6"/>
+    <path d="M640 416 L700 404 L720 418 Z" fill="#dfe7ea"/>
+    <path d="M470 650 L500 630 L560 640 L556 652 Z" fill="#efe2a8"/>
+  </g>
+  <!-- the payments drawer, pulled open and overflowing -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <path d="M436 534 L744 534 L744 640 L436 640 Z" fill="#5a6261"/>
+    <path d="M380 566 L688 566 L744 534 L436 534 Z" fill="#6f7877"/>
+    <path d="M410 520 L440 490 L520 500 L500 560 Z" fill="#f4ecd6" data-shade="0.2"/>
+    <path d="M470 516 L520 480 L610 494 L590 560 Z" fill="#efe2a8" data-shade="0.2"/>
+    <path d="M560 520 L620 488 L690 506 L660 560 Z" fill="#f4ecd6" data-shade="0.2"/>
+    <path d="M380 566 L688 566 L688 676 L380 676 Z" fill="#a7b0ae" data-shade="0.4"/>
+    <path d="M688 566 L744 534 L744 640 L688 676 Z" fill="#7d8786"/>
+    <rect x="500" y="610" width="70" height="16" rx="4" fill="#5a6261"/>
+  </g>
+  <!-- handles and label holders -->
+  <g stroke="#2b231d" stroke-width="2" fill="#f7f1df">
+    <rect x="540" y="208" width="100" height="28"/>
+    <rect x="540" y="324" width="100" height="28"/>
+    <rect x="540" y="440" width="100" height="28"/>
+    <rect x="484" y="584" width="110" height="20"/>
+    <rect x="540" y="668" width="100" height="28"/>
+  </g>
+  <g stroke="#2b231d" stroke-width="2" fill="#5a6261">
+    <rect x="560" y="252" width="60" height="14" rx="4"/>
+    <rect x="560" y="368" width="60" height="14" rx="4"/>
+    <rect x="560" y="484" width="60" height="14" rx="4"/>
+    <rect x="560" y="712" width="60" height="14" rx="4"/>
+  </g>
+  <text x="590" y="229" font-size="17" text-anchor="middle" data-label="label" fill="#2b231d">Catalog</text>
+  <text x="590" y="345" font-size="17" text-anchor="middle" data-label="label" fill="#2b231d">Cart</text>
+  <text x="590" y="461" font-size="17" text-anchor="middle" data-label="label" fill="#2b231d">Checkout</text>
+  <text x="539" y="600" font-size="15" text-anchor="middle" data-label="label" fill="#2b231d">Payments</text>
+  <text x="590" y="689" font-size="15" text-anchor="middle" data-label="label" fill="#2b231d">Fulfillment</text>
+  <!-- duct tape and a padlocked chain: nothing ships without the whole cabinet -->
+  <path d="M700 300 L760 296 L760 318 L702 322 Z" fill="#b9bdbb" fill-opacity="0.85" stroke="#2b231d" stroke-width="1.6"/>
+  <g fill="none" stroke="#3a3f44" stroke-width="3.4">
+    <path d="M430 260 C520 330 640 380 760 420"/>
+  </g>
+  <g fill="none" stroke="#2b231d" stroke-width="1.4">
+    <path d="M440 266 C460 280 480 294 500 306 M520 318 C540 330 560 340 580 350 M600 360 C620 368 640 376 660 384 M680 392 C700 400 720 406 740 412"/>
+  </g>
+  <g stroke="#2b231d" stroke-width="2.6">
+    <path d="M622 382 C622 352 662 352 662 382" fill="none" stroke-width="5" stroke="#6b6a68"/>
+    <rect x="610" y="380" width="64" height="52" rx="7" fill="#d4a24c" data-shade="0.55"/>
+    <circle cx="642" cy="402" r="6" fill="#2b231d"/>
+  </g>
+  <!-- sticky notes -->
+  <g stroke="#2b231d" stroke-width="1.4">
+    <rect x="452" y="200" width="70" height="66" fill="#efd85a" transform="rotate(-6 487 233)"/>
+    <rect x="664" y="440" width="70" height="66" fill="#f2b6b0" transform="rotate(5 699 473)"/>
+  </g>
+  <text x="458" y="232" font-size="19" data-label="hand" fill="#2b231d" transform="rotate(-6 487 233)">do not</text>
+  <text x="458" y="254" font-size="19" data-label="hand" fill="#2b231d" transform="rotate(-6 487 233)">restart</text>
+  <text x="670" y="470" font-size="18" data-label="hand" fill="#2b231d" transform="rotate(5 699 473)">ask Dana</text>
+  <text x="784" y="300" font-size="16" data-label="label" fill="#e9eceb" transform="rotate(-27 784 300)">since {{project.monolith_year}}</text>
+
+  <!-- printer on top, feeding one endless sheet of order tickets -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <path d="M470 150 L780 150 L800 104 L494 104 Z" fill="#d8cfb8" data-shade="0.4"/>
+    <path d="M470 150 L780 150 L780 176 L470 176 Z" fill="#c4b99e"/>
+    <path d="M520 104 L540 70 L720 70 L748 104 Z" fill="#e2dccb"/>
+    <path d="M560 130 L690 130" fill="none" stroke-width="3"/>
+    <circle cx="740" cy="128" r="6" fill="#d6512f" stroke-width="1.6"/>
+  </g>
+  <g stroke="#2b231d" stroke-width="2">
+    <path d="M540 72 C520 40 470 40 420 60 C360 84 330 130 330 200 L330 610 L398 610 L398 210 C398 150 430 110 520 100 Z" fill="#fbf7ea" data-shade="0.25"/>
+    <path d="M250 720 L420 714 L430 690 L262 696 Z" fill="#fbf7ea" data-shade="0.2"/>
+    <path d="M262 696 L430 690 L420 668 L258 674 Z" fill="#f4eedd"/>
+    <path d="M258 674 L420 668 L412 646 L252 652 Z" fill="#fbf7ea" data-shade="0.2"/>
+    <path d="M252 652 L412 646 L404 626 L262 632 Z" fill="#f4eedd"/>
+    <path d="M262 632 L404 626 L398 610 L330 610 L272 614 Z" fill="#fbf7ea"/>
+  </g>
+  <g fill="none" stroke="#8d857b" stroke-width="1.2" data-line="pencil">
+    <path d="M346 240 L382 240 M346 270 L380 270 M346 300 L384 300 M346 330 L376 330 M346 360 L382 360 M346 390 L380 390 M346 420 L384 420 M346 450 L374 450 M346 480 L382 480 M346 510 L380 510 M346 540 L384 540 M346 570 L376 570"/>
+  </g>
+
+  <!-- the on-call desk: a phone that rang at three in the morning -->
+  <path d="M960 560 L1560 548 L1560 590 L960 600 Z" fill="#8f6640" stroke="#2b231d" stroke-width="2.4" data-shade="0.3"/>
+  <path d="M990 600 L1010 600 L1010 740 L990 740 Z M1500 590 L1520 590 L1520 730 L1500 730 Z" fill="#6c4a34" stroke="#2b231d" stroke-width="2"/>
+  <g stroke="#2b231d" stroke-width="2.4">
+    <path d="M1020 552 L1160 552 L1150 500 L1030 500 Z" fill="#d6ccb4" data-shade="0.4"/>
+    <path d="M1018 498 C1018 470 1162 470 1162 498 L1150 510 L1030 510 Z" fill="#c23a2c" data-shade="0.4"/>
+    <circle cx="1090" cy="528" r="14" fill="#efe8d6"/>
+  </g>
+  <path d="M1160 540 C1190 550 1180 580 1210 586 C1240 592 1236 560 1262 566" fill="none" stroke="#2b231d" stroke-width="2"/>
+  <g stroke="#2b231d" stroke-width="2.2">
+    <rect x="1290" y="420" width="44" height="130" fill="#2f5e45" data-shade="0.4"/>
+    <rect x="1336" y="430" width="44" height="120" fill="#b5652b" data-shade="0.4"/>
+    <rect x="1382" y="412" width="44" height="138" fill="#3d55a6" data-shade="0.4"/>
+    <rect x="1428" y="440" width="40" height="110" fill="#9a9187" data-shade="0.4" transform="rotate(8 1448 495)"/>
+  </g>
+  <text x="1318" y="530" font-size="15" data-label="label" fill="#f6f1e4" transform="rotate(-90 1318 530)">Runbook</text>
+  <text x="1410" y="530" font-size="15" data-label="label" fill="#f6f1e4" transform="rotate(-90 1410 530)">Release</text>
+  <g stroke="#2b231d" stroke-width="2.2">
+    <path d="M1200 520 L1250 520 L1246 556 C1240 562 1206 562 1202 556 Z" fill="#e9e1cf" data-shade="0.4"/>
+    <path d="M1250 528 C1270 526 1272 548 1248 550" fill="none"/>
+  </g>
+  <!-- desk lamp, still on -->
+  <path d="M1000 552 C1060 470 1200 470 1250 552 Z" fill="#f2d98a" fill-opacity="0.45" data-paint="glaze" data-wet="0.8" stroke="none"/>
+  <g stroke="#2b231d" stroke-width="2.4">
+    <path d="M1520 552 L1590 552 L1584 534 L1526 534 Z" fill="#3e4a57"/>
+    <path d="M1556 536 L1534 430 L1470 380" fill="none" stroke-width="5" stroke="#3e4a57"/>
+    <path d="M1556 536 L1534 430 L1470 380" fill="none" stroke-width="1.6"/>
+    <path d="M1420 360 L1500 352 L1488 410 L1430 420 Z" fill="#2f5e45" data-shade="0.5" transform="rotate(-20 1460 386)"/>
+  </g>
+  <path d="M1380 420 C1340 470 1300 520 1250 552 L1470 552 C1480 500 1470 450 1440 420 Z" fill="#f4dd8c" fill-opacity="0.35" data-paint="glaze" data-wet="0.9" stroke="none"/>
+  <!-- anchors for the plate's numbered notes -->
+  <circle cx="866" cy="236" r="1" fill="none" stroke="none" data-anchor="cabinet"/>
+  <circle cx="866" cy="420" r="1" fill="none" stroke="none" data-anchor="lock"/>
+  <circle cx="1050" cy="660" r="1" fill="none" stroke="none" data-anchor="phone"/>
+  <circle cx="360" cy="420" r="1" fill="none" stroke="none" data-anchor="paper"/>
+</svg>

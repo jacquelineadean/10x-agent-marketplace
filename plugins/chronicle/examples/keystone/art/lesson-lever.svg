@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- the fallback lever: the old path stays wired in until the new one survives a peak -->
+  <g stroke="#2b231d" stroke-width="2.8">
+    <rect x="170" y="330" width="260" height="170" rx="12" fill="#e2b54a" data-shade="0.5"/>
+    <path d="M300 380 L200 200 L226 188 L326 368 Z" fill="#3e4a57" data-shade="0.4"/>
+    <circle cx="210" cy="192" r="30" fill="#c23a2c" data-shade="0.35"/>
+    <circle cx="305" cy="378" r="18" fill="#2b231d"/>
+    <rect x="210" y="440" width="180" height="36" fill="#fbf6ea"/>
+  </g>
+  <path d="M196 182 C200 172 210 168 220 172" fill="none" stroke="#ffffff" stroke-width="6" data-line="lift"/>
+  <text x="300" y="466" font-size="22" text-anchor="middle" data-label="label" fill="#2b231d">Fallback</text>
+</svg>
