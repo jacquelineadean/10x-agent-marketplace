@@ -8,7 +8,7 @@
 A Claude Code plugin marketplace that holds Jacqueline Dean's agent extensions: plugins, skills, agents and commands.
 Teammates add it once with `/plugin marketplace add` and install the plugins they want.
 The first plugin, **impact-review**, turns one person's GitHub activity over a date range into metrics and written material for performance reviews, resumes and job interviews.
-The second, **chronicle** (RFC-0002, draft), turns a brief plus facts from connected tools or pasted notes into an illustrated, interactive story page, such as a project's status, history and roadmap for a steering committee.
+The second, **chronicle** (RFC-0002 and RFC-0003, drafts), turns a brief plus facts from connected tools or pasted notes into an illustrated, interactive story page designed for its subject: a project's status for a steering committee, a launch, an onboarding handbook or a guide to a podcast.
 
 ## Who it is for
 - Jacqueline Dean, who uses the plugins daily and runs impact-review against a corporate GitHub Enterprise account.
@@ -55,5 +55,8 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Facts file:** chronicle's `facts.json`: every number and date on a page, each with its source and a note.
 - **Derive table:** the part of a facts file that names numbers computed by code from other facts.
 - **Plate:** a watercolor painting on a story page; it can carry moving layers and hotspots.
+- **Theme:** a story's identity taken from its subject: palette, fonts, progress device, chapter marks and stat style.
+- **Drawing:** an SVG file Claude writes for a plate; chronicle paints it in ink and watercolor.
+- **Widget:** a script Claude writes for one page when no block fits; `chronicle check` lints it.
 - **Preset:** a named, composed painting such as `bridge-hero`; **motif:** a paintable element such as `sky` or `arch_bridge`.
 - **Artifact:** a web page hosted privately on claude.ai, where a story page is published.

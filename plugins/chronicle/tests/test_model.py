@@ -34,6 +34,16 @@ def test_typed_number_is_a_warning(story: dict[str, Any], facts: dict[str, Any])
     assert any("'64%' has no fact token" in w for w in report.warnings)
 
 
+def test_typed_number_in_a_quiz_question_is_a_warning(
+    story: dict[str, Any], facts: dict[str, Any]
+) -> None:
+    changed = copy.deepcopy(story)
+    question = {"q": "A shot runs 18 seconds. Why?", "options": ["Fast", "Slow"], "answer": 0}
+    changed["chapters"][0]["blocks"].append({"type": "quiz", "questions": [question]})
+    report = model.check(changed, facts)
+    assert any("questions[0].q: number '18'" in w for w in report.warnings)
+
+
 def test_structure_errors(story: dict[str, Any], facts: dict[str, Any]) -> None:
     broken = copy.deepcopy(story)
     broken["chapters"][1]["id"] = broken["chapters"][0]["id"]

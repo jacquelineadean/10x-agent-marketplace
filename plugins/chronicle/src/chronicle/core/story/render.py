@@ -12,26 +12,25 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
-from chronicle.core.story.blocks import render_block, stats
+from chronicle.core.story import theme as theming
+from chronicle.core.story.blocks import stats
+from chronicle.core.story.dispatch import render_block
 from chronicle.core.story.facts import TOKEN, format_value, lookup, resolve_refs
 from chronicle.core.story.html import tag, void
 from chronicle.core.story.markup import inline, paragraphs, plain
 
-FONTS = (
-    "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1"
-    "&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;1,400"
-    "&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400"
-    "&display=swap"
-)
-ROMAN = ("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII")
-
 
 @dataclass
 class Assets:
-    """The runtime stylesheet and script, read from the package by the caller."""
+    """The runtime stylesheet, script and font list, read from the package by the caller.
+
+    `files` maps each file a story names (diagram SVG, widget script or style) to its text.
+    """
 
     css: str
     js: str
+    fonts: Mapping[str, Any] = field(default_factory=dict)
+    files: Mapping[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -47,11 +46,19 @@ class Builder:
     """Shared state while one page renders: facts, figure specs and the images it uses."""
 
     def __init__(
-        self, story: Mapping[str, Any], facts: Mapping[str, Any], manifest: Mapping[str, Any]
+        self,
+        story: Mapping[str, Any],
+        facts: Mapping[str, Any],
+        manifest: Mapping[str, Any],
+        fonts: Mapping[str, Any] | None = None,
+        files: Mapping[str, str] | None = None,
     ) -> None:
         self.story = story
         self.facts = facts
         self.manifest = manifest
+        self.theme = theming.build(story.get("theme"), fonts or {}, _font_needs(manifest))
+        self.files: Mapping[str, str] = files or {}
+        self.widgets: dict[str, str] = {}
         self.figs: dict[str, Any] = {}
         self.counter = 0
         self.art_files: list[str] = []
@@ -160,6 +167,7 @@ class Builder:
         )
         overlay = tag(
             "svg",
+            "".join(self._label(lab) for lab in entry.get("labels", [])),
             class_="overlay",
             viewBox=f"0 0 {w} {h}",
             preserveAspectRatio="none",
@@ -177,6 +185,23 @@ class Builder:
             "figure", tag("div", stage, class_="frame") + cap + cards, class_=cls, data_fig=fid
         )
 
+    def _label(self, lab: Mapping[str, Any]) -> str:
+        """Overlay text drawn in the SVG, set live in the theme's fonts."""
+        angle = float(lab.get("angle", 0))
+        x, y = float(lab["x"]), float(lab["y"])
+        return tag(
+            "text",
+            plain(str(self.plain_text(str(lab.get("text", ""))))),
+            x=f"{x:.1f}",
+            y=f"{y:.1f}",
+            class_=f"lbl lbl-{lab.get('style', 'hand')}",
+            font_size=f"{float(lab.get('size', 28)):.1f}",
+            text_anchor=str(lab.get("anchor", "start")),
+            fill=str(lab.get("color") or "") or None,
+            font_weight=str(lab.get("weight") or "") or None,
+            transform=f"rotate({angle:.1f} {x:.1f} {y:.1f})" if abs(angle) > 0.05 else None,
+        )
+
     def _layer(self, layer: Mapping[str, Any], w: int, h: int) -> str:
         self.art_files.append(str(layer["file"]))
         x, y, lw, lh = layer["box"]
@@ -184,9 +209,10 @@ class Builder:
             f"left:{100 * x / w:.3f}%;top:{100 * y / h:.3f}%;"
             f"width:{100 * lw / w:.3f}%;height:{100 * lh / h:.3f}%"
         )
+        blend = " blend-normal" if layer.get("blend") == "normal" else ""
         return void(
             "img",
-            class_="layer",
+            class_=f"layer{blend}",
             src=str(layer["file"]),
             alt="",
             aria_hidden="true",
@@ -210,13 +236,20 @@ class Builder:
             top = 100 * float(point[1]) / h
             side = "side-l" if left < 50 else "side-r"
             dot = tag("span", str(k + 1), class_="spot-dot", aria_hidden="true")
-            label = tag("span", self.inline(spot.get("label", "")), class_="spot-label")
+            label = (
+                tag("span", self.inline(spot["label"]), class_="spot-label")
+                if spot.get("label")
+                else ""
+            )
             buttons += tag(
                 "button",
                 dot + label,
                 type="button",
                 class_=f"spot {side}",
                 data_spot=k,
+                aria_label=None
+                if spot.get("label")
+                else str(self.plain_text(str(spot.get("title", k + 1)))),
                 style=f"left:{left:.2f}%;top:{top:.2f}%",
             )
             title = tag("h4", self.inline(spot.get("title", spot.get("label", ""))))
@@ -236,7 +269,7 @@ class Builder:
         body = self._hero()
         for i, chapter in enumerate(chapters):
             head = (
-                tag("p", ROMAN[i % len(ROMAN)], class_="chapter-no", aria_hidden="true")
+                self._mark(i)
                 + tag("p", self.inline(chapter.get("kicker", "")), class_="kicker")
                 + tag("h2", self.inline(chapter["title"]))
             )
@@ -248,22 +281,24 @@ class Builder:
             parts += "".join(render_block(self, b) for b in chapter.get("blocks", []))
             body += tag("section", parts, class_="chapter", id=str(chapter["id"]), data_ch=i)
         body += self._sources()
-        nav = [
-            {
+        nav = []
+        for i, ch in enumerate(chapters):
+            item: dict[str, Any] = {
                 "id": str(ch["id"]),
-                "title": str(ch.get("short", ch["title"])),
-                "no": ROMAN[i % len(ROMAN)],
+                "title": str(self.plain_text(str(ch.get("short", ch["title"])))),
+                "no": self.theme.number(i),
             }
-            for i, ch in enumerate(chapters)
-        ]
+            if "at" in ch:
+                item["at"] = float(ch["at"])
+            nav.append(item)
         data = {
             "figs": self.figs,
             "nav": nav,
-            "navStyle": str(meta.get("nav", "arches")),
+            "progress": self.theme.progress,
             "sources": {
                 k: {
                     "label": str(v.get("label", k)),
-                    "detail": str(v.get("detail", "")),
+                    "detail": self.plain_text(str(v.get("detail", ""))),
                     "asOf": str(v.get("as_of", "")),
                 }
                 for k, v in self.sources.items()
@@ -281,14 +316,18 @@ class Builder:
             f'<meta name="description" content="{description}">\n'
             '<link rel="preconnect" href="https://fonts.googleapis.com">\n'
             '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
-            f'<link rel="stylesheet" href="{FONTS}">\n'
-            f"<style>\n{assets.css}\n</style>\n"
+            f'<link rel="stylesheet" href="{plain(self.theme.fonts_url)}">\n'
+            f"<style>\n{assets.css}\n{self.theme.css}{self._widget_css()}</style>\n"
         )
         content = (
             f"{self._bar(title)}"
             + tag("main", body, class_="story", id="top")
             + "\n"
             + f'<script type="application/json" id="chronicle-data">{payload}</script>\n'
+            + "".join(
+                f"<script>\n{_widget_script(name, self.files[path])}\n</script>\n"
+                for name, path in self.widgets.items()
+            )
             + f"<script>\n{assets.js}\n</script>\n"
         )
         document = (
@@ -303,6 +342,28 @@ class Builder:
             art_files=sorted(set(self.art_files)),
         )
 
+    def _widget_css(self) -> str:
+        """Stylesheets of the widgets on this page, after the theme so they can use its tokens."""
+        css = ""
+        for _, block in _blocks(self.story, "widget"):
+            path = block.get("style")
+            if path and str(path) in self.files:
+                css += f"\n/* widget {plain(str(block['name']))} */\n{self.files[str(path)]}\n"
+        return css.replace("</style", "<\\/style")
+
+    def _mark(self, i: int) -> str:
+        """The chapter number in the theme's style: an arch, a parcel label, a hang tag."""
+        mark = self.theme.mark
+        if mark["style"] == "none":
+            return ""
+        prefix = tag("span", plain(mark["prefix"]), class_="mk-pre") if mark["prefix"] else ""
+        return tag(
+            "p",
+            prefix + tag("span", plain(self.theme.number(i)), class_="mk-n"),
+            class_=f"mark mark-{mark['style']}",
+            aria_hidden="true",
+        )
+
     def _hero(self) -> str:
         meta = self.story["meta"]
         hero = self.story.get("hero", {})
@@ -313,12 +374,26 @@ class Builder:
             + tag("p", self.inline(meta.get("dek", "")), class_="dek")
             + tag("p", byline, class_="byline")
         )
-        html = tag("div", intro, class_="col")
+        style = str(hero.get("stats_style", self.theme.stats))
+        figures = ""
+        if hero.get("stats"):
+            figures = stats(
+                self,
+                {
+                    "items": hero["stats"],
+                    "style": style,
+                    "title": hero.get("stats_title", ""),
+                    "subtitle": hero.get("stats_subtitle", ""),
+                },
+            )
+        if figures and style in ("receipt", "ticket"):
+            html = tag("div", tag("div", intro, class_="hero-intro") + figures, class_="hero-grid")
+            figures = ""
+        else:
+            html = tag("div", intro, class_="col")
         if hero.get("art"):
             html += self.plate(str(hero["art"]), hero.get("caption", ""))
-        if hero.get("stats"):
-            html += stats(self, {"items": hero["stats"]})
-        return tag("header", html, class_="hero")
+        return tag("header", html + figures, class_="hero")
 
     @staticmethod
     def _bar(title: str) -> str:
@@ -359,6 +434,41 @@ class Builder:
         )
 
 
+def _blocks(story: Mapping[str, Any], kind: str) -> list[tuple[int, Mapping[str, Any]]]:
+    out = []
+    for i, chapter in enumerate(story.get("chapters", [])):
+        for block in chapter.get("blocks", []):
+            if isinstance(block, Mapping) and block.get("type") == kind:
+                out.append((i, block))
+    return out
+
+
+def _font_needs(manifest: Mapping[str, Any]) -> frozenset[str]:
+    """Optional font roles the paintings' overlay text uses."""
+    styles = {
+        str(lab.get("style", "hand"))
+        for entry in manifest.values()
+        if isinstance(entry, Mapping)
+        for lab in entry.get("labels", [])
+    }
+    needs = set()
+    if "hand" in styles:
+        needs.add("hand")
+    if styles & {"mono", "number"}:
+        needs.add("mono")
+    return frozenset(needs)
+
+
+def _widget_script(name: str, source: str) -> str:
+    """Wrap a widget's script so it registers itself for the runtime to start."""
+    safe = json.dumps(name)
+    body = source.replace("</script", "<\\/script")
+    return (
+        "(window.chronicleWidgets = window.chronicleWidgets || {})"
+        f"[{safe}] = function (root, data, kit) {{\n'use strict';\n{body}\n}};"
+    )
+
+
 def render(
     story: Mapping[str, Any],
     facts: Mapping[str, Any],
@@ -366,4 +476,4 @@ def render(
     assets: Assets,
 ) -> Page:
     """Render a story; call model.check first, since this assumes a valid story."""
-    return Builder(story, facts, manifest).page(assets)
+    return Builder(story, facts, manifest, assets.fonts, assets.files).page(assets)

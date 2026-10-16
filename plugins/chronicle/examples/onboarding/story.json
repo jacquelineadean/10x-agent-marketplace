@@ -1,0 +1,453 @@
+{
+ "schema_version": 1,
+ "meta": {
+  "title": "First week at Saltmarsh",
+  "kicker": "Saltmarsh Coffee Roasters · New starter handbook",
+  "dek": "Welcome. This is the handbook every new roaster and barista reads in their first week: how a green seed becomes the cup you hand across the counter, how to pull a shot inside the window, what to do each day, and five questions to answer before your first solo shift.",
+  "byline": [
+   "For new roastery and cafe staff",
+   "People team, Saltmarsh Coffee Roasters",
+   "Demonstration: Saltmarsh, its people and every figure here are invented"
+  ],
+  "description": "An illustrated first-week handbook for new staff at an invented coffee roaster, with a bean-to-cup flow, a sourcing map, a shot-timing drill, a checklist and a quiz.",
+  "colophon": "Built by the chronicle plugin from a facts file and a story file. The illustrations were drawn as SVG for this page and painted in ink and watercolor in code.\n\nDemonstration data. Saltmarsh Coffee Roasters, its staff and every figure on this page are invented for this example."
+ },
+ "theme": {
+  "palette": {
+   "paper": "#F6EFE4",
+   "ink": "#2A211B",
+   "accent": "#2F5E57",
+   "legacy": "#B87333",
+   "series": [
+    "#2F5E57",
+    "#B87333",
+    "#7A5C99",
+    "#A7770A",
+    "#B04F78",
+    "#5F8A2E"
+   ],
+   "colors": {
+    "copper": "#B87333",
+    "crema": "#D9B07A",
+    "icon": "#F4EFE3"
+   }
+  },
+  "fonts": {
+   "display": "Young Serif",
+   "body": "Lora",
+   "ui": "Work Sans",
+   "hand": "Kalam",
+   "mono": "DM Mono"
+  },
+  "progress": {
+   "kind": "steps",
+   "start_label": "Before your first shift"
+  },
+  "chapter_mark": {
+   "style": "tag",
+   "prefix": "Lot",
+   "format": "padded"
+  },
+  "stats": "cards"
+ },
+ "sources": [
+  {
+   "id": "handbook",
+   "label": "Staff handbook",
+   "detail": "Brewing standards and house rules, edition of September 2026.",
+   "as_of": "1 Oct 2026"
+  },
+  {
+   "id": "roastery",
+   "label": "Roastery log",
+   "detail": "Batch records from the roaster's controller, 2026.",
+   "as_of": "30 Sep 2026"
+  },
+  {
+   "id": "sourcing",
+   "label": "Green coffee contracts",
+   "detail": "Purchase contracts and cupping sheets for the 2026 crop.",
+   "as_of": "30 Sep 2026"
+  },
+  {
+   "id": "people",
+   "label": "People team",
+   "detail": "Headcount by role.",
+   "as_of": "1 Oct 2026"
+  }
+ ],
+ "art": {
+  "roastery": {
+   "svg": "art/roastery.svg",
+   "seed": 4,
+   "vignette": "soft",
+   "alt": "Watercolor of a coffee roastery in the morning: a teal drum roaster with a copper hopper and chimney, a chute pouring into a cooling tray of dark beans, two burlap sacks of green coffee labeled Ethiopia and Colombia, a packed bag of Saltmarsh coffee, a cup with a latte-art heart and a chalkboard of today's roasts."
+  },
+  "kettle": {
+   "svg": "art/kettle.svg",
+   "width": 600,
+   "seed": 2,
+   "vignette": "spot",
+   "alt": ""
+  }
+ },
+ "hero": {
+  "art": "roastery",
+  "caption": "The roastery at seven in the morning: the drum warming, the first sacks open, the first bag of the day packed.",
+  "stats": [
+   {
+    "label": "Cafes",
+    "value": "{{company.cafes|plain}}",
+    "delta": "and one roastery"
+   },
+   {
+    "label": "People on the team",
+    "value": "{{company.staff|plain}}",
+    "delta": "roasters, baristas, bakers, office"
+   },
+   {
+    "label": "Origins this year",
+    "value": "{{company.origins|plain}}",
+    "delta": "bought on cupping score"
+   },
+   {
+    "label": "Batches a week",
+    "value": "{{company.batches_week|plain}}",
+    "delta": "{{company.batch_kg}} of green coffee each"
+   }
+  ]
+ },
+ "chapters": [
+  {
+   "id": "welcome",
+   "short": "Welcome",
+   "kicker": "Start here",
+   "title": "Welcome to the roastery",
+   "blocks": [
+    {
+     "type": "prose",
+     "dropcap": true,
+     "text": "Saltmarsh roasted its first batch in a rented garage in {{company.founded|year}}. {{company.years}} later it runs {{company.cafes}} and a roastery, and {{company.staff}} work here. Everything we serve still starts on the same floor: the green coffee comes in by the sack, goes through the drum, rests, and leaves in a bag with a roast date on it.\n\nThis week you will work every station once. Nobody expects you to be fast. We expect you to taste everything and to ask why."
+    },
+    {
+     "type": "quote",
+     "text": "Taste it before you serve it. If you would not drink it, pour it out and pull another one.",
+     "who": "Mara Quinn",
+     "role": "founder and head roaster"
+    }
+   ]
+  },
+  {
+   "id": "bean-to-cup",
+   "short": "Bean to cup",
+   "kicker": "How it works",
+   "title": "Every cup starts as a green seed",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "A coffee bean is the seed of a fruit. It reaches us green and smelling of grass; the drum turns it brown, sweet and brittle. Six steps sit between the farm and the cup, and you will touch the last three every shift."
+    },
+    {
+     "type": "flow",
+     "title": "From green seed to your cup",
+     "subtitle": "Select a step for what happens there and who does it.",
+     "source": "handbook",
+     "token": "cup",
+     "statuses": {
+      "roastery": {
+       "label": "At the roastery",
+       "color": "accent"
+      },
+      "cafe": {
+       "label": "In the cafe",
+       "color": "copper"
+      }
+     },
+     "nodes": [
+      {
+       "label": "Source",
+       "sub": "Green coffee",
+       "values": "{{brew.cupping_bar}} or better",
+       "status": "roastery",
+       "text": "We cup every lot before we buy it and buy only what scores {{brew.cupping_bar}} or more."
+      },
+      {
+       "label": "Roast",
+       "sub": "The drum",
+       "values": "{{company.batch_kg}} a batch",
+       "status": "roastery",
+       "text": "{{company.batches_week}} a week, each logged by the roaster's controller."
+      },
+      {
+       "label": "Rest",
+       "sub": "The shelf",
+       "values": "{{brew.rest_days}} or more",
+       "status": "roastery",
+       "text": "Fresh roasts give off gas for days. Espresso waits at least {{brew.rest_days}} after roasting."
+      },
+      {
+       "label": "Grind",
+       "sub": "Just before",
+       "values": "per shot",
+       "status": "cafe",
+       "text": "Grind for each shot, never ahead: ground coffee goes stale in minutes."
+      },
+      {
+       "label": "Brew",
+       "sub": "The machine",
+       "values": "{{brew.dose}} in, {{brew.yield}} out",
+       "status": "cafe",
+       "text": "A double shot takes {{brew.dose}} of coffee and yields {{brew.yield}} of espresso, a ratio of {{brew.ratio}}."
+      },
+      {
+       "label": "Serve",
+       "sub": "The counter",
+       "values": "taste first",
+       "status": "cafe",
+       "text": "Taste a sip from a spoon before the cup goes across the counter."
+      }
+     ]
+    },
+    {
+     "type": "tilemap",
+     "title": "Where this year's coffee comes from",
+     "subtitle": "Green coffee bought for 2026 by origin, kilograms. Tiles sit roughly where the countries are.",
+     "source": "sourcing",
+     "layout": "custom",
+     "values": "@origins.kg_2026",
+     "format": "int",
+     "unit": "kg",
+     "tiles": [
+      {
+       "id": "GT",
+       "label": "Guatemala",
+       "row": 0,
+       "col": 0
+      },
+      {
+       "id": "CO",
+       "label": "Colombia",
+       "row": 1,
+       "col": 1
+      },
+      {
+       "id": "PE",
+       "label": "Peru",
+       "row": 2,
+       "col": 1
+      },
+      {
+       "id": "BR",
+       "label": "Brazil",
+       "row": 2,
+       "col": 2
+      },
+      {
+       "id": "ET",
+       "label": "Ethiopia",
+       "row": 0,
+       "col": 5
+      },
+      {
+       "id": "RW",
+       "label": "Rwanda",
+       "row": 1,
+       "col": 4
+      },
+      {
+       "id": "KE",
+       "label": "Kenya",
+       "row": 1,
+       "col": 5
+      },
+      {
+       "id": "ID",
+       "label": "Indonesia",
+       "row": 1,
+       "col": 8
+      }
+     ],
+     "scale": {
+      "kind": "sequential",
+      "min": 0,
+      "max": 15000,
+      "label": "kilograms"
+     },
+     "readout": {
+      "text": "Most from {max_label}: {max}. All origins: {sum} kg."
+     },
+     "caption": "{{company.origins}} in all, {{origins.total_kg}} of green coffee."
+    }
+   ]
+  },
+  {
+   "id": "dial-in",
+   "short": "Dial in",
+   "kicker": "At the machine",
+   "title": "A good shot runs {{brew.time_low|plain}} to {{brew.time_high}}",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "Every morning the first barista on shift dials in the grinder: pulls a shot, times it, tastes it and adjusts. Too fast and the coffee is thin and sour; too slow and it turns heavy and bitter. Grind finer to slow a shot down, coarser to speed it up."
+    },
+    {
+     "type": "widget",
+     "name": "dial-in",
+     "title": "Dial in a shot",
+     "subtitle": "Move the grinder setting until the shot lands in the window. A practice model: real coffee also changes with the bean, the roast date and the weather.",
+     "script": "widgets/dial-in.js",
+     "style": "widgets/dial-in.css",
+     "data": {
+      "low": "@brew.time_low",
+      "high": "@brew.time_high"
+     },
+     "fallback": "Grind finer to slow a shot, coarser to speed it up. A good double shot runs {{brew.time_low|plain}} to {{brew.time_high}}.",
+     "source": "handbook"
+    },
+    {
+     "type": "lesson",
+     "art": "kettle",
+     "title": "House rule",
+     "text": "Change one thing at a time: the grind, then the dose, never both. Taste after every change."
+    }
+   ]
+  },
+  {
+   "id": "first-week",
+   "short": "Your week",
+   "kicker": "Your first week",
+   "title": "One station a day",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "Each day you shadow one station and then run it with your mentor beside you. Tick things off as you go; the list stays in this browser."
+    },
+    {
+     "type": "checklist",
+     "title": "Your first week",
+     "key": "first-week",
+     "groups": [
+      {
+       "title": "Monday, the roastery",
+       "items": [
+        "Tour the roastery and meet the roasting team",
+        "Watch a batch from charge to cooling tray",
+        "Cup two coffees with the head roaster"
+       ]
+      },
+      {
+       "title": "Tuesday, the bar",
+       "items": [
+        "Learn the grinder and the machine",
+        "Pull ten practice shots and time each one"
+       ]
+      },
+      {
+       "title": "Wednesday, the counter",
+       "items": [
+        "Take orders on the till with your mentor",
+        "Steam milk for ten drinks"
+       ]
+      },
+      {
+       "title": "Thursday, the bakery",
+       "items": [
+        "Help with the morning bake",
+        "Learn the allergen board"
+       ]
+      },
+      {
+       "title": "Friday, on your own",
+       "items": [
+        "Open the bar with your mentor watching",
+        "Answer the five questions below"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "check",
+   "short": "Check",
+   "kicker": "Before your first solo shift",
+   "title": "Five questions",
+   "blocks": [
+    {
+     "type": "quiz",
+     "kicker": "Check yourself",
+     "title": "Ready for the bar?",
+     "questions": [
+      {
+       "q": "A shot runs fast and tastes sour. What do you change?",
+       "options": [
+        "Grind finer",
+        "Grind coarser",
+        "Use less coffee"
+       ],
+       "answer": 0,
+       "explain": "A fast, sour shot is under-extracted. A finer grind slows it down."
+      },
+      {
+       "q": "How long must a roast rest before we use it for espresso?",
+       "options": [
+        "Overnight",
+        "{{brew.rest_days}}",
+        "Three weeks"
+       ],
+       "answer": 1,
+       "explain": "At least {{brew.rest_days}}: fresh coffee gives off gas that makes espresso uneven."
+      },
+      {
+       "q": "How much coffee goes into a double shot?",
+       "options": [
+        "{{brew.yield}}",
+        "{{brew.dose}}",
+        "Two scoops"
+       ],
+       "answer": 1,
+       "explain": "{{brew.dose}} in, {{brew.yield}} out."
+      },
+      {
+       "q": "When do you grind coffee for espresso?",
+       "options": [
+        "At the start of the shift",
+        "Just before each shot",
+        "Whenever the hopper is full"
+       ],
+       "answer": 1,
+       "explain": "Ground coffee goes stale in minutes, so we grind for each shot."
+      },
+      {
+       "q": "Before a drink goes across the counter you...",
+       "options": [
+        "Wipe the cup",
+        "Taste a sip from a spoon",
+        "Call the order twice"
+       ],
+       "answer": 1,
+       "explain": "Taste it before you serve it. That is the house rule."
+      }
+     ],
+     "results": [
+      {
+       "min": 0,
+       "label": "Back to the bar",
+       "text": "Read the dial-in chapter again and ask your mentor to pull a shot with you."
+      },
+      {
+       "min": 0.6,
+       "label": "Nearly there",
+       "text": "Check the ones you missed with your mentor before your first solo shift."
+      },
+      {
+       "min": 1,
+       "label": "Ready for the bar",
+       "text": "Every answer right. See you behind the counter."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

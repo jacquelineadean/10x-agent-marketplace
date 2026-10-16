@@ -7,7 +7,6 @@ from typing import Any
 
 from chronicle.core.story.render import Assets, render
 
-ASSETS = Assets(css="/* css */", js="/* js */")
 MANIFEST = {
     "hero": {
         "file": "art/hero.webp",
@@ -35,9 +34,9 @@ def payload(html: str) -> dict[str, Any]:
 
 
 def test_page_fills_every_token_and_cites_sources(
-    story: dict[str, Any], facts: dict[str, Any]
+    story: dict[str, Any], facts: dict[str, Any], assets: Assets
 ) -> None:
-    page = render(story, facts, MANIFEST, ASSETS)
+    page = render(story, facts, MANIFEST, assets)
     assert "{{" not in page.fragment
     assert '<span class="fact" tabindex="0" data-src="datadog"' in page.fragment
     assert page.fragment.startswith("<title>Keystone</title>")
@@ -45,16 +44,29 @@ def test_page_fills_every_token_and_cites_sources(
     assert page.art_files == ["art/hero--keystone.webp", "art/hero.webp"]
 
 
-def test_figure_specs_carry_resolved_data(story: dict[str, Any], facts: dict[str, Any]) -> None:
-    data = payload(render(story, facts, MANIFEST, ASSETS).fragment)
-    charts = [f for f in data["figs"].values() if f.get("chart") == "burnup"]
-    assert charts[0]["data"]["done"] == facts["plan"]["done"]
-    assert [n["no"] for n in data["nav"]] == ["I", "II", "III", "IV", "V", "VI", "VII"]
+def test_figure_specs_carry_resolved_data(
+    story: dict[str, Any], facts: dict[str, Any], assets: Assets
+) -> None:
+    data = payload(render(story, facts, MANIFEST, assets).fragment)
+    calendar = next(f for f in data["figs"].values() if f.get("chart") == "calendar")
+    assert calendar["data"]["values"] == facts["delivery"]["calendar"]
+    tilemap = next(f for f in data["figs"].values() if f.get("type") == "tilemap")
+    assert tilemap["values"] == facts["rollout"]["share"]
+    assert "{{" not in json.dumps(data["sources"])
+    assert [n["no"] for n in data["nav"]] == ["01", "02", "03", "04", "05", "06", "07"]
+    assert data["progress"] == {
+        "kind": "track",
+        "icon": "parcel",
+        "line": "belt",
+        "start_label": "Order placed",
+    }
     plate = next(f for f in data["figs"].values() if f.get("type") == "plate")
     assert plate["anchors"]["hook"] == [1200, 204]
 
 
-def test_hostile_fact_text_cannot_break_out(story: dict[str, Any], facts: dict[str, Any]) -> None:
+def test_hostile_fact_text_cannot_break_out(
+    story: dict[str, Any], facts: dict[str, Any], assets: Assets
+) -> None:
     hostile = copy.deepcopy(facts)
     hostile["project"]["org"] = "</script><script>alert(1)</script>"
     changed = copy.deepcopy(story)
@@ -67,7 +79,7 @@ def test_hostile_fact_text_cannot_break_out(story: dict[str, Any], facts: dict[s
             "data": {"x": ["a"], "series": [{"name": "x", "values": [1]}]},
         }
     )
-    html = render(changed, hostile, MANIFEST, ASSETS).fragment
+    html = render(changed, hostile, MANIFEST, assets).fragment
     assert "<script>alert(1)" not in html
     assert "&lt;/script&gt;&lt;script&gt;alert(1)" in html
     assert "\\u003c/script\\u003e\\u003cscript\\u003ealert(1)" in html

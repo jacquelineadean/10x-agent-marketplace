@@ -1,0 +1,438 @@
+{
+ "Instrument Serif": {
+  "axes": "ital@0;1",
+  "roles": [
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Fraunces": {
+  "axes": "ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400",
+  "roles": [
+   "display",
+   "body"
+  ],
+  "kind": "serif"
+ },
+ "Playfair Display": {
+  "axes": "ital,wght@0,400;0,600;0,700;1,400",
+  "roles": [
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "DM Serif Display": {
+  "axes": "ital@0;1",
+  "roles": [
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Gloock": {
+  "axes": "",
+  "roles": [
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Libre Caslon Display": {
+  "axes": "",
+  "roles": [
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Bodoni Moda": {
+  "axes": "ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400",
+  "roles": [
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Young Serif": {
+  "axes": "",
+  "roles": [
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Abril Fatface": {
+  "axes": "",
+  "roles": [
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Bebas Neue": {
+  "axes": "",
+  "roles": [
+   "display"
+  ],
+  "kind": "sans"
+ },
+ "Anton": {
+  "axes": "",
+  "roles": [
+   "display"
+  ],
+  "kind": "sans"
+ },
+ "Oswald": {
+  "axes": "wght@400;500;600;700",
+  "roles": [
+   "display",
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Big Shoulders Display": {
+  "axes": "wght@500;600;700;800",
+  "roles": [
+   "display"
+  ],
+  "kind": "sans"
+ },
+ "Barlow Condensed": {
+  "axes": "ital,wght@0,500;0,600;0,700;1,500",
+  "roles": [
+   "display",
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Source Serif 4": {
+  "axes": "ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400",
+  "roles": [
+   "body"
+  ],
+  "kind": "serif"
+ },
+ "Literata": {
+  "axes": "ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400",
+  "roles": [
+   "body"
+  ],
+  "kind": "serif"
+ },
+ "Newsreader": {
+  "axes": "ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400",
+  "roles": [
+   "body",
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Lora": {
+  "axes": "ital,wght@0,400;0,600;1,400",
+  "roles": [
+   "body"
+  ],
+  "kind": "serif"
+ },
+ "Spectral": {
+  "axes": "ital,wght@0,400;0,600;1,400",
+  "roles": [
+   "body"
+  ],
+  "kind": "serif"
+ },
+ "Crimson Pro": {
+  "axes": "ital,wght@0,400;0,600;1,400",
+  "roles": [
+   "body"
+  ],
+  "kind": "serif"
+ },
+ "Libre Caslon Text": {
+  "axes": "ital,wght@0,400;0,700;1,400",
+  "roles": [
+   "body"
+  ],
+  "kind": "serif"
+ },
+ "Merriweather": {
+  "axes": "ital,wght@0,400;0,700;1,400",
+  "roles": [
+   "body"
+  ],
+  "kind": "serif"
+ },
+ "Alegreya": {
+  "axes": "ital,wght@0,400;0,600;1,400",
+  "roles": [
+   "body"
+  ],
+  "kind": "serif"
+ },
+ "Zilla Slab": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "body",
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Roboto Slab": {
+  "axes": "wght@400;500;600;700",
+  "roles": [
+   "body",
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Arvo": {
+  "axes": "ital,wght@0,400;0,700;1,400",
+  "roles": [
+   "body",
+   "display"
+  ],
+  "kind": "serif"
+ },
+ "Libre Franklin": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Barlow": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Barlow Semi Condensed": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Schibsted Grotesk": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "IBM Plex Sans": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "IBM Plex Sans Condensed": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Work Sans": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Archivo": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Archivo Narrow": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Public Sans": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "DM Sans": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Space Grotesk": {
+  "axes": "wght@400;500;600;700",
+  "roles": [
+   "ui",
+   "display"
+  ],
+  "kind": "sans"
+ },
+ "Manrope": {
+  "axes": "wght@400;500;600;700",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Rubik": {
+  "axes": "ital,wght@0,400;0,500;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Nunito": {
+  "axes": "ital,wght@0,400;0,600;0,700;1,400",
+  "roles": [
+   "ui"
+  ],
+  "kind": "sans"
+ },
+ "Outfit": {
+  "axes": "wght@400;500;600;700",
+  "roles": [
+   "ui",
+   "display"
+  ],
+  "kind": "sans"
+ },
+ "Sora": {
+  "axes": "wght@400;500;600;700",
+  "roles": [
+   "ui",
+   "display"
+  ],
+  "kind": "sans"
+ },
+ "Josefin Sans": {
+  "axes": "ital,wght@0,400;0,600;0,700;1,400",
+  "roles": [
+   "ui",
+   "display"
+  ],
+  "kind": "sans"
+ },
+ "Fredoka": {
+  "axes": "wght@400;500;600",
+  "roles": [
+   "ui",
+   "display"
+  ],
+  "kind": "sans"
+ },
+ "Caveat": {
+  "axes": "wght@400;600",
+  "roles": [
+   "hand"
+  ],
+  "kind": "hand"
+ },
+ "Shantell Sans": {
+  "axes": "wght@400;500;600",
+  "roles": [
+   "hand"
+  ],
+  "kind": "hand"
+ },
+ "Kalam": {
+  "axes": "wght@400;700",
+  "roles": [
+   "hand"
+  ],
+  "kind": "hand"
+ },
+ "Patrick Hand": {
+  "axes": "",
+  "roles": [
+   "hand"
+  ],
+  "kind": "hand"
+ },
+ "Gochi Hand": {
+  "axes": "",
+  "roles": [
+   "hand"
+  ],
+  "kind": "hand"
+ },
+ "Permanent Marker": {
+  "axes": "",
+  "roles": [
+   "hand",
+   "display"
+  ],
+  "kind": "hand"
+ },
+ "Architects Daughter": {
+  "axes": "",
+  "roles": [
+   "hand"
+  ],
+  "kind": "hand"
+ },
+ "IBM Plex Mono": {
+  "axes": "ital,wght@0,400;0,500;0,600;1,400",
+  "roles": [
+   "mono"
+  ],
+  "kind": "mono"
+ },
+ "JetBrains Mono": {
+  "axes": "ital,wght@0,400;0,500;0,600;1,400",
+  "roles": [
+   "mono"
+  ],
+  "kind": "mono"
+ },
+ "Space Mono": {
+  "axes": "ital,wght@0,400;0,700;1,400",
+  "roles": [
+   "mono"
+  ],
+  "kind": "mono"
+ },
+ "DM Mono": {
+  "axes": "ital,wght@0,400;0,500;1,400",
+  "roles": [
+   "mono"
+  ],
+  "kind": "mono"
+ },
+ "Courier Prime": {
+  "axes": "ital,wght@0,400;0,700;1,400",
+  "roles": [
+   "mono"
+  ],
+  "kind": "mono"
+ },
+ "Special Elite": {
+  "axes": "",
+  "roles": [
+   "mono",
+   "display"
+  ],
+  "kind": "mono"
+ },
+ "VT323": {
+  "axes": "",
+  "roles": [
+   "mono",
+   "display"
+  ],
+  "kind": "mono"
+ },
+ "Silkscreen": {
+  "axes": "wght@400;700",
+  "roles": [
+   "mono",
+   "display"
+  ],
+  "kind": "mono"
+ }
+}

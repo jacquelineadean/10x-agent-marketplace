@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 760">
+  <!-- the crew room: five squad vests on their hooks, hard hats on the shelf -->
+  <path d="M-20 20 C600 40 1000 10 1620 30 L1620 780 L-20 780 Z" fill="#dfe0d6" fill-opacity="0.75" data-paint="wet" data-shade="0" stroke="none"/>
+  <!-- shelf with hats -->
+  <path d="M120 150 L1480 144 L1480 166 L120 172 Z" fill="#a8774a" stroke="#2b231d" stroke-width="2.4" data-shade="0.3"/>
+  <g stroke="#2b231d" stroke-width="2.4">
+    <path d="M210 150 C210 96 330 96 330 150 Z" fill="#e2b54a" data-shade="0.5"/><path d="M196 150 L344 150" stroke-width="5"/><path d="M270 98 L270 148" fill="none" stroke-width="1.6"/>
+    <path d="M478 148 C478 94 598 94 598 148 Z" fill="#f4f1e8" data-shade="0.5"/><path d="M464 148 L612 148" stroke-width="5"/>
+    <path d="M746 147 C746 93 866 93 866 147 Z" fill="#e2b54a" data-shade="0.5"/><path d="M732 147 L880 147" stroke-width="5"/>
+    <path d="M1014 146 C1014 92 1134 92 1134 146 Z" fill="#d6512f" data-shade="0.5"/><path d="M1000 146 L1148 146" stroke-width="5"/>
+    <path d="M1282 145 C1282 91 1402 91 1402 145 Z" fill="#f4f1e8" data-shade="0.5"/><path d="M1268 145 L1416 145" stroke-width="5"/>
+  </g>
+  <!-- hook rail -->
+  <path d="M100 236 L1500 230 L1500 262 L100 268 Z" fill="#8f6640" stroke="#2b231d" stroke-width="2.4" data-shade="0.3"/>
+  <g fill="none" stroke="#2b231d" stroke-width="4">
+    <path d="M270 252 L270 286 C270 298 284 298 286 288 M538 250 L538 284 C538 296 552 296 554 286 M806 249 L806 283 C806 295 820 295 822 285 M1074 248 L1074 282 C1074 294 1088 294 1090 284 M1342 247 L1342 281 C1342 293 1356 293 1358 283"/>
+  </g>
+  <!-- five vests: one per squad, colored like the squads on the page -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <path d="M208 296 L240 290 L270 350 L300 290 L332 296 C336 330 348 372 366 392 L372 640 L168 640 L174 392 C192 372 204 330 208 296 Z" fill="#4a5fa8" data-shade="0.55"/>
+    <path d="M476 294 L508 288 L538 348 L568 288 L600 294 C604 328 616 370 634 390 L640 638 L436 638 L442 390 C460 370 472 328 476 294 Z" fill="#1f7f86" data-shade="0.55"/>
+    <path d="M744 293 L776 287 L806 347 L836 287 L868 293 C872 327 884 369 902 389 L908 637 L704 637 L710 389 C728 369 740 327 744 293 Z" fill="#a7770a" data-shade="0.55"/>
+    <path d="M1012 292 L1044 286 L1074 346 L1104 286 L1136 292 C1140 326 1152 368 1170 388 L1176 636 L972 636 L978 388 C996 368 1008 326 1012 292 Z" fill="#b04f78" data-shade="0.55"/>
+    <path d="M1280 291 L1312 285 L1342 345 L1372 285 L1404 291 C1408 325 1420 367 1438 387 L1444 635 L1240 635 L1246 387 C1264 367 1276 325 1280 291 Z" fill="#7e4e86" data-shade="0.55"/>
+  </g>
+  <!-- reflective tape -->
+  <g fill="none" stroke="#ffffff" stroke-width="14" data-line="lift">
+    <path d="M170 520 L370 520 M169 576 L371 576 M438 518 L638 518 M437 574 L639 574 M706 517 L906 517 M705 573 L907 573 M974 516 L1174 516 M973 572 L1175 572 M1242 515 L1442 515 M1241 571 L1443 571"/>
+  </g>
+  <g fill="none" stroke="#2b231d" stroke-width="1.6">
+    <path d="M270 350 L270 640 M538 348 L538 638 M806 347 L806 637 M1074 346 L1074 636 M1342 345 L1342 635"/>
+  </g>
+  <!-- name tapes -->
+  <g fill="#fbf6ea" stroke="#2b231d" stroke-width="1.6">
+    <rect x="196" y="380" width="148" height="40" rx="3"/>
+    <rect x="464" y="378" width="148" height="40" rx="3"/>
+    <rect x="732" y="377" width="148" height="40" rx="3"/>
+    <rect x="1000" y="376" width="148" height="40" rx="3"/>
+    <rect x="1268" y="375" width="148" height="40" rx="3"/>
+  </g>
+  <text x="270" y="408" font-size="22" text-anchor="middle" data-label="hand" fill="#2b231d">Platform</text>
+  <text x="538" y="405" font-size="18" text-anchor="middle" data-label="hand" fill="#2b231d">Cart and Checkout</text>
+  <text x="806" y="405" font-size="22" text-anchor="middle" data-label="hand" fill="#2b231d">Payments</text>
+  <text x="1074" y="403" font-size="18" text-anchor="middle" data-label="hand" fill="#2b231d">Catalog and Search</text>
+  <text x="1342" y="403" font-size="22" text-anchor="middle" data-label="hand" fill="#2b231d">Fulfillment</text>
+  <!-- bench -->
+  <path d="M-20 680 L1620 674 L1620 780 L-20 780 Z" fill="#a39a88" stroke="#2b231d" stroke-width="2.2" data-shade="0.3"/>
+</svg>

@@ -7,7 +7,9 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from chronicle.connectors.files import store
 from chronicle.core.story import derive
+from chronicle.core.story.render import Assets
 
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples" / "keystone"
 
@@ -32,3 +34,12 @@ def facts(raw_facts: dict[str, Any]) -> dict[str, Any]:
 @pytest.fixture
 def example_dir() -> Path:
     return EXAMPLE
+
+
+@pytest.fixture
+def assets() -> Assets:
+    """Stub runtime, the real font list, and the files the example's blocks name."""
+    files = {"diagrams/jam.svg": (EXAMPLE / "diagrams" / "jam.svg").read_text(encoding="utf-8")}
+    return Assets(
+        css="/* css */", js="/* js */", fonts=json.loads(store.asset("fonts.json")), files=files
+    )

@@ -31,6 +31,12 @@ from chronicle.core.watercolor.pigments import pigment_rgb
 
 PAPER_WHITE = (0.995, 0.988, 0.972)
 Shape = PointLike | Points
+# Gradient line start and end in scene px, then stops of (offset, rgb, strength).
+ColorRamp = tuple[
+    tuple[float, float],
+    tuple[float, float],
+    Sequence[tuple[float, tuple[float, float, float], float]],
+]
 
 
 @dataclass(frozen=True)
@@ -108,9 +114,13 @@ class Canvas:
         return Box(x0, y0, x1, y1)
 
     @staticmethod
-    def _fill(polys: Sequence[Points], box: Box) -> FloatArray:
+    def _fill(polys: Sequence[Points], box: Box, evenodd: bool = False) -> FloatArray:
         mask = np.zeros((box.height, box.width), dtype=np.uint8)
         origin = np.array([box.x0, box.y0], dtype=np.float64)
+        if evenodd:
+            outlines = [np.round((poly - origin) * 16.0).astype(np.int32) for poly in polys]
+            cv2.fillPoly(mask, outlines, 255, cv2.LINE_AA, shift=4)
+            return mask.astype(np.float32) / 255.0
         # One polygon per call: filling them together would use the even-odd rule and
         # punch holes wherever two shapes overlap.
         for poly in polys:
@@ -152,13 +162,17 @@ class Canvas:
         holes: Sequence[Shape] = (),
         lift: bool = False,
         occlude: bool = False,
+        evenodd: bool = False,
+        ramp: ColorRamp | None = None,
     ) -> None:
         """Lay one flat or graded wash over the union of `shapes`.
 
         gradient is (angle in degrees, density at start, density at end): 90 fades top
         to bottom. lift removes pigment instead, the way a damp brush lifts a cloud.
         occlude first clears whatever lies under the exact same outline, so a near object
-        hides a far one instead of glazing over it.
+        hides a far one instead of glazing over it. evenodd fills the shapes together, so
+        an inner outline cuts a hole the way SVG paths do. ramp blends colors wet-in-wet
+        along a line, for an SVG linear gradient.
         """
         if not shapes:
             return
@@ -167,7 +181,7 @@ class Canvas:
         box = self._box(polys, pad)
         if box is None:
             return
-        mask = self._fill(polys, box)
+        mask = self._fill(polys, box, evenodd)
         if holes:
             hole_polys = [self._prepare(h, 3.0, wobble_px, closed=True) for h in holes]
             mask *= 1.0 - self._fill(hole_polys, box)
@@ -199,6 +213,10 @@ class Canvas:
         for _ in range(max(blooms, 0)):
             modifier *= self._bloom(box, mask)
 
+        color = self._pigment_field(box, pigment, pigment2)
+        if ramp is not None:
+            color, strength = self._color_ramp(box, ramp)
+            modifier *= strength
         density = np.clip(opacity * m * modifier, 0.0, 1.0).astype(np.float32)
         if occlude:
             region = self.rgb[box.y0 : box.y1, box.x0 : box.x1]
@@ -207,7 +225,7 @@ class Canvas:
             region = self.rgb[box.y0 : box.y1, box.x0 : box.x1]
             region += density[..., None] * (np.array(PAPER_WHITE, np.float32) - region)
             return
-        self._glaze(box, density, self._pigment_field(box, pigment, pigment2))
+        self._glaze(box, density, color)
 
     def reserve(self, shapes: Sequence[Shape], *, softness: float = 0.0) -> None:
         """Return an area to bare paper, as if the painter had worked around it."""
@@ -309,6 +327,22 @@ class Canvas:
         mix = _smoothstep(0.3, 0.7, self._noise(box, 140.0, octaves=2))[..., None]
         return np.asarray(first * (1.0 - mix) + second * mix, dtype=np.float32)
 
+    def _color_ramp(self, box: Box, ramp: ColorRamp) -> tuple[npt.NDArray[np.float32], FloatArray]:
+        """Per-pixel color and strength from gradient stops, with a ragged wet-in-wet blend."""
+        (x0, y0), (x1, y1), stops = ramp
+        s = self.scale
+        dx, dy = (x1 - x0) * s, (y1 - y0) * s
+        span = dx * dx + dy * dy or 1.0
+        gy, gx = np.mgrid[box.y0 : box.y1, box.x0 : box.x1].astype(np.float32)
+        t = ((gx - x0 * s) * dx + (gy - y0 * s) * dy) / span
+        t = t + (self._noise(box, 60.0, octaves=3) - 0.5) * 0.18
+        offsets = [stop[0] for stop in stops]
+        color = np.empty((box.height, box.width, 3), dtype=np.float32)
+        for channel in range(3):
+            color[..., channel] = np.interp(t, offsets, [stop[1][channel] for stop in stops])
+        strength = np.interp(t, offsets, [stop[2] for stop in stops]).astype(np.float32)
+        return color, strength
+
     def _ramp(self, box: Box, mask: FloatArray, gradient: tuple[float, float, float]) -> FloatArray:
         angle, start, end = gradient
         ys, xs = np.nonzero(mask > 0.5)
@@ -348,8 +382,13 @@ class Canvas:
         taper: float = 0.18,
         breaks: float = 0.0,
         closed: bool = False,
+        lift: bool = False,
     ) -> None:
-        """A pen line that wavers, swells and thins like a dip pen on cold-press paper."""
+        """A pen line that wavers, swells and thins like a dip pen on cold-press paper.
+
+        lift scrubs the paint back to paper along the line instead: a highlight on
+        glass or metal.
+        """
         pts = as_points(points) * self.scale
         if closed:
             pts = np.vstack([pts, pts[:1]])
@@ -383,8 +422,13 @@ class Canvas:
         stroke = cv2.resize(layer, (box.width, box.height), interpolation=cv2.INTER_AREA)
         tooth = self.paper.height[box.y0 : box.y1, box.x0 : box.x1]
         density = stroke.astype(np.float32) / 255.0 * opacity * (0.8 + 0.35 * tooth)
+        density = np.clip(density, 0.0, 1.0).astype(np.float32)
+        if lift:
+            region = self.rgb[box.y0 : box.y1, box.x0 : box.x1]
+            region += density[..., None] * (np.array(PAPER_WHITE, np.float32) - region)
+            return
         color = np.array(pigment_rgb(pigment), dtype=np.float32).reshape(1, 1, 3)
-        self._glaze(box, np.clip(density, 0.0, 1.0).astype(np.float32), color)
+        self._glaze(box, density, color)
 
     def pencil(self, points: Shape, *, closed: bool = False, opacity: float = 0.42) -> None:
         """A light graphite construction line, drawn twice slightly apart."""
@@ -432,10 +476,14 @@ class Canvas:
         painted *= light[..., None]
         return to_bgr8(painted)
 
-    def sprite(self) -> tuple[npt.NDArray[np.uint8], tuple[int, int, int, int] | None]:
-        """Return this canvas as a multiply layer cropped to its paint, and its box.
+    def sprite(
+        self, opaque: bool = False
+    ) -> tuple[npt.NDArray[np.uint8], tuple[int, int, int, int] | None]:
+        """Return this canvas as a layer cropped to its paint, and its box.
 
-        The box is (x, y, width, height) in scene pixels, so a page can place the layer.
+        A plain layer multiplies onto the painting below. An opaque layer carries alpha
+        from paint coverage, so a moving object hides what it passes over. The box is
+        (x, y, width, height) in scene pixels, so a page can place the layer.
         """
         ys, xs = np.nonzero(self.coverage > 0.01)
         if len(xs) == 0:
@@ -448,7 +496,11 @@ class Canvas:
         crop = self.rgb[y0:y1, x0:x1]
         s = self.scale
         box = (round(x0 / s), round(y0 / s), round((x1 - x0) / s), round((y1 - y0) / s))
-        return to_bgr8(crop), box
+        if not opaque:
+            return to_bgr8(crop), box
+        alpha = _smoothstep(0.02, 0.35, self.coverage[y0:y1, x0:x1])
+        bgra = np.dstack([to_bgr8(crop), np.clip(alpha * 255.0 + 0.5, 0, 255).astype(np.uint8)])
+        return np.ascontiguousarray(bgra), box
 
     def _vignette(self, style: str, margin: float) -> FloatArray:
         if style == "none":

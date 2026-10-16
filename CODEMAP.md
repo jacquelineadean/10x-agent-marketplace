@@ -50,14 +50,18 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 ## Notes
 
 - Import rules: `core` imports nothing outside itself; `connectors` and `entrypoints` import `core` and `config`; only `__main__.py` imports both `connectors` and `entrypoints`.
-- `groundwork.py` is not vendored in this repo; this map was updated by hand on 2026-10-14 and the facts hash is stale until the next `groundwork.py codemap` run.
+- `groundwork.py` is not vendored in this repo; this map was updated by hand on 2026-10-15 and the facts hash is stale until the next `groundwork.py codemap` run.
 - The facts above describe `plugins/impact-review` only. chronicle follows the same cli layout under `plugins/chronicle/src/chronicle/`:
 
 | Folder | Holds |
 | --- | --- |
-| `core/story/` | facts and tokens, derive table, story checks, HTML renderer and block renderers |
+| `core/story/` | facts and tokens, derive table, story checks, themes (`theme.py`), the diagram sanitizer, US tile grid (`geo.py`), HTML renderer and block renderers (`blocks.py`, `explainers.py`, `lessons.py`, joined in `dispatch.py`) |
 | `core/watercolor/` | painting engine (paper, washes, ink), motifs, presets and the scene language |
+| `core/watercolor/svg/` | SVG drawings: path and transform math (`pathdata.py`), the reader (`parse.py`) and the ink-and-wash painter (`paint.py`) |
 | `connectors/files/` | every file read and write: JSON, HTML, WebP, bundled assets |
 | `entrypoints/cli/` | the `chronicle` command: check, paint, build, motifs |
-| `assets/` | the page stylesheet and runtime script, embedded into each page |
+| `assets/` | `fonts.json`, the font families a theme may use, with their weight axes |
+| `assets/css/` | the page stylesheet in numbered parts: base, page, identity (marks, progress devices, stat skins), explainers |
+| `assets/js/` | the page runtime in numbered parts, joined inside one IIFE: core, charts, figures, plates, progress, explainers, lessons, boot |
+| `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/` |
 | `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |

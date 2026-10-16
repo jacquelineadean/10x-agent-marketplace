@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <!-- the roastery at seven in the morning: roaster warming, sacks open, first bag packed -->
+  <path d="M-20 30 C500 50 1100 10 1620 40 L1620 640 L-20 650 Z" fill="#e3d5c0" fill-opacity="0.75" data-paint="wet" data-shade="0" stroke="none"/>
+  <!-- chalkboard -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <rect x="110" y="90" width="380" height="250" rx="6" fill="#8f6640" data-shade="0.3"/>
+    <rect x="126" y="106" width="348" height="218" fill="#2d3530" data-shade="0.2"/>
+  </g>
+  <g fill="none" stroke="#ffffff" stroke-width="3" data-line="lift">
+    <path d="M150 196 L300 196 M150 246 L330 246 M150 292 L270 292"/>
+  </g>
+  <text x="150" y="160" font-size="34" data-label="hand" fill="#f4efe3">Today's roasts</text>
+  <text x="150" y="226" font-size="26" data-label="hand" fill="#e8dcc0">Ethiopia, Guji</text>
+  <text x="150" y="276" font-size="26" data-label="hand" fill="#e8dcc0">Colombia, Huila</text>
+  <!-- chimney -->
+  <g stroke="#2b231d" stroke-width="2.4">
+    <path d="M1050 -20 L1090 -20 L1090 346 L1050 346 Z" fill="#b87333" data-shade="0.5"/>
+  </g>
+  <!-- floor -->
+  <path d="M-20 640 L1620 628 L1620 920 L-20 920 Z" fill="#a39283" stroke="#2b231d" stroke-width="2.2" data-shade="0.3"/>
+  <!-- shadows -->
+  <path d="M720 760 L1360 770 L1440 730 L800 720 Z" fill="#3d2f24" fill-opacity="0.38" data-paint="glaze" data-wet="0.6" stroke="none"/>
+  <path d="M190 800 L520 806 L560 770 L230 764 Z" fill="#3d2f24" fill-opacity="0.38" data-paint="glaze" data-wet="0.6" stroke="none"/>
+  <!-- the roaster -->
+  <g stroke="#2b231d" stroke-width="2.8">
+    <path d="M760 740 L790 610 L1000 610 L1030 740 Z" fill="#2f5e57" data-shade="0.5"/>
+    <path d="M740 360 L1040 360 L1040 620 L740 620 Z" fill="#3a6f66" data-shade="0.55"/>
+    <path d="M1040 360 L1110 330 L1110 590 L1040 620 Z" fill="#285049" data-shade="0.4"/>
+    <path d="M740 360 L810 330 L1110 330 L1040 360 Z" fill="#4b8379"/>
+    <circle cx="860" cy="490" r="96" fill="#b87333" data-shade="0.5"/>
+    <circle cx="860" cy="490" r="70" fill="#2b231d"/>
+    <circle cx="860" cy="490" r="44" fill="#6b4a2e" data-shade="0.3"/>
+    <path d="M832 476 C846 468 868 470 880 482" fill="none" stroke="#ffffff" stroke-width="5" data-line="lift"/>
+    <path d="M900 330 L940 230 L1020 230 L1060 330 Z" fill="#b87333" data-shade="0.5"/>
+    <path d="M936 230 L1024 230 L1024 214 L936 214 Z" fill="#8e5626"/>
+    <circle cx="990" cy="420" r="20" fill="#f4efe3"/>
+    <path d="M990 420 L1000 406" fill="none" stroke-width="2.4"/>
+  </g>
+  <!-- chute from the drum door to the cooling tray -->
+  <path d="M930 560 L960 548 L1110 660 L1080 676 Z" fill="#b87333" stroke="#2b231d" stroke-width="2.4" data-shade="0.4"/>
+  <!-- cooling tray with roasted beans -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <path d="M1080 700 L1080 780 M1290 700 L1290 780 M1185 716 L1185 790" fill="none" stroke-width="5" stroke="#5a5f62"/>
+    <ellipse cx="1185" cy="694" rx="130" ry="34" fill="#c4c9c6" data-shade="0.4"/>
+    <ellipse cx="1185" cy="690" rx="116" ry="26" fill="#6b4a2e"/>
+  </g>
+  <path d="M1179.9 692.4a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1166.1 692.2a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1217.5 693.8a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1252.1 680.9a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1181.2 684.9a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1150.7 688.5a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1184.2 692.2a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1200.6 710.9a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1219.3 673.6a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1185.3 685.8a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1154.8 703.5a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1168.8 670.4a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1185.6 688.6a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1123.5 680.4a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1160.3 689.8a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1169.7 690.3a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1262.3 682.0a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1148.9 688.0a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1229.5 682.8a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1244.8 676.8a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1135.6 689.5a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1142.2 684.2a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1195.9 696.0a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1180.7 689.1a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1242.0 694.2a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1168.3 702.1a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1143.6 691.4a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1199.5 689.9a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1160.8 692.4a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1159.5 685.3a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1130.6 703.6a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1153.8 701.7a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1187.7 688.7a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1201.3 692.0a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1185.1 675.8a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1181.7 697.6a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1200.2 699.5a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1249.6 694.3a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1258.6 676.6a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1169.4 667.9a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1209.1 690.8a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1258.6 686.2a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1095.2 701.6a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1116.6 677.0a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1173.6 694.3a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1165.5 691.1a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1104.7 705.0a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1178.5 690.2a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1196.1 691.1a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1187.0 681.8a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1176.4 692.2a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1223.2 688.9a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1180.6 691.3a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1195.7 691.3a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1172.0 686.9a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1228.8 692.9a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1179.6 713.0a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1219.0 698.5a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1185.4 680.7a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1229.0 689.1a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1181.2 699.5a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1222.0 692.2a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1179.8 710.5a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1204.5 679.9a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1205.2 691.2a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1180.0 694.8a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1189.6 710.0a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1182.4 690.9a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1232.4 684.3a6 4 0 1 0 12 0a6 4 0 1 0 -12 0M1221.2 689.4a6 4 0 1 0 12 0a6 4 0 1 0 -12 0" fill="#3f2615" stroke="none" data-loose="0" data-shade="0"/>
+  <path d="M1185 690 L1270 676" fill="none" stroke="#5a5f62" stroke-width="5"/>
+  <!-- sacks of green coffee -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <path d="M200 790 C180 700 200 560 250 520 C290 540 340 540 380 520 C420 560 430 700 420 790 Z" fill="#c9a66b" data-shade="0.5"/>
+    <path d="M250 520 C270 500 360 500 380 520 C340 534 290 534 250 520 Z" fill="#9aa86a"/>
+    <path d="M370 800 C350 720 360 600 400 570 C440 586 490 586 520 570 C560 600 570 720 560 800 Z" fill="#d4b47c" data-shade="0.5"/>
+    <path d="M400 570 C420 552 500 552 520 570 C490 584 430 584 400 570 Z" fill="#a3b06f"/>
+  </g>
+  <path d="M443.2 822.3a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M419.0 824.9a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M353.7 806.6a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M291.4 828.5a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M442.9 829.9a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M319.0 822.4a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M420.9 822.0a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M424.3 818.8a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M389.0 823.2a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M304.0 829.8a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M455.4 806.1a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M458.6 830.9a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M392.0 805.2a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M442.8 807.6a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M458.1 822.7a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M258.3 808.7a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M384.7 819.9a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M409.2 830.0a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M293.1 804.1a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M447.9 804.4a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M437.8 807.2a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M423.2 825.9a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M438.1 819.4a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M438.3 809.6a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M392.7 813.3a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M441.2 825.7a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M348.7 818.7a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M250.8 805.0a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M375.8 817.7a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M435.2 821.0a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M275.5 814.2a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M413.9 818.6a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M247.3 827.5a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M427.1 806.4a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M364.5 814.7a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M418.2 812.7a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M296.4 817.6a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M457.6 806.7a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M270.2 821.4a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0M439.8 818.3a5 3.4 0 1 0 10 0a5 3.4 0 1 0 -10 0" fill="#8f9e5c" stroke="#5f6b36" stroke-width="1" data-loose="0"/>
+  <text x="310" y="660" font-size="22" text-anchor="middle" data-label="label" fill="#5a3a22" transform="rotate(-4 310 660)">Ethiopia</text>
+  <text x="466" y="700" font-size="22" text-anchor="middle" data-label="label" fill="#5a3a22" transform="rotate(3 466 700)">Colombia</text>
+  <!-- the first bag of the day, and a cup -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <path d="M600 800 L610 640 L700 640 L712 800 Z" fill="#c49a6c" data-shade="0.5"/>
+    <path d="M610 640 L620 600 L690 600 L700 640 Z" fill="#b08052"/>
+    <rect x="620" y="680" width="72" height="70" fill="#f4efe3"/>
+    <path d="M630 726 C640 712 650 712 656 724 C662 736 672 736 682 722" fill="none" stroke="#2f5e57" stroke-width="3"/>
+  </g>
+  <text x="656" y="702" font-size="12" text-anchor="middle" data-label="label" fill="#2b231d">Saltmarsh</text>
+  <g stroke="#2b231d" stroke-width="2.4">
+    <ellipse cx="1420" cy="806" rx="86" ry="18" fill="#f4efe3" data-shade="0.3"/>
+    <path d="M1360 740 C1362 790 1378 806 1420 806 C1462 806 1478 790 1480 740 Z" fill="#f4efe3" data-shade="0.4"/>
+    <path d="M1480 754 C1514 750 1514 784 1474 786" fill="none" stroke-width="5"/>
+    <ellipse cx="1420" cy="740" rx="60" ry="14" fill="#8a5a33"/>
+  </g>
+  <path d="M1408 736 C1402 726 1414 722 1420 732 C1426 722 1438 726 1432 736 L1420 746 Z" fill="#ffffff" stroke="none" data-paint="reserve"/>
+  <g data-layer="steam" data-motion="drift" data-travel="6" fill="none" stroke="#9a9187" stroke-width="2.2" data-line="pencil">
+    <path d="M1406 716 C1394 690 1420 676 1406 650 C1398 634 1410 620 1404 606"/>
+    <path d="M1436 714 C1450 690 1424 672 1440 648"/>
+  </g>
+  <circle cx="860" cy="390" r="1" fill="none" stroke="none" data-anchor="roaster"/>
+  <circle cx="1185" cy="640" r="1" fill="none" stroke="none" data-anchor="tray"/>
+  <circle cx="390" cy="480" r="1" fill="none" stroke="none" data-anchor="sacks"/>
+</svg>

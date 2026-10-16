@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <!-- warehouse wall at dawn and the floor -->
+  <path d="M-20 30 C500 10 1100 50 1620 20 L1620 640 L-20 650 Z" fill="#c7cbd3" fill-opacity="0.8" data-paint="wet" data-shade="0" stroke="none"/>
+  <path d="M-20 646 L1620 636 L1620 920 L-20 920 Z" fill="#a6a39b" stroke="#2b231d" stroke-width="2.2" data-shade="0.3"/>
+  <path d="M-20 700 L1620 690" stroke="#e2b54a" stroke-width="10" fill="none" data-jitter="0.3"/>
+  <!-- window with dawn light -->
+  <g stroke="#2b231d" stroke-width="2.4">
+    <rect x="140" y="80" width="300" height="190" fill="#f3d9a6" data-shade="0.2"/>
+    <path d="M290 80 L290 270 M140 175 L440 175" fill="none" stroke-width="5" stroke="#6b6a68"/>
+  </g>
+  <!-- wall clock: 09:47, the pool runs dry -->
+  <g stroke="#2b231d" stroke-width="2.4">
+    <circle cx="640" cy="160" r="62" fill="#f6f1e4" data-shade="0.2"/>
+    <circle cx="640" cy="160" r="62" fill="none" stroke-width="5" stroke="#4a5565"/>
+    <path d="M640 160 L656 120 M640 160 L604 196" fill="none" stroke-width="4"/>
+  </g>
+  <!-- rotating beacon on its bracket -->
+  <g stroke="#2b231d" stroke-width="2.4">
+    <path d="M1300 120 L1360 120 L1360 140 L1300 140 Z" fill="#4a5565"/>
+    <path d="M1306 120 C1306 70 1354 70 1354 120 Z" fill="#e0532f" data-shade="0.4"/>
+  </g>
+  <g data-layer="beacon" data-motion="spin">
+    <path d="M1330 100 L1190 62 L1190 138 Z M1330 100 L1470 62 L1470 138 Z" fill="#f08a5d" fill-opacity="0.55" data-paint="glaze" data-wet="0.5" stroke="none"/>
+  </g>
+  <!-- the belt -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <path d="M100 404 L1040 404 L1040 444 L100 444 Z" fill="#3e4a57" data-shade="0.3"/>
+    <path d="M140 444 L170 444 L170 640 L140 640 Z M560 444 L590 444 L590 640 L560 640 Z M960 444 L990 444 L990 640 L960 640 Z" fill="#8b9593" data-shade="0.5"/>
+  </g>
+  <g stroke="#2b231d" stroke-width="1.8"><circle cx="150" cy="424" r="9" fill="#c4c9c6"/><circle cx="196" cy="424" r="9" fill="#c4c9c6"/><circle cx="242" cy="424" r="9" fill="#c4c9c6"/><circle cx="288" cy="424" r="9" fill="#c4c9c6"/><circle cx="334" cy="424" r="9" fill="#c4c9c6"/><circle cx="380" cy="424" r="9" fill="#c4c9c6"/><circle cx="426" cy="424" r="9" fill="#c4c9c6"/><circle cx="472" cy="424" r="9" fill="#c4c9c6"/><circle cx="518" cy="424" r="9" fill="#c4c9c6"/><circle cx="564" cy="424" r="9" fill="#c4c9c6"/><circle cx="610" cy="424" r="9" fill="#c4c9c6"/><circle cx="656" cy="424" r="9" fill="#c4c9c6"/><circle cx="702" cy="424" r="9" fill="#c4c9c6"/><circle cx="748" cy="424" r="9" fill="#c4c9c6"/><circle cx="794" cy="424" r="9" fill="#c4c9c6"/><circle cx="840" cy="424" r="9" fill="#c4c9c6"/><circle cx="886" cy="424" r="9" fill="#c4c9c6"/><circle cx="932" cy="424" r="9" fill="#c4c9c6"/><circle cx="978" cy="424" r="9" fill="#c4c9c6"/></g>
+  <g transform="rotate(0 280.0 364.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M230 324 L330 324 L330 404 L230 404 Z" fill="#c99a68" data-shade="0.45"/>
+    <path d="M230 324 L260 307.5 L360 307.5 L330 324 Z" fill="#dcb07c"/>
+    <path d="M330 324 L360 307.5 L360 387.5 L330 404 Z" fill="#a8774a"/>
+    <path d="M272.0 324 L302.0 307.5" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(-2 475.0 361.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M420 318 L530 318 L530 404 L420 404 Z" fill="#d2a777" data-shade="0.45"/>
+    <path d="M420 318 L454 299.3 L564 299.3 L530 318 Z" fill="#e2bd8e"/>
+    <path d="M530 318 L564 299.3 L564 385.3 L530 404 Z" fill="#b08052"/>
+    <path d="M466.2 318 L500.2 299.3" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(-6 612.0 360.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M560 316 L664 316 L664 404 L560 404 Z" fill="#bf8e5c" data-shade="0.45"/>
+    <path d="M560 316 L592 298.4 L696 298.4 L664 316 Z" fill="#d6ab7a"/>
+    <path d="M664 316 L696 298.4 L696 386.4 L664 404 Z" fill="#9e6f43"/>
+    <path d="M603.68 316 L635.68 298.4" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(-14 705.0 335.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M650 290 L760 290 L760 380 L650 380 Z" fill="#c99a68" data-shade="0.45"/>
+    <path d="M650 290 L686 270.2 L796 270.2 L760 290 Z" fill="#dcb07c"/>
+    <path d="M760 290 L796 270.2 L796 360.2 L760 380 Z" fill="#a8774a"/>
+    <path d="M696.2 290 L732.2 270.2" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(8 820.0 348.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M760 300 L880 300 L880 396 L760 396 Z" fill="#d2a777" data-shade="0.45"/>
+    <path d="M760 300 L796 280.2 L916 280.2 L880 300 Z" fill="#e2bd8e"/>
+    <path d="M880 300 L916 280.2 L916 376.2 L880 396 Z" fill="#b08052"/>
+    <path d="M810.4 300 L846.4 280.2" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(-22 906.0 294.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M850 250 L962 250 L962 338 L850 338 Z" fill="#bf8e5c" data-shade="0.45"/>
+    <path d="M850 250 L884 231.3 L996 231.3 L962 250 Z" fill="#d6ab7a"/>
+    <path d="M962 250 L996 231.3 L996 319.3 L962 338 Z" fill="#9e6f43"/>
+    <path d="M897.04 250 L931.04 231.3" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(18 985.0 342.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M930 296 L1040 296 L1040 388 L930 388 Z" fill="#c99a68" data-shade="0.45"/>
+    <path d="M930 296 L964 277.3 L1074 277.3 L1040 296 Z" fill="#dcb07c"/>
+    <path d="M1040 296 L1074 277.3 L1074 369.3 L1040 388 Z" fill="#a8774a"/>
+    <path d="M976.2 296 L1010.2 277.3" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(34 928.0 238.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M880 200 L976 200 L976 276 L880 276 Z" fill="#d2a777" data-shade="0.45"/>
+    <path d="M880 200 L910 183.5 L1006 183.5 L976 200 Z" fill="#e2bd8e"/>
+    <path d="M976 200 L1006 183.5 L1006 259.5 L976 276 Z" fill="#b08052"/>
+    <path d="M920.32 200 L950.32 183.5" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <!-- the pile at the end of the belt -->
+  <path d="M860 840 L1500 800 L1460 760 L900 790 Z" fill="#4a3f33" fill-opacity="0.35" data-paint="glaze" data-wet="0.6" stroke="none"/>
+  <g transform="rotate(6 1140.0 515.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M1080 470 L1200 470 L1200 560 L1080 560 Z" fill="#c99a68" data-shade="0.45"/>
+    <path d="M1080 470 L1120 448.0 L1240 448.0 L1200 470 Z" fill="#dcb07c"/>
+    <path d="M1200 470 L1240 448.0 L1240 538.0 L1200 560 Z" fill="#a8774a"/>
+    <path d="M1130.4 470 L1170.4 448.0" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(-10 1240.0 540.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M1190 500 L1290 500 L1290 580 L1190 580 Z" fill="#d2a777" data-shade="0.45"/>
+    <path d="M1190 500 L1224 481.3 L1324 481.3 L1290 500 Z" fill="#e2bd8e"/>
+    <path d="M1290 500 L1324 481.3 L1324 561.3 L1290 580 Z" fill="#b08052"/>
+    <path d="M1232.0 500 L1266.0 481.3" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(-4 1065.0 568.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M1000 520 L1130 520 L1130 616 L1000 616 Z" fill="#bf8e5c" data-shade="0.45"/>
+    <path d="M1000 520 L1040 498.0 L1170 498.0 L1130 520 Z" fill="#d6ab7a"/>
+    <path d="M1130 520 L1170 498.0 L1170 594.0 L1130 616 Z" fill="#9e6f43"/>
+    <path d="M1054.6 520 L1094.6 498.0" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(8 1205.0 615.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M1130 560 L1280 560 L1280 670 L1130 670 Z" fill="#c99a68" data-shade="0.45"/>
+    <path d="M1130 560 L1174 535.8 L1324 535.8 L1280 560 Z" fill="#dcb07c"/>
+    <path d="M1280 560 L1324 535.8 L1324 645.8 L1280 670 Z" fill="#a8774a"/>
+    <path d="M1193.0 560 L1237.0 535.8" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(16 1325.0 635.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M1270 590 L1380 590 L1380 680 L1270 680 Z" fill="#d2a777" data-shade="0.45"/>
+    <path d="M1270 590 L1306 570.2 L1416 570.2 L1380 590 Z" fill="#e2bd8e"/>
+    <path d="M1380 590 L1416 570.2 L1416 660.2 L1380 680 Z" fill="#b08052"/>
+    <path d="M1316.2 590 L1352.2 570.2" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(-14 1020.0 655.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M960 610 L1080 610 L1080 700 L960 700 Z" fill="#bf8e5c" data-shade="0.45"/>
+    <path d="M960 610 L998 589.1 L1118 589.1 L1080 610 Z" fill="#d6ab7a"/>
+    <path d="M1080 610 L1118 589.1 L1118 679.1 L1080 700 Z" fill="#9e6f43"/>
+    <path d="M1010.4 610 L1048.4 589.1" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(-3 1150.0 702.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M1080 650 L1220 650 L1220 754 L1080 754 Z" fill="#c99a68" data-shade="0.45"/>
+    <path d="M1080 650 L1122 626.9 L1262 626.9 L1220 650 Z" fill="#dcb07c"/>
+    <path d="M1220 650 L1262 626.9 L1262 730.9 L1220 754 Z" fill="#a8774a"/>
+    <path d="M1138.8 650 L1180.8 626.9" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(12 1295.0 738.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M1230 690 L1360 690 L1360 786 L1230 786 Z" fill="#d2a777" data-shade="0.45"/>
+    <path d="M1230 690 L1270 668.0 L1400 668.0 L1360 690 Z" fill="#e2bd8e"/>
+    <path d="M1360 690 L1400 668.0 L1400 764.0 L1360 786 Z" fill="#b08052"/>
+    <path d="M1284.6 690 L1324.6 668.0" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(28 1410.0 738.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M1360 700 L1460 700 L1460 776 L1360 776 Z" fill="#bf8e5c" data-shade="0.45"/>
+    <path d="M1360 700 L1392 682.4 L1492 682.4 L1460 700 Z" fill="#d6ab7a"/>
+    <path d="M1460 700 L1492 682.4 L1492 758.4 L1460 776 Z" fill="#9e6f43"/>
+    <path d="M1402.0 700 L1434.0 682.4" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(9 955.0 742.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M900 700 L1010 700 L1010 784 L900 784 Z" fill="#c99a68" data-shade="0.45"/>
+    <path d="M900 700 L934 681.3 L1044 681.3 L1010 700 Z" fill="#dcb07c"/>
+    <path d="M1010 700 L1044 681.3 L1044 765.3 L1010 784 Z" fill="#a8774a"/>
+    <path d="M946.2 700 L980.2 681.3" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+  <g transform="rotate(-18 1080.0 784.0)" stroke="#2b231d" stroke-width="2.2">
+    <path d="M1020 740 L1140 740 L1140 828 L1020 828 Z" fill="#d2a777" data-shade="0.45"/>
+    <path d="M1020 740 L1056 720.2 L1176 720.2 L1140 740 Z" fill="#e2bd8e"/>
+    <path d="M1140 740 L1176 720.2 L1176 808.2 L1140 828 Z" fill="#b08052"/>
+    <path d="M1070.4 740 L1106.4 720.2" fill="none" stroke="#9b7432" stroke-width="5"/>
+  </g>
+
+  <!-- the fallback lever, pulled -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <rect x="300" y="520" width="150" height="110" rx="8" fill="#e2b54a" data-shade="0.45"/>
+    <path d="M370 560 L260 470 L276 456 L386 548 Z" fill="#3e4a57"/>
+    <circle cx="262" cy="460" r="20" fill="#c23a2c" data-shade="0.3"/>
+    <circle cx="375" cy="556" r="12" fill="#2b231d"/>
+  </g>
+  <text x="375" y="612" font-size="17" text-anchor="middle" data-label="label" fill="#2b231d">Fallback</text>
+  <!-- a cart order ticket stuck in the jam -->
+  <g transform="rotate(-12 1150 480)">
+    <rect x="1110" y="440" width="96" height="60" fill="#fbf6ea" stroke="#2b231d" stroke-width="1.8"/>
+  </g>
+  <text x="1158" y="478" font-size="16" text-anchor="middle" data-label="mono" fill="#c23a2c" transform="rotate(-12 1150 480)">ERROR</text>
+  <text x="640" y="250" font-size="24" text-anchor="middle" data-label="number" fill="#2b231d">{{reliability.pool_exhausted_at}}</text>
+  <circle cx="1330" cy="100" r="1" fill="none" stroke="none" data-anchor="beacon"/>
+  <circle cx="760" cy="120" r="1" fill="none" stroke="none" data-anchor="clock"/>
+  <circle cx="1150" cy="620" r="1" fill="none" stroke="none" data-anchor="pile"/>
+  <circle cx="300" cy="500" r="1" fill="none" stroke="none" data-anchor="lever"/>
+</svg>

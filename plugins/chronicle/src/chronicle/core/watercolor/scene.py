@@ -25,7 +25,7 @@ from chronicle.core.watercolor.canvas import Canvas
 from chronicle.core.watercolor.motifs import nature, structures
 
 Image = npt.NDArray[np.uint8]
-MOTIONS = ("none", "descend", "drift", "fall", "cross", "rise")
+MOTIONS = ("none", "descend", "drift", "fall", "cross", "rise", "sway", "bob", "pop", "spin")
 VIGNETTES = ("deckle", "soft", "spot", "none")
 
 
@@ -38,6 +38,7 @@ class Layer:
     box: tuple[int, int, int, int]
     motion: str = "none"
     travel: float = 0.0
+    blend: str = "multiply"
 
 
 @dataclass
@@ -49,6 +50,7 @@ class Painting:
     base: Image
     layers: list[Layer] = field(default_factory=list)
     anchors: dict[str, tuple[float, float]] = field(default_factory=dict)
+    labels: list[dict[str, Any]] = field(default_factory=list)
 
 
 MotifFn = Callable[..., Any]

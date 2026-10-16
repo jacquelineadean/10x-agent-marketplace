@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" class="head"/>
+    </marker>
+  </defs>
+  <g id="sync" data-tip="The monolith's inventory sync timed out and retried with no backoff, so every timeout multiplied the load.">
+    <rect class="box legacy" x="10" y="40" width="150" height="86" rx="6"/>
+    <text class="title" x="85" y="74" text-anchor="middle">Inventory sync</text>
+    <text class="label" x="85" y="98" text-anchor="middle">monolith, retrying</text>
+  </g>
+  <g id="topic" data-tip="Events on the cart topic rose to {{reliability.incident_multiple}} a normal Friday morning.">
+    <rect class="box" x="210" y="40" width="150" height="86" rx="6"/>
+    <text class="title" x="285" y="74" text-anchor="middle">Cart events</text>
+    <text class="label" x="285" y="98" text-anchor="middle">{{reliability.incident_multiple}} normal rate</text>
+  </g>
+  <g id="consumer" data-tip="The cart service fell behind: consumer lag passed {{reliability.incident_lag|compact}} messages.">
+    <rect class="box" x="410" y="40" width="150" height="86" rx="6"/>
+    <text class="title" x="485" y="74" text-anchor="middle">Cart service</text>
+    <text class="label" x="485" y="98" text-anchor="middle">lag {{reliability.incident_lag|compact}}</text>
+  </g>
+  <g id="pool" data-tip="All {{reliability.incident_pool}} database connections were in use at {{reliability.pool_exhausted_at}}; new requests queued, then failed.">
+    <rect class="box" x="610" y="40" width="150" height="86" rx="6"/>
+    <text class="title" x="685" y="74" text-anchor="middle">Cart database</text>
+    <text class="label" x="685" y="98" text-anchor="middle">pool {{reliability.incident_pool}} of {{reliability.incident_pool}}</text>
+  </g>
+  <g id="errors" data-tip="At the peak, {{reliability.incident_peak_err}} of cart requests failed.">
+    <rect class="box legacy" x="810" y="40" width="160" height="86" rx="6"/>
+    <text class="title" x="890" y="74" text-anchor="middle">Shoppers</text>
+    <text class="label" x="890" y="98" text-anchor="middle">{{reliability.incident_peak_err}} errors</text>
+  </g>
+  <g id="flood">
+    <path class="line legacy" d="M160 83 L206 83" marker-end="url(#arrow)"/>
+    <path class="line legacy" d="M360 83 L406 83" marker-end="url(#arrow)"/>
+    <path class="line legacy" d="M560 83 L606 83" marker-end="url(#arrow)"/>
+    <path class="line legacy" d="M760 83 L806 83" marker-end="url(#arrow)"/>
+  </g>
+  <g id="lever" data-tip="The incident commander routed cart traffic back to the monolith, which the migration plan had kept running.">
+    <rect class="box accent" x="410" y="210" width="210" height="76" rx="6"/>
+    <text class="title" x="515" y="242" text-anchor="middle">Fallback switch</text>
+    <text class="label" x="515" y="266" text-anchor="middle">carts back to the monolith</text>
+  </g>
+  <g id="oldpath">
+    <rect class="box soft" x="700" y="210" width="270" height="76" rx="6"/>
+    <text class="title" x="835" y="242" text-anchor="middle">Monolith cart path</text>
+    <text class="label" x="835" y="266" text-anchor="middle">still running, by design</text>
+    <path class="line accent dashed" d="M620 248 L696 248" marker-end="url(#arrow)"/>
+    <path class="line accent dashed" d="M890 210 L890 130" marker-end="url(#arrow)"/>
+  </g>
+  <text class="hand" x="196" y="250">the fallback</text>
+  <path class="line dashed" d="M300 256 C340 256 370 252 404 248" marker-end="url(#arrow)"/>
+</svg>
