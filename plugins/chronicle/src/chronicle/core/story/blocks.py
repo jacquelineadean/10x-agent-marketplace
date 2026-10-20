@@ -192,9 +192,9 @@ def stepper(b: Builder, block: Block) -> str:
         )
     controls = tag(
         "div",
-        tag("button", "Back", type="button", class_="st-prev")
+        tag("button", plain(b.theme.words["back"]), type="button", class_="st-prev")
         + tag("p", class_="st-count", aria_live="polite")
-        + tag("button", "Next", type="button", class_="st-next"),
+        + tag("button", plain(b.theme.words["next"]), type="button", class_="st-next"),
         class_="st-controls",
         hidden=True,
     )

@@ -8,6 +8,56 @@
     "description": "A short illustrated quarterly review for a support team, built by chronicle from invented data.",
     "colophon": "Built by the chronicle plugin from invented data, as a second example beside Keystone."
   },
+  "theme": {
+    "concept": "Lantern Bay's name, taken literally: the support desk as a harbor lighthouse keeper's log. Tickets come in like ships, the August surge is a storm, and replies are the lamp's sweep.",
+    "palette": {
+      "paper": "#F3EFE6",
+      "ink": "#1C2731",
+      "accent": "#B4540A",
+      "legacy": "#41617A",
+      "colors": {
+        "icon": "#F2C14E",
+        "sea": "#5B8BA6"
+      },
+      "series": [
+        "#B4540A",
+        "#41617A",
+        "#2F7D6B",
+        "#8C6A12",
+        "#9C4A6E",
+        "#5F7A2E"
+      ]
+    },
+    "fonts": {
+      "display": "Libre Caslon Display",
+      "body": "Libre Caslon Text",
+      "ui": "IBM Plex Sans Condensed",
+      "mono": "Courier Prime"
+    },
+    "progress": {
+      "kind": "route",
+      "path": "M0,30 C120,8 210,36 330,22 S540,4 660,20 S860,36 1000,10",
+      "icon_path": "M-3,8 L-2,-4 L2,-4 L3,8 Z M-3.5,-4 L3.5,-4 L3.5,-6 L-3.5,-6 Z M-1.5,-6 L-1.5,-9 L1.5,-9 L1.5,-6 Z",
+      "line": "dashed",
+      "start_label": "Harbor log, Q3"
+    },
+    "chapter_mark": {
+      "style": "badge",
+      "prefix": "Watch",
+      "format": "roman"
+    },
+    "stats": "ticket",
+    "surface": {
+      "texture": "ruled",
+      "corners": "square",
+      "frame": "tape"
+    },
+    "words": {
+      "sources": "From the keeper’s log",
+      "show_numbers": "Open the log",
+      "hide_numbers": "Close the log"
+    }
+  },
   "sources": [
     {"id": "helpdesk", "label": "Help desk", "detail": "Ticket counts and reply times by week.", "as_of": "1 Oct 2026"},
     {"id": "survey", "label": "Satisfaction survey", "detail": "Post-ticket survey, monthly.", "as_of": "30 Sep 2026"}
@@ -21,7 +71,9 @@
       {"label": "Tickets in Q3", "value": "{{desk.tickets_total}}", "spark": "@desk.tickets"},
       {"label": "Median first reply", "value": "{{desk.first_reply_now}}", "delta": "{{desk.reply_change|signed}} since July", "trend": "good", "spark": "@desk.first_reply_hours"},
       {"label": "Customers satisfied", "value": "{{desk.csat_now}}", "delta": "September", "trend": "neutral"}
-    ]
+    ],
+    "stats_title": "Lantern Bay desk",
+    "stats_subtitle": "Q3 2026 · ticket stub"
   },
   "chapters": [
     {

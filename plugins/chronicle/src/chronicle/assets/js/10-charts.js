@@ -493,7 +493,7 @@
       btn.addEventListener("click", function () {
         var open = btn.getAttribute("aria-expanded") === "true";
         btn.setAttribute("aria-expanded", open ? "false" : "true");
-        btn.textContent = open ? "Show the numbers" : "Hide the numbers";
+        btn.textContent = open ? word("show_numbers", "Show the numbers") : word("hide_numbers", "Hide the numbers");
         slot.hidden = open;
         if (!open && ctl.api && ctl.api.table) {
           while (slot.firstChild) slot.removeChild(slot.firstChild);

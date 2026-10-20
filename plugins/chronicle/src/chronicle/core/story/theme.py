@@ -1,8 +1,9 @@
-"""A page's visual identity: colors, type, the progress device and chapter marks.
+"""A page's visual identity: colors, type, surface, words, the progress device and marks.
 
 The story's `theme` names a few brand colors and fonts; code derives the rest (text-safe
 accent shades, washes, a sequential ramp, every dark-mode color) and checks contrast,
-so a theme written in a minute still reads well in both light and dark.
+so a theme written in a minute still reads well in both light and dark. `review` compares
+a theme with the defaults and with other pages, so two pages do not end up looking alike.
 """
 
 from __future__ import annotations
@@ -58,7 +59,7 @@ FALLBACKS = {
     "hand": '"Segoe Print", "Bradley Hand", cursive',
     "mono": 'ui-monospace, "SF Mono", Menlo, monospace',
 }
-PROGRESS = ("arches", "track", "tape", "flags", "clock", "steps")
+PROGRESS = ("arches", "track", "route", "tape", "flags", "clock", "steps")
 ICONS = (
     "parcel",
     "van",
@@ -71,12 +72,40 @@ ICONS = (
     "ball",
     "boot",
     "rocket",
+    "cup",
+    "book",
     "dot",
 )
 TRACK_LINES = ("solid", "dashed", "belt", "road", "rail")
 MARKS = ("arch", "label", "tag", "sign", "badge", "flag", "plain", "step", "none")
 NUMBERING = ("roman", "decimal", "padded", "alpha")
 STAT_STYLES = ("rule", "receipt", "cards", "ticket")
+TEXTURES = ("plain", "ruled", "grid", "dots")
+CORNERS = {"square": 0.0, "soft": 1.0, "round": 3.0}
+FRAMES = ("none", "mat", "tape")
+# Every word the page's controls and headings show, so a page can speak its world's language:
+# a golf handbook asks "Hole 3 of 9", a field guide ends with "Field notes".
+WORDS = {
+    "sources": "Sources and method",
+    "source": "Source",
+    "show_numbers": "Show the numbers",
+    "hide_numbers": "Hide the numbers",
+    "step": "Step",
+    "of": "of",
+    "back": "Back",
+    "next": "Next",
+    "play": "Play",
+    "pause": "Pause",
+    "question": "Question",
+    "next_question": "Next question",
+    "see_score": "See your score",
+    "score": "Score",
+    "try_again": "Try again",
+    "done": "done",
+    "overview": "Overview",
+}
+# An SVG path: commands, numbers, commas and spaces only, so it cannot carry markup.
+_PATH = re.compile(r"^[MmLlHhVvCcSsQqTtAaZz0-9eE.,+\s-]{2,4000}$")
 _HEX = re.compile(r"^#[0-9a-fA-F]{6}$")
 _NAME = re.compile(r"^[a-z][a-z0-9-]{0,24}$")
 ROMAN = ("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV")
@@ -95,6 +124,7 @@ class Theme:
     progress: dict[str, Any]
     mark: dict[str, str]
     stats: str
+    words: dict[str, str] = field(default_factory=lambda: dict(WORDS))
     warnings: list[str] = field(default_factory=list)
 
     def number(self, index: int) -> str:
@@ -168,7 +198,17 @@ def build(
     """
     spec = dict(spec or {})
     warnings: list[str] = []
-    known = {"palette", "dark", "fonts", "progress", "chapter_mark", "stats"}
+    known = {
+        "concept",
+        "palette",
+        "dark",
+        "fonts",
+        "progress",
+        "chapter_mark",
+        "stats",
+        "surface",
+        "words",
+    }
     for key in sorted(set(spec) - known):
         warnings.append(f"theme.{key} is not used; theme takes {', '.join(sorted(known))}")
     palette = dict(spec.get("palette", {}))
@@ -184,8 +224,8 @@ def build(
     font_css, url = _fonts(dict(spec.get("fonts", {})), fonts, needs)
     light = _light_tokens(colors)
     dark = _dark_tokens(colors, dark_spec, warnings)
-    css = _css(light, dark, font_css, colors)
-    return Theme(css, url, progress, mark, stats, warnings)
+    css = _css(light, dark, font_css, colors) + _surface(spec.get("surface", {}))
+    return Theme(css, url, progress, mark, stats, _words(spec.get("words", {})), warnings)
 
 
 def _colors(palette: Mapping[str, Any], warnings: list[str]) -> dict[str, Any]:
@@ -355,6 +395,20 @@ def _progress(spec: Mapping[str, Any]) -> dict[str, Any]:
     if line not in TRACK_LINES:
         raise ThemeError(f"theme.progress.line {line!r} must be one of {', '.join(TRACK_LINES)}")
     out.update(icon=icon, line=line)
+    for key in ("path", "icon_path"):
+        if key in spec:
+            value = " ".join(str(spec[key]).split())
+            if not _PATH.match(value) or value[0] not in "Mm":
+                raise ThemeError(
+                    f"theme.progress.{key} must be SVG path data starting with M "
+                    "(commands and numbers only)"
+                )
+            out[key] = value
+    if kind == "route" and "path" not in out:
+        raise ThemeError(
+            "theme.progress.kind route needs a path: SVG path data in a 1000 x 40 box, "
+            "drawn left to right, such as the trail, river or line the page follows"
+        )
     if "total" in spec:
         out["total"] = float(spec["total"])
     for key in ("unit", "label", "start_label", "end_label"):
@@ -374,6 +428,68 @@ def _mark(spec: Any) -> dict[str, str]:
     if fmt not in NUMBERING:
         raise ThemeError(f"theme.chapter_mark.format {fmt!r} must be one of {', '.join(NUMBERING)}")
     return {"style": style, "format": fmt, "prefix": str(spec.get("prefix", ""))}
+
+
+def _surface(spec: Any) -> str:
+    """CSS for the page's material: paper texture, corner rounding and how plates are hung."""
+    spec = dict(spec or {})
+    for key in sorted(set(spec) - {"texture", "corners", "frame"}):
+        raise ThemeError(f"theme.surface.{key} is unknown; use texture, corners, frame")
+    texture = str(spec.get("texture", "plain"))
+    corners = str(spec.get("corners", "soft"))
+    frame = str(spec.get("frame", "none"))
+    for name, value, allowed in (
+        ("texture", texture, TEXTURES),
+        ("corners", corners, tuple(CORNERS)),
+        ("frame", frame, FRAMES),
+    ):
+        if value not in allowed:
+            raise ThemeError(f"theme.surface.{name} {value!r} must be one of {', '.join(allowed)}")
+    line = "color-mix(in srgb, var(--ink) 8%, transparent)"
+    css = f":root {{ --round: {CORNERS[corners]:g}; }}\n"
+    if texture == "ruled":
+        css += (
+            f"body {{ background-image: linear-gradient({line} 1px, transparent 1px); "
+            "background-size: 100% 2rem; }\n"
+        )
+    elif texture == "grid":
+        css += (
+            f"body {{ background-image: linear-gradient({line} 1px, transparent 1px), "
+            f"linear-gradient(90deg, {line} 1px, transparent 1px); "
+            "background-size: 24px 24px; }\n"
+        )
+    elif texture == "dots":
+        css += (
+            f"body {{ background-image: radial-gradient({line} 1.2px, transparent 1.6px); "
+            "background-size: 20px 20px; }\n"
+        )
+    if frame == "mat":
+        css += (
+            ".plate .frame { --frame-pad: clamp(8px, 1.6vw, 16px); background: var(--surface-2); "
+            "--frame-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 14px 32px -18px rgba(0, 0, 0, .4); }\n"
+        )
+    elif frame == "tape":
+        css += (
+            ".plate .frame { position: relative; }\n"
+            '.plate .frame::before, .plate .frame::after { content: ""; position: absolute; '
+            "z-index: 3; top: 0; width: 5.5rem; height: 1.35rem; pointer-events: none; "
+            "background: color-mix(in srgb, var(--accent) 24%, transparent); }\n"
+            ".plate .frame::before { left: 1.4rem; transform: rotate(-4deg); }\n"
+            ".plate .frame::after { right: 1.4rem; transform: rotate(5deg); }\n"
+        )
+    return css
+
+
+def _words(spec: Any) -> dict[str, str]:
+    words = dict(WORDS)
+    for key, value in dict(spec or {}).items():
+        if key not in WORDS:
+            raise ThemeError(f"theme.words.{key} is unknown; words are {', '.join(WORDS)}")
+        text = str(value).strip()
+        if not text or len(text) > 40 or "<" in text:
+            raise ThemeError(f"theme.words.{key} must be plain text of 1 to 40 characters")
+        words[key] = text
+    return words
 
 
 def _block(tokens: Mapping[str, str]) -> str:
@@ -402,3 +518,77 @@ def _css(
         f':root[data-theme="dark"] {{\n{dark_block}  color-scheme: dark;\n}}\n'
         f"{utilities}"
     )
+
+
+# --------------------------------------------------------------------- review
+def review(spec: Mapping[str, Any] | None, others: Mapping[str, Any]) -> list[str]:
+    """Warnings for a theme that looks generic or like another page.
+
+    `others` maps a page's name (an example, another run) to its theme. A page shares a
+    feature with another when both pick the same fonts, a close accent or paper, the same
+    progress device, chapter mark or stat panel; three shared features read as the same page.
+    """
+    spec = dict(spec or {})
+    if not spec:
+        return [
+            "theme is missing, so the page gets chronicle's placeholder look; "
+            "do the design pass in references/identity.md"
+        ]
+    out = []
+    if not str(spec.get("concept", "")).strip():
+        out.append(
+            "theme.concept is empty; name the world the page borrows from and what it was "
+            "taken from (the user's brand, the request's words, the material)"
+        )
+    mine = _features(spec)
+    defaults = _features({})
+    stock = [name for name, value in mine.items() if value == defaults[name] and value]
+    if len(stock) >= 2:
+        out.append(
+            f"theme keeps chronicle's defaults for {', '.join(stock)}; pick them from the subject"
+        )
+    for name, other in sorted(others.items()):
+        shared = likeness(spec, other if isinstance(other, Mapping) else {})
+        if len(shared) >= 3:
+            out.append(f"theme looks like {name}: same {', '.join(shared)}; change at least two")
+    return out
+
+
+def likeness(a: Mapping[str, Any], b: Mapping[str, Any]) -> list[str]:
+    """The identity features two themes share."""
+    fa, fb = _features(dict(a or {})), _features(dict(b or {}))
+    shared = []
+    for name in fa:
+        va, vb = fa[name], fb[name]
+        if name in ("accent", "paper"):
+            if _near(str(va), str(vb), 0.06 if name == "accent" else 0.025):
+                shared.append(name)
+        elif va == vb:
+            shared.append(name)
+    return shared
+
+
+def _features(spec: Mapping[str, Any]) -> dict[str, str]:
+    palette = dict(spec.get("palette", {}) or {})
+    fonts = {**DEFAULT_FONTS, **dict(spec.get("fonts", {}) or {})}
+    progress = dict(spec.get("progress", {}) or {})
+    kind = str(progress.get("kind", "arches"))
+    device = f"{kind}/{progress.get('icon', 'dot')}" if kind in ("track", "route") else kind
+    mark = spec.get("chapter_mark", {})
+    style = mark if isinstance(mark, str) else dict(mark or {}).get("style", "arch")
+    return {
+        "type": f"{fonts['display']} + {fonts['body']}",
+        "accent": str(palette.get("accent", LIGHT["accent"])).upper(),
+        "paper": str(palette.get("paper", LIGHT["paper"])).upper(),
+        "progress device": device,
+        "chapter mark": str(style),
+        "stat panel": str(spec.get("stats", "rule")),
+    }
+
+
+def _near(a: str, b: str, limit: float) -> bool:
+    if not (_HEX.match(a) and _HEX.match(b)):
+        return a == b
+    ra, rb = hex_rgb(a), hex_rgb(b)
+    distance: float = sum((x - y) ** 2 for x, y in zip(ra, rb, strict=True)) ** 0.5
+    return distance / 3**0.5 < limit

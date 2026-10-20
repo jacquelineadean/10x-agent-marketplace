@@ -11,9 +11,16 @@ designed for that subject:
 
 - **An identity from the subject's world.** A theme sets the palette, the type and a
   sticky progress bar shaped like something the subject uses: a parcel riding a conveyor,
-  a tape measure, flags on a course, an interview clock, numbered steps. Chapter numbers
+  a tape measure, flags on a course, an interview clock, numbered steps, or a route the
+  page draws itself (a trail, a coastline) walked by an icon it draws too. Chapter numbers
   become shipping labels, price tags, aisle signs or stamps; the hero numbers can print as
-  a till receipt. Code derives dark mode and checks every text color for contrast.
+  a till receipt. The paper can be ruled, gridded or dotted, paintings can hang on a mat or
+  be taped in, and every control speaks the subject's words ("Hole 3 of 9", "Field notes").
+  Code derives dark mode and checks every text color for contrast.
+- **No two pages alike.** Each theme starts from a written concept taken from the user's
+  brand and files, the words of the request, or the material. `chronicle check` warns when
+  a theme keeps chronicle's defaults or shares three features with an example or another
+  run.
 - **Illustrations drawn for the page.** Claude draws each picture as SVG (the packing
   table, the old system as a padlocked cabinet, the jammed conveyor) and a small OpenCV
   program paints it in ink and watercolor: loose washes with wet edges, granulation and
@@ -40,7 +47,9 @@ Three worked examples ship with the plugin, all with invented data:
 - `examples/onboarding/`: a first-week handbook for Saltmarsh Coffee Roasters. Chapters are
   marked as coffee lots; a flow follows a bean from green seed to cup, a tile map shows the
   origins, a widget lets new baristas dial in a shot, and a checklist and quiz close the week.
-- `examples/quarterly/`: a short support-desk review.
+- `examples/quarterly/`: a short support-desk review for Lantern Bay, told as a lighthouse
+  keeper's log: a lighthouse walks a coastline in the top bar, the paper is ruled, the
+  numbers print on a ticket stub and chapters are stamped as watches.
 
 ## Install
 
@@ -64,10 +73,14 @@ publishes it as a private Artifact.
 From a shell:
 
 ```bash
+scripts/chronicle new chronicle-runs/q4 --title "Q4 review"  # start a run folder
 scripts/chronicle check examples/keystone/story.json     # validate story, theme, drawings
 scripts/chronicle build examples/keystone/story.json     # derive, paint, render into build/
+scripts/chronicle shoot examples/keystone/story.json     # desktop and phone screenshots
 scripts/chronicle motifs                                 # landscape presets and motifs
 ```
+
+`shoot` uses a Chromium or Chrome already installed (`--browser PATH` names one).
 
 `build` writes:
 
@@ -78,6 +91,7 @@ scripts/chronicle motifs                                 # landscape presets and
 | `build/art/*.webp` | paintings and their moving layers |
 | `build/publish-files.json` | the `files` map for the Artifact tool |
 | `build/single.html` | with `--inline`: one file with images embedded |
+| `build/shots/*.png` | from `shoot`: the page at 1280 and 390 pixels wide |
 
 ## Files
 
@@ -90,10 +104,11 @@ scripts/chronicle motifs                                 # landscape presets and
 | `src/chronicle/core/watercolor/` | the painting engine, the SVG reader and ink-and-wash painter, landscape motifs and presets |
 | `src/chronicle/assets/` | the page's stylesheets, runtime scripts and font list |
 | `src/chronicle/connectors/files/` | every file read and write |
+| `src/chronicle/connectors/browser/` | screenshots through a headless Chromium or Chrome |
 | `src/chronicle/entrypoints/cli/` | the command line |
 | `examples/keystone/` | status page example: story, facts, SVG drawings and a diagram, with invented data |
 | `examples/onboarding/` | handbook example: story, facts, drawings and a custom widget, with invented data |
-| `examples/quarterly/` | a short example with invented data |
+| `examples/quarterly/` | support-desk review with a drawn route and icon, with invented data |
 | `tests/` | pytest suite |
 
 ## Privacy
@@ -121,7 +136,12 @@ scripts/chronicle motifs                                 # landscape presets and
 9. Narrow the window below 700 px: wide paintings pan sideways as you scroll.
 10. Build `examples/onboarding/story.json` the same way. Move the grinder slider in chapter 03
     until the shot lands in the window, tick two checklist items in chapter 04 and reload
-    (the ticks stay), then answer the quiz in chapter 05.
+    (the ticks stay), then answer the quiz in chapter 05: it asks "Cup 1 of 5".
+11. Build `examples/quarterly/story.json`. A lighthouse walks a dashed coastline in the
+    top bar as you scroll; the paper is ruled; "Open the log" under the chart shows its
+    numbers.
+12. `scripts/chronicle shoot examples/quarterly/story.json --out /tmp/quarterly` writes
+    `shots/desktop.png` and `shots/phone.png` with the painting in color.
 
 ## License
 

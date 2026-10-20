@@ -1,7 +1,8 @@
   /* --------------------------------------------------------- progress bar */
   /* The sticky bar maps reading position onto a device chosen by the theme: bridge
-     arches, a parcel on a conveyor, a tape measure, flags on a course, an interview
-     clock or numbered steps. Every device shares the same chapter geometry. */
+     arches, an icon riding a line, an icon walking a route the page draws (a trail, a
+     river, a subway line), a tape measure, flags on a course, a clock or numbered steps.
+     Every device shares the same chapter geometry. A theme may draw its own icon. */
   var ICON_PATHS = {
     parcel: "M-9,-7 L9,-7 L9,7 L-9,7 Z M-9,-2 L9,-2 M-2,-7 L-2,7",
     van: "M-11,5 L-11,-5 Q-11,-7 -9,-7 L3,-7 L7,-2 L11,-1 L11,5 Z M3,-6 L3,-2 L7,-2",
@@ -20,9 +21,10 @@
   };
   var WHEELS = { van: [[-6, 6], [6, 6]], truck: [[-8, 6], [7, 6]], cart: [[-3, 7], [6, 7]], train: [[-6, 6], [6, 6]] };
 
+  var CUSTOM_ICON = (DATA.progress && DATA.progress.icon_path) || "";
   function drawIcon(parent, name, x, y, scale) {
     var g = svg("g", { "class": "pb-icon", transform: "translate(" + x + "," + y + ") scale(" + (scale || 1) + ")" }, parent);
-    svg("path", { d: ICON_PATHS[name] || ICON_PATHS.dot, "class": "pb-icon-body" }, g);
+    svg("path", { d: name === "custom" && CUSTOM_ICON ? CUSTOM_ICON : (ICON_PATHS[name] || ICON_PATHS.dot), "class": "pb-icon-body" }, g);
     (WHEELS[name] || []).forEach(function (w) { svg("circle", { cx: w[0], cy: w[1], r: 2.4, "class": "pb-icon-wheel" }, g); });
     return g;
   }
@@ -114,11 +116,49 @@
           return g;
         });
         svg("circle", { cx: x(1), cy: y, r: 3, "class": "pb-end" }, s);
-        var icon = drawIcon(s, cfg.icon || "parcel", pad, y - 9, 0.9);
+        var icon = drawIcon(s, CUSTOM_ICON ? "custom" : (cfg.icon || "parcel"), pad, y - 9, 0.9);
         return function (fracs, current, pos) {
           var px = x(pos);
           done.setAttribute("x2", px.toFixed(1));
           icon.setAttribute("transform", "translate(" + px.toFixed(1) + "," + (y - 10) + ") scale(0.9)");
+          stops.forEach(function (g, i) {
+            g.classList.toggle("passed", fracs[i] > 0);
+            g.classList.toggle("current", i === current);
+          });
+        };
+      },
+
+      route: function (s, w, h) {
+        /* The theme's path lives in a 1000 x 40 box; it is sampled by length and scaled to
+           the bar, so stops fall at equal distances along the route, not along x. */
+        var pad = 14, n = 160, sx = (w - 2 * pad) / 1000, sy = (h - 8) / 40;
+        var probe = svg("path", { d: cfg.path || "M0,20 L1000,20", fill: "none" }, s);
+        var len = probe.getTotalLength ? probe.getTotalLength() : 0;
+        function at(t) {
+          var p = len ? probe.getPointAtLength(len * clamp(t, 0, 1)) : { x: t * 1000, y: 20 };
+          return [pad + p.x * sx, 4 + p.y * sy];
+        }
+        function points(list) { return list.map(function (p) { return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" "); }
+        var pts = [];
+        for (var k = 0; k <= n; k++) pts.push(at(k / n));
+        s.removeChild(probe);
+        svg("polyline", { points: points(pts), "class": "pb-route-line pb-" + (cfg.line || "dashed") }, s);
+        var done = svg("polyline", { points: "", "class": "pb-route-done" }, s);
+        var stops = nav.map(function (nv, i) {
+          var g = svg("g", { "class": "pb-stop pb-part" }, s);
+          var p = at(starts[i]);
+          svg("circle", { cx: p[0], cy: p[1], r: 4.5, "class": "pb-dot" }, g);
+          svg("rect", { x: p[0] - 9, y: 0, width: 18, height: h, "class": "pb-hit" }, g);
+          hook(g, i);
+          return g;
+        });
+        var end = at(1);
+        svg("circle", { cx: end[0], cy: end[1], r: 3, "class": "pb-end" }, s);
+        var icon = drawIcon(s, CUSTOM_ICON ? "custom" : (cfg.icon || "pin"), pts[0][0], pts[0][1], 0.8);
+        return function (fracs, current, pos) {
+          var p = at(pos);
+          done.setAttribute("points", points(pts.slice(0, Math.floor(pos * n) + 1).concat([p])));
+          icon.setAttribute("transform", "translate(" + p[0].toFixed(1) + "," + (p[1] - 9).toFixed(1) + ") scale(0.8)");
           stops.forEach(function (g, i) {
             g.classList.toggle("passed", fracs[i] > 0);
             g.classList.toggle("current", i === current);
@@ -271,7 +311,7 @@
       if (now) {
         while (now.firstChild) now.removeChild(now.firstChild);
         if (current >= 0) { html("b", null, nav[current].no + "  ", now); now.appendChild(doc.createTextNode(nav[current].title)); }
-        else now.appendChild(doc.createTextNode(cfg.start_label || "Overview"));
+        else now.appendChild(doc.createTextNode(cfg.start_label || word("overview", "Overview")));
       }
     };
   }

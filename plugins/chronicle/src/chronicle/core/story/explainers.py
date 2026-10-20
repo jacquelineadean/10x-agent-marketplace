@@ -31,7 +31,7 @@ def tilemap(b: Builder, block: Block) -> str:
         controls = tag(
             "div",
             tag("p", class_="tm-frame", aria_hidden="true")
-            + tag("button", "Play", type="button", class_="tm-play btn")
+            + tag("button", plain(b.theme.words["play"]), type="button", class_="tm-play btn")
             + tag("input", type="range", class_="tm-range", aria_label="Point in time", min="0"),
             class_="tm-ctrl",
             hidden=True,
@@ -148,9 +148,9 @@ def diagram(b: Builder, block: Block) -> str:
         )
         controls = tag(
             "div",
-            tag("button", "Back", type="button", class_="st-prev")
+            tag("button", plain(b.theme.words["back"]), type="button", class_="st-prev")
             + tag("p", class_="st-count", aria_live="polite")
-            + tag("button", "Next", type="button", class_="st-next"),
+            + tag("button", plain(b.theme.words["next"]), type="button", class_="st-next"),
             class_="st-controls",
             hidden=True,
         )

@@ -41,7 +41,7 @@
     var play = node.querySelector(".tm-play"), frameOut = node.querySelector(".tm-frame");
     var readout = node.querySelector(".tm-readout");
     var timer = null;
-    function stop() { if (timer) { clearInterval(timer); timer = null; } if (play) play.textContent = "Play"; }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } if (play) play.textContent = word("play", "Play"); }
     if (ctrl && frames) {
       ctrl.hidden = false;
       range.max = String(frames.length - 1);
@@ -50,7 +50,7 @@
       play.addEventListener("click", function () {
         if (timer) { stop(); return; }
         if (idx >= frames.length - 1) idx = 0;
-        play.textContent = "Pause";
+        play.textContent = word("pause", "Pause");
         draw();
         timer = setInterval(function () {
           if (idx >= frames.length - 1) { stop(); return; }
@@ -162,7 +162,7 @@
       btn.addEventListener("click", function () {
         var open = btn.getAttribute("aria-expanded") === "true";
         btn.setAttribute("aria-expanded", open ? "false" : "true");
-        btn.textContent = open ? "Show the numbers" : "Hide the numbers";
+        btn.textContent = open ? word("show_numbers", "Show the numbers") : word("hide_numbers", "Hide the numbers");
         slot.hidden = open;
         if (open) return;
         while (slot.firstChild) slot.removeChild(slot.firstChild);
@@ -313,7 +313,7 @@
       at = clamp(i, 0, items.length - 1);
       items.forEach(function (it, k) { it.classList.toggle("on", k === at); });
       prev.disabled = at === 0; next.disabled = at === items.length - 1;
-      count.textContent = "Step " + (at + 1) + " of " + items.length;
+      count.textContent = word("step", "Step") + " " + (at + 1) + " " + word("of", "of") + " " + items.length;
       var focus = (steps[at] && steps[at].focus) || [];
       var targets = focus.map(function (id) { return doc.getElementById(id); }).filter(Boolean);
       units.forEach(function (u) {

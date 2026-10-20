@@ -123,11 +123,14 @@ class Builder:
         src = block.get("source")
         if src:
             label = str(self.sources.get(str(src), {}).get("label", src))
-            bits += tag("span", f"Source: {plain(label)}", class_="src", data_src=str(src))
+            words = self.theme.words
+            bits += tag(
+                "span", f"{plain(words['source'])}: {plain(label)}", class_="src", data_src=str(src)
+            )
         if table:
             bits += tag(
                 "button",
-                "Show the numbers",
+                plain(self.theme.words["show_numbers"]),
                 type="button",
                 class_="show-table",
                 aria_expanded="false",
@@ -295,6 +298,7 @@ class Builder:
             "figs": self.figs,
             "nav": nav,
             "progress": self.theme.progress,
+            "words": self.theme.words,
             "sources": {
                 k: {
                     "label": str(v.get("label", k)),
@@ -343,12 +347,17 @@ class Builder:
         )
 
     def _widget_css(self) -> str:
-        """Stylesheets of the widgets on this page, after the theme so they can use its tokens."""
+        """Stylesheets of the widgets on this page, after the theme so they can use its tokens.
+
+        A widget used several times on one page ships its stylesheet once.
+        """
         css = ""
+        seen: set[str] = set()
         for _, block in _blocks(self.story, "widget"):
-            path = block.get("style")
-            if path and str(path) in self.files:
-                css += f"\n/* widget {plain(str(block['name']))} */\n{self.files[str(path)]}\n"
+            path = str(block.get("style") or "")
+            if path and path in self.files and path not in seen:
+                seen.add(path)
+                css += f"\n/* widget {plain(str(block['name']))} */\n{self.files[path]}\n"
         return css.replace("</style", "<\\/style")
 
     def _mark(self, i: int) -> str:
@@ -426,7 +435,7 @@ class Builder:
         colophon = self.paras(self.story["meta"].get("colophon", ""), "colophon")
         return tag(
             "footer",
-            tag("h2", "Sources and method", class_="sources-title")
+            tag("h2", plain(self.theme.words["sources"]), class_="sources-title")
             + tag("ul", items, class_="src-list")
             + colophon,
             class_="sources col",

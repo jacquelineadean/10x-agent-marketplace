@@ -1,5 +1,6 @@
-/* Layout: a 38rem reading column on cold-press paper; plates and figures break out to
-   72rem; a sticky span bar maps reading progress onto the arches of a bridge. */
+/* Layout: a 38rem reading column on paper; plates and figures break out to 72rem; a
+   sticky bar maps reading progress onto a device the theme picks. These defaults are
+   placeholders: every page's theme replaces the colors and fonts below. */
 :root {
   --paper: #FBFAF6;          /* the page: bright cold-press, so watercolor whites read as paper */
   --print: #FCFBF7;          /* paintings always sit on paper, in both themes */
@@ -10,17 +11,17 @@
   --muted: #6B6E76;
   --rule: #DCD9CF;
   --rule-2: #EAE7DF;
-  --accent: #3358B5;         /* ultramarine: the new platform, links, focus */
+  --accent: #3358B5;         /* the new thing the story is about; links, focus */
   --accent-text: #2B4C9E;
   --accent-wash: rgba(51, 88, 181, .10);
-  --legacy: #BD5B2D;         /* burnt sienna: the monolith */
+  --legacy: #BD5B2D;         /* the old thing, or the risk */
   --s1: #3358B5; --s2: #BD5B2D; --s3: #008A78; --s4: #B8820C; --s5: #C2527C; --s6: #5F8A2E;
   --seq-0: #ECEFF6; --seq-1: #C9D3EC; --seq-2: #98AEDD; --seq-3: #6684C8; --seq-4: #3358B5; --seq-5: #1F3A82;
   --good: #2F7D4F; --warn: #9C6210; --bad: #B23A2B;
   --good-wash: rgba(47, 125, 79, .12); --bad-wash: rgba(178, 58, 43, .12);
   --grid: #E6E3DA;
   --tip-bg: #1E2026; --tip-ink: #F4F2EC;
-  --frame-pad: 0px; --frame-shadow: none; --frame-radius: 0px;
+  --frame-pad: 0px; --frame-shadow: none; --frame-radius: 0px; --round: 1;
   --f-display: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --f-body: "Source Serif 4", "Iowan Old Style", Georgia, "Times New Roman", serif;
   --f-ui: "Libre Franklin", "Franklin Gothic Medium", "Helvetica Neue", Arial, sans-serif;
@@ -76,7 +77,7 @@ body {
 .wide { max-width: var(--wide); margin-inline: auto; }
 a { color: var(--accent-text); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: calc(2px * var(--round, 1)); }
 strong { font-weight: 600; }
 button { font: inherit; color: inherit; }
 h1, h2, h3 { text-wrap: balance; }

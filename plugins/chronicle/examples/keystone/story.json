@@ -13,6 +13,7 @@
   "colophon": "Built by the chronicle plugin from two files: a facts file gathered from the sources above, and a story file that arranges them. Every figure on the page comes from the facts file, and computed figures come from code; hover or tap a figure to see its source. The illustrations were drawn as SVG for this page and painted in ink and watercolor by a short OpenCV program: no stock art, no image model.\n\nDemonstration data. Fernhill Outfitters, its staff, its systems and every figure on this page are invented for this example."
  },
  "theme": {
+  "concept": "An order platform told through its own warehouse: parcels on a conveyor, packing slips, till receipts and shipping labels, taken from the material (Fernhill Outfitters ships outdoor gear).",
   "palette": {
    "paper": "#F7F2E8",
    "ink": "#24211E",
@@ -1012,7 +1013,13 @@
       "plan_month": "@migration.decommission_target",
       "first": "2027-03",
       "last": "2027-12",
-      "year": 2027
+      "year": 2027,
+      "labels": {
+       "old": "the monolith",
+       "new": "Keystone",
+       "both": "Both platforms running",
+       "renewal": "License renewal"
+      }
      },
      "text": "Assumes today's run cost until switch-off and the projected cost after it. The renewal buys a year of license and support."
     }

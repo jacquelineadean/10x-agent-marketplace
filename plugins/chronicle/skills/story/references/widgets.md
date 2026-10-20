@@ -33,6 +33,7 @@ Write only the body of a function. The build wraps it as
 | `linear(d0, d1, r0, r1)`, `ticks(lo, hi, n)`, `clamp`, `ease` | scales and easing |
 | `tip.show(build, x, y)`, `tip.hide()`, `tip.at(event)` | the page's tooltip |
 | `icon(svgParent, name, x, y, scale)` | the progress-bar icons: parcel, van, ball, rocket... |
+| `word(key, fallback)` | the theme's word for a control, such as `word("next", "Next")` |
 | `chart(mountElement, chartSpec)` | draws any built-in chart into an element |
 | `onScroll(fn(viewportHeight))`, `onFrame(fn(viewportHeight, time))` | scroll and animation hooks |
 | `store.get(key)`, `store.set(key, value)` | per-reader storage that survives blocked storage |

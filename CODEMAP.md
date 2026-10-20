@@ -55,11 +55,12 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 
 | Folder | Holds |
 | --- | --- |
-| `core/story/` | facts and tokens, derive table, story checks, themes (`theme.py`), the diagram sanitizer, US tile grid (`geo.py`), HTML renderer and block renderers (`blocks.py`, `explainers.py`, `lessons.py`, joined in `dispatch.py`) |
+| `core/story/` | facts and tokens, derive table, story checks, themes and the sameness review (`theme.py`), the diagram sanitizer, US tile grid (`geo.py`), HTML renderer and block renderers (`blocks.py`, `explainers.py`, `lessons.py`, joined in `dispatch.py`) |
 | `core/watercolor/` | painting engine (paper, washes, ink), motifs, presets and the scene language |
 | `core/watercolor/svg/` | SVG drawings: path and transform math (`pathdata.py`), the reader (`parse.py`) and the ink-and-wash painter (`paint.py`) |
 | `connectors/files/` | every file read and write: JSON, HTML, WebP, bundled assets |
-| `entrypoints/cli/` | the `chronicle` command: check, paint, build, motifs |
+| `connectors/browser/` | screenshots of a built page through an installed headless Chromium or Chrome |
+| `entrypoints/cli/` | the `chronicle` command: new, check, paint, build, shoot, motifs |
 | `assets/` | `fonts.json`, the font families a theme may use, with their weight axes |
 | `assets/css/` | the page stylesheet in numbered parts: base, page, identity (marks, progress devices, stat skins), explainers |
 | `assets/js/` | the page runtime in numbered parts, joined inside one IIFE: core, charts, figures, plates, progress, explainers, lessons, boot |
