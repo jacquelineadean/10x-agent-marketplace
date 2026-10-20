@@ -122,3 +122,12 @@ scripts/chronicle motifs                                 # landscape presets and
 10. Build `examples/onboarding/story.json` the same way. Move the grinder slider in chapter 03
     until the shot lands in the window, tick two checklist items in chapter 04 and reload
     (the ticks stay), then answer the quiz in chapter 05.
+
+## License
+
+MIT, copyright 2026 Jacqueline Dean. See [LICENSE](LICENSE).
+
+The plugin bundles no third-party code. Painting uses NumPy (BSD 3-clause) and
+`opencv-python-headless` (Apache 2.0, with FFmpeg under LGPL 2.1), which uv downloads from
+PyPI into its own cache. Those wheels carry their own license files, including OpenCV's
+`LICENSE-3RD-PARTY.txt`.

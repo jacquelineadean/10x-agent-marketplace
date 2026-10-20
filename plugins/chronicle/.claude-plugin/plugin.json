@@ -1,6 +1,7 @@
 {
   "name": "chronicle",
-  "version": "0.2.0",
+  "version": "0.2.1",
+  "license": "MIT",
   "description": "Turns a brief plus facts gathered from GitHub, Jira, Confluence, Datadog or pasted notes into an illustrated, interactive story page designed for its subject: a theme and progress bar from the subject's world, ink-and-watercolor drawings painted in code, editorial charts, maps, flows, diagrams, quizzes, and a source behind every number.",
   "author": {
     "name": "Jacqueline Dean",
