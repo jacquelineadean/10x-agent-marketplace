@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" class="head"/>
+    </marker>
+  </defs>
+  <g id="pr">
+    <rect class="box" x="10" y="40" width="150" height="86" rx="6"/>
+    <text class="title" x="85" y="74" text-anchor="middle">Pull request</text>
+    <text class="label" x="85" y="98" text-anchor="middle">one reviewer</text>
+  </g>
+  <g id="ci">
+    <rect class="box" x="210" y="40" width="150" height="86" rx="6"/>
+    <text class="title" x="285" y="74" text-anchor="middle">CI checks</text>
+    <text class="label" x="285" y="98" text-anchor="middle">{{ci.median_minutes}} median</text>
+  </g>
+  <g id="review">
+    <rect class="box" x="410" y="40" width="150" height="86" rx="6"/>
+    <text class="title" x="485" y="74" text-anchor="middle">Review</text>
+    <text class="label" x="485" y="98" text-anchor="middle">{{ci.review_hours}} to approve</text>
+  </g>
+  <g id="queue">
+    <rect class="box" x="610" y="40" width="150" height="86" rx="6"/>
+    <text class="title" x="685" y="74" text-anchor="middle">Merge queue</text>
+    <text class="label" x="685" y="98" text-anchor="middle">tests on main</text>
+  </g>
+  <g id="prod">
+    <rect class="box accent" x="810" y="40" width="160" height="86" rx="6"/>
+    <text class="title" x="890" y="74" text-anchor="middle">Production</text>
+    <text class="label" x="890" y="98" text-anchor="middle">{{ci.deploys_per_day}} a day</text>
+  </g>
+  <path id="p1" class="line" d="M160 83 L206 83" marker-end="url(#arrow)"/>
+  <path id="p2" class="line" d="M360 83 L406 83" marker-end="url(#arrow)"/>
+  <path id="p3" class="line" d="M560 83 L606 83" marker-end="url(#arrow)"/>
+  <path id="p4" class="line accent" d="M760 83 L806 83" marker-end="url(#arrow)"/>
+  <g id="retry">
+    <path id="back" class="line legacy dashed" d="M285 126 C285 196 85 196 85 130" marker-end="url(#arrow)"/>
+    <text class="hand" x="185" y="222" text-anchor="middle">red check: back to the author</text>
+  </g>
+  <g id="canary">
+    <rect class="box soft" x="810" y="210" width="160" height="76" rx="6"/>
+    <text class="title" x="890" y="242" text-anchor="middle">Canary</text>
+    <text class="label" x="890" y="266" text-anchor="middle">{{ci.canary_share}} of traffic first</text>
+    <path id="p5" class="line accent" d="M890 210 L890 130" marker-end="url(#arrow)"/>
+  </g>
+</svg>

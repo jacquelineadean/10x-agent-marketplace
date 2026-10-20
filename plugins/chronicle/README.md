@@ -1,7 +1,9 @@
 # chronicle
 
 Illustrated, interactive story pages made for their subject: status reports, launches,
-reviews, onboarding handbooks, training and guides.
+reviews, onboarding handbooks, training and guides. And standalone animations in the same
+style, including animated technical architecture diagrams, that paste into web pages,
+docs, READMEs, chat and slides.
 
 Give Claude a brief ("the Q4 portfolio review of our order-platform migration", "a
 first-week handbook for new store staff", "a guide to this podcast episode") and point it
@@ -51,6 +53,39 @@ Three worked examples ship with the plugin, all with invented data:
   keeper's log: a lighthouse walks a coastline in the top bar, the paper is ruled, the
   numbers print on a ticket stub and chapters are stamped as watches.
 
+## Animations
+
+`/chronicle:animation` makes one animation that plays outside a story page. Three kinds
+share one timeline, stage and theme:
+
+- **`tad`**: a technical architecture diagram written as data: components with icons and
+  their technology, groups (a VPC, a cluster, a trust boundary, vendors), sync and async
+  links, and flows. Code places the parts in tiers, routes every line around the boxes,
+  and plays the steps: parts appear and lines draw themselves on, packets run along a
+  flow, the view focuses, and parts turn new, failing, down or planned.
+- **`diagram`**: an SVG drawing in the story diagram format, played by id: parts appear,
+  lines draw, packets run, the rest dims. A story page's diagram plays as it is.
+- **`scene`**: a watercolor painting from a story drawing that washes from sketch into
+  color, keeps its moving layers, and adds numbered callouts step by step.
+
+Every animation is one SVG with no script: CSS keyframes on one clock, the theme scoped
+to it, captions and a step strip, alt text with every step, and a still that shows the
+whole picture under reduced motion. `animate build` also writes an HTML figure with a
+pause button, and, with a local Chromium or Chrome, a poster PNG, a contact sheet of the
+steps, a GIF from its own encoder, and an MP4 through ffmpeg (WebM without it).
+
+```bash
+scripts/chronicle animate new chronicle-runs/checkout --kind tad --title "Checkout"
+scripts/chronicle animate check examples/animation-tad/animation.json
+scripts/chronicle animate build examples/animation-tad/animation.json --formats svg,html,png,gif,mp4
+```
+
+| Example | Shows |
+| --- | --- |
+| `examples/animation-tad/` | an order's path through a checkout system: 10 components in 4 groups, 3 flows, a card processor going down and a planned fraud check |
+| `examples/animation-diagram/` | a pull request's path to production, drawn as SVG, with a retry loop and a canary |
+| `examples/animation-scene/` | the Keystone story's jammed conveyor, animated from the story's own drawing and facts |
+
 ## Install
 
 ```text
@@ -61,12 +96,15 @@ Three worked examples ship with the plugin, all with invented data:
 Requirements: [uv](https://docs.astral.sh/uv/) (recommended), which fetches NumPy and
 OpenCV for painting on first use without touching your Python environment. Without uv,
 Python 3.11+ with `numpy` and `opencv-python-headless` installed. Checking a story and
-rendering a page without new paintings need only the Python standard library.
+rendering a page without new paintings need only the Python standard library, as do an
+animation's SVG and HTML. PNG, GIF and video exports need a Chromium or Chrome; MP4
+needs `ffmpeg` on PATH.
 
 ## Use
 
 In Claude Code: `/chronicle:story` with a brief, or ask for "an illustrated status page
-for ...". The skill settles the brief, has the `chronicle-gatherer` subagent collect facts,
+for ...". For an animation: `/chronicle:animation`, or ask to "animate our checkout
+architecture for the onboarding deck". The skill settles the brief, has the `chronicle-gatherer` subagent collect facts,
 designs the page's identity, draws the illustrations, writes the story, builds it and
 publishes it as a private Artifact.
 
@@ -98,17 +136,22 @@ scripts/chronicle motifs                                 # landscape presets and
 | Path | Holds |
 | --- | --- |
 | `skills/story/` | the skill and its references: identity, illustration, story format, facts, sources, outlines, widgets, voice |
+| `skills/animation/` | the animation skill and its references: the animation file, TADs, diagrams and scenes, export formats |
 | `agents/chronicle-gatherer.md` | subagent that gathers facts from connected tools |
 | `scripts/chronicle` | launcher used by the skill through `${CLAUDE_PLUGIN_ROOT}` |
 | `src/chronicle/core/story/` | facts, derive, story checks, themes, the diagram sanitizer and the HTML renderer (standard library) |
 | `src/chronicle/core/watercolor/` | the painting engine, the SVG reader and ink-and-wash painter, landscape motifs and presets |
-| `src/chronicle/assets/` | the page's stylesheets, runtime scripts and font list |
+| `src/chronicle/core/motion/` | animations: step clock, CSS keyframe timeline, stage, the diagram and scene kinds, the HTML figure and the GIF encoder |
+| `src/chronicle/core/motion/tad/` | TADs: spec reader, layout, line routing, icons and the drawing |
+| `src/chronicle/assets/` | the page's stylesheets, runtime scripts and font list; `motion/` holds the animations' stylesheets |
 | `src/chronicle/connectors/files/` | every file read and write |
-| `src/chronicle/connectors/browser/` | screenshots through a headless Chromium or Chrome |
+| `src/chronicle/connectors/browser/` | screenshots and animation frames through a headless Chromium or Chrome |
+| `src/chronicle/connectors/video/` | MP4 through ffmpeg, WebM through OpenCV |
 | `src/chronicle/entrypoints/cli/` | the command line |
 | `examples/keystone/` | status page example: story, facts, SVG drawings and a diagram, with invented data |
 | `examples/onboarding/` | handbook example: story, facts, drawings and a custom widget, with invented data |
 | `examples/quarterly/` | support-desk review with a drawn route and icon, with invented data |
+| `examples/animation-*/` | a TAD, a drawn diagram and a painted scene animation |
 | `tests/` | pytest suite |
 
 ## Privacy
@@ -117,6 +160,10 @@ scripts/chronicle motifs                                 # landscape presets and
 - The skill asks before publishing data from company systems. Artifacts are private to
   you by default and hosted on claude.ai.
 - The page loads fonts from Google Fonts; everything else is inline or published with it.
+  An animation's SVG does the same where it is shown inline or opened directly.
+- Animation frames are captured by a browser on your machine, and video is encoded by the
+  ffmpeg program on your machine. Both run as argument lists with no shell, on the built
+  files only.
 - Diagrams pass an allowlist sanitizer; widget scripts are checked for network, storage
   and markup calls before a build.
 - Source tools are only read, never written.
@@ -142,6 +189,15 @@ scripts/chronicle motifs                                 # landscape presets and
     numbers.
 12. `scripts/chronicle shoot examples/quarterly/story.json --out /tmp/quarterly` writes
     `shots/desktop.png` and `shots/phone.png` with the painting in color.
+13. `scripts/chronicle animate build examples/animation-tad/animation.json --out /tmp/tad
+    --formats svg,html,png,gif,mp4`, then open `/tmp/tad/index.html`. The web app and
+    gateway appear, the order service's lines draw on, a packet runs from the web app to
+    the card processor, events run to the workers, the view dims around a card processor
+    marked DOWN, and a planned fraud check appears. Hover the figure and press Pause.
+14. Open `/tmp/tad/animation.gif`, `animation.mp4` and `poster.png`; the poster shows every
+    part. Look at `steps.png`: one frame per step.
+15. Build `examples/animation-scene/animation.json`: the painting washes from gray to color,
+    the beacon turns, and three numbered spots come in with the focus.
 
 ## License
 

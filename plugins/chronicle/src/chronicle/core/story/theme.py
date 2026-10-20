@@ -139,6 +139,15 @@ class Theme:
         return ROMAN[index % len(ROMAN)]
 
 
+@dataclass
+class Look:
+    """A theme's colors and type for a figure that sets its own CSS scope."""
+
+    css: str
+    fonts_url: str
+    warnings: list[str] = field(default_factory=list)
+
+
 # ------------------------------------------------------------------ color math
 def hex_rgb(value: str) -> RGB:
     if not _HEX.match(value):
@@ -226,6 +235,26 @@ def build(
     dark = _dark_tokens(colors, dark_spec, warnings)
     css = _css(light, dark, font_css, colors) + _surface(spec.get("surface", {}))
     return Theme(css, url, progress, mark, stats, _words(spec.get("words", {})), warnings)
+
+
+def scoped(
+    spec: Mapping[str, Any] | None,
+    fonts: Mapping[str, Any],
+    scope: str,
+    needs: frozenset[str] = frozenset(),
+) -> Look:
+    """A theme's tokens and utilities under `scope` in place of :root.
+
+    A standalone figure (an animation pasted into a wiki or another page) carries its own
+    colors this way and leaves the host page's custom properties alone.
+    """
+    spec = dict(spec or {})
+    warnings: list[str] = []
+    colors = _colors(dict(spec.get("palette", {})), warnings)
+    font_css, url = _fonts(dict(spec.get("fonts", {})), fonts, needs)
+    light = _light_tokens(colors)
+    dark = _dark_tokens(colors, dict(spec.get("dark", {})), warnings)
+    return Look(_css(light, dark, font_css, colors, scope), url, warnings)
 
 
 def _colors(palette: Mapping[str, Any], warnings: list[str]) -> dict[str, Any]:
@@ -497,25 +526,30 @@ def _block(tokens: Mapping[str, str]) -> str:
 
 
 def _css(
-    light: Mapping[str, str], dark: Mapping[str, str], fonts: str, c: Mapping[str, Any]
+    light: Mapping[str, str],
+    dark: Mapping[str, str],
+    fonts: str,
+    c: Mapping[str, Any],
+    scope: str = ":root",
 ) -> str:
     names = ["accent", "legacy", "ink", "muted", "paper", "surface", "good", "bad"]
     names += [f"s{i}" for i in range(1, 7)] + [f"c-{n}" for n in c["colors"]]
+    inside = "" if scope == ":root" else f"{scope} "
     utilities = "".join(
-        f".f-{n.removeprefix('c-')} {{ fill: var(--{n}); }} "
-        f".s-{n.removeprefix('c-')} {{ stroke: var(--{n}); }} "
-        f".t-{n.removeprefix('c-')} {{ color: var(--{n}); }}\n"
+        f"{inside}.f-{n.removeprefix('c-')} {{ fill: var(--{n}); }} "
+        f"{inside}.s-{n.removeprefix('c-')} {{ stroke: var(--{n}); }} "
+        f"{inside}.t-{n.removeprefix('c-')} {{ color: var(--{n}); }}\n"
         for n in names
     )
     dark_block = (
         _block(dark) + "  --frame-pad: 12px; --frame-shadow: 0 18px 50px rgba(0, 0, 0, .55);\n"
     )
     return (
-        "/* Theme: tokens derived by chronicle from the story's palette and fonts. */\n"
-        f":root {{\n{_block(light)}{fonts}}}\n"
+        "/* Theme: tokens derived by chronicle from the palette and fonts. */\n"
+        f"{scope} {{\n{_block(light)}{fonts}}}\n"
         "@media (prefers-color-scheme: dark) {\n"
-        f'  :root:not([data-theme="light"]) {{\n{dark_block}  color-scheme: dark; }}\n}}\n'
-        f':root[data-theme="dark"] {{\n{dark_block}  color-scheme: dark;\n}}\n'
+        f'  {scope}:not([data-theme="light"]) {{\n{dark_block}  color-scheme: dark; }}\n}}\n'
+        f'{scope}[data-theme="dark"] {{\n{dark_block}  color-scheme: dark;\n}}\n'
         f"{utilities}"
     )
 

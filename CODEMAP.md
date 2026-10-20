@@ -50,19 +50,23 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 ## Notes
 
 - Import rules: `core` imports nothing outside itself; `connectors` and `entrypoints` import `core` and `config`; only `__main__.py` imports both `connectors` and `entrypoints`.
-- `groundwork.py` is not vendored in this repo; this map was updated by hand on 2026-10-15 and the facts hash is stale until the next `groundwork.py codemap` run.
+- `groundwork.py` is not vendored in this repo; this map was updated by hand on 2026-10-20 and the facts hash is stale until the next `groundwork.py codemap` run.
 - The facts above describe `plugins/impact-review` only. chronicle follows the same cli layout under `plugins/chronicle/src/chronicle/`:
 
 | Folder | Holds |
 | --- | --- |
 | `core/story/` | facts and tokens, derive table, story checks, themes and the sameness review (`theme.py`), the diagram sanitizer, US tile grid (`geo.py`), HTML renderer and block renderers (`blocks.py`, `explainers.py`, `lessons.py`, joined in `dispatch.py`) |
 | `core/watercolor/` | painting engine (paper, washes, ink), motifs, presets and the scene language |
+| `core/motion/` | animations: the shared checks and step clock (`model.py`), CSS keyframe timeline, stage (title, captions, step strip, the SVG file), the diagram and scene kinds, the packet and visibility parts, render, the HTML figure, frame times and the GIF encoder |
+| `core/motion/tad/` | technical architecture diagrams: the spec reader, tier and lane layout, line routing, icons, and the drawing with its motion |
 | `core/watercolor/svg/` | SVG drawings: path and transform math (`pathdata.py`), the reader (`parse.py`) and the ink-and-wash painter (`paint.py`) |
 | `connectors/files/` | every file read and write: JSON, HTML, WebP, bundled assets |
-| `connectors/browser/` | screenshots of a built page through an installed headless Chromium or Chrome |
-| `entrypoints/cli/` | the `chronicle` command: new, check, paint, build, shoot, motifs |
+| `connectors/browser/` | an installed headless Chromium or Chrome: page screenshots (`shoot.py`) and animation frames over the DevTools pipe (`devtools.py`) |
+| `connectors/video/` | MP4 through the installed ffmpeg program, WebM through OpenCV's video writer |
+| `entrypoints/cli/` | the `chronicle` command: new, check, paint, build, shoot, motifs (`main.py`), `animate new/check/build` (`animate.py`), painting shared by both (`art.py`), run folders (`runs.py`) |
 | `assets/` | `fonts.json`, the font families a theme may use, with their weight axes |
-| `assets/css/` | the page stylesheet in numbered parts: base, page, identity (marks, progress devices, stat skins), explainers |
+| `assets/css/` | the page stylesheet in numbered parts: base, page, identity (marks, progress devices, stat skins), explainers, and the drawn-figure classes that animations share (`40-drawn.css`) |
+| `assets/motion/` | the animation stylesheet in numbered parts: stage, TAD, diagram, scene |
 | `assets/js/` | the page runtime in numbered parts, joined inside one IIFE: core, charts, figures, plates, progress, explainers, lessons, boot |
-| `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/` |
+| `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, and the animations `animation-tad/`, `animation-diagram/`, `animation-scene/` |
 | `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |
