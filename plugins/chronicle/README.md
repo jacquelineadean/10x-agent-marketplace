@@ -142,3 +142,12 @@ scripts/chronicle motifs                                 # landscape presets and
     numbers.
 12. `scripts/chronicle shoot examples/quarterly/story.json --out /tmp/quarterly` writes
     `shots/desktop.png` and `shots/phone.png` with the painting in color.
+
+## License
+
+MIT, copyright 2026 Jacqueline Dean. See [LICENSE](LICENSE).
+
+The plugin bundles no third-party code. Painting uses NumPy (BSD 3-clause) and
+`opencv-python-headless` (Apache 2.0, with FFmpeg under LGPL 2.1), which uv downloads from
+PyPI into its own cache. Those wheels carry their own license files, including OpenCV's
+`LICENSE-3RD-PARTY.txt`.
