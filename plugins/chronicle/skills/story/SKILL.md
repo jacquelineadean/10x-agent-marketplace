@@ -11,26 +11,34 @@ subject's own objects and places, charts and figures that respond to the reader,
 sticky progress bar shaped like something from the subject's world. Every number on the
 page comes from a facts file and shows its source on hover.
 
-The test of a good page: it could only be about this subject. A retailer's page measures
-progress with a tape measure; a golf club's handbook marks chapters with flags; a parcel
-platform's page rides a parcel along a conveyor. Generic landscapes and stock metaphors
-fail the test.
+The test of a good page: it could only be about this subject, and no two pages look
+alike. A retailer's page measures progress with a tape measure; a golf club's handbook is
+a yardage book whose quizzes are played as holes; an island field guide walks a boot along
+the island's own road. Generic landscapes, stock metaphors and a theme copied from an
+example fail the test.
 
 The work splits so the model writes and draws, and code computes and paints:
 
 | Step | Who | Output (in the run folder) |
 | --- | --- | --- |
-| 1. Brief | you, with the user | a few lines in your head |
+| 1. Brief | you, with the user; `chronicle new` starts the folder | `story.json` to fill in |
 | 2. Gather | `chronicle-gatherer` subagent, or you for pasted content | `facts.json` |
-| 3. Design the identity | you | `theme` and a list of paintings and figures |
+| 3. Design the identity | you | `theme` (concept first), paintings, the signature figure |
 | 4. Draw | you | `art/*.svg`, `diagrams/*.svg`, optional `widgets/*` |
 | 5. Write | you | `story.json` |
-| 6. Build | `chronicle build` (check, derive, paint, render) | `build/artifact.html`, `build/art/*.webp` |
+| 6. Build and look | `chronicle build`, then `chronicle shoot` | `build/artifact.html`, `build/shots/*.png` |
 | 7. Publish | you, with the Artifact tool | a private claude.ai link |
 
 Run folder: `chronicle-runs/<short-slug>/` under the working directory unless the user names
-another. Never write gathered company data into a git repository; add the folder to
-`.gitignore` if the working directory is a repository and the entry is missing.
+another. Start it with:
+
+```bash
+"${CLAUDE_PLUGIN_ROOT}/scripts/chronicle" new chronicle-runs/<slug> --title "Page title"
+```
+
+It writes `story.json` and `facts.json` to fill in, makes `art/`, `diagrams/` and
+`widgets/`, and adds the runs folder to `.gitignore` when the working directory is a git
+repository, so gathered company data is never committed.
 
 ## 1. Settle the brief
 
@@ -40,7 +48,12 @@ Find out, asking only what the request leaves open (one AskUserQuestion, at most
 - **The point**: the one decision, takeaway or skill the page must land. It becomes the hero dek.
 - **Window or scope**: the period or the material the page covers.
 - **Sources**: which connected tools, files, transcripts or pasted notes to use.
-- **Brand**: colors, logo shapes or typefaces the organization uses, if any.
+- **Brand**: colors, logo shapes or typefaces the organization uses, if any. Ask for a
+  screenshot or a file when the user mentions a house style you cannot see.
+
+Note every design cue the user gives: brand files, a page they liked, the format noun in
+the request ("field guide", "yardage book", "visualization"). Step 3 takes the concept
+from these before anything else.
 
 When the user asks for a demonstration or mock data, invent a plausible organization and
 say so on the page: the byline and colophon both state that the data is invented.
@@ -63,10 +76,17 @@ pull from each tool.
 
 Read `references/identity.md` and do its design pass before writing anything else:
 
+- Write `theme.concept` first: one sentence naming the world the page borrows from and
+  where it came from, in this order: what the user supplied (brand, files, screenshots),
+  the words of the request, the material's world, the page's point as a picture.
 - List the subject's objects, places, number-carrying artifacts, rituals and brand.
-- Write `story.theme`: palette (`accent` for the new thing, `legacy` for the old), fonts
-  from the list, a progress device, a chapter mark and a stat style, each taken from the
-  subject's world.
+- Write the rest of `story.theme` from the concept: palette (`accent` for the new thing,
+  `legacy` for the old), fonts from the list, a progress device (draw a `route` path or an
+  `icon_path` when the subject has its own), a chapter mark, a stat style, a `surface`
+  and the `words` the page's controls use.
+- Pick the signature figure: the one interaction only this page would have.
+- Run `chronicle check`. Fix every warning that the theme is missing, stock or like
+  another page by changing the theme, starting from the concept.
 - Plan one painting for the hero and at most one per chapter, each a concrete object or
   scene that shows the chapter's claim at its real state.
 - Pick the figures the material calls for: `flow` for a process, `tilemap` for places,
@@ -116,8 +136,16 @@ The script runs through `uv` with NumPy and OpenCV when `uv` is installed. Witho
 it needs Python 3.11+ with `numpy` and `opencv-python-headless`; if painting is not
 possible, say so and offer `build --no-paint`, which renders with plates left out.
 
-Before publishing, look at the page: one screenshot at desktop width and one at phone
-width if a browser is available, or at least every painting.
+Before publishing, look at the page:
+
+```bash
+"${CLAUDE_PLUGIN_ROOT}/scripts/chronicle" shoot chronicle-runs/<slug>/story.json
+```
+
+It opens `build/index.html` in a headless Chromium or Chrome at 1280 and 390 pixels wide,
+with animations finished, and writes `build/shots/desktop.png` and `build/shots/phone.png`.
+Read both images. Fix overlaps, clipped labels and anything that looks generic. Without a
+browser it says so; then look at every painting instead.
 
 ## 7. Publish
 
@@ -135,8 +163,9 @@ Reply with the link, one line on what the page covers, and any facts that were m
 
 ## Files
 
-- `references/identity.md`: designing the page for its subject: palette, fonts, progress
-  devices, chapter marks, stat styles, and worked identities.
+- `references/identity.md`: designing the page for its subject: the concept and where it
+  comes from, palette, fonts, progress devices, chapter marks, stat styles, surface,
+  words, the signature figure, the sameness check and worked identities.
 - `references/illustration.md`: drawing SVG for the ink-and-watercolor painter.
 - `references/story-format.md`: the story file, every block type, tokens and formats.
 - `references/facts.md`: the facts file, provenance and the `derive` functions.
@@ -150,4 +179,10 @@ Reply with the link, one line on what the page covers, and any facts that were m
   map and an incident diagram.
 - `${CLAUDE_PLUGIN_ROOT}/examples/onboarding/`: a first-week handbook with invented data:
   a coffee roaster's theme, two drawings, a flow, a custom tile map, a widget, a checklist
-  and a quiz.
+  and a quiz scored as a cupping.
+- `${CLAUDE_PLUGIN_ROOT}/examples/quarterly/`: a support-desk review told as a lighthouse
+  keeper's log: a route along a coastline with a drawn lighthouse icon, ruled paper and a
+  ticket stub.
+
+Read an example to learn the format. Never copy its theme: `chronicle check` flags a page
+that looks like one.

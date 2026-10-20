@@ -25,7 +25,7 @@ edit; it names each problem with its path, such as `chapters[2].blocks[1]`.
 | `meta.byline` | List of short lines: who prepared it, for which forum, a demo notice if invented. |
 | `meta.description` | One sentence for the gallery card and the meta description. |
 | `meta.colophon` | Paragraphs for the end: how the page was made and what the data covers. |
-| `theme` | The page's identity: palette, fonts, progress device, chapter marks, stat style. See `identity.md`. |
+| `theme` | The page's identity: concept, palette, fonts, progress device, chapter marks, stat style, surface and words. See `identity.md`. |
 | `sources` | `[{"id", "label", "detail", "as_of"}]`; every fact's `source` names one `id`. |
 | `art` | Named paintings, drawn as SVG and painted by `chronicle build`. See `illustration.md`. |
 | `hero` | `{"art": key, "caption": text, "stats": [stat items], "stats_title", "stats_subtitle", "stats_style"}`; title and subtitle head a receipt or ticket |
@@ -157,7 +157,9 @@ only for people who agreed to appear, or for invented demo data.
 Sliders the reader moves, a chart and a sentence that reads the result.
 - `forecast` data: `remaining`, `velocity`, `growth`, `target` (date), `x`, `done`, `scope`.
 - `savings` data: `now` and `after` (monthly cost), `renewal` (one-off cost), `renewal_month`,
-  `plan_month`, `first`, `last` (slider range, `YYYY-MM`), `year`.
+  `plan_month`, `first`, `last` (slider range, `YYYY-MM`), `year`, and `labels` in the
+  subject's words: `old` ("the monolith"), `new` ("Keystone"), `both` ("Both platforms
+  running"), `renewal` ("License renewal").
 
 ### table
 `{"type": "table", "columns": [...], "rows": [[...]], "caption": "..."}`. Cells accept tokens.

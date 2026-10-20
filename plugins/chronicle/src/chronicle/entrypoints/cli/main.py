@@ -1,8 +1,10 @@
 """Command line: `python -m chronicle <command>`.
 
-check  STORY            validate structure, fact tokens and unsourced numbers
+new    FOLDER           start a run folder: story.json and facts.json to fill in
+check  STORY            validate structure, fact tokens, unsourced numbers and the theme
 paint  STORY            paint every scene in story.art into OUT/art (needs NumPy and OpenCV)
 build  STORY            check, paint what changed, and write OUT/artifact.html + OUT/index.html
+shoot  STORY            screenshot the built page at desktop and phone width
 motifs                  list presets, motifs and their parameters for writing scenes
 """
 
@@ -16,6 +18,7 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
+from chronicle.connectors.browser import shoot
 from chronicle.connectors.files import store
 from chronicle.core.story import derive, model
 from chronicle.core.story import theme as theming
@@ -24,6 +27,10 @@ from chronicle.core.story.render import Assets, render
 
 ART_DIR = "art"
 MANIFEST = "manifest.json"
+EXAMPLES = Path(__file__).resolve().parents[4] / "examples"
+# Other pages a new theme is compared with: the bundled examples and up to this many
+# sibling run folders.
+MAX_SIBLINGS = 40
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -51,10 +58,22 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "--inline", action="store_true", help="also write single.html with images embedded"
             )
     sub.add_parser("motifs")
+    new = sub.add_parser("new")
+    new.add_argument("folder", type=Path, help="run folder to create, e.g. chronicle-runs/q4")
+    new.add_argument("--title", default="", help="the page title")
+    shot = sub.add_parser("shoot")
+    shot.add_argument("story", type=Path, help="path to story.json (its build/ is shot)")
+    shot.add_argument("--out", type=Path, help="build folder (default: build/ beside the story)")
+    shot.add_argument("--browser", help="Chromium or Chrome to use (default: first found)")
+    shot.add_argument("--wait", type=int, default=4000, help="ms to let the page settle")
     args = parser.parse_args(argv)
     try:
         if args.command == "motifs":
             return _motifs()
+        if args.command == "new":
+            return _new(args.folder, args.title)
+        if args.command == "shoot":
+            return _shoot(args.out or args.story.parent / "build", args.browser, args.wait)
         story = store.read_json(args.story)
         facts = _facts(args.story, story, args.facts)
         out = args.out or args.story.parent / "build"
@@ -63,6 +82,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             report.warnings.extend(theming.build(story.get("theme"), _fonts()).warnings)
         except theming.ThemeError as exc:
             report.errors.append(str(exc))
+        report.warnings.extend(theming.review(story.get("theme"), _other_themes(args.story)))
         files = _files(story, args.story.parent, report)
         drawings = _drawings(story, args.story.parent, facts, report)
         for warning in report.warnings:
@@ -91,6 +111,105 @@ def main(argv: Sequence[str] | None = None) -> int:
     except (store.StoreError, FactError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
+    except shoot.BrowserError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+
+
+def _other_themes(story_path: Path) -> dict[str, Any]:
+    """Themes of the bundled examples and of sibling run folders, to compare a page with."""
+    here = story_path.resolve()
+    paths = sorted(EXAMPLES.glob("*/story.json")) if EXAMPLES.is_dir() else []
+    paths += sorted(here.parent.parent.glob("*/story.json"))[:MAX_SIBLINGS]
+    themes: dict[str, Any] = {}
+    for path in paths:
+        if path.resolve() == here:
+            continue
+        try:
+            other = store.read_json(path)
+        except store.StoreError:
+            continue
+        if isinstance(other, Mapping) and isinstance(other.get("theme"), Mapping):
+            label = "example " if path.parent.parent == EXAMPLES else ""
+            themes[f"{label}{path.parent.name}"] = other["theme"]
+    return themes
+
+
+def _new(folder: Path, title: str) -> int:
+    """Start a run folder with a story to fill in, and keep it out of git."""
+    story_path = folder / "story.json"
+    if story_path.exists():
+        print(f"error: {story_path} exists; pick another folder", file=sys.stderr)
+        return 1
+    name = title or folder.name.replace("-", " ").title()
+    store.write_json(story_path, _skeleton(name))
+    store.write_json(folder / "facts.json", {"derive": {}})
+    for sub in (ART_DIR, "diagrams", "widgets"):
+        (folder / sub).mkdir(parents=True, exist_ok=True)
+    ignored = _ignore(folder)
+    print(f"wrote {story_path} and {folder / 'facts.json'}")
+    if ignored:
+        print(f"added {ignored} to .gitignore")
+    print("next: do the design pass (references/identity.md), then fill theme.concept first")
+    return 0
+
+
+def _skeleton(title: str) -> dict[str, Any]:
+    return {
+        "schema_version": model.SCHEMA_VERSION,
+        "meta": {
+            "title": title,
+            "kicker": "",
+            "dek": "",
+            "byline": [],
+            "description": "",
+            "colophon": "",
+        },
+        "theme": {"concept": ""},
+        "sources": [],
+        "art": {},
+        "hero": {},
+        "chapters": [
+            {
+                "id": "start",
+                "short": "Start",
+                "kicker": "",
+                "title": "State this chapter's claim",
+                "blocks": [{"type": "prose", "text": "Write the chapter here."}],
+            }
+        ],
+    }
+
+
+def _ignore(folder: Path) -> str:
+    """Add the run folder's top folder to the repository's .gitignore when it is missing."""
+    cwd = Path.cwd()
+    try:
+        top = folder.resolve().relative_to(cwd).parts[0]
+    except (ValueError, IndexError):
+        return ""
+    if not (cwd / ".git").exists():
+        return ""
+    path = cwd / ".gitignore"
+    text = store.read_text(path) if path.exists() else ""
+    entry = f"{top}/"
+    if entry in text.split() or top in text.split():
+        return ""
+    store.write_text(path, text + ("" if not text or text.endswith("\n") else "\n") + entry + "\n")
+    return entry
+
+
+def _shoot(out: Path, browser: str | None, wait: int) -> int:
+    page = out / "index.html"
+    if not page.exists():
+        print(f"error: {page} does not exist; run build first", file=sys.stderr)
+        return 1
+    found = shoot.find(browser)
+    for name, size in shoot.SIZES.items():
+        image = shoot.shoot(found, page, out / "shots" / f"{name}.png", size, wait)
+        print(f"wrote {image} ({size[0]} px wide)")
+    print("look at both images with the Read tool before publishing")
+    return 0
 
 
 def _facts(story_path: Path, story: Mapping[str, Any], override: Path | None) -> Any:

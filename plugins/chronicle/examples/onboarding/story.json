@@ -13,6 +13,7 @@
   "colophon": "Built by the chronicle plugin from a facts file and a story file. The illustrations were drawn as SVG for this page and painted in ink and watercolor in code.\n\nDemonstration data. Saltmarsh Coffee Roasters, its staff and every figure on this page are invented for this example."
  },
  "theme": {
+  "concept": "A specialty roaster's first week told as a cupping session: coffee lots, a bean's path from green seed to cup, cupping scores, taken from the material (Saltmarsh Coffee Roasters).",
   "palette": {
    "paper": "#F6EFE4",
    "ink": "#2A211B",
@@ -48,7 +49,20 @@
    "prefix": "Lot",
    "format": "padded"
   },
-  "stats": "cards"
+  "stats": "cards",
+  "surface": {
+   "texture": "dots",
+   "corners": "round",
+   "frame": "mat"
+  },
+  "words": {
+   "question": "Cup",
+   "next_question": "Next cup",
+   "see_score": "Score the cupping",
+   "try_again": "Cup again",
+   "done": "tasted",
+   "sources": "Where the beans came from"
+  }
  },
  "sources": [
   {

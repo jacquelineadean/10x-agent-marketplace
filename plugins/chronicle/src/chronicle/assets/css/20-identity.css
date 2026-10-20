@@ -5,7 +5,7 @@
 .mark .mk-pre { display: block; font: 600 .62rem/1.1 var(--f-ui); letter-spacing: .16em; text-transform: uppercase; }
 .mark-label {
   display: inline-grid; grid-template-columns: auto auto; align-items: end; column-gap: .55rem;
-  padding: .45rem .7rem .55rem; border: 1.5px solid var(--ink); border-radius: 3px; background: var(--surface-2);
+  padding: .45rem .7rem .55rem; border: 1.5px solid var(--ink); border-radius: calc(3px * var(--round, 1)); background: var(--surface-2);
   position: relative; min-width: 5.4rem;
 }
 .mark-label .mk-pre { grid-column: 1 / -1; color: var(--muted); margin-bottom: .2rem; }
@@ -24,7 +24,7 @@
 .mark-tag .mk-n { font: 600 1.25rem/1 var(--f-ui); }
 .mark-sign {
   display: inline-grid; place-items: center; min-width: 4.4rem; padding: .4rem .8rem .5rem; margin-top: 1.4rem;
-  background: var(--accent); color: var(--on-accent); border-radius: 2px; position: relative;
+  background: var(--accent); color: var(--on-accent); border-radius: calc(2px * var(--round, 1)); position: relative;
   box-shadow: 0 2px 0 color-mix(in srgb, var(--ink) 25%, transparent);
 }
 .mark-sign::before, .mark-sign::after { content: ""; position: absolute; top: -1.4rem; width: 1.5px; height: 1.4rem; background: var(--ink-2); }
@@ -69,12 +69,16 @@
 .pb-track .pb-sleeper { stroke: var(--rule); stroke-width: 2; }
 .pb-track .pb-done { stroke: var(--accent); stroke-width: 2.6; stroke-linecap: round; }
 .pb-track .pb-done-belt, .pb-track .pb-done-road { stroke-width: 4; opacity: .9; }
-.pb-track .pb-dot { fill: var(--paper); stroke: var(--ink-2); stroke-width: 1.4; }
-.pb-track .pb-stop.passed .pb-dot { fill: var(--accent); stroke: var(--accent); }
-.pb-track .pb-stop.current .pb-dot { fill: var(--paper); stroke: var(--accent); stroke-width: 2.4; r: 5.5px; }
-.pb-track .pb-end { fill: var(--ink-2); }
-.pb-track .pb-icon { transition: transform .12s linear; }
-.pb-track .pb-icon .pb-icon-body { fill: var(--c-icon, var(--surface-2)); }
+.pb-track .pb-dot, .pb-route .pb-dot { fill: var(--paper); stroke: var(--ink-2); stroke-width: 1.4; }
+.pb-track .pb-stop.passed .pb-dot, .pb-route .pb-stop.passed .pb-dot { fill: var(--accent); stroke: var(--accent); }
+.pb-track .pb-stop.current .pb-dot, .pb-route .pb-stop.current .pb-dot { fill: var(--paper); stroke: var(--accent); stroke-width: 2.4; r: 5.5px; }
+.pb-track .pb-end, .pb-route .pb-end { fill: var(--ink-2); }
+.pb-track .pb-icon, .pb-route .pb-icon { transition: transform .12s linear; }
+.pb-track .pb-icon .pb-icon-body, .pb-route .pb-icon .pb-icon-body { fill: var(--c-icon, var(--surface-2)); }
+.pb-route .pb-route-line { fill: none; stroke: var(--ink-2); stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
+.pb-route .pb-route-line.pb-dashed { stroke-dasharray: 4 4; }
+.pb-route .pb-route-line.pb-road, .pb-route .pb-route-line.pb-belt, .pb-route .pb-route-line.pb-rail { stroke: var(--rule); stroke-width: 5; }
+.pb-route .pb-route-done { fill: none; stroke: var(--accent); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
 .pb-tape .pb-case { fill: var(--c-tape-case, var(--ink)); }
 .pb-tape .pb-case-hub { fill: var(--c-tape, #F0C537); stroke: var(--paper); stroke-width: 1.5; }
 .pb-tape .pb-tape-body { fill: var(--c-tape, #F0C537); }
@@ -116,7 +120,7 @@
 /* ------------------------------------------------------------- stat skins */
 .stats-sub { margin: -.4rem 0 .8rem; font: 400 .85rem/1.4 var(--f-ui); color: var(--muted); }
 .stats-cards .stats { border-top: 0; gap: .8rem; }
-.stats-cards .stat { background: var(--surface); border: 0; border-top: 3px solid var(--accent); padding: .9rem 1rem 1rem !important; border-left: 0 !important; border-radius: 2px; }
+.stats-cards .stat { background: var(--surface); border: 0; border-top: 3px solid var(--accent); padding: .9rem 1rem 1rem !important; border-left: 0 !important; border-radius: calc(2px * var(--round, 1)); }
 /* A thermal receipt: the hero's numbers printed as a till slip with a torn foot. */
 .stats-receipt, .stats-ticket { margin: 0 auto; width: 100%; max-width: 22rem; }
 .rc-paper {
@@ -141,7 +145,7 @@
   background: repeating-linear-gradient(90deg, #2A2620 0 2px, transparent 2px 4px, #2A2620 4px 5px, transparent 5px 8px, #2A2620 8px 11px, transparent 11px 12px, #2A2620 12px 13px, transparent 13px 16px);
 }
 .stats-receipt .fact, .stats-ticket .fact { border-bottom-color: rgba(42, 38, 32, .35); }
-.stats-ticket .rc-paper { transform: none; border-left: 2px dashed #B6AEA2; -webkit-mask: none; mask: none; border-radius: 6px; }
+.stats-ticket .rc-paper { transform: none; border-left: 2px dashed #B6AEA2; -webkit-mask: none; mask: none; border-radius: calc(6px * var(--round, 1)); }
 .stats-ticket .rc-code { height: 1.4rem; }
 
 /* ------------------------------------------------------- painting overlays */
@@ -168,8 +172,8 @@
   .plate.pan figcaption, .plate.pan .spot-cards { padding-inline: 16px; }
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .plate .frame { border-radius: 6px; overflow: hidden; }
+  :root:not([data-theme="light"]) .plate .frame { border-radius: calc(6px * var(--round, 1)); overflow: hidden; }
   :root:not([data-theme="light"]) .stage img { filter: brightness(.92) saturate(.95); }
 }
-:root[data-theme="dark"] .plate .frame { border-radius: 6px; overflow: hidden; }
+:root[data-theme="dark"] .plate .frame { border-radius: calc(6px * var(--round, 1)); overflow: hidden; }
 :root[data-theme="dark"] .stage img { filter: brightness(.92) saturate(.95); }

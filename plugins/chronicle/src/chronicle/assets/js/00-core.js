@@ -10,8 +10,12 @@
   var DATA = JSON.parse(holder.textContent || "{}");
   var FIGS = DATA.figs || {};
   var SOURCES = DATA.sources || {};
+  /* The theme's words for the page's controls, so a golf handbook can ask "Hole 3 of 9". */
+  var WORDS = DATA.words || {};
+  function word(key, fallback) { return WORDS[key] || fallback; }
   var SVGNS = "http://www.w3.org/2000/svg";
-  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* "#still" renders the finished state at once, for `chronicle shoot` screenshots. */
+  var reduceMotion = location.hash === "#still" || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

@@ -83,3 +83,27 @@ def test_hostile_fact_text_cannot_break_out(
     assert "<script>alert(1)" not in html
     assert "&lt;/script&gt;&lt;script&gt;alert(1)" in html
     assert "\\u003c/script\\u003e\\u003cscript\\u003ealert(1)" in html
+
+
+def test_theme_words_reach_the_html_and_the_runtime(
+    story: dict[str, Any], facts: dict[str, Any], assets: Assets
+) -> None:
+    story = copy.deepcopy(story)
+    story["theme"]["words"] = {"sources": "Shipping manifest", "show_numbers": "Open the slip"}
+    page = render(story, facts, MANIFEST, assets).fragment
+    assert ">Shipping manifest</h2>" in page
+    assert ">Open the slip</button>" in page
+    assert "Show the numbers" not in page
+    assert payload(page)["words"]["sources"] == "Shipping manifest"
+
+
+def test_a_widget_used_twice_ships_its_style_once(
+    story: dict[str, Any], facts: dict[str, Any], assets: Assets
+) -> None:
+    story = copy.deepcopy(story)
+    widget = {"type": "widget", "name": "dial", "script": "w/dial.js", "style": "w/dial.css"}
+    story["chapters"][0]["blocks"] += [widget, {**widget, "data": {"n": 2}}]
+    files = {**assets.files, "w/dial.js": "root.textContent = 'x';", "w/dial.css": ".w-dial{}"}
+    page = render(story, facts, MANIFEST, Assets(assets.css, assets.js, assets.fonts, files))
+    assert page.fragment.count(".w-dial{}") == 1
+    assert page.fragment.count('["dial"] = function') == 1

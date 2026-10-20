@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -90,3 +91,85 @@ def test_every_listed_font_names_its_kind_and_roles() -> None:
     for family, entry in FONTS.items():
         assert entry["kind"] in kinds, family
         assert set(entry["roles"]) <= roles, family
+
+
+@pytest.mark.parametrize(
+    ("spec", "message"),
+    [
+        ({"progress": {"kind": "route"}}, "route needs a path"),
+        ({"progress": {"kind": "route", "path": "M0,0 L10,10<script>"}}, "SVG path data"),
+        ({"progress": {"icon_path": "L0,0 L4,4"}}, "starting with M"),
+        ({"surface": {"texture": "marble"}}, "surface.texture"),
+        ({"surface": {"lighting": "warm"}}, "surface.lighting is unknown"),
+        ({"words": {"chapter": "Hole"}}, "words.chapter is unknown"),
+        ({"words": {"question": "<b>Hole</b>"}}, "plain text"),
+    ],
+)
+def test_new_theme_parts_say_what_to_change(spec: dict[str, Any], message: str) -> None:
+    with pytest.raises(theme.ThemeError, match=message):
+        theme.build(spec, FONTS)
+
+
+def test_route_icon_surface_and_words_come_through() -> None:
+    t = theme.build(
+        {
+            "progress": {
+                "kind": "route",
+                "path": "M0,30  C200,0 800,40 1000,10",
+                "icon_path": "M-3,8 L0,-8 L3,8 Z",
+            },
+            "surface": {"texture": "ruled", "corners": "square", "frame": "tape"},
+            "words": {"question": "Hole", "sources": "Field notes"},
+        },
+        FONTS,
+    )
+    assert t.progress["path"] == "M0,30 C200,0 800,40 1000,10"
+    assert t.progress["icon_path"] == "M-3,8 L0,-8 L3,8 Z"
+    assert "--round: 0;" in t.css
+    assert "background-size: 100% 2rem" in t.css
+    assert ".plate .frame::before" in t.css
+    assert t.words["question"] == "Hole" and t.words["sources"] == "Field notes"
+    assert t.words["next"] == "Next"
+
+
+def test_review_flags_a_missing_or_stock_theme() -> None:
+    assert "theme is missing" in theme.review(None, {})[0]
+    warnings = theme.review({"palette": {"paper": "#FBFAF6"}}, {})
+    assert any("theme.concept is empty" in w for w in warnings)
+    assert any("chronicle's defaults for type, accent" in w for w in warnings)
+
+
+def test_review_flags_a_page_that_copies_another() -> None:
+    golf = {
+        "concept": "a yardage book",
+        "palette": {"accent": "#2E6B3C", "paper": "#F7F5EE"},
+        "fonts": {"display": "Fraunces", "body": "Lora"},
+        "progress": {"kind": "flags"},
+        "chapter_mark": "flag",
+    }
+    copy = {**golf, "concept": "a fishing guide", "palette": {"accent": "#2F6D3E"}}
+    assert theme.likeness(golf, copy) == [
+        "type",
+        "accent",
+        "paper",
+        "progress device",
+        "chapter mark",
+        "stat panel",
+    ]
+    assert any("looks like golf" in w for w in theme.review(copy, {"golf": golf}))
+    other = {
+        **copy,
+        "palette": {"accent": "#8A3B12", "paper": "#EEF2F4"},
+        "fonts": {"display": "Gloock", "body": "Literata"},
+        "stats": "cards",
+    }
+    assert not any("looks like" in w for w in theme.review(other, {"golf": golf}))
+
+
+def test_the_bundled_examples_do_not_look_alike() -> None:
+    root = Path(__file__).resolve().parents[1] / "examples"
+    themes = {p.parent.name: store.read_json(p)["theme"] for p in root.glob("*/story.json")}
+    assert len(themes) == 3
+    for name, spec in themes.items():
+        others = {k: v for k, v in themes.items() if k != name}
+        assert theme.review(spec, others) == [], name

@@ -25,7 +25,7 @@
     function show(i) {
       at = i;
       qs.forEach(function (q, k) { q.classList.toggle("on", k === i); });
-      count.textContent = "Question " + (i + 1) + " of " + qs.length;
+      count.textContent = word("question", "Question") + " " + (i + 1) + " " + word("of", "of") + " " + qs.length;
       bar.hidden = false;
       result.hidden = true;
       pipState();
@@ -33,7 +33,7 @@
     qs.forEach(function (q, qi) {
       var opts = Array.prototype.slice.call(q.querySelectorAll(".qz-opt"));
       var explain = q.querySelector(".qz-explain");
-      var nextBtn = html("button", "qz-next btn", qi === qs.length - 1 ? "See your score" : "Next question", null);
+      var nextBtn = html("button", "qz-next btn", qi === qs.length - 1 ? word("see_score", "See your score") : word("next_question", "Next question"), null);
       nextBtn.type = "button";
       nextBtn.hidden = true;
       q.appendChild(nextBtn);
@@ -72,11 +72,11 @@
       (spec.results || []).forEach(function (r) { if (share >= r.min && (!pick || r.min >= pick.min)) pick = r; });
       var stamp = html("div", "qz-stamp", null, result);
       html("b", null, score + "/" + qs.length, stamp);
-      html("span", null, pick ? pick.label : "Score", stamp);
+      html("span", null, pick ? pick.label : word("score", "Score"), stamp);
       var body = html("div", "qz-result-body", null, result);
       html("p", "qz-result-h", pick ? pick.label : "Done", body);
       if (pick && pick.text) html("p", "qz-result-text", pick.text, body);
-      var again = html("button", "btn ghost", "Try again", body);
+      var again = html("button", "btn ghost", word("try_again", "Try again"), body);
       again.type = "button";
       again.addEventListener("click", reset);
       result.hidden = false;
@@ -104,7 +104,7 @@
     boxes.forEach(function (b) { b.checked = saved.indexOf(Number(b.getAttribute("data-k"))) >= 0; });
     function update() {
       var done = boxes.filter(function (b) { return b.checked; });
-      if (count) count.textContent = done.length + " of " + boxes.length + " done";
+      if (count) count.textContent = done.length + " " + word("of", "of") + " " + boxes.length + " " + word("done", "done");
       if (fill) fill.style.width = (boxes.length ? done.length / boxes.length * 100 : 0) + "%";
       node.classList.toggle("complete", done.length === boxes.length && boxes.length > 0);
       boxes.forEach(function (b) { b.closest("li").classList.toggle("done", b.checked); });
@@ -120,7 +120,7 @@
   var KIT = {
     svg: svg, html: html, text: txt, clamp: clamp, ease: ease, linear: linear, ticks: ticks,
     fmt: fmt, fmtDate: fmtDate, parseDate: parseDate, label: labelX, color: colorOf,
-    icon: drawIcon, reduceMotion: reduceMotion, store: STORE,
+    icon: drawIcon, word: word, reduceMotion: reduceMotion, store: STORE,
     tip: { show: showTip, hide: hideTip, at: pointerXY },
     onScroll: function (fn) { scrollers.push(fn); },
     onFrame: function (fn) { plates.push(fn); },
