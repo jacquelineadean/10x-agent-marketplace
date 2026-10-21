@@ -89,6 +89,16 @@ def resolve_refs(spec: Any, facts: Mapping[str, Any]) -> Any:
     return spec
 
 
+def fill(text: str, facts: Mapping[str, Any]) -> str:
+    """Text with every token replaced by its formatted value, for places with no hover."""
+
+    def one(m: re.Match[str]) -> str:
+        found = lookup(facts, m.group(1))
+        return format_value(found.value, found.unit, m.group(2) or "auto")
+
+    return TOKEN.sub(one, text)
+
+
 def format_value(value: Any, unit: str = "", fmt: str = "auto") -> str:
     """Format a fact for prose: thousands separators, units, compact money, dates."""
     if fmt not in FORMATS:

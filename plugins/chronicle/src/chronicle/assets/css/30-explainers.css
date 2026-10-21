@@ -65,20 +65,6 @@
 /* --------------------------------------------------------------- diagram */
 .dg-wrap { max-width: 100%; overflow-x: auto; }
 .dg-svg { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--f-ui); }
-.dg-svg text { fill: var(--ink); font-size: 15px; }
-.dg-svg .label { fill: var(--ink-2); font-size: 13px; }
-.dg-svg .small { font-size: 12px; fill: var(--muted); }
-.dg-svg .hand { font-family: var(--f-hand); font-size: 20px; fill: var(--accent-text); }
-.dg-svg .title { font-weight: 700; }
-.dg-svg .box { fill: var(--surface-2); stroke: var(--ink); stroke-width: 1.5; }
-.dg-svg .box.soft { fill: var(--surface); stroke: var(--rule); }
-.dg-svg .box.accent { fill: var(--accent-wash); stroke: var(--accent); stroke-width: 2; }
-.dg-svg .box.legacy { fill: color-mix(in srgb, var(--legacy) 12%, transparent); stroke: var(--legacy); stroke-width: 2; }
-.dg-svg .line { fill: none; stroke: var(--ink-2); stroke-width: 1.6; }
-.dg-svg .line.accent { stroke: var(--accent); stroke-width: 2.2; }
-.dg-svg .line.legacy { stroke: var(--legacy); stroke-width: 2.2; }
-.dg-svg .line.dashed { stroke-dasharray: 5 4; }
-.dg-svg .head { fill: var(--ink-2); }
 .dg-svg [data-tip] { cursor: help; }
 .dg-svg [data-tip]:focus-visible { outline: none; }
 .dg-svg [data-tip]:focus-visible .box, .dg-svg .box[data-tip]:focus-visible { stroke: var(--accent); stroke-width: 3; }

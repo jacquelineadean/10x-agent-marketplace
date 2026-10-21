@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "kind": "tad",
+  "meta": {
+    "title": "How an order moves through Checkout",
+    "kicker": "Architecture walkthrough",
+    "description": "A shopper's order passes the gateway to the order service, which saves it, charges the card and publishes an event that the email and warehouse workers pick up.",
+    "credit": "Example data",
+    "sources": [
+      {
+        "label": "Checkout architecture notes",
+        "detail": "invented for this example"
+      }
+    ]
+  },
+  "theme": {
+    "concept": "A systems runbook: graphite ink on cool paper, one electric blue for live traffic.",
+    "palette": {
+      "paper": "#F7F8FA",
+      "ink": "#1B2330",
+      "accent": "#2563EB",
+      "legacy": "#B4532A"
+    },
+    "fonts": {
+      "display": "Space Grotesk",
+      "body": "IBM Plex Sans",
+      "ui": "IBM Plex Sans",
+      "mono": "IBM Plex Mono"
+    }
+  },
+  "frame": {
+    "size": "16:9"
+  },
+  "tad": {
+    "direction": "right",
+    "groups": [
+      {
+        "id": "cloud",
+        "label": "Production VPC",
+        "style": "zone"
+      },
+      {
+        "id": "core",
+        "label": "Checkout core",
+        "style": "cluster",
+        "parent": "cloud"
+      },
+      {
+        "id": "workers",
+        "label": "Workers",
+        "style": "boundary",
+        "parent": "cloud"
+      },
+      {
+        "id": "vendors",
+        "label": "Vendors",
+        "style": "external"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "web",
+        "label": "Web app",
+        "kind": "client",
+        "tech": "Next.js"
+      },
+      {
+        "id": "gateway",
+        "label": "API gateway",
+        "kind": "gateway",
+        "tech": "Kong",
+        "group": "cloud"
+      },
+      {
+        "id": "orders",
+        "label": "Order service",
+        "kind": "service",
+        "tech": "Go",
+        "group": "core",
+        "replicas": 3
+      },
+      {
+        "id": "payments",
+        "label": "Payments",
+        "kind": "service",
+        "tech": "Java",
+        "group": "core"
+      },
+      {
+        "id": "db",
+        "label": "Orders DB",
+        "kind": "db",
+        "tech": "PostgreSQL",
+        "group": "core"
+      },
+      {
+        "id": "bus",
+        "label": "Event bus",
+        "kind": "stream",
+        "tech": "Kafka",
+        "group": "cloud"
+      },
+      {
+        "id": "email",
+        "label": "Email worker",
+        "kind": "mail",
+        "group": "workers"
+      },
+      {
+        "id": "warehouse",
+        "label": "Warehouse sync",
+        "kind": "job",
+        "group": "workers"
+      },
+      {
+        "id": "cards",
+        "label": "Card processor",
+        "kind": "card",
+        "tech": "Stripe",
+        "group": "vendors",
+        "tier": 5
+      },
+      {
+        "id": "fraud",
+        "label": "Fraud check",
+        "kind": "model",
+        "tech": "in design",
+        "group": "vendors",
+        "tier": 5
+      }
+    ],
+    "edges": [
+      {
+        "from": "web",
+        "to": "gateway",
+        "label": "HTTPS"
+      },
+      {
+        "from": "gateway",
+        "to": "orders",
+        "label": "POST /orders"
+      },
+      {
+        "from": "orders",
+        "to": "db"
+      },
+      {
+        "from": "orders",
+        "to": "payments"
+      },
+      {
+        "from": "payments",
+        "to": "cards",
+        "label": "charge"
+      },
+      {
+        "from": "payments",
+        "to": "fraud"
+      },
+      {
+        "from": "orders",
+        "to": "bus",
+        "label": "order.placed",
+        "style": "async"
+      },
+      {
+        "from": "bus",
+        "to": "email",
+        "style": "async"
+      },
+      {
+        "from": "bus",
+        "to": "warehouse",
+        "style": "async"
+      }
+    ],
+    "flows": [
+      {
+        "id": "place",
+        "label": "A shopper places an order",
+        "path": [
+          "web",
+          "gateway",
+          "orders",
+          "payments",
+          "cards"
+        ]
+      },
+      {
+        "id": "to-email",
+        "path": [
+          "orders",
+          "bus",
+          "email"
+        ],
+        "tone": "s3"
+      },
+      {
+        "id": "to-warehouse",
+        "path": [
+          "orders",
+          "bus",
+          "warehouse"
+        ],
+        "tone": "s3"
+      }
+    ]
+  },
+  "steps": [
+    {
+      "caption": "Shoppers reach Checkout through the web app and one API gateway.",
+      "show": [
+        "web",
+        "gateway"
+      ]
+    },
+    {
+      "caption": "The order service saves each order, then asks Payments to charge the card.",
+      "show": [
+        "core",
+        "cards"
+      ],
+      "flow": [
+        "place"
+      ]
+    },
+    {
+      "caption": "Saving an order publishes order.placed; the workers pick it up without blocking the shopper.",
+      "show": [
+        "bus",
+        "workers"
+      ],
+      "flow": [
+        "to-email",
+        "to-warehouse"
+      ]
+    },
+    {
+      "caption": "When the card processor times out, Payments retries and orders still save.",
+      "focus": [
+        "payments",
+        "cards",
+        "db"
+      ],
+      "state": {
+        "cards": "down",
+        "payments": "warn"
+      }
+    },
+    {
+      "caption": "Next quarter a fraud check joins the payment path.",
+      "show": [
+        "fraud"
+      ],
+      "state": {
+        "cards": "normal",
+        "payments": "normal",
+        "fraud": "planned"
+      },
+      "pulse": [
+        "fraud"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "ci": {
+    "median_minutes": {"value": 14, "unit": "min", "source": "example", "note": "median CI run, invented for this example"},
+    "review_hours": {"value": 3, "unit": "hours", "source": "example", "note": "median time to first approval, invented"},
+    "canary_share": {"value": 5, "unit": "%", "source": "example", "note": "share of traffic on the canary, invented"},
+    "deploys_per_day": {"value": 12, "unit": "deploys", "source": "example", "note": "invented for this example"}
+  }
+}
