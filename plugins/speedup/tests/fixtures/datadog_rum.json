@@ -1,0 +1,18 @@
+{
+  "data": {
+    "buckets": [
+      {
+        "by": {},
+        "computes": {
+          "c0": [
+            {"time": "2025-10-06T00:00:00Z", "value": 812000000.0},
+            {"time": "2025-10-07T00:00:00Z", "value": 798000000.0},
+            {"time": "2025-10-08T00:00:00Z", "value": null},
+            {"time": "2025-10-09T00:00:00Z", "value": 640500000.0}
+          ]
+        }
+      }
+    ]
+  },
+  "meta": {"elapsed": 132, "request_id": "pddv1ChZ", "status": "done"}
+}

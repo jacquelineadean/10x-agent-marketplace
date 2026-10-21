@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "project": "Lumen",
+  "percentile": "p75",
+  "window_days": 7,
+  "impact_days": 7,
+  "regression_threshold_pct": 5,
+  "baseline": {"since": "2026-08-03", "until": "2026-08-09"},
+  "sources": {
+    "datadog": {"site": "datadoghq.com"},
+    "prometheus": {"url": "https://prometheus.lumen.example"}
+  },
+  "journeys": [
+    {
+      "id": "fresh-load",
+      "name": "Fresh load to typeable composer",
+      "unit": "ms",
+      "target": 600,
+      "weight": 5,
+      "source": {"kind": "datadog-rum", "query": "@type:view @view.name:/chat env:prod", "measure": "@view.custom_timings.composer_ready", "aggregation": "pc75", "scale": 1e-6}
+    },
+    {
+      "id": "conversation-switch",
+      "name": "Switch conversation",
+      "unit": "ms",
+      "target": 400,
+      "weight": 4,
+      "source": {"kind": "datadog-rum", "query": "@type:action @action.name:switch_conversation env:prod", "measure": "@action.loading_time", "aggregation": "pc75", "scale": 1e-6}
+    },
+    {
+      "id": "new-chat",
+      "name": "New chat ready",
+      "unit": "ms",
+      "target": 350,
+      "weight": 3,
+      "source": {"kind": "datadog-rum", "query": "@type:action @action.name:new_chat env:prod", "measure": "@action.loading_time", "aggregation": "pc75", "scale": 1e-6}
+    },
+    {
+      "id": "send-to-paint",
+      "name": "Send to first painted token",
+      "unit": "ms",
+      "target": 200,
+      "weight": 4,
+      "source": {"kind": "datadog-metric", "query": "p75:lumen.web.send_to_paint{env:prod}"}
+    },
+    {
+      "id": "sidebar-open",
+      "name": "Open sidebar",
+      "unit": "ms",
+      "target": 100,
+      "weight": 1,
+      "source": {"kind": "datadog-rum", "query": "@type:action @action.name:open_sidebar env:prod", "measure": "@action.loading_time", "aggregation": "pc75", "scale": 1e-6}
+    },
+    {
+      "id": "search-results",
+      "name": "Search results shown",
+      "unit": "ms",
+      "target": 450,
+      "weight": 2,
+      "source": {"kind": "datadog-rum", "query": "@type:action @action.name:search env:prod", "measure": "@action.loading_time", "aggregation": "pc75", "scale": 1e-6}
+    },
+    {
+      "id": "desktop-cold-start",
+      "name": "Desktop app cold start",
+      "unit": "ms",
+      "target": 900,
+      "weight": 3,
+      "source": {"kind": "datadog-metric", "query": "p75:lumen.desktop.cold_start{channel:stable}"}
+    },
+    {
+      "id": "long-thread-scroll",
+      "name": "Scroll a long thread (INP)",
+      "unit": "ms",
+      "target": 100,
+      "weight": 2,
+      "source": {"kind": "datadog-rum", "query": "@type:view @view.name:/chat env:prod", "measure": "@view.interaction_to_next_paint", "aggregation": "pc75", "scale": 1e-6}
+    },
+    {
+      "id": "history-api",
+      "name": "Conversation history API",
+      "unit": "ms",
+      "target": 200,
+      "weight": 1,
+      "source": {"kind": "prometheus", "query": "histogram_quantile(0.75, sum(rate(http_request_duration_seconds_bucket{route=\"/api/history\"}[1d])) by (le))", "scale": 1000}
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "message-tree",
+      "name": "Message tree assembly",
+      "command": ["valgrind", "--tool=cachegrind", "--cache-sim=no", "--cachegrind-out-file=/dev/null", "node", "--jitless", "bench/message-tree.js"],
+      "parse": "valgrind",
+      "unit": "instructions",
+      "journeys": ["conversation-switch"],
+      "original": 1240000000,
+      "ceiling": 592950000
+    },
+    {
+      "id": "markdown-render",
+      "name": "Render a 4,000-token reply",
+      "command": ["valgrind", "--tool=cachegrind", "--cache-sim=no", "--cachegrind-out-file=/dev/null", "node", "--jitless", "bench/markdown.js"],
+      "parse": "valgrind",
+      "unit": "instructions",
+      "journeys": ["send-to-paint", "long-thread-scroll"],
+      "original": 860000000,
+      "ceiling": 512550000
+    },
+    {
+      "id": "sidebar-commits",
+      "name": "React commits when the sidebar opens",
+      "command": ["node", "bench/sidebar-commits.js"],
+      "parse": "json",
+      "pattern": "commits",
+      "unit": "commits",
+      "repeat": 1,
+      "journeys": ["sidebar-open"],
+      "tolerance_pct": 0,
+      "original": 42,
+      "ceiling": 6
+    },
+    {
+      "id": "main-boot",
+      "name": "Desktop main-process boot",
+      "command": ["valgrind", "--tool=cachegrind", "--cache-sim=no", "--cachegrind-out-file=/dev/null", "node", "--jitless", "bench/main-boot.js"],
+      "parse": "valgrind",
+      "unit": "instructions",
+      "journeys": ["desktop-cold-start"],
+      "original": 2100000000,
+      "ceiling": 844200000
+    },
+    {
+      "id": "composer-mutations",
+      "name": "DOM mutations before the composer is ready",
+      "command": ["node", "bench/composer-mutations.js"],
+      "parse": "number",
+      "unit": "mutations",
+      "repeat": 1,
+      "journeys": ["fresh-load"],
+      "tolerance_pct": 0,
+      "original": 1180,
+      "ceiling": 160
+    },
+    {
+      "id": "search-index",
+      "name": "Search index build",
+      "command": ["valgrind", "--tool=cachegrind", "--cache-sim=no", "--cachegrind-out-file=/dev/null", "node", "--jitless", "bench/search-index.js"],
+      "parse": "valgrind",
+      "unit": "instructions",
+      "journeys": ["search-results"],
+      "original": 330000000,
+      "ceiling": 170850000
+    }
+  ]
+}

@@ -70,3 +70,19 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 | `assets/js/` | the page runtime in numbered parts, joined inside one IIFE: core, charts, figures, plates, progress, explainers, lessons, boot |
 | `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, and the animations `animation-tad/`, `animation-diagram/`, `animation-scene/` |
 | `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |
+
+speedup follows the same cli layout under `plugins/speedup/src/speedup/`:
+
+| Folder | Holds |
+| --- | --- |
+| `core/` | domain records (`model.py`), project file checks (`project.py`), daily bucketing, imports and change records (`records.py`), statistics (`stats.py`), journey, change and benchmark analysis (`analysis.py`), the ratchet (`ratchet.py`), `metrics.json` (`report.py`), digest with the 12 KB cap, token budget, number formats, SVG charts, dashboard, Markdown renderer, write-up tokens (`writeup.py`), the `SeriesSource` port |
+| `connectors/http.py` | the one JSON transport: https only, retries, read-only POST allowlist, no secrets in logs |
+| `connectors/datadog/` | Datadog sites and the metric and RUM queries |
+| `connectors/prometheus/` | Prometheus range queries |
+| `connectors/bench/` | runs benchmark commands as argument lists and parses their numbers |
+| `connectors/files/` | project file, change log and the data folder |
+| `entrypoints/cli/` | the `speedup` command: init, measure, import, bench, guard, tighten, log, report, writeup |
+| `config/` | the only environment reads: Datadog keys and site, Prometheus, runs folder, project file path |
+| `prompts/` | `writeup-outline.md`, the write-up's sections and voice |
+| `plugins/speedup/examples/` | `demo/` (invented Lumen project, imports and a sample write-up), `github-actions/` (guard and tighten workflow) |
+| `plugins/speedup/tests/` | pytest suite with recorded Datadog and Prometheus responses in `fixtures/` |

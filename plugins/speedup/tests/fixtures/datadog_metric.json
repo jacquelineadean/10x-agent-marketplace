@@ -1,0 +1,26 @@
+{
+  "status": "ok",
+  "res_type": "time_series",
+  "from_date": 1759708800000,
+  "to_date": 1760054399000,
+  "query": "p75:lumen.web.send_to_paint{env:prod}",
+  "series": [
+    {
+      "metric": "lumen.web.send_to_paint",
+      "display_name": "lumen.web.send_to_paint",
+      "scope": "env:prod",
+      "expression": "p75:lumen.web.send_to_paint{env:prod}",
+      "unit": [{"family": "time", "name": "millisecond", "short_name": "ms"}, null],
+      "pointlist": [
+        [1759708800000, 210.0], [1759752000000, 230.0],
+        [1759795200000, 200.0], [1759838400000, null],
+        [1759881600000, 190.0], [1759924800000, 196.0],
+        [1759968000000, 180.0], [1760011200000, 184.0]
+      ],
+      "start": 1759708800000,
+      "end": 1760054399000,
+      "interval": 43200,
+      "length": 8
+    }
+  ]
+}

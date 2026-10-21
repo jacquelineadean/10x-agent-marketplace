@@ -1,0 +1,71 @@
+# speedup guardrail for GitHub Actions. Copy to .github/workflows/speedup.yml.
+#
+# - On pull requests: run every benchmark and fail when one is over its ceiling.
+# - Daily: run the benchmarks on main and open a pull request that lowers ceilings that
+#   dropped. Ceilings never go up here; raising one is a hand edit with a reason.
+#
+# Benchmarks run your own commands from perf/speedup.json, so install what they need
+# (Node, valgrind) in the setup steps. speedup itself needs only Python 3.11+.
+name: speedup
+
+on:
+  pull_request:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: sudo apt-get update && sudo apt-get install -y valgrind
+      - run: npm ci
+      - name: Fetch speedup
+        run: git clone --depth 1 https://github.com/jacquelineadean/10x-agent-marketplace "$RUNNER_TEMP/marketplace"
+      - name: Guard ceilings
+        run: PYTHONPATH="$RUNNER_TEMP/marketplace/plugins/speedup/src" python -m speedup guard
+
+  tighten:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: sudo apt-get update && sudo apt-get install -y valgrind
+      - run: npm ci
+      - name: Fetch speedup
+        run: git clone --depth 1 https://github.com/jacquelineadean/10x-agent-marketplace "$RUNNER_TEMP/marketplace"
+      - name: Lower ceilings that dropped
+        run: PYTHONPATH="$RUNNER_TEMP/marketplace/plugins/speedup/src" python -m speedup tighten
+      - name: Open a pull request when a ceiling moved
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet perf/speedup.json; then exit 0; fi
+          branch="speedup/tighten-$(date +%Y%m%d)"
+          git config user.name "speedup"
+          git config user.email "speedup@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -am "speedup: lower benchmark ceilings"
+          git push origin "$branch"
+          gh pr create --title "speedup: lower benchmark ceilings" \
+            --body "Daily tighten run. Each ceiling moved down to the latest median plus headroom."
