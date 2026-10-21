@@ -91,7 +91,7 @@ def speedup_bars(journeys: dict[str, dict[str, Any]]) -> str:
     if not rows:
         return _empty("Speedup by journey")
     rows.sort(key=lambda item: -item[1]["speedup"])
-    row_h, label_w, width = 26, 170, 640
+    row_h, label_w, width = 26, 230, 700
     height = row_h * len(rows) + 30
     peak = max(max(v["speedup"] for _, v in rows), 2.0)
     lowest = min(min(v["speedup"] for _, v in rows), 1.0)
@@ -109,7 +109,7 @@ def speedup_bars(journeys: dict[str, dict[str, Any]]) -> str:
         state = "good" if data["speedup"] >= 1 else "bad"
         parts.append(
             f'<text class="label" x="{label_w - 10}" y="{y + 15}" text-anchor="end">'
-            f"{escape(_short(data['name'], 26))}</text>"
+            f"{escape(_short(data['name'], 34))}</text>"
             f'<rect class="bar bar-{state}" x="{x0:.1f}" y="{y + 4}" '
             f'width="{max(x1 - x0, 1.5):.1f}" height="{row_h - 10}">'
             f"<title>{escape(journey_id)}: {speedup(data['speedup'])}</title></rect>"

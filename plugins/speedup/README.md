@@ -166,8 +166,11 @@ and won, regressions, ceiling cut, open flags), speedup bars on a log scale, one
 journey (daily values, target, baseline and current windows, ship marks), the priority
 table, the change ledger with field effect, proxy and rollout, guardrail cards with each
 ceiling's ratchet, the write-up when present, and method notes with every source query.
-Light and dark themes; one column on phones. Fonts load from Google Fonts with local
-fallbacks, so the file also opens offline.
+The look follows the engineering blog post that inspired the plugin: ivory paper, serif
+headlines (Source Serif 4) over a sans body (DM Sans), hairline rules between sections, oat
+panels for figures, and one clay accent for the headline number and ship marks. Field
+effects read in words ("52.1% faster", "20.1% slower"). Light and dark themes; one column
+on phones. Fonts load from Google Fonts with local fallbacks, so the file also opens offline.
 
 ## Token budget
 `budget.json` sums the digest (at most 3,000 tokens), the outline plus writer instructions,

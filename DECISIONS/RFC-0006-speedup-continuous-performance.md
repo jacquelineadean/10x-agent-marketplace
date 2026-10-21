@@ -126,7 +126,10 @@ In the data folder `~/speedup-runs/<project>/` (never committed): `history.json`
 Inline CSS and SVG, no script, every source string escaped, links http(s) only. Sections:
 summary band, speedup bars (log scale), one chart per journey with target, windows and ship
 marks, priority table, change ledger, guardrail cards, write-up (sources folded), method.
-Light and dark tokens; no horizontal scroll at 390 px.
+Light and dark tokens; no horizontal scroll at 390 px. The styling follows the inspiration
+post at Jacqueline's request (21 Oct 2026): ivory paper, Source Serif 4 headlines, DM Sans
+body, hairline rules, oat figure panels, a clay accent. The blog's own typefaces are not
+free to embed, so these Google Fonts stand in.
 
 ### 4.7 Write-up
 `perf-writer` reads `digest.md` and the outline and writes `writeup.src.md`, putting every

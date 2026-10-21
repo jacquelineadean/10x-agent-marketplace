@@ -2,7 +2,7 @@ import re
 from datetime import UTC, date, datetime, timedelta
 
 from speedup.core.budget import estimate_budget
-from speedup.core.dashboard import render_document, render_page
+from speedup.core.dashboard import _pace, render_document, render_page
 from speedup.core.digest import DIGEST_CAP_BYTES, render_digest
 from speedup.core.markdown import to_html
 from speedup.core.model import BenchRun, Change
@@ -149,3 +149,10 @@ def test_budget_sums_five_parts_against_the_cap() -> None:
     assert budget["estimated_tokens"] == 2000 + 1000 + 5000 + 6000 + 3000
     assert budget["within_cap"] is True
     assert estimate_budget(8000, None, 10_000)["within_cap"] is False
+
+
+def test_dashboard_states_field_effects_in_words() -> None:
+    assert _pace(52.14) == "52.1% faster"
+    assert _pace(-20.1) == "20.1% slower"
+    assert _pace(0.01) == "no change"
+    assert _pace(None) == "n/a"
