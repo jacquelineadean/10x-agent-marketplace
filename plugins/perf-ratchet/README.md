@@ -38,7 +38,7 @@ the next journey to work on.
 | --- | --- | --- | --- |
 | Datadog metrics (APM, custom timings) | `datadog-metric` | `DD_API_KEY`, `DD_APP_KEY`, `DD_SITE` | `GET /api/v1/query` |
 | Datadog RUM | `datadog-rum` | same | `POST /api/v2/rum/analytics/aggregate` (a read-only query) |
-| Prometheus | `prometheus` | `PROMETHEUS_URL`, optional `PROMETHEUS_TOKEN` | `GET /api/v1/query_range` |
+| Prometheus | `prometheus` | `PROMETHEUS_URL`, optional `PROMETHEUS_TOKEN` | `GET /api/v1/query_range` (step 1 day; write the query over a `[1d]` range, read at the midnight that ends each day) |
 | Datadog connector in Claude, other tools, exports | `file` or any kind | none in perf-ratchet | `import` of JSON or CSV |
 
 - Datadog: an API key plus an application key with read access. Scope the application key

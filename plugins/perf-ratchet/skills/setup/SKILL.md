@@ -48,7 +48,8 @@ Rules for each journey:
   `@view.custom_timings.<name>`, `aggregation: pc75`, `scale: 1e-6` because RUM durations
   are nanoseconds), `datadog-metric` (a query that returns one series, such as
   `p75:trace.http.request{service:web,env:prod}`, `scale: 1000` for seconds), `prometheus`
-  (a `histogram_quantile(0.75, ...)` query, `scale: 1000`), or `file`.
+  (a `histogram_quantile(0.75, ...)` query over a `[1d]` range, `scale: 1000`; the value
+  read at midnight is filed under the day that just ended), or `file`.
 - `target`: from a product goal when one exists; otherwise ask. Never invent one silently;
   a journey may go without a target and is then tracked but not prioritized.
 - `weight`: traffic share times importance, 1 to 5. Revenue or first-impression journeys

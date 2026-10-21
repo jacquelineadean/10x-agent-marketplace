@@ -48,7 +48,11 @@ def fill(source: str, metrics: dict[str, Any]) -> Filled:
         except KeyError:
             filled.unknown.append(key)
             return f"[MISSING {key}]"
-        text = format_value(metrics, key, value, style)
+        try:
+            text = format_value(metrics, key, value, style)
+        except ValueError:
+            filled.unknown.append(key)
+            return f"[NOT A SINGLE VALUE {key}]"
         filled.used[key] = text
         return text
 

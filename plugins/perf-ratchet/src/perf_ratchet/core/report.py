@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any
 
 from perf_ratchet.core import analysis
@@ -21,13 +21,15 @@ def build_metrics(
     warnings: list[str] | None = None,
 ) -> dict[str, Any]:
     points: dict[str, list[Point]] = {j.id: points_of(history, j.id) for j in project.journeys}
-    journeys = {j.id: analysis.analyze_journey(j, points[j.id], project) for j in project.journeys}
+    latest = analysis.latest_day(points)
+    journeys = {
+        j.id: analysis.analyze_journey(j, points[j.id], project, latest) for j in project.journeys
+    }
     by_id = {j.id: j for j in project.journeys}
     ordered = sorted(changes, key=lambda c: (c.shipped is None, c.shipped, c.id))
     change_rows = [analysis.analyze_change(c, ordered, by_id, points, project) for c in ordered]
     benchmarks = {b.id: analysis.analyze_benchmark(b, runs) for b in project.benchmarks}
-    latest = analysis.latest_day(points)
-    windows = _windows(project, points)
+    windows = _windows(project, points, latest)
     unknown = sorted({j for c in changes for j in c.journeys if j not in by_id})
     notes = list(warnings or [])
     if unknown:
@@ -50,9 +52,11 @@ def build_metrics(
     }
 
 
-def _windows(project: Project, points: dict[str, list[Point]]) -> dict[str, Any]:
+def _windows(
+    project: Project, points: dict[str, list[Point]], latest: date | None
+) -> dict[str, Any]:
     longest = max(points.values(), key=len, default=[])
-    windows = analysis.windows_for(project, longest)
+    windows = analysis.windows_for(project, longest, latest)
     if windows is None:
         return {}
     return {
@@ -62,6 +66,7 @@ def _windows(project: Project, points: dict[str, list[Point]]) -> dict[str, Any]
             ("current", windows.current),
             ("previous", windows.previous),
         )
+        if w is not None
     }
 
 

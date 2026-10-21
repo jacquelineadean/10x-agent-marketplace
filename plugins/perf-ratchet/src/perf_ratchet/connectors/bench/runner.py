@@ -49,6 +49,8 @@ def parse_output(benchmark: Benchmark, stdout: str, stderr: str) -> float:
             if not isinstance(node, dict) or part not in node:
                 raise ValueError(f"{benchmark.id}: key {benchmark.pattern} not in the JSON output")
             node = node[part]
+        if isinstance(node, bool) or not isinstance(node, int | float | str):
+            raise ValueError(f"{benchmark.id}: key {benchmark.pattern} is not a number")
         return float(node)
     if benchmark.parse == "regex":
         found = re.findall(benchmark.pattern, stdout + "\n" + stderr)

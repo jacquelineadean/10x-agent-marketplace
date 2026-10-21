@@ -236,21 +236,23 @@ def cmd_measure(ctx: Context, make_source: SourceFactory, out: TextIO) -> int:
     lines = [f"data folder: {ctx.data.root}", f"window: {window.since} to {window.until}"]
     warnings: list[str] = []
     sources: dict[str, SeriesSource] = {}
-    for journey in project.journeys:
-        if journey.id not in wanted:
-            continue
-        if journey.source.kind == "file":
-            lines.append(f"{journey.id}: file source, skipped (use import)")
-            continue
-        source = sources.get(journey.source.kind) or make_source(
-            journey.source.kind, project, ctx.data
-        )
-        sources[journey.source.kind] = source
-        series = source.fetch(journey, window)
-        written = merge(history, series)
-        warnings.extend(series.warnings)
-        lines.append(f"{journey.id}: {written} days")
-    ctx.data.save_history(history)
+    try:
+        for journey in project.journeys:
+            if journey.id not in wanted:
+                continue
+            if journey.source.kind == "file":
+                lines.append(f"{journey.id}: file source, skipped (use import)")
+                continue
+            source = sources.get(journey.source.kind) or make_source(
+                journey.source.kind, project, ctx.data
+            )
+            sources[journey.source.kind] = source
+            series = source.fetch(journey, window)
+            written = merge(history, series)
+            warnings.extend(series.warnings)
+            lines.append(f"{journey.id}: {written} days")
+    finally:
+        ctx.data.save_history(history)  # keep journeys fetched before a later one failed
     lines += [f"warning: {w}" for w in warnings]
     _say(out, [*lines, "next: report"])
     return EXIT_OK

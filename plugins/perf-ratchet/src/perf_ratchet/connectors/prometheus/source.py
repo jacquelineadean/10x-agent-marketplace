@@ -34,13 +34,16 @@ def prometheus_transport(url: str, token: str | None) -> JsonTransport:
 
 
 class PrometheusSource:
+    """Evaluates the query at the midnight that ends each day, and files the value under the day
+    that just ended, so a `[1d]` range vector at D+1 00:00 counts as day D."""
+
     def __init__(self, transport: JsonTransport, record: Recorder | None = None) -> None:
         self.transport = transport
         self.record = record
 
     def fetch(self, journey: Journey, window: Window) -> Series:
-        start = datetime.combine(window.since, time.min, tzinfo=UTC)
-        end = datetime.combine(window.until, time.min, tzinfo=UTC) + timedelta(hours=23)
+        start = datetime.combine(window.since + timedelta(days=1), time.min, tzinfo=UTC)
+        end = datetime.combine(window.until + timedelta(days=1), time.min, tzinfo=UTC)
         body = self.transport.get(
             QUERY_RANGE,
             {
@@ -64,7 +67,7 @@ class PrometheusSource:
         pairs = []
         for stamp, raw in results[0].get("values") or []:
             try:
-                pairs.append((float(stamp), float(raw)))
+                pairs.append((float(stamp) - 1, float(raw)))
             except (TypeError, ValueError):
                 continue
         return Series(journey.id, daily(pairs, journey.source.scale), _label(journey), warnings)

@@ -19,21 +19,26 @@ MIN_POINTS = 3
 
 @dataclass(frozen=True)
 class Windows:
-    baseline: Window
+    baseline: Window | None
     current: Window
     previous: Window
 
 
-def windows_for(project: Project, points: list[Point]) -> Windows | None:
-    """Current = the last `window_days` up to the newest point; previous = the span before it."""
+def windows_for(project: Project, points: list[Point], as_of: date | None = None) -> Windows | None:
+    """Current = the last `window_days` up to `as_of` (default the newest point); previous = the
+    span before it. A default baseline starts at the first point and ends before the current
+    window, so the two never share days; with too little history there is no baseline yet."""
     if not points:
         return None
-    latest = points[-1].day
+    latest = as_of or points[-1].day
     span = timedelta(days=project.window_days - 1)
     current = Window(latest - span, latest)
     previous_until = current.since - timedelta(days=1)
     previous = Window(previous_until - span, previous_until)
-    baseline = project.baseline or Window(points[0].day, points[0].day + span)
+    baseline = project.baseline
+    if baseline is None:
+        until = min(points[0].day + span, previous_until)
+        baseline = Window(points[0].day, until) if until >= points[0].day else None
     return Windows(baseline, current, previous)
 
 
@@ -53,8 +58,11 @@ def improvement_pct(journey: Journey, before: float, after: float) -> float:
     return change if journey.direction == "lower" else -change
 
 
-def analyze_journey(journey: Journey, points: list[Point], project: Project) -> dict[str, Any]:
-    windows = windows_for(project, points)
+def analyze_journey(
+    journey: Journey, points: list[Point], project: Project, as_of: date | None = None
+) -> dict[str, Any]:
+    """`as_of` is the newest day across all journeys, so a journey whose data stopped is stale."""
+    windows = windows_for(project, points, as_of)
     result: dict[str, Any] = {
         "name": journey.name,
         "unit": journey.unit,
@@ -68,7 +76,7 @@ def analyze_journey(journey: Journey, points: list[Point], project: Project) -> 
     }
     if windows is None:
         return {**result, "status": "no-data"}
-    baseline_values = values_in(points, windows.baseline)
+    baseline_values = values_in(points, windows.baseline) if windows.baseline else []
     current_values = values_in(points, windows.current)
     previous_values = values_in(points, windows.previous)
     result["coverage_pct"] = round(len(current_values) / windows.current.days * 100, 1)
@@ -81,7 +89,7 @@ def analyze_journey(journey: Journey, points: list[Point], project: Project) -> 
         previous=_round(previous),
         best_day=_round(_best(journey, points)),
     )
-    if baseline and current:
+    if baseline is not None and current is not None and baseline > 0 and current > 0:
         result["speedup"] = round(ratio(journey, baseline, current), 2)
         result["improvement_pct"] = round(improvement_pct(journey, baseline, current), 1)
         p_value = mann_whitney_p(baseline_values, current_values)
@@ -151,6 +159,9 @@ def change_impact(
             rows.append({**row, "verdict": "too early" if early else "not enough data"})
             continue
         before_value, after_value = median(before), median(after)
+        if before_value <= 0 or after_value <= 0:
+            rows.append({**row, "verdict": "not comparable (zero or negative values)"})
+            continue
         p_value = mann_whitney_p(before, after)
         delta = improvement_pct(journey, before_value, after_value)
         row.update(

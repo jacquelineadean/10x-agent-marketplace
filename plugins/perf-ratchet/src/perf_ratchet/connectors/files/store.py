@@ -83,11 +83,8 @@ class DataFolder:
         return [bench_run_from(item) for item in read_json(self.bench_path)]
 
     def add_bench_runs(self, runs: list[BenchRun]) -> None:
-        kept = [
-            r
-            for r in self.bench_runs()
-            if (r.benchmark, r.day) not in {(n.benchmark, n.day) for n in runs}
-        ]
+        replaced = {(n.benchmark, n.day) for n in runs}
+        kept = [r for r in self.bench_runs() if (r.benchmark, r.day) not in replaced]
         write_json(self.bench_path, [bench_run_to(r) for r in [*kept, *runs]])
 
     def record_raw(self, name: str, body: Any) -> None:

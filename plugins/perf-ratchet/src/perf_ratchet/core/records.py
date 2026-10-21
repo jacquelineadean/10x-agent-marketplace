@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import math
 import re
 from collections.abc import Iterable
 from datetime import UTC, date, datetime
@@ -22,7 +23,7 @@ def daily(stamped: Iterable[tuple[float, float]], scale: float = 1.0) -> tuple[P
     """(epoch seconds, value) pairs to one value per UTC day: the median of that day's points."""
     buckets: dict[date, list[float]] = {}
     for seconds, value in stamped:
-        if value is None or value != value:  # NaN and gaps carry no measurement
+        if value is None or not math.isfinite(value):  # NaN, +Inf and gaps carry no measurement
             continue
         day = datetime.fromtimestamp(seconds, tz=UTC).date()
         buckets.setdefault(day, []).append(float(value) * scale)

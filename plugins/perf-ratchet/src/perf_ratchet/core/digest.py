@@ -172,7 +172,7 @@ def _changes(metrics: dict[str, Any], limit: int) -> list[str]:
             lines.append(
                 f"  - proxy {proxy['benchmark']}: {with_unit(proxy['before'], proxy['unit'])} -> "
                 f"{with_unit(proxy['after'], proxy['unit'])}, "
-                f"-{pct(proxy['reduction_pct'], False)} "
+                f"{pct(-proxy['reduction_pct'])} "
                 f"({key}.proxy.*)"
             )
         if change["overlaps"]:

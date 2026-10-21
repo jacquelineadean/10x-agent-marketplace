@@ -463,7 +463,7 @@ def _changes(metrics: dict[str, Any]) -> str:
             p = change["proxy"]
             proxy = (
                 f'<span class="num">{escape(compact(p["before"]))} → {escape(compact(p["after"]))} '
-                f"(-{escape(pct(p['reduction_pct'], False))})</span>"
+                f"({escape(pct(-p['reduction_pct']))})</span>"
                 f"<br><code>{escape(p['benchmark'])}</code>"
             )
         shipped = _day(change["shipped"]) if change["shipped"] else "not shipped"
@@ -517,7 +517,7 @@ def _guardrails(metrics: dict[str, Any]) -> str:
             f'<div class="readout"><span class="now '
             f'num">{escape(with_unit(b.get("latest"), b["unit"]))}</span>'
             f'<span class="was">ceiling {escape(with_unit(b.get("ceiling"), b["unit"]))}</span>'
-            f'<span class="x">-{escape(pct(b.get("ceiling_reduction_pct"), False))}</span></div>'
+            f'<span class="x">{escape(pct(_negated(b.get("ceiling_reduction_pct"))))}</span></div>'
             f"{ratchet_chart(bench_id, b)}"
             f'<div class="meta"><span>first '
             f"{escape(with_unit(b.get('original'), b['unit']))}</span>"
@@ -547,6 +547,11 @@ def _method(metrics: dict[str, Any]) -> str:
         "are made</h2>"
         f'<ul class="notes">{sources}</ul><ul class="notes">{notes}</ul></section>'
     )
+
+
+def _negated(value: float | None) -> float | None:
+    """A reduction shown as a signed change: a 5% cut reads -5%, a 5% rise +5%."""
+    return None if value is None else -value
 
 
 def _day(value: str) -> str:
