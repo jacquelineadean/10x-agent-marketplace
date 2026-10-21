@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "series": [
+    {"scope": "region:us", "pointlist": [[1759708800000, 100.0], [1759795200000, 110.0]]},
+    {"scope": "region:eu", "pointlist": [[1759708800000, 300.0]]}
+  ]
+}

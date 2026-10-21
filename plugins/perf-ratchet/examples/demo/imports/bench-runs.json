@@ -1,0 +1,5042 @@
+[
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-10",
+  "values": [
+   1242006615.0,
+   1240641652.0,
+   1237090291.0
+  ],
+  "median": 1240641652.0,
+  "cv_pct": 0.205,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-11",
+  "values": [
+   1242994505.0,
+   1240620286.0,
+   1241658097.0
+  ],
+  "median": 1241658097.0,
+  "cv_pct": 0.096,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-12",
+  "values": [
+   645191411.0,
+   644855330.0,
+   643502159.0
+  ],
+  "median": 644855330.0,
+  "cv_pct": 0.139,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-13",
+  "values": [
+   645940007.0,
+   645029138.0,
+   644722797.0
+  ],
+  "median": 645029138.0,
+  "cv_pct": 0.098,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-14",
+  "values": [
+   645339519.0,
+   645075565.0,
+   645653694.0
+  ],
+  "median": 645339519.0,
+  "cv_pct": 0.045,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-15",
+  "values": [
+   644641039.0,
+   644964718.0,
+   642930571.0
+  ],
+  "median": 644641039.0,
+  "cv_pct": 0.17,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-16",
+  "values": [
+   644590457.0,
+   645653754.0,
+   646293287.0
+  ],
+  "median": 645653754.0,
+  "cv_pct": 0.133,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-17",
+  "values": [
+   644647852.0,
+   644882602.0,
+   646531990.0
+  ],
+  "median": 644882602.0,
+  "cv_pct": 0.159,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-18",
+  "values": [
+   644684798.0,
+   645710153.0,
+   646623771.0
+  ],
+  "median": 645710153.0,
+  "cv_pct": 0.15,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-19",
+  "values": [
+   645038487.0,
+   646187046.0,
+   644312598.0
+  ],
+  "median": 645038487.0,
+  "cv_pct": 0.146,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-20",
+  "values": [
+   645200922.0,
+   644925158.0,
+   645111179.0
+  ],
+  "median": 645111179.0,
+  "cv_pct": 0.022,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-21",
+  "values": [
+   646092988.0,
+   647312203.0,
+   644356159.0
+  ],
+  "median": 646092988.0,
+  "cv_pct": 0.23,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-22",
+  "values": [
+   644443572.0,
+   645481223.0,
+   643979146.0
+  ],
+  "median": 644443572.0,
+  "cv_pct": 0.119,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-23",
+  "values": [
+   645480863.0,
+   645553317.0,
+   644731512.0
+  ],
+  "median": 645480863.0,
+  "cv_pct": 0.071,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-24",
+  "values": [
+   590470106.0,
+   588628854.0,
+   590672495.0
+  ],
+  "median": 590470106.0,
+  "cv_pct": 0.191,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-25",
+  "values": [
+   588632822.0,
+   589383642.0,
+   589507765.0
+  ],
+  "median": 589383642.0,
+  "cv_pct": 0.08,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-26",
+  "values": [
+   589644995.0,
+   590760009.0,
+   590072261.0
+  ],
+  "median": 590072261.0,
+  "cv_pct": 0.095,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-27",
+  "values": [
+   589648269.0,
+   590480982.0,
+   591399430.0
+  ],
+  "median": 590480982.0,
+  "cv_pct": 0.148,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-28",
+  "values": [
+   590005477.0,
+   590323731.0,
+   591097132.0
+  ],
+  "median": 590323731.0,
+  "cv_pct": 0.095,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-29",
+  "values": [
+   590237027.0,
+   588863795.0,
+   592203903.0
+  ],
+  "median": 590237027.0,
+  "cv_pct": 0.284,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-30",
+  "values": [
+   591954397.0,
+   588243392.0,
+   589965346.0
+  ],
+  "median": 589965346.0,
+  "cv_pct": 0.315,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-08-31",
+  "values": [
+   590369295.0,
+   590854672.0,
+   590592070.0
+  ],
+  "median": 590592070.0,
+  "cv_pct": 0.041,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-01",
+  "values": [
+   589759108.0,
+   589067355.0,
+   590091116.0
+  ],
+  "median": 589759108.0,
+  "cv_pct": 0.089,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-02",
+  "values": [
+   590914591.0,
+   589035689.0,
+   589090938.0
+  ],
+  "median": 589090938.0,
+  "cv_pct": 0.181,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-03",
+  "values": [
+   589978204.0,
+   588285323.0,
+   589769637.0
+  ],
+  "median": 589769637.0,
+  "cv_pct": 0.157,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-04",
+  "values": [
+   589613668.0,
+   590398924.0,
+   589378936.0
+  ],
+  "median": 589613668.0,
+  "cv_pct": 0.091,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-05",
+  "values": [
+   589219323.0,
+   589651141.0,
+   589955815.0
+  ],
+  "median": 589651141.0,
+  "cv_pct": 0.063,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-06",
+  "values": [
+   589411777.0,
+   590010726.0,
+   590663945.0
+  ],
+  "median": 590010726.0,
+  "cv_pct": 0.106,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-07",
+  "values": [
+   591048831.0,
+   591508845.0,
+   589306616.0
+  ],
+  "median": 591048831.0,
+  "cv_pct": 0.197,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-08",
+  "values": [
+   589628506.0,
+   587802660.0,
+   591680902.0
+  ],
+  "median": 589628506.0,
+  "cv_pct": 0.329,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-09",
+  "values": [
+   589358631.0,
+   589970463.0,
+   590462477.0
+  ],
+  "median": 589970463.0,
+  "cv_pct": 0.094,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-10",
+  "values": [
+   588797682.0,
+   590410562.0,
+   589976644.0
+  ],
+  "median": 589976644.0,
+  "cv_pct": 0.142,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-11",
+  "values": [
+   588383964.0,
+   590258425.0,
+   591057153.0
+  ],
+  "median": 590258425.0,
+  "cv_pct": 0.233,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-12",
+  "values": [
+   588346995.0,
+   590714385.0,
+   590185155.0
+  ],
+  "median": 590185155.0,
+  "cv_pct": 0.211,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-13",
+  "values": [
+   590420218.0,
+   590390737.0,
+   591153983.0
+  ],
+  "median": 590420218.0,
+  "cv_pct": 0.073,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-14",
+  "values": [
+   589802072.0,
+   590773125.0,
+   589637225.0
+  ],
+  "median": 589802072.0,
+  "cv_pct": 0.104,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-15",
+  "values": [
+   590644221.0,
+   589279626.0,
+   589904118.0
+  ],
+  "median": 589904118.0,
+  "cv_pct": 0.116,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-16",
+  "values": [
+   591531946.0,
+   590394372.0,
+   589859980.0
+  ],
+  "median": 590394372.0,
+  "cv_pct": 0.145,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-17",
+  "values": [
+   588986845.0,
+   589300733.0,
+   590171377.0
+  ],
+  "median": 589300733.0,
+  "cv_pct": 0.104,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-18",
+  "values": [
+   590831371.0,
+   590377066.0,
+   590463864.0
+  ],
+  "median": 590463864.0,
+  "cv_pct": 0.041,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-19",
+  "values": [
+   589963047.0,
+   591196537.0,
+   589654151.0
+  ],
+  "median": 589963047.0,
+  "cv_pct": 0.138,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-20",
+  "values": [
+   589513497.0,
+   590785965.0,
+   590056294.0
+  ],
+  "median": 590056294.0,
+  "cv_pct": 0.108,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-21",
+  "values": [
+   589753475.0,
+   589490149.0,
+   589772650.0
+  ],
+  "median": 589753475.0,
+  "cv_pct": 0.027,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-22",
+  "values": [
+   590551853.0,
+   590313068.0,
+   588929477.0
+  ],
+  "median": 590313068.0,
+  "cv_pct": 0.148,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-23",
+  "values": [
+   590377305.0,
+   590158431.0,
+   589114843.0
+  ],
+  "median": 590158431.0,
+  "cv_pct": 0.114,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-24",
+  "values": [
+   590683959.0,
+   589751830.0,
+   589703134.0
+  ],
+  "median": 589751830.0,
+  "cv_pct": 0.094,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-25",
+  "values": [
+   590704292.0,
+   591168816.0,
+   589390617.0
+  ],
+  "median": 590704292.0,
+  "cv_pct": 0.156,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-26",
+  "values": [
+   590387861.0,
+   589224674.0,
+   592048113.0
+  ],
+  "median": 590387861.0,
+  "cv_pct": 0.24,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-27",
+  "values": [
+   589563015.0,
+   591057570.0,
+   589427124.0
+  ],
+  "median": 589563015.0,
+  "cv_pct": 0.153,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-28",
+  "values": [
+   590718004.0,
+   591963706.0,
+   587751237.0
+  ],
+  "median": 590718004.0,
+  "cv_pct": 0.367,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-29",
+  "values": [
+   589615470.0,
+   590442956.0,
+   589917819.0
+  ],
+  "median": 589917819.0,
+  "cv_pct": 0.071,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-09-30",
+  "values": [
+   589408403.0,
+   591904649.0,
+   590070359.0
+  ],
+  "median": 590070359.0,
+  "cv_pct": 0.219,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-01",
+  "values": [
+   588544685.0,
+   590755920.0,
+   588476375.0
+  ],
+  "median": 588544685.0,
+  "cv_pct": 0.22,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-02",
+  "values": [
+   591018501.0,
+   589488691.0,
+   590128183.0
+  ],
+  "median": 590128183.0,
+  "cv_pct": 0.13,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-03",
+  "values": [
+   591115947.0,
+   590104316.0,
+   588768893.0
+  ],
+  "median": 590104316.0,
+  "cv_pct": 0.2,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-04",
+  "values": [
+   588499090.0,
+   591046589.0,
+   590655283.0
+  ],
+  "median": 590655283.0,
+  "cv_pct": 0.232,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-05",
+  "values": [
+   589278056.0,
+   590760672.0,
+   590439538.0
+  ],
+  "median": 590439538.0,
+  "cv_pct": 0.132,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-06",
+  "values": [
+   590573216.0,
+   588000870.0,
+   589732648.0
+  ],
+  "median": 589732648.0,
+  "cv_pct": 0.223,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-07",
+  "values": [
+   590796862.0,
+   590649105.0,
+   590780054.0
+  ],
+  "median": 590780054.0,
+  "cv_pct": 0.014,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-08",
+  "values": [
+   587825329.0,
+   590149621.0,
+   590435593.0
+  ],
+  "median": 590149621.0,
+  "cv_pct": 0.243,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-09",
+  "values": [
+   592258453.0,
+   589155925.0,
+   589708597.0
+  ],
+  "median": 589708597.0,
+  "cv_pct": 0.28,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-10",
+  "values": [
+   590031733.0,
+   590784194.0,
+   589607654.0
+  ],
+  "median": 590031733.0,
+  "cv_pct": 0.101,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-11",
+  "values": [
+   591015314.0,
+   589302703.0,
+   590236179.0
+  ],
+  "median": 590236179.0,
+  "cv_pct": 0.145,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-12",
+  "values": [
+   589533256.0,
+   590139992.0,
+   589388627.0
+  ],
+  "median": 589533256.0,
+  "cv_pct": 0.068,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-13",
+  "values": [
+   588586402.0,
+   590967387.0,
+   590268523.0
+  ],
+  "median": 590268523.0,
+  "cv_pct": 0.207,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-14",
+  "values": [
+   589505597.0,
+   590177819.0,
+   590876299.0
+  ],
+  "median": 590177819.0,
+  "cv_pct": 0.116,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-15",
+  "values": [
+   589134932.0,
+   589902336.0,
+   590477160.0
+  ],
+  "median": 589902336.0,
+  "cv_pct": 0.114,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-16",
+  "values": [
+   590465647.0,
+   589703255.0,
+   588135324.0
+  ],
+  "median": 589703255.0,
+  "cv_pct": 0.202,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-17",
+  "values": [
+   591099989.0,
+   590290540.0,
+   590011564.0
+  ],
+  "median": 590290540.0,
+  "cv_pct": 0.096,
+  "commit": ""
+ },
+ {
+  "benchmark": "message-tree",
+  "date": "2026-10-18",
+  "values": [
+   589753502.0,
+   590233113.0,
+   589623345.0
+  ],
+  "median": 589753502.0,
+  "cv_pct": 0.054,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-10",
+  "values": [
+   858678150.0,
+   859045700.0,
+   859230085.0
+  ],
+  "median": 859045700.0,
+  "cv_pct": 0.033,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-11",
+  "values": [
+   859210067.0,
+   858505255.0,
+   860820864.0
+  ],
+  "median": 859210067.0,
+  "cv_pct": 0.138,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-12",
+  "values": [
+   858310354.0,
+   860851047.0,
+   858691091.0
+  ],
+  "median": 858691091.0,
+  "cv_pct": 0.159,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-13",
+  "values": [
+   860454679.0,
+   861772530.0,
+   860262222.0
+  ],
+  "median": 860454679.0,
+  "cv_pct": 0.095,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-14",
+  "values": [
+   859057254.0,
+   860062277.0,
+   860191095.0
+  ],
+  "median": 860062277.0,
+  "cv_pct": 0.072,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-15",
+  "values": [
+   857763390.0,
+   859216089.0,
+   860210282.0
+  ],
+  "median": 859216089.0,
+  "cv_pct": 0.143,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-16",
+  "values": [
+   859394724.0,
+   860102823.0,
+   860946829.0
+  ],
+  "median": 860102823.0,
+  "cv_pct": 0.09,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-17",
+  "values": [
+   860988867.0,
+   861168352.0,
+   860759222.0
+  ],
+  "median": 860988867.0,
+  "cv_pct": 0.024,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-18",
+  "values": [
+   859628571.0,
+   859976254.0,
+   859650202.0
+  ],
+  "median": 859650202.0,
+  "cv_pct": 0.023,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-19",
+  "values": [
+   592721383.0,
+   592840189.0,
+   591465877.0
+  ],
+  "median": 592721383.0,
+  "cv_pct": 0.129,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-20",
+  "values": [
+   592703640.0,
+   592978583.0,
+   592133656.0
+  ],
+  "median": 592703640.0,
+  "cv_pct": 0.073,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-21",
+  "values": [
+   592978635.0,
+   593458560.0,
+   592853765.0
+  ],
+  "median": 592978635.0,
+  "cv_pct": 0.054,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-22",
+  "values": [
+   594847162.0,
+   590681559.0,
+   592816449.0
+  ],
+  "median": 592816449.0,
+  "cv_pct": 0.351,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-23",
+  "values": [
+   591376302.0,
+   593871685.0,
+   595360854.0
+  ],
+  "median": 593871685.0,
+  "cv_pct": 0.339,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-24",
+  "values": [
+   590774465.0,
+   593113785.0,
+   593461731.0
+  ],
+  "median": 593113785.0,
+  "cv_pct": 0.247,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-25",
+  "values": [
+   592730995.0,
+   593490691.0,
+   591004872.0
+  ],
+  "median": 592730995.0,
+  "cv_pct": 0.215,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-26",
+  "values": [
+   593757879.0,
+   593330886.0,
+   593020304.0
+  ],
+  "median": 593330886.0,
+  "cv_pct": 0.062,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-27",
+  "values": [
+   592477345.0,
+   593567852.0,
+   592568249.0
+  ],
+  "median": 592568249.0,
+  "cv_pct": 0.102,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-28",
+  "values": [
+   593198467.0,
+   592546279.0,
+   591001459.0
+  ],
+  "median": 592546279.0,
+  "cv_pct": 0.191,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-29",
+  "values": [
+   592972147.0,
+   593179846.0,
+   593671025.0
+  ],
+  "median": 593179846.0,
+  "cv_pct": 0.06,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-30",
+  "values": [
+   592220725.0,
+   592970574.0,
+   593548953.0
+  ],
+  "median": 592970574.0,
+  "cv_pct": 0.112,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-08-31",
+  "values": [
+   593129361.0,
+   594105174.0,
+   594771575.0
+  ],
+  "median": 594105174.0,
+  "cv_pct": 0.139,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-01",
+  "values": [
+   592191773.0,
+   591291358.0,
+   593761973.0
+  ],
+  "median": 592191773.0,
+  "cv_pct": 0.211,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-02",
+  "values": [
+   594360442.0,
+   593820386.0,
+   593723989.0
+  ],
+  "median": 593820386.0,
+  "cv_pct": 0.058,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-03",
+  "values": [
+   592449711.0,
+   592365295.0,
+   593790225.0
+  ],
+  "median": 592449711.0,
+  "cv_pct": 0.135,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-04",
+  "values": [
+   592189173.0,
+   591387045.0,
+   592112694.0
+  ],
+  "median": 592112694.0,
+  "cv_pct": 0.075,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-05",
+  "values": [
+   595216857.0,
+   594710860.0,
+   592389393.0
+  ],
+  "median": 594710860.0,
+  "cv_pct": 0.254,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-06",
+  "values": [
+   592351599.0,
+   593205843.0,
+   592333440.0
+  ],
+  "median": 592351599.0,
+  "cv_pct": 0.084,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-07",
+  "values": [
+   594165326.0,
+   592930346.0,
+   592033734.0
+  ],
+  "median": 592930346.0,
+  "cv_pct": 0.18,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-08",
+  "values": [
+   594164266.0,
+   592481300.0,
+   593196814.0
+  ],
+  "median": 593196814.0,
+  "cv_pct": 0.142,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-09",
+  "values": [
+   592988740.0,
+   592720362.0,
+   593289025.0
+  ],
+  "median": 592988740.0,
+  "cv_pct": 0.048,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-10",
+  "values": [
+   592384026.0,
+   591359338.0,
+   591036007.0
+  ],
+  "median": 591359338.0,
+  "cv_pct": 0.119,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-11",
+  "values": [
+   591873364.0,
+   592325367.0,
+   592979572.0
+  ],
+  "median": 592325367.0,
+  "cv_pct": 0.094,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-12",
+  "values": [
+   593049187.0,
+   593494593.0,
+   593106623.0
+  ],
+  "median": 593106623.0,
+  "cv_pct": 0.041,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-13",
+  "values": [
+   592294229.0,
+   592369439.0,
+   591115322.0
+  ],
+  "median": 592294229.0,
+  "cv_pct": 0.119,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-14",
+  "values": [
+   592849552.0,
+   593431282.0,
+   593471130.0
+  ],
+  "median": 593431282.0,
+  "cv_pct": 0.059,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-15",
+  "values": [
+   592891992.0,
+   592845065.0,
+   593832839.0
+  ],
+  "median": 592891992.0,
+  "cv_pct": 0.094,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-16",
+  "values": [
+   593013688.0,
+   593656295.0,
+   593518135.0
+  ],
+  "median": 593518135.0,
+  "cv_pct": 0.057,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-17",
+  "values": [
+   593189603.0,
+   594162062.0,
+   592490585.0
+  ],
+  "median": 593189603.0,
+  "cv_pct": 0.141,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-18",
+  "values": [
+   592680779.0,
+   592281300.0,
+   592290903.0
+  ],
+  "median": 592290903.0,
+  "cv_pct": 0.038,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-19",
+  "values": [
+   594384053.0,
+   594564912.0,
+   593020374.0
+  ],
+  "median": 594384053.0,
+  "cv_pct": 0.142,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-20",
+  "values": [
+   593505450.0,
+   594045449.0,
+   593718240.0
+  ],
+  "median": 593718240.0,
+  "cv_pct": 0.046,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-21",
+  "values": [
+   594072159.0,
+   591876591.0,
+   592431272.0
+  ],
+  "median": 592431272.0,
+  "cv_pct": 0.193,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-22",
+  "values": [
+   510346281.0,
+   511098033.0,
+   510079451.0
+  ],
+  "median": 510346281.0,
+  "cv_pct": 0.103,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-23",
+  "values": [
+   509343296.0,
+   509728800.0,
+   509494655.0
+  ],
+  "median": 509494655.0,
+  "cv_pct": 0.038,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-24",
+  "values": [
+   509343382.0,
+   511148405.0,
+   509521414.0
+  ],
+  "median": 509521414.0,
+  "cv_pct": 0.195,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-25",
+  "values": [
+   510015622.0,
+   511654255.0,
+   510906310.0
+  ],
+  "median": 510906310.0,
+  "cv_pct": 0.161,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-26",
+  "values": [
+   510257155.0,
+   509531909.0,
+   510313881.0
+  ],
+  "median": 510257155.0,
+  "cv_pct": 0.085,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-27",
+  "values": [
+   511240586.0,
+   510476626.0,
+   510965083.0
+  ],
+  "median": 510965083.0,
+  "cv_pct": 0.076,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-28",
+  "values": [
+   510075039.0,
+   510394949.0,
+   509846265.0
+  ],
+  "median": 510075039.0,
+  "cv_pct": 0.054,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-29",
+  "values": [
+   510326577.0,
+   510994844.0,
+   508905185.0
+  ],
+  "median": 510326577.0,
+  "cv_pct": 0.209,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-09-30",
+  "values": [
+   509952173.0,
+   510183802.0,
+   509563117.0
+  ],
+  "median": 509952173.0,
+  "cv_pct": 0.062,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-01",
+  "values": [
+   509764355.0,
+   510601986.0,
+   511531261.0
+  ],
+  "median": 510601986.0,
+  "cv_pct": 0.173,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-02",
+  "values": [
+   510481532.0,
+   510249476.0,
+   508813144.0
+  ],
+  "median": 510249476.0,
+  "cv_pct": 0.177,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-03",
+  "values": [
+   511474572.0,
+   510058859.0,
+   509974121.0
+  ],
+  "median": 510058859.0,
+  "cv_pct": 0.165,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-04",
+  "values": [
+   509144422.0,
+   509956520.0,
+   509161458.0
+  ],
+  "median": 509161458.0,
+  "cv_pct": 0.091,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-05",
+  "values": [
+   510054324.0,
+   510356731.0,
+   510023895.0
+  ],
+  "median": 510054324.0,
+  "cv_pct": 0.036,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-06",
+  "values": [
+   510213935.0,
+   509348352.0,
+   511093766.0
+  ],
+  "median": 510213935.0,
+  "cv_pct": 0.171,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-07",
+  "values": [
+   509500284.0,
+   508608990.0,
+   509856560.0
+  ],
+  "median": 509500284.0,
+  "cv_pct": 0.126,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-08",
+  "values": [
+   509415738.0,
+   509227520.0,
+   509728519.0
+  ],
+  "median": 509415738.0,
+  "cv_pct": 0.05,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-09",
+  "values": [
+   510222770.0,
+   509095906.0,
+   509894778.0
+  ],
+  "median": 509894778.0,
+  "cv_pct": 0.114,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-10",
+  "values": [
+   511091444.0,
+   510522298.0,
+   509883738.0
+  ],
+  "median": 510522298.0,
+  "cv_pct": 0.118,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-11",
+  "values": [
+   510097720.0,
+   509908287.0,
+   509963448.0
+  ],
+  "median": 509963448.0,
+  "cv_pct": 0.019,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-12",
+  "values": [
+   510560269.0,
+   509929219.0,
+   508160604.0
+  ],
+  "median": 509929219.0,
+  "cv_pct": 0.244,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-13",
+  "values": [
+   509983542.0,
+   509319548.0,
+   510498223.0
+  ],
+  "median": 509983542.0,
+  "cv_pct": 0.116,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-14",
+  "values": [
+   509533107.0,
+   510113539.0,
+   511665619.0
+  ],
+  "median": 510113539.0,
+  "cv_pct": 0.216,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-15",
+  "values": [
+   509199130.0,
+   509139650.0,
+   508920186.0
+  ],
+  "median": 509139650.0,
+  "cv_pct": 0.029,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-16",
+  "values": [
+   508167933.0,
+   508562967.0,
+   510278876.0
+  ],
+  "median": 508562967.0,
+  "cv_pct": 0.22,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-17",
+  "values": [
+   509511881.0,
+   508570858.0,
+   508865779.0
+  ],
+  "median": 508865779.0,
+  "cv_pct": 0.095,
+  "commit": ""
+ },
+ {
+  "benchmark": "markdown-render",
+  "date": "2026-10-18",
+  "values": [
+   510472199.0,
+   509406918.0,
+   509719365.0
+  ],
+  "median": 509719365.0,
+  "cv_pct": 0.107,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-10",
+  "values": [
+   42.0,
+   42.0,
+   42.0
+  ],
+  "median": 42.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-11",
+  "values": [
+   42.0,
+   42.0,
+   42.0
+  ],
+  "median": 42.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-12",
+  "values": [
+   42.0,
+   42.0,
+   42.0
+  ],
+  "median": 42.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-13",
+  "values": [
+   42.0,
+   42.0,
+   42.0
+  ],
+  "median": 42.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-14",
+  "values": [
+   42.0,
+   42.0,
+   42.0
+  ],
+  "median": 42.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-15",
+  "values": [
+   9.0,
+   9.0,
+   9.0
+  ],
+  "median": 9.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-16",
+  "values": [
+   9.0,
+   9.0,
+   9.0
+  ],
+  "median": 9.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-17",
+  "values": [
+   9.0,
+   9.0,
+   9.0
+  ],
+  "median": 9.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-18",
+  "values": [
+   9.0,
+   9.0,
+   9.0
+  ],
+  "median": 9.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-19",
+  "values": [
+   9.0,
+   9.0,
+   9.0
+  ],
+  "median": 9.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-20",
+  "values": [
+   9.0,
+   9.0,
+   9.0
+  ],
+  "median": 9.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-21",
+  "values": [
+   9.0,
+   9.0,
+   9.0
+  ],
+  "median": 9.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-22",
+  "values": [
+   9.0,
+   9.0,
+   9.0
+  ],
+  "median": 9.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-23",
+  "values": [
+   9.0,
+   9.0,
+   9.0
+  ],
+  "median": 9.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-24",
+  "values": [
+   9.0,
+   9.0,
+   9.0
+  ],
+  "median": 9.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-25",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-26",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-27",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-28",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-29",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-30",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-08-31",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-01",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-02",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-03",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-04",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-05",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-06",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-07",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-08",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-09",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-10",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-11",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-12",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-13",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-14",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-15",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-16",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-17",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-18",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-19",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-20",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-21",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-22",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-23",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-24",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-25",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-26",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-27",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-28",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-29",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-09-30",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-01",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-02",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-03",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-04",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-05",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-06",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-07",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-08",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-09",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-10",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-11",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-12",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-13",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-14",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-15",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-16",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-17",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "sidebar-commits",
+  "date": "2026-10-18",
+  "values": [
+   6.0,
+   6.0,
+   6.0
+  ],
+  "median": 6.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-10",
+  "values": [
+   2101582758.0,
+   2106178846.0,
+   2094440591.0
+  ],
+  "median": 2101582758.0,
+  "cv_pct": 0.282,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-11",
+  "values": [
+   2104454327.0,
+   2108710530.0,
+   2108429915.0
+  ],
+  "median": 2108429915.0,
+  "cv_pct": 0.113,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-12",
+  "values": [
+   2099117746.0,
+   2101130442.0,
+   2099353174.0
+  ],
+  "median": 2099353174.0,
+  "cv_pct": 0.052,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-13",
+  "values": [
+   2104193445.0,
+   2104358715.0,
+   2100365322.0
+  ],
+  "median": 2104193445.0,
+  "cv_pct": 0.107,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-14",
+  "values": [
+   1316412014.0,
+   1321956482.0,
+   1318759624.0
+  ],
+  "median": 1318759624.0,
+  "cv_pct": 0.211,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-15",
+  "values": [
+   1321660157.0,
+   1320694725.0,
+   1324286438.0
+  ],
+  "median": 1321660157.0,
+  "cv_pct": 0.141,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-16",
+  "values": [
+   1323003395.0,
+   1318809373.0,
+   1320921408.0
+  ],
+  "median": 1320921408.0,
+  "cv_pct": 0.159,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-17",
+  "values": [
+   1324657181.0,
+   1318581556.0,
+   1321144271.0
+  ],
+  "median": 1321144271.0,
+  "cv_pct": 0.231,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-18",
+  "values": [
+   1323143585.0,
+   1323318176.0,
+   1321369117.0
+  ],
+  "median": 1323143585.0,
+  "cv_pct": 0.082,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-19",
+  "values": [
+   1316514676.0,
+   1316671001.0,
+   1320653298.0
+  ],
+  "median": 1316671001.0,
+  "cv_pct": 0.178,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-20",
+  "values": [
+   1321022585.0,
+   1326725997.0,
+   1317725942.0
+  ],
+  "median": 1321022585.0,
+  "cv_pct": 0.344,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-21",
+  "values": [
+   1323003854.0,
+   1322033978.0,
+   1315587171.0
+  ],
+  "median": 1322033978.0,
+  "cv_pct": 0.305,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-22",
+  "values": [
+   978396134.0,
+   980325835.0,
+   979032647.0
+  ],
+  "median": 979032647.0,
+  "cv_pct": 0.1,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-23",
+  "values": [
+   979697288.0,
+   980921448.0,
+   978413484.0
+  ],
+  "median": 979697288.0,
+  "cv_pct": 0.128,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-24",
+  "values": [
+   980914125.0,
+   978752883.0,
+   978932482.0
+  ],
+  "median": 978932482.0,
+  "cv_pct": 0.122,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-25",
+  "values": [
+   981052221.0,
+   978876045.0,
+   980562893.0
+  ],
+  "median": 980562893.0,
+  "cv_pct": 0.116,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-26",
+  "values": [
+   983134787.0,
+   980053088.0,
+   979713695.0
+  ],
+  "median": 980053088.0,
+  "cv_pct": 0.192,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-27",
+  "values": [
+   981441167.0,
+   979283482.0,
+   982122311.0
+  ],
+  "median": 981441167.0,
+  "cv_pct": 0.151,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-28",
+  "values": [
+   977485590.0,
+   981212398.0,
+   978996324.0
+  ],
+  "median": 978996324.0,
+  "cv_pct": 0.191,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-29",
+  "values": [
+   978434499.0,
+   983468549.0,
+   978333788.0
+  ],
+  "median": 978434499.0,
+  "cv_pct": 0.3,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-30",
+  "values": [
+   983443138.0,
+   981290258.0,
+   982847918.0
+  ],
+  "median": 982847918.0,
+  "cv_pct": 0.113,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-08-31",
+  "values": [
+   978085567.0,
+   982349939.0,
+   982855231.0
+  ],
+  "median": 982349939.0,
+  "cv_pct": 0.267,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-01",
+  "values": [
+   979771820.0,
+   979747127.0,
+   984813786.0
+  ],
+  "median": 979771820.0,
+  "cv_pct": 0.297,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-02",
+  "values": [
+   980347798.0,
+   979171699.0,
+   978765290.0
+  ],
+  "median": 979171699.0,
+  "cv_pct": 0.084,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-03",
+  "values": [
+   980873915.0,
+   980647709.0,
+   980348025.0
+  ],
+  "median": 980647709.0,
+  "cv_pct": 0.027,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-04",
+  "values": [
+   983374059.0,
+   979357412.0,
+   980927327.0
+  ],
+  "median": 980927327.0,
+  "cv_pct": 0.206,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-05",
+  "values": [
+   982860087.0,
+   978032215.0,
+   982035843.0
+  ],
+  "median": 982035843.0,
+  "cv_pct": 0.263,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-06",
+  "values": [
+   983590820.0,
+   977344683.0,
+   977848832.0
+  ],
+  "median": 977848832.0,
+  "cv_pct": 0.354,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-07",
+  "values": [
+   977964713.0,
+   976381326.0,
+   980887307.0
+  ],
+  "median": 977964713.0,
+  "cv_pct": 0.234,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-08",
+  "values": [
+   976361936.0,
+   980977732.0,
+   982848158.0
+  ],
+  "median": 980977732.0,
+  "cv_pct": 0.341,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-09",
+  "values": [
+   976834283.0,
+   979379693.0,
+   976240758.0
+  ],
+  "median": 976834283.0,
+  "cv_pct": 0.171,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-10",
+  "values": [
+   981527156.0,
+   978554722.0,
+   979479013.0
+  ],
+  "median": 979479013.0,
+  "cv_pct": 0.155,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-11",
+  "values": [
+   980106581.0,
+   981068426.0,
+   979320365.0
+  ],
+  "median": 980106581.0,
+  "cv_pct": 0.089,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-12",
+  "values": [
+   980029583.0,
+   978928600.0,
+   980224727.0
+  ],
+  "median": 980029583.0,
+  "cv_pct": 0.071,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-13",
+  "values": [
+   977701728.0,
+   980124711.0,
+   976212850.0
+  ],
+  "median": 977701728.0,
+  "cv_pct": 0.202,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-14",
+  "values": [
+   979039215.0,
+   983754027.0,
+   980155925.0
+  ],
+  "median": 980155925.0,
+  "cv_pct": 0.251,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-15",
+  "values": [
+   977530434.0,
+   980503977.0,
+   978094164.0
+  ],
+  "median": 978094164.0,
+  "cv_pct": 0.161,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-16",
+  "values": [
+   976763474.0,
+   978556500.0,
+   981444264.0
+  ],
+  "median": 978556500.0,
+  "cv_pct": 0.241,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-17",
+  "values": [
+   980752428.0,
+   979809898.0,
+   978183889.0
+  ],
+  "median": 979809898.0,
+  "cv_pct": 0.133,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-18",
+  "values": [
+   838187988.0,
+   842267526.0,
+   840410879.0
+  ],
+  "median": 840410879.0,
+  "cv_pct": 0.243,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-19",
+  "values": [
+   838401140.0,
+   836453687.0,
+   837698464.0
+  ],
+  "median": 837698464.0,
+  "cv_pct": 0.118,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-20",
+  "values": [
+   844158227.0,
+   838069815.0,
+   839870944.0
+  ],
+  "median": 839870944.0,
+  "cv_pct": 0.372,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-21",
+  "values": [
+   840352926.0,
+   839735230.0,
+   839532574.0
+  ],
+  "median": 839735230.0,
+  "cv_pct": 0.051,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-22",
+  "values": [
+   837692993.0,
+   838234206.0,
+   842837048.0
+  ],
+  "median": 838234206.0,
+  "cv_pct": 0.337,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-23",
+  "values": [
+   838729270.0,
+   841420386.0,
+   837154299.0
+  ],
+  "median": 838729270.0,
+  "cv_pct": 0.257,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-24",
+  "values": [
+   839539426.0,
+   840438651.0,
+   841741339.0
+  ],
+  "median": 840438651.0,
+  "cv_pct": 0.132,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-25",
+  "values": [
+   838113872.0,
+   841000344.0,
+   840648448.0
+  ],
+  "median": 840648448.0,
+  "cv_pct": 0.187,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-26",
+  "values": [
+   838760738.0,
+   840801641.0,
+   838491332.0
+  ],
+  "median": 838760738.0,
+  "cv_pct": 0.151,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-27",
+  "values": [
+   838662603.0,
+   839968489.0,
+   835440605.0
+  ],
+  "median": 838662603.0,
+  "cv_pct": 0.278,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-28",
+  "values": [
+   839815869.0,
+   838319892.0,
+   837542466.0
+  ],
+  "median": 838319892.0,
+  "cv_pct": 0.138,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-29",
+  "values": [
+   839285902.0,
+   841281788.0,
+   839320527.0
+  ],
+  "median": 839320527.0,
+  "cv_pct": 0.136,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-09-30",
+  "values": [
+   842126631.0,
+   838051848.0,
+   837795263.0
+  ],
+  "median": 838051848.0,
+  "cv_pct": 0.29,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-01",
+  "values": [
+   842605950.0,
+   840669986.0,
+   841587624.0
+  ],
+  "median": 841587624.0,
+  "cv_pct": 0.115,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-02",
+  "values": [
+   838610947.0,
+   841351405.0,
+   840436280.0
+  ],
+  "median": 840436280.0,
+  "cv_pct": 0.166,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-03",
+  "values": [
+   841089613.0,
+   840042541.0,
+   842026575.0
+  ],
+  "median": 841089613.0,
+  "cv_pct": 0.118,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-04",
+  "values": [
+   838909498.0,
+   838380894.0,
+   837517673.0
+  ],
+  "median": 838380894.0,
+  "cv_pct": 0.084,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-05",
+  "values": [
+   841949805.0,
+   838759558.0,
+   838247388.0
+  ],
+  "median": 838759558.0,
+  "cv_pct": 0.239,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-06",
+  "values": [
+   838421294.0,
+   839252297.0,
+   837864266.0
+  ],
+  "median": 838421294.0,
+  "cv_pct": 0.083,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-07",
+  "values": [
+   839512037.0,
+   838946245.0,
+   839073864.0
+  ],
+  "median": 839073864.0,
+  "cv_pct": 0.035,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-08",
+  "values": [
+   838388046.0,
+   840061791.0,
+   839225747.0
+  ],
+  "median": 839225747.0,
+  "cv_pct": 0.1,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-09",
+  "values": [
+   840192951.0,
+   840418877.0,
+   840571528.0
+  ],
+  "median": 840418877.0,
+  "cv_pct": 0.023,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-10",
+  "values": [
+   836321985.0,
+   839100039.0,
+   838662821.0
+  ],
+  "median": 838662821.0,
+  "cv_pct": 0.178,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-11",
+  "values": [
+   841300767.0,
+   837349471.0,
+   838799686.0
+  ],
+  "median": 838799686.0,
+  "cv_pct": 0.238,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-12",
+  "values": [
+   839506331.0,
+   839435203.0,
+   841665316.0
+  ],
+  "median": 839506331.0,
+  "cv_pct": 0.151,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-13",
+  "values": [
+   839256231.0,
+   841620662.0,
+   837537781.0
+  ],
+  "median": 839256231.0,
+  "cv_pct": 0.244,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-14",
+  "values": [
+   836955575.0,
+   842048350.0,
+   840731900.0
+  ],
+  "median": 840731900.0,
+  "cv_pct": 0.315,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-15",
+  "values": [
+   840819368.0,
+   840206976.0,
+   840813660.0
+  ],
+  "median": 840813660.0,
+  "cv_pct": 0.042,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-16",
+  "values": [
+   837957381.0,
+   841593529.0,
+   839105998.0
+  ],
+  "median": 839105998.0,
+  "cv_pct": 0.221,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-17",
+  "values": [
+   841655928.0,
+   840147408.0,
+   836684160.0
+  ],
+  "median": 840147408.0,
+  "cv_pct": 0.304,
+  "commit": ""
+ },
+ {
+  "benchmark": "main-boot",
+  "date": "2026-10-18",
+  "values": [
+   837837648.0,
+   841894534.0,
+   839770147.0
+  ],
+  "median": 839770147.0,
+  "cv_pct": 0.242,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-10",
+  "values": [
+   1180.0,
+   1180.0,
+   1180.0
+  ],
+  "median": 1180.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-11",
+  "values": [
+   410.0,
+   410.0,
+   410.0
+  ],
+  "median": 410.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-12",
+  "values": [
+   410.0,
+   410.0,
+   410.0
+  ],
+  "median": 410.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-13",
+  "values": [
+   410.0,
+   410.0,
+   410.0
+  ],
+  "median": 410.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-14",
+  "values": [
+   410.0,
+   410.0,
+   410.0
+  ],
+  "median": 410.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-15",
+  "values": [
+   410.0,
+   410.0,
+   410.0
+  ],
+  "median": 410.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-16",
+  "values": [
+   410.0,
+   410.0,
+   410.0
+  ],
+  "median": 410.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-17",
+  "values": [
+   410.0,
+   410.0,
+   410.0
+  ],
+  "median": 410.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-18",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-19",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-20",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-21",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-22",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-23",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-24",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-25",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-26",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-27",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-28",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-29",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-30",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-08-31",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-01",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-02",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-03",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-04",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-05",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-06",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-07",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-08",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-09",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-10",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-11",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-12",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-13",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-14",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-15",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-16",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-17",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-18",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-19",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-20",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-21",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-22",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-23",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-24",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-25",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-26",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-27",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-28",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-29",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-09-30",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-01",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-02",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-03",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-04",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-05",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-06",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-07",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-08",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-09",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-10",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-11",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-12",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-13",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-14",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-15",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-16",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-17",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "composer-mutations",
+  "date": "2026-10-18",
+  "values": [
+   160.0,
+   160.0,
+   160.0
+  ],
+  "median": 160.0,
+  "cv_pct": 0.0,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-10",
+  "values": [
+   330212312.0,
+   331134353.0,
+   330694489.0
+  ],
+  "median": 330694489.0,
+  "cv_pct": 0.139,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-11",
+  "values": [
+   329229522.0,
+   330344191.0,
+   330414795.0
+  ],
+  "median": 330344191.0,
+  "cv_pct": 0.201,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-12",
+  "values": [
+   330933031.0,
+   330651266.0,
+   330381464.0
+  ],
+  "median": 330651266.0,
+  "cv_pct": 0.083,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-13",
+  "values": [
+   329417278.0,
+   329569014.0,
+   330133081.0
+  ],
+  "median": 329569014.0,
+  "cv_pct": 0.114,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-14",
+  "values": [
+   330249927.0,
+   329494353.0,
+   329809643.0
+  ],
+  "median": 329809643.0,
+  "cv_pct": 0.115,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-15",
+  "values": [
+   329801872.0,
+   330029974.0,
+   330166493.0
+  ],
+  "median": 330029974.0,
+  "cv_pct": 0.056,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-16",
+  "values": [
+   329857988.0,
+   329387767.0,
+   330615122.0
+  ],
+  "median": 329857988.0,
+  "cv_pct": 0.188,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-17",
+  "values": [
+   330790044.0,
+   329947556.0,
+   330507246.0
+  ],
+  "median": 330507246.0,
+  "cv_pct": 0.13,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-18",
+  "values": [
+   330219863.0,
+   330326539.0,
+   330238331.0
+  ],
+  "median": 330238331.0,
+  "cv_pct": 0.017,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-19",
+  "values": [
+   329622163.0,
+   330284089.0,
+   330500234.0
+  ],
+  "median": 330284089.0,
+  "cv_pct": 0.139,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-20",
+  "values": [
+   329556353.0,
+   330973312.0,
+   331034442.0
+  ],
+  "median": 330973312.0,
+  "cv_pct": 0.253,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-21",
+  "values": [
+   330902419.0,
+   330984675.0,
+   330367510.0
+  ],
+  "median": 330902419.0,
+  "cv_pct": 0.101,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-22",
+  "values": [
+   329832535.0,
+   329703031.0,
+   329597569.0
+  ],
+  "median": 329703031.0,
+  "cv_pct": 0.036,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-23",
+  "values": [
+   330057390.0,
+   329983741.0,
+   330331786.0
+  ],
+  "median": 330057390.0,
+  "cv_pct": 0.056,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-24",
+  "values": [
+   329000161.0,
+   331144491.0,
+   331126809.0
+  ],
+  "median": 331126809.0,
+  "cv_pct": 0.373,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-25",
+  "values": [
+   329986446.0,
+   330334689.0,
+   330235428.0
+  ],
+  "median": 330235428.0,
+  "cv_pct": 0.054,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-26",
+  "values": [
+   220090245.0,
+   219931082.0,
+   219959482.0
+  ],
+  "median": 219959482.0,
+  "cv_pct": 0.039,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-27",
+  "values": [
+   219727903.0,
+   220058790.0,
+   219992059.0
+  ],
+  "median": 219992059.0,
+  "cv_pct": 0.08,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-28",
+  "values": [
+   220105667.0,
+   219717807.0,
+   220013037.0
+  ],
+  "median": 220013037.0,
+  "cv_pct": 0.092,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-29",
+  "values": [
+   220015788.0,
+   220199389.0,
+   219649127.0
+  ],
+  "median": 220015788.0,
+  "cv_pct": 0.127,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-30",
+  "values": [
+   220138430.0,
+   220324472.0,
+   220197062.0
+  ],
+  "median": 220197062.0,
+  "cv_pct": 0.043,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-08-31",
+  "values": [
+   219878355.0,
+   219837877.0,
+   219922037.0
+  ],
+  "median": 219878355.0,
+  "cv_pct": 0.019,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-01",
+  "values": [
+   220240634.0,
+   220512458.0,
+   219947835.0
+  ],
+  "median": 220240634.0,
+  "cv_pct": 0.128,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-02",
+  "values": [
+   219787901.0,
+   220124006.0,
+   220067431.0
+  ],
+  "median": 220067431.0,
+  "cv_pct": 0.082,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-03",
+  "values": [
+   219700350.0,
+   219756654.0,
+   219966480.0
+  ],
+  "median": 219756654.0,
+  "cv_pct": 0.064,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-04",
+  "values": [
+   220221643.0,
+   219606257.0,
+   219663997.0
+  ],
+  "median": 219663997.0,
+  "cv_pct": 0.155,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-05",
+  "values": [
+   220164689.0,
+   219595840.0,
+   220035924.0
+  ],
+  "median": 220035924.0,
+  "cv_pct": 0.136,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-06",
+  "values": [
+   220116230.0,
+   219963367.0,
+   219664017.0
+  ],
+  "median": 219963367.0,
+  "cv_pct": 0.105,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-07",
+  "values": [
+   219980268.0,
+   219890376.0,
+   220110904.0
+  ],
+  "median": 219980268.0,
+  "cv_pct": 0.05,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-08",
+  "values": [
+   219723183.0,
+   220360194.0,
+   219447186.0
+  ],
+  "median": 219723183.0,
+  "cv_pct": 0.213,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-09",
+  "values": [
+   219941831.0,
+   220002554.0,
+   220317331.0
+  ],
+  "median": 220002554.0,
+  "cv_pct": 0.092,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-10",
+  "values": [
+   169844851.0,
+   170139199.0,
+   169855476.0
+  ],
+  "median": 169855476.0,
+  "cv_pct": 0.098,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-11",
+  "values": [
+   170188239.0,
+   170443008.0,
+   169897738.0
+  ],
+  "median": 170188239.0,
+  "cv_pct": 0.16,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-12",
+  "values": [
+   170112952.0,
+   169763511.0,
+   170248168.0
+  ],
+  "median": 170112952.0,
+  "cv_pct": 0.147,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-13",
+  "values": [
+   170308745.0,
+   170009003.0,
+   169710615.0
+  ],
+  "median": 170009003.0,
+  "cv_pct": 0.176,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-14",
+  "values": [
+   170102612.0,
+   170293019.0,
+   170277850.0
+  ],
+  "median": 170277850.0,
+  "cv_pct": 0.062,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-15",
+  "values": [
+   170207361.0,
+   169533225.0,
+   169826649.0
+  ],
+  "median": 169826649.0,
+  "cv_pct": 0.199,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-16",
+  "values": [
+   170362585.0,
+   169687359.0,
+   170288496.0
+  ],
+  "median": 170288496.0,
+  "cv_pct": 0.218,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-17",
+  "values": [
+   170480021.0,
+   170194281.0,
+   170285659.0
+  ],
+  "median": 170285659.0,
+  "cv_pct": 0.086,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-18",
+  "values": [
+   169915160.0,
+   169687517.0,
+   169973798.0
+  ],
+  "median": 169915160.0,
+  "cv_pct": 0.089,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-19",
+  "values": [
+   169949287.0,
+   169987882.0,
+   170177680.0
+  ],
+  "median": 169987882.0,
+  "cv_pct": 0.072,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-20",
+  "values": [
+   169963118.0,
+   170048918.0,
+   170108149.0
+  ],
+  "median": 170048918.0,
+  "cv_pct": 0.043,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-21",
+  "values": [
+   169998647.0,
+   170470072.0,
+   170112817.0
+  ],
+  "median": 170112817.0,
+  "cv_pct": 0.145,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-22",
+  "values": [
+   170021575.0,
+   169947050.0,
+   169840565.0
+  ],
+  "median": 169947050.0,
+  "cv_pct": 0.054,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-23",
+  "values": [
+   170342790.0,
+   170038253.0,
+   169724905.0
+  ],
+  "median": 170038253.0,
+  "cv_pct": 0.182,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-24",
+  "values": [
+   169856589.0,
+   169965168.0,
+   169886407.0
+  ],
+  "median": 169886407.0,
+  "cv_pct": 0.033,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-25",
+  "values": [
+   170276516.0,
+   169703778.0,
+   170125448.0
+  ],
+  "median": 170125448.0,
+  "cv_pct": 0.175,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-26",
+  "values": [
+   170036592.0,
+   169699677.0,
+   170012099.0
+  ],
+  "median": 170012099.0,
+  "cv_pct": 0.111,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-27",
+  "values": [
+   169975924.0,
+   170127854.0,
+   169885214.0
+  ],
+  "median": 169975924.0,
+  "cv_pct": 0.072,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-28",
+  "values": [
+   170077324.0,
+   169575327.0,
+   169723662.0
+  ],
+  "median": 169723662.0,
+  "cv_pct": 0.152,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-29",
+  "values": [
+   170200164.0,
+   170265621.0,
+   169996716.0
+  ],
+  "median": 170200164.0,
+  "cv_pct": 0.082,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-09-30",
+  "values": [
+   169847242.0,
+   170276079.0,
+   169466592.0
+  ],
+  "median": 169847242.0,
+  "cv_pct": 0.238,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-01",
+  "values": [
+   169796108.0,
+   170171401.0,
+   170166409.0
+  ],
+  "median": 170166409.0,
+  "cv_pct": 0.127,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-02",
+  "values": [
+   169736768.0,
+   169518725.0,
+   170370256.0
+  ],
+  "median": 169736768.0,
+  "cv_pct": 0.26,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-03",
+  "values": [
+   170039010.0,
+   169771460.0,
+   170013921.0
+  ],
+  "median": 170013921.0,
+  "cv_pct": 0.087,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-04",
+  "values": [
+   170229954.0,
+   169339102.0,
+   170283132.0
+  ],
+  "median": 170229954.0,
+  "cv_pct": 0.312,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-05",
+  "values": [
+   170188714.0,
+   169469333.0,
+   170196574.0
+  ],
+  "median": 170188714.0,
+  "cv_pct": 0.246,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-06",
+  "values": [
+   169546083.0,
+   170290543.0,
+   170101628.0
+  ],
+  "median": 170101628.0,
+  "cv_pct": 0.228,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-07",
+  "values": [
+   170574365.0,
+   169844271.0,
+   170001201.0
+  ],
+  "median": 170001201.0,
+  "cv_pct": 0.226,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-08",
+  "values": [
+   170267058.0,
+   169836819.0,
+   169820236.0
+  ],
+  "median": 169836819.0,
+  "cv_pct": 0.149,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-09",
+  "values": [
+   169905186.0,
+   169981420.0,
+   169724052.0
+  ],
+  "median": 169905186.0,
+  "cv_pct": 0.078,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-10",
+  "values": [
+   170123469.0,
+   170138536.0,
+   170018234.0
+  ],
+  "median": 170123469.0,
+  "cv_pct": 0.039,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-11",
+  "values": [
+   170433503.0,
+   169916447.0,
+   170333175.0
+  ],
+  "median": 170333175.0,
+  "cv_pct": 0.161,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-12",
+  "values": [
+   169860606.0,
+   170192725.0,
+   169506619.0
+  ],
+  "median": 169860606.0,
+  "cv_pct": 0.202,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-13",
+  "values": [
+   170050491.0,
+   169955284.0,
+   169873767.0
+  ],
+  "median": 169955284.0,
+  "cv_pct": 0.052,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-14",
+  "values": [
+   169844300.0,
+   169911414.0,
+   169816441.0
+  ],
+  "median": 169844300.0,
+  "cv_pct": 0.029,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-15",
+  "values": [
+   169440821.0,
+   169847953.0,
+   169859862.0
+  ],
+  "median": 169847953.0,
+  "cv_pct": 0.141,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-16",
+  "values": [
+   169866302.0,
+   169730275.0,
+   169965401.0
+  ],
+  "median": 169866302.0,
+  "cv_pct": 0.069,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-17",
+  "values": [
+   170200045.0,
+   169936203.0,
+   169874362.0
+  ],
+  "median": 169936203.0,
+  "cv_pct": 0.102,
+  "commit": ""
+ },
+ {
+  "benchmark": "search-index",
+  "date": "2026-10-18",
+  "values": [
+   170346159.0,
+   170249124.0,
+   170235069.0
+  ],
+  "median": 170249124.0,
+  "cv_pct": 0.036,
+  "commit": ""
+ }
+]

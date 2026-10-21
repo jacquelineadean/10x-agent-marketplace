@@ -1,0 +1,12 @@
+{
+  "name": "perf-ratchet",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Continuous performance optimization from your monitoring data: measure user journeys at p75 from Datadog, Prometheus or imported files, find the biggest gaps, build deterministic proxy benchmarks whose CI ceilings only move down, log and quantify every change, and publish a dashboard plus an optional blog-style write-up where every number comes from the data.",
+  "author": {
+    "name": "Jacqueline Dean",
+    "url": "https://github.com/jacquelineadean"
+  },
+  "repository": "https://github.com/jacquelineadean/10x-agent-marketplace",
+  "keywords": ["performance", "observability", "datadog", "web vitals", "benchmarks", "dashboard"]
+}

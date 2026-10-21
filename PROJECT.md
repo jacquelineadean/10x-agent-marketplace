@@ -10,6 +10,8 @@ Teammates add it once with `/plugin marketplace add` and install the plugins the
 The first plugin, **impact-review**, turns one person's GitHub activity over a date range into metrics and written material for performance reviews, resumes and job interviews.
 The second, **chronicle** (RFC-0002 and RFC-0003, drafts), turns a brief plus facts from connected tools or pasted notes into an illustrated, interactive story page designed for its subject: a project's status for a steering committee, a launch, an onboarding handbook or a guide to a podcast.
 
+The third, **perf-ratchet** (RFC-0006, draft), runs continuous performance optimization from monitoring data such as Datadog: it measures user journeys at p75 against targets, guards each win with a benchmark ceiling that only moves down, quantifies every change, and publishes a dashboard plus an optional blog-style write-up.
+
 ## Who it is for
 - Jacqueline Dean, who uses the plugins daily and runs impact-review against a corporate GitHub Enterprise account.
 - Teammates who install the marketplace in Claude Code.
@@ -27,7 +29,8 @@ Success for impact-review, phase 1:
 
 ## Scope
 **In scope:** the marketplace scaffold; the impact-review plugin with GitHub data collection, computed metrics, a local dashboard and written synthesis; the chronicle plugin with story pages published as private Artifacts after the user confirms (pending RFC-0002).
-**Explicitly out of scope:** other data sources (Claude, Cursor, Datadog, ServiceNow, PagerDuty, Jira, Confluence) and cross-source correlation, planned for phase 2; any hosted dashboard or server; storing or sending collected corporate data anywhere outside the user's machine.
+The perf-ratchet plugin reads Datadog and Prometheus performance data read-only (pending RFC-0006).
+**Explicitly out of scope:** other data sources for impact-review (Claude, Cursor, Datadog, ServiceNow, PagerDuty, Jira, Confluence) and cross-source correlation, planned for phase 2; any hosted dashboard or server; storing or sending collected corporate data anywhere outside the user's machine.
 
 ## Who works on what
 | Person | Role | Owns / ask them about | Contact (email / chat handle) |
@@ -60,3 +63,8 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Widget:** a script Claude writes for one page when no block fits; `chronicle check` lints it.
 - **Preset:** a named, composed painting such as `bridge-hero`; **motif:** a paintable element such as `sky` or `arch_bridge`.
 - **Artifact:** a web page hosted privately on claude.ai, where a story page is published.
+- **Journey:** perf-ratchet's unit of speed: one thing a user does, timed from their side of the screen, measured at a percentile per day.
+- **Proxy benchmark:** a command that prints a stable number for a hot path, such as an instruction count, used in place of noisy wall-clock time.
+- **Ceiling:** the highest value a proxy may reach before CI fails; `tighten` only lowers it. The rule as a whole is the **ratchet**.
+- **Change log:** `perf/changes.jsonl`, one optimization per line with its flag, rollout stage and proxy numbers.
+- **Data folder:** perf-ratchet's local, never-committed folder of history, benchmark runs and outputs for one project.
