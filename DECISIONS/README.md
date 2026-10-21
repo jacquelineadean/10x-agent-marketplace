@@ -10,4 +10,4 @@ ADR (`ADR-NNNN-slug.md`). Numbers never change or get reused.
 | [RFC-0003](RFC-0003-chronicle-pages-made-for-their-subject.md) | chronicle 0.2: pages designed for their subject | draft | Built ahead of approval at the owner's request; awaiting Jacqueline Dean's approval |
 | [RFC-0004](RFC-0004-chronicle-no-two-pages-alike.md) | chronicle 0.3: no two pages alike | draft | Built ahead of approval at the owner's request; awaiting Jacqueline Dean's approval |
 | [RFC-0005](RFC-0005-chronicle-standalone-animations.md) | chronicle 0.4: standalone animations and animated TADs | draft | Built ahead of approval at the owner's request; awaiting Jacqueline Dean's approval |
-| [RFC-0006](RFC-0006-perf-ratchet-continuous-performance.md) | perf-ratchet plugin: continuous performance optimization from monitoring data | draft | Built ahead of approval at the owner's request; awaiting Jacqueline Dean's approval |
+| [RFC-0006](RFC-0006-speedup-continuous-performance.md) | speedup plugin: continuous performance optimization from monitoring data | draft | Built ahead of approval at the owner's request; awaiting Jacqueline Dean's approval |

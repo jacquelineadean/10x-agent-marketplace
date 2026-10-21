@@ -32,8 +32,8 @@
       "keywords": ["artifact", "storytelling", "status report", "onboarding", "data visualization", "animation", "architecture diagram"]
     },
     {
-      "name": "perf-ratchet",
-      "source": "./plugins/perf-ratchet",
+      "name": "speedup",
+      "source": "./plugins/speedup",
       "description": "Continuous performance optimization from Datadog, Prometheus or imported data: p75 user journeys against targets, proxy benchmarks whose CI ceilings only move down, a change ledger with measured effects, a dashboard Artifact and an optional blog-style write-up.",
       "version": "0.1.0",
       "author": {
