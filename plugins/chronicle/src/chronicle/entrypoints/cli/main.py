@@ -6,13 +6,12 @@ paint  STORY            paint every scene in story.art into OUT/art (needs NumPy
 build  STORY            check, paint what changed, and write OUT/artifact.html + OUT/index.html
 shoot  STORY            screenshot the built page at desktop and phone width
 motifs                  list presets, motifs and their parameters for writing scenes
+animate new|check|build standalone animations (see entrypoints/cli/animate.py)
 """
 
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
 import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -20,13 +19,14 @@ from typing import Any
 
 from chronicle.connectors.browser import shoot
 from chronicle.connectors.files import store
+from chronicle.connectors.video.encode import VideoError
 from chronicle.core.story import derive, model
 from chronicle.core.story import theme as theming
 from chronicle.core.story.facts import FactError
 from chronicle.core.story.render import Assets, render
+from chronicle.entrypoints.cli import animate, runs
+from chronicle.entrypoints.cli.art import ART_DIR, MANIFEST, drawings, paint
 
-ART_DIR = "art"
-MANIFEST = "manifest.json"
 EXAMPLES = Path(__file__).resolve().parents[4] / "examples"
 # Other pages a new theme is compared with: the bundled examples and up to this many
 # sibling run folders.
@@ -58,6 +58,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "--inline", action="store_true", help="also write single.html with images embedded"
             )
     sub.add_parser("motifs")
+    animate.add_parser(sub)
     new = sub.add_parser("new")
     new.add_argument("folder", type=Path, help="run folder to create, e.g. chronicle-runs/q4")
     new.add_argument("--title", default="", help="the page title")
@@ -74,6 +75,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             return _new(args.folder, args.title)
         if args.command == "shoot":
             return _shoot(args.out or args.story.parent / "build", args.browser, args.wait)
+        if args.command == "animate":
+            return animate.run(args)
         story = store.read_json(args.story)
         facts = _facts(args.story, story, args.facts)
         out = args.out or args.story.parent / "build"
@@ -84,7 +87,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             report.errors.append(str(exc))
         report.warnings.extend(theming.review(story.get("theme"), _other_themes(args.story)))
         files = _files(story, args.story.parent, report)
-        drawings = _drawings(story, args.story.parent, facts, report)
+        texts = drawings(story, args.story.parent, facts, report)
         for warning in report.warnings:
             print(f"warning: {warning}", file=sys.stderr)
         for error in report.errors:
@@ -96,7 +99,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"ok: {args.story} ({len(report.warnings)} warning(s))")
             return 0
         if args.command == "paint" or not args.no_paint:
-            _paint(story, drawings, out, args.scale, args.force)
+            paint(story, texts, out, args.scale, args.force)
         if args.command == "build":
             return _build(story, facts, files, out, args.inline)
         return 0
@@ -111,7 +114,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     except (store.StoreError, FactError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
-    except shoot.BrowserError as exc:
+    except (shoot.BrowserError, VideoError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 
@@ -146,7 +149,7 @@ def _new(folder: Path, title: str) -> int:
     store.write_json(folder / "facts.json", {"derive": {}})
     for sub in (ART_DIR, "diagrams", "widgets"):
         (folder / sub).mkdir(parents=True, exist_ok=True)
-    ignored = _ignore(folder)
+    ignored = runs.ignore(folder)
     print(f"wrote {story_path} and {folder / 'facts.json'}")
     if ignored:
         print(f"added {ignored} to .gitignore")
@@ -181,24 +184,6 @@ def _skeleton(title: str) -> dict[str, Any]:
     }
 
 
-def _ignore(folder: Path) -> str:
-    """Add the run folder's top folder to the repository's .gitignore when it is missing."""
-    cwd = Path.cwd()
-    try:
-        top = folder.resolve().relative_to(cwd).parts[0]
-    except (ValueError, IndexError):
-        return ""
-    if not (cwd / ".git").exists():
-        return ""
-    path = cwd / ".gitignore"
-    text = store.read_text(path) if path.exists() else ""
-    entry = f"{top}/"
-    if entry in text.split() or top in text.split():
-        return ""
-    store.write_text(path, text + ("" if not text or text.endswith("\n") else "\n") + entry + "\n")
-    return entry
-
-
 def _shoot(out: Path, browser: str | None, wait: int) -> int:
     page = out / "index.html"
     if not page.exists():
@@ -224,35 +209,8 @@ def _facts(story_path: Path, story: Mapping[str, Any], override: Path | None) ->
     return derive.apply(raw)
 
 
-def _drawings(
-    story: Mapping[str, Any], folder: Path, facts: Mapping[str, Any], report: model.Report
-) -> dict[str, str]:
-    """Read and check every scene drawn as SVG, and the fact tokens in its text.
-
-    The parser needs no NumPy, so `check` catches drawing errors before any painting.
-    """
-    from chronicle.core.watercolor.svg.parse import SvgError, parse
-
-    texts: dict[str, str] = {}
-    for key, spec in dict(story.get("art", {})).items():
-        if not isinstance(spec, Mapping) or "svg" not in spec:
-            continue
-        source = str(spec["svg"])
-        name = source if len(source) < 80 else "inline svg"
-        text = source if source.lstrip().startswith("<svg") else store.read_text(folder / source)
-        try:
-            drawing = parse(text, int(spec["width"]) if spec.get("width") else None)
-        except SvgError as exc:
-            report.errors.append(f"art.{key} ({name}): {exc}")
-            continue
-        for label in drawing.labels:
-            model.check_text(label.text, f"art.{key} ({name}) text", "label", facts, report)
-        texts[str(key)] = text
-    return texts
-
-
 def _fonts() -> Any:
-    return json.loads(store.asset("fonts.json"))
+    return store.fonts()
 
 
 def _files(story: Mapping[str, Any], folder: Path, report: model.Report) -> dict[str, str]:
@@ -279,78 +237,6 @@ def _files(story: Mapping[str, Any], folder: Path, report: model.Report) -> dict
             report.errors.append(f"{where} ({path[:60]}): {exc}")
         texts[path] = source
     return texts
-
-
-def _engine_digest() -> str:
-    """Fingerprint of the painting code, so a change to a motif repaints its scenes."""
-    folder = Path(__file__).resolve().parents[2] / "core" / "watercolor"
-    digest = hashlib.sha256()
-    for path in sorted(folder.rglob("*.py")):
-        digest.update(path.read_bytes())
-    return digest.hexdigest()[:12]
-
-
-def _scene_hash(spec: Mapping[str, Any], scale: float, engine: str) -> str:
-    raw = json.dumps({"spec": spec, "scale": scale, "engine": engine}, sort_keys=True)
-    return hashlib.sha256(raw.encode()).hexdigest()[:16]
-
-
-def _paint(
-    story: Mapping[str, Any], drawings: Mapping[str, str], out: Path, scale: float, force: bool
-) -> None:
-    from chronicle.core.watercolor import presets, scene  # needs NumPy and OpenCV
-    from chronicle.core.watercolor.svg import paint as svg_paint
-
-    art_dir = out / ART_DIR
-    manifest_path = art_dir / MANIFEST
-    old: dict[str, Any] = {}
-    if manifest_path.exists():
-        old = store.read_json(manifest_path)
-    manifest: dict[str, Any] = {}
-    engine = _engine_digest()
-    for key, spec in dict(story.get("art", {})).items():
-        digest = _scene_hash({**spec, "svg": drawings.get(key, spec.get("svg"))}, scale, engine)
-        prior = old.get(key)
-        if not force and prior and prior.get("hash") == digest and (out / prior["file"]).exists():
-            manifest[key] = prior
-            print(f"art: {key} unchanged")
-            continue
-        try:
-            if "preset" in spec:
-                painting = presets.paint_preset(str(spec["preset"]), spec.get("params", {}), scale)
-            elif key in drawings:
-                painting = svg_paint.paint_scene(spec, drawings[key], scale)
-            else:
-                painting = scene.paint_elements(spec, scale)
-        except ValueError as exc:
-            raise ValueError(f"art.{key}: {exc}") from exc
-        base_rel = f"{ART_DIR}/{key}.webp"
-        size = store.write_webp(out / base_rel, painting.base)
-        entry: dict[str, Any] = {
-            "hash": digest,
-            "file": base_rel,
-            "width": painting.width,
-            "height": painting.height,
-            "anchors": {k: [round(v[0], 1), round(v[1], 1)] for k, v in painting.anchors.items()},
-            "labels": painting.labels,
-            "layers": [],
-        }
-        for layer in painting.layers:
-            rel = f"{ART_DIR}/{key}--{layer.name}.webp"
-            size += store.write_webp(out / rel, layer.image)
-            entry["layers"].append(
-                {
-                    "name": layer.name,
-                    "file": rel,
-                    "box": list(layer.box),
-                    "motion": layer.motion,
-                    "travel": layer.travel,
-                    "blend": layer.blend,
-                }
-            )
-        manifest[key] = entry
-        print(f"art: {key} painted, {size // 1024} KB")
-    store.write_json(manifest_path, manifest)
 
 
 def _build(

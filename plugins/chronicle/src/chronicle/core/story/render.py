@@ -7,7 +7,6 @@ that the bundled runtime script reads to draw charts, plates and interactive fig
 from __future__ import annotations
 
 import json
-import re
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
@@ -15,7 +14,7 @@ from typing import Any
 from chronicle.core.story import theme as theming
 from chronicle.core.story.blocks import stats
 from chronicle.core.story.dispatch import render_block
-from chronicle.core.story.facts import TOKEN, format_value, lookup, resolve_refs
+from chronicle.core.story.facts import fill, format_value, lookup, resolve_refs
 from chronicle.core.story.html import tag, void
 from chronicle.core.story.markup import inline, paragraphs, plain
 
@@ -98,12 +97,7 @@ class Builder:
     def plain_text(self, node: Any) -> Any:
         """Fill fact tokens and drop emphasis marks in strings the script shows as text."""
         if isinstance(node, str):
-
-            def fill(m: re.Match[str]) -> str:
-                found = lookup(self.facts, m.group(1))
-                return format_value(found.value, found.unit, m.group(2) or "auto")
-
-            return TOKEN.sub(fill, node).replace("**", "")
+            return fill(node, self.facts).replace("**", "")
         if isinstance(node, Mapping):
             return {k: self.plain_text(v) for k, v in node.items()}
         if isinstance(node, list):

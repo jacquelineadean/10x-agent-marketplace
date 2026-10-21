@@ -1,0 +1,13 @@
+/* The frame of a standalone animation: background, title, captions and the step strip.
+   Every rule sits under .chr-a so an animation pasted into another page styles only
+   itself; its colors and fonts come from tokens set on .chr-a-<slug>. */
+.chr-a { font-family: var(--f-body); }
+.chr-a .a-bg { fill: var(--paper); }
+.chr-a .a-bg.surface { fill: var(--surface); }
+.chr-a .a-kicker { font-family: var(--f-ui); font-weight: 700; letter-spacing: .12em; fill: var(--accent-text); }
+.chr-a .a-title { font-family: var(--f-display); fill: var(--ink); }
+.chr-a .a-credit { font-family: var(--f-ui); fill: var(--muted); }
+.chr-a .a-num { font-family: var(--f-mono); font-weight: 500; fill: var(--accent-text); }
+.chr-a .a-cap { font-family: var(--f-body); fill: var(--ink); }
+.chr-a .a-track { stroke: var(--rule); }
+.chr-a .a-fill { stroke: var(--accent); }

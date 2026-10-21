@@ -50,6 +50,22 @@ code computes and paints, Claude writes and draws.
                      private claude.ai Artifact
 ```
 
+chronicle's animation skill (RFC-0005, draft) makes standalone animations the same way:
+Claude writes a TAD as data, a drawing or a painted scene, and the steps; code lays it
+out, times it and exports it.
+
+```
+ user ──/chronicle:animation──▶ Claude Code (skill)
+            run folder chronicle-runs/<slug>/: animation.json, facts.json, drawing.svg
+                              │ scripts/chronicle animate build
+                              ▼
+              check → layout and routes (TAD) or sanitize (diagram) or paint (scene)
+              → one SVG with CSS keyframes on one clock (stdlib)
+              → frames from a local headless Chromium (DevTools pipe) → PNG, GIF (NumPy)
+                and MP4 (local ffmpeg) or WebM (OpenCV)
+              build/animation.svg, embed.html, index.html, poster.png, steps.png, animation.gif
+```
+
 The third plugin, perf-ratchet (RFC-0006, draft), runs a continuous performance loop the
 same way: code fetches, computes and renders; Claude chooses journeys, changes code and
 writes the post.
@@ -78,8 +94,8 @@ writes the post.
 | impact-review plugin shell `plugins/impact-review/` (`.claude-plugin/plugin.json`, `skills/report/`, `agents/impact-writer.md`) | User-facing command; the skill runs the collector and hands the run folder to the `impact-writer` subagent (Sonnet, Read and Write only), which writes the synthesis | Markdown | Jacqueline Dean |
 | impact-review collector `plugins/impact-review/src/impact_review/` | Calls GitHub, caches responses, computes metrics, renders dashboard and digest | Python 3.11+, standard library only at runtime | Jacqueline Dean |
 
-| chronicle plugin shell `plugins/chronicle/` (`.claude-plugin/plugin.json`, `skills/story/`, `agents/chronicle-gatherer.md`, `scripts/chronicle`) | The story workflow: brief, gather, write, build, publish | Markdown, POSIX sh | Jacqueline Dean |
-| chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story and widget checks, themes, diagram sanitizer, HTML renderer, page runtime (CSS and JS), SVG reader and watercolor painter | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting | Jacqueline Dean |
+| chronicle plugin shell `plugins/chronicle/` (`.claude-plugin/plugin.json`, `skills/story/`, `skills/animation/`, `agents/chronicle-gatherer.md`, `scripts/chronicle`) | The story workflow (brief, gather, write, build, publish) and the animation workflow (write, build, look, deliver) | Markdown, POSIX sh | Jacqueline Dean |
+| chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story and widget checks, themes, diagram sanitizer, HTML renderer, page runtime (CSS and JS), SVG reader and watercolor painter; the animation timeline, TAD layout and routing, GIF encoder and frame capture | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting and raster exports; a local Chromium for frames and ffmpeg for MP4 | Jacqueline Dean |
 
 | perf-ratchet plugin shell `plugins/perf-ratchet/` (`.claude-plugin/plugin.json`, `skills/{setup,measure,optimize,report}/`, `agents/perf-gatherer.md`, `agents/perf-writer.md`, `scripts/perf-ratchet`, `examples/`) | The optimization loop: choose journeys, measure, optimize against proxies, report and write up | Markdown, POSIX sh, YAML (CI example) | Jacqueline Dean |
 | perf-ratchet engine `plugins/perf-ratchet/src/perf_ratchet/` | Project file checks, Datadog and Prometheus reads, imports, benchmark runner, statistics, ratchet, metrics, digest, dashboard, write-up tokens | Python 3.11+, standard library only | Jacqueline Dean |
@@ -98,9 +114,11 @@ The collector follows the standard `cli` layout (see CODEMAP.md):
 7. The same collector runs without Claude: `PYTHONPATH=plugins/impact-review/src python3 -m impact_review collect --timeframe ytd`.
 
 chronicle uses the same layout under `plugins/chronicle/src/chronicle/`: `core/story/` and
-`core/watercolor/` hold the rules and the painting (no I/O), `connectors/files/` does every
-file read and write, `entrypoints/cli/` parses arguments, and `assets/` holds the page's
-stylesheet and script parts and the font list.
+`core/watercolor/` hold the rules and the painting (no I/O), `core/motion/` holds the
+animation timeline, stage, kinds and GIF encoder (no I/O), `connectors/files/` does every
+file read and write, `connectors/browser/` drives a local browser, `connectors/video/`
+runs ffmpeg and OpenCV's video writer, `entrypoints/cli/` parses arguments, and `assets/`
+holds the page's and the animations' stylesheet parts and the font list.
 
 perf-ratchet uses the same layout under `plugins/perf-ratchet/src/perf_ratchet/`: `core/`
 (rules, statistics, rendering; no I/O), `connectors/datadog/`, `connectors/prometheus/`
@@ -113,7 +131,7 @@ benchmark commands), `connectors/files/` (every file read and write), `entrypoin
 - `uv` manages the dev environment: `ruff` (format and lint), `mypy` strict, `pytest`.
 - GitHub GraphQL API v4 (contribution collection, search) and REST API v3 (repository contributor statistics).
 - Claude Code plugin system: marketplace, plugins, skills, agents.
-- chronicle: NumPy and OpenCV (painting only, fetched by `uv run --with`), vanilla JavaScript and SVG in the page, Google Fonts chosen per page by the theme from `assets/fonts.json`.
+- chronicle: NumPy and OpenCV (painting and raster exports, fetched by `uv run --with`), vanilla JavaScript and SVG in the page, CSS keyframes in animations, Google Fonts chosen per page by the theme from `assets/fonts.json`; an installed Chromium or Chrome for screenshots and frames, and an installed ffmpeg for MP4.
 
 ## Deployment and environments
 - No hosted environment; plugins run on each user's machine.

@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "scene",
+  "facts_file": "../keystone/facts.json",
+  "meta": {
+    "title": "Black Friday, {{reliability.pool_exhausted_at}}",
+    "kicker": "Keystone incident review",
+    "description": "Watercolor of a jammed warehouse conveyor: cart events piled up faster than the cart service could clear them, until the fallback lever sent carts back to the monolith.",
+    "credit": "Fernhill Outfitters",
+    "sources": [{"label": "Incident review INC-2291", "detail": "PagerDuty and Datadog"}]
+  },
+  "theme": {
+    "concept": "The Keystone story's warehouse: kraft paper, packing-slip ink, forest green for the way out.",
+    "palette": {"paper": "#F7F2E8", "ink": "#24211E", "accent": "#2F6B4F", "legacy": "#B5652B"},
+    "fonts": {"display": "Fraunces", "body": "Literata", "ui": "Barlow Semi Condensed", "mono": "IBM Plex Mono", "hand": "Caveat"}
+  },
+  "frame": {"size": "16:9"},
+  "scene": {
+    "art": {"svg": "../keystone/art/jam.svg", "seed": 3, "vignette": "soft"},
+    "spots": [
+      {"id": "clock", "anchor": "clock", "label": "The pool runs dry"},
+      {"id": "pile", "anchor": "pile", "label": "{{reliability.incident_carts}} carts lost"},
+      {"id": "lever", "anchor": "lever", "label": "The fallback"}
+    ]
+  },
+  "steps": [
+    {
+      "caption": "On Black Friday 2025, cart events arrived {{reliability.incident_multiple}} faster than a normal Friday."
+    },
+    {
+      "caption": "At {{reliability.pool_exhausted_at}} all {{reliability.incident_pool}} cart database connections were in use.",
+      "show": ["clock"],
+      "focus": ["clock"]
+    },
+    {
+      "caption": "In {{reliability.incident_minutes}} of customer impact, about {{reliability.incident_carts}} carts were abandoned.",
+      "show": ["pile"],
+      "focus": ["pile"]
+    },
+    {
+      "caption": "The fallback lever the migration plan kept sent cart traffic back to the monolith.",
+      "show": ["lever"],
+      "focus": ["lever"],
+      "pulse": ["lever"]
+    }
+  ]
+}

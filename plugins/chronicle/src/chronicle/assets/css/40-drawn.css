@@ -1,0 +1,24 @@
+/* ------------------------------------------------- drawn figure classes */
+/* Shared by story pages and standalone animations: the classes Claude writes in
+   diagrams, and the styles of live labels on paintings. */
+.dg-svg text { fill: var(--ink); font-size: 15px; }
+.dg-svg .label { fill: var(--ink-2); font-size: 13px; }
+.dg-svg .small { font-size: 12px; fill: var(--muted); }
+.dg-svg .hand { font-family: var(--f-hand); font-size: 20px; fill: var(--accent-text); }
+.dg-svg .title { font-weight: 700; }
+.dg-svg .box { fill: var(--surface-2); stroke: var(--ink); stroke-width: 1.5; }
+.dg-svg .box.soft { fill: var(--surface); stroke: var(--rule); }
+.dg-svg .box.accent { fill: var(--accent-wash); stroke: var(--accent); stroke-width: 2; }
+.dg-svg .box.legacy { fill: color-mix(in srgb, var(--legacy) 12%, transparent); stroke: var(--legacy); stroke-width: 2; }
+.dg-svg .line { fill: none; stroke: var(--ink-2); stroke-width: 1.6; }
+.dg-svg .line.accent { stroke: var(--accent); stroke-width: 2.2; }
+.dg-svg .line.legacy { stroke: var(--legacy); stroke-width: 2.2; }
+.dg-svg .line.dashed { stroke-dasharray: 5 4; }
+.dg-svg .head { fill: var(--ink-2); }
+.overlay .lbl { pointer-events: none; }
+.overlay .lbl-hand { font-family: var(--f-hand); font-weight: 600; }
+.overlay .lbl-label { font-family: var(--f-ui); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.overlay .lbl-caption { font-family: var(--f-body); font-style: italic; }
+.overlay .lbl-display { font-family: var(--f-display); }
+.overlay .lbl-mono, .overlay .lbl-number { font-family: var(--f-mono); font-weight: 500; }
+.overlay .lbl-number { font-variant-numeric: tabular-nums; }

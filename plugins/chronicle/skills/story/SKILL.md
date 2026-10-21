@@ -186,3 +186,7 @@ Reply with the link, one line on what the page covers, and any facts that were m
 
 Read an example to learn the format. Never copy its theme: `chronicle check` flags a page
 that looks like one.
+
+For a figure that must play outside the page (an architecture walkthrough for slides, a
+diagram for a README, a plate for chat), use the `animation` skill: it takes this page's
+drawings, diagrams and facts as they are.

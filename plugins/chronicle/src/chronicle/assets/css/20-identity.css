@@ -152,13 +152,6 @@
 .stage img.layer.blend-normal { mix-blend-mode: normal; }
 .stage img.layer[data-motion="pop"] { opacity: 0; transform: scale(.6) rotate(-6deg); transform-origin: 50% 80%; transition: opacity .5s ease, transform .7s cubic-bezier(.3, 1.6, .5, 1); }
 .stage img.layer[data-motion="pop"].popped { opacity: 1; transform: none; }
-.overlay .lbl { pointer-events: none; }
-.overlay .lbl-hand { font-family: var(--f-hand); font-weight: 600; }
-.overlay .lbl-label { font-family: var(--f-ui); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-.overlay .lbl-caption { font-family: var(--f-body); font-style: italic; }
-.overlay .lbl-display { font-family: var(--f-display); }
-.overlay .lbl-mono, .overlay .lbl-number { font-family: var(--f-mono); font-weight: 500; }
-.overlay .lbl-number { font-variant-numeric: tabular-nums; }
 @media (prefers-reduced-motion: reduce) {
   .stage img.layer[data-motion="pop"] { opacity: 1; transform: none; }
 }

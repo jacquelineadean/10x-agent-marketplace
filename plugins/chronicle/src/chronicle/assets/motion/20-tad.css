@@ -1,0 +1,64 @@
+/* Technical architecture diagrams: zones, components, lines, packets and state marks. */
+.chr-a .m-gfill { fill: none; }
+.chr-a .m-gfill.m-zone { fill: var(--surface); }
+.chr-a .m-gfill.m-cluster { fill: color-mix(in srgb, var(--tone) 7%, transparent); }
+.chr-a .m-gline { fill: none; stroke: var(--rule); stroke-width: 1.2; }
+.chr-a .m-gline.m-boundary { stroke: var(--muted); stroke-dasharray: 7 5; }
+.chr-a .m-gline.m-external { stroke: var(--muted); stroke-dasharray: .5 5; stroke-linecap: round; stroke-width: 1.6; }
+.chr-a .m-tinted .m-gline { stroke: color-mix(in srgb, var(--tone) 50%, transparent); }
+.chr-a .m-glabel { font-family: var(--f-ui); font-weight: 650; font-size: 11px; letter-spacing: .08em; fill: var(--muted); }
+.chr-a .m-tinted .m-glabel { fill: var(--tone); }
+.chr-a .m-gflash { fill: none; stroke: var(--accent); stroke-width: 2.5; opacity: 0; }
+
+.chr-a .m-line { fill: none; stroke: var(--ink-2); stroke-width: 1.6; stroke-linejoin: round; }
+.chr-a .m-async .m-line { stroke-dasharray: 6 5; }
+.chr-a .m-head { fill: var(--ink-2); }
+.chr-a .m-async .m-head { fill: none; stroke: var(--ink-2); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.chr-a .m-hot { fill: none; stroke: var(--tone, var(--accent)); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+.chr-a .m-mask { fill: none; stroke: #fff; stroke-width: 22; }
+.chr-a .m-elabel, .chr-a .m-legend { font-family: var(--f-ui); font-size: 12px; fill: var(--ink-2); paint-order: stroke; stroke: var(--paper); stroke-width: 4px; stroke-linejoin: round; }
+.chr-a .m-legend { fill: var(--muted); }
+.chr-a .m-line.m-new, .chr-a .m-line.m-legacy, .chr-a .m-line.m-bad { stroke-width: 2.2; }
+.chr-a .m-new.m-line { stroke: var(--accent); }
+.chr-a .m-new.m-head { fill: var(--accent); stroke: var(--accent); }
+.chr-a .m-legacy.m-line { stroke: var(--legacy); }
+.chr-a .m-legacy.m-head { fill: var(--legacy); stroke: var(--legacy); }
+.chr-a .m-bad.m-line, .chr-a .m-down.m-line { stroke: var(--bad); }
+.chr-a .m-bad.m-head, .chr-a .m-down.m-head { fill: var(--bad); stroke: var(--bad); }
+.chr-a .m-down.m-line { stroke-dasharray: 2 5; stroke-linecap: round; opacity: .7; }
+.chr-a .m-planned.m-line { stroke: var(--muted); stroke-dasharray: 4 5; opacity: .8; }
+.chr-a .m-planned.m-head { fill: var(--muted); stroke: var(--muted); opacity: .8; }
+
+.chr-a .m-halo, .chr-a .m-trail, .chr-a .m-dot { fill: none; stroke-linecap: round; }
+.chr-a .m-halo { stroke: var(--paper); stroke-width: 14; }
+.chr-a .m-trail { stroke: var(--tone); stroke-width: 4; opacity: .4; }
+.chr-a .m-dot { stroke: var(--tone); stroke-width: 9; }
+
+.chr-a .m-shadow { fill: var(--rule-2); }
+.chr-a .m-box, .chr-a .m-rep { fill: var(--surface-2); }
+.chr-a .m-rep { stroke: var(--rule); stroke-width: 1.2; }
+.chr-a .m-outline { fill: none; stroke: var(--rule); stroke-width: 1.2; }
+.chr-a .m-tile { fill: color-mix(in srgb, var(--tone) 14%, transparent); }
+.chr-a .m-glyph { fill: none; stroke: var(--tone); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chr-a .m-nlabel { font-family: var(--f-ui); font-weight: 600; font-size: 14px; fill: var(--ink); }
+.chr-a .m-tech { font-family: var(--f-mono); font-size: 11px; fill: var(--muted); }
+.chr-a .m-ping { fill: none; stroke: var(--tone); stroke-width: 2; opacity: 0; }
+.chr-a .m-ring { fill: none; stroke-width: 2.2; }
+.chr-a .m-ring.m-new { stroke: var(--accent); }
+.chr-a .m-ring.m-legacy { stroke: var(--legacy); }
+.chr-a .m-ring.m-good { stroke: var(--good); }
+.chr-a .m-ring.m-warn { stroke: var(--warn); }
+.chr-a .m-ring.m-bad, .chr-a .m-ring.m-down { stroke: var(--bad); }
+.chr-a .m-ring.m-planned { stroke: var(--muted); stroke-dasharray: 5 4; }
+.chr-a .m-pill rect { fill: var(--paper); stroke: var(--rule); }
+.chr-a .m-pill text { font-family: var(--f-ui); font-weight: 700; font-size: 9.5px; letter-spacing: .06em; fill: var(--muted); }
+.chr-a .m-flag.m-new rect { fill: var(--accent); stroke: none; }
+.chr-a .m-flag.m-new text { fill: var(--on-accent); }
+.chr-a .m-flag.m-legacy rect { fill: var(--legacy-text); stroke: none; }
+.chr-a .m-flag.m-down rect { fill: var(--bad); stroke: none; }
+.chr-a .m-flag.m-legacy text, .chr-a .m-flag.m-down text { fill: var(--paper); }
+.chr-a .m-flag.m-planned rect { stroke: var(--muted); stroke-dasharray: 3 2; }
+.chr-a .m-badge.m-good { fill: var(--good); }
+.chr-a .m-badge.m-warn { fill: var(--warn); }
+.chr-a .m-badge.m-bad { fill: var(--bad); }
+.chr-a .m-sign { fill: none; stroke: var(--paper); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
