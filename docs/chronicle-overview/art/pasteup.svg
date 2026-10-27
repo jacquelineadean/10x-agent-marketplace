@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800">
+  <!-- wall -->
+  <path d="M-20 30 C500 60 1100 20 1620 50 L1620 486 L-20 492 Z" fill="#d5d9d3" fill-opacity="0.85" data-paint="wet" data-shade="0" stroke="none"/>
+
+  <!-- the corkboard of tool printouts -->
+  <rect x="180" y="60" width="920" height="360" fill="#c9a26b" stroke="#24272b" stroke-width="2.6" data-shade="0.2" data-grain="0.8"/>
+  <path d="M446 252 l3 1 M615 189 l3 1 M1084 141 l3 1 M563 143 l3 1 M759 167 l3 1 M513 322 l3 1 M481 260 l3 1 M1001 109 l3 1 M251 152 l3 1 M877 279 l3 1 M407 185 l3 1 M354 227 l3 1 M234 306 l3 1 M993 391 l3 1 M850 393 l3 1 M212 171 l3 1 M1056 332 l3 1 M561 387 l3 1 M748 346 l3 1 M457 139 l3 1 M591 121 l3 1 M536 393 l3 1 M491 79 l3 1 M236 132 l3 1 M894 196 l3 1 M454 108 l3 1 M1070 216 l3 1 M381 96 l3 1 M245 132 l3 1 M798 125 l3 1 M232 238 l3 1 M418 405 l3 1 M305 251 l3 1 M885 211 l3 1 M1075 234 l3 1 M411 212 l3 1 M229 215 l3 1 M417 369 l3 1 M936 241 l3 1 M224 160 l3 1 M412 145 l3 1 M402 363 l3 1 M322 93 l3 1 M1022 263 l3 1 M1078 209 l3 1 M998 292 l3 1 M900 322 l3 1 M636 107 l3 1 M384 364 l3 1 M997 381 l3 1 M496 293 l3 1 M908 288 l3 1 M921 250 l3 1 M779 302 l3 1 M435 381 l3 1 M1047 101 l3 1 M1060 393 l3 1 M791 91 l3 1 M996 118 l3 1 M1058 296 l3 1 M250 131 l3 1 M761 264 l3 1 M860 382 l3 1 M391 77 l3 1 M1017 80 l3 1 M976 114 l3 1 M917 334 l3 1 M977 258 l3 1 M978 143 l3 1 M794 185 l3 1 M990 331 l3 1 M616 250 l3 1 M219 87 l3 1 M725 237 l3 1 M966 277 l3 1 M319 196 l3 1 M879 249 l3 1 M205 352 l3 1 M933 104 l3 1 M680 202 l3 1 M897 179 l3 1 M404 237 l3 1 M1056 107 l3 1 M298 281 l3 1 M984 245 l3 1 M582 359 l3 1 M887 98 l3 1 M980 141 l3 1 M465 352 l3 1 M572 339 l3 1 M345 365 l3 1 M353 125 l3 1 M636 188 l3 1 M678 374 l3 1 M828 78 l3 1 M474 256 l3 1 M629 312 l3 1 M627 101 l3 1 M414 356 l3 1 M514 329 l3 1 M1073 283 l3 1 M798 277 l3 1 M475 377 l3 1 M612 377 l3 1 M468 362 l3 1 M896 278 l3 1 M589 122 l3 1 M882 196 l3 1 M785 120 l3 1 M269 123 l3 1 M916 135 l3 1 M999 199 l3 1 M709 192 l3 1 M749 107 l3 1 M554 385 l3 1 M356 292 l3 1 M487 175 l3 1 M217 83 l3 1 M1041 350 l3 1 M909 342 l3 1 M1044 128 l3 1 M716 239 l3 1 M707 386 l3 1 M873 396 l3 1 M300 291 l3 1 M797 322 l3 1 M746 350 l3 1 M466 382 l3 1 M557 274 l3 1 M994 308 l3 1 M472 152 l3 1 M487 283 l3 1 M1083 373 l3 1 M552 208 l3 1 M924 170 l3 1 M562 80 l3 1 M360 254 l3 1 M813 279 l3 1 M520 390 l3 1 M751 127 l3 1" stroke="#8a6a3d" stroke-width="1.6" fill="none" data-line="pencil"/>
+  <rect x="180" y="60" width="920" height="360" fill="none" stroke="#7a5a32" stroke-width="10"/>
+
+  <g transform="rotate(-3 300 180)">
+    <rect x="212" y="92" width="182" height="150" fill="#fbfbf7" stroke="#24272b" stroke-width="2" data-shade="0.1"/>
+    <path d="M243 128 h11 v11 h-11 Z M243 173 h11 v11 h-11 Z M258 128 h11 v11 h-11 Z M273 173 h11 v11 h-11 Z M273 188 h11 v11 h-11 Z M288 143 h11 v11 h-11 Z M288 173 h11 v11 h-11 Z M303 173 h11 v11 h-11 Z M318 188 h11 v11 h-11 Z M333 143 h11 v11 h-11 Z M333 173 h11 v11 h-11 Z M348 158 h11 v11 h-11 Z M363 128 h11 v11 h-11 Z M363 143 h11 v11 h-11 Z M363 158 h11 v11 h-11 Z" fill="#cfe0b8" stroke="none" data-loose="0"/>
+    <path d="M228 173 h11 v11 h-11 Z M228 188 h11 v11 h-11 Z M258 158 h11 v11 h-11 Z M273 128 h11 v11 h-11 Z M273 143 h11 v11 h-11 Z M273 158 h11 v11 h-11 Z M288 128 h11 v11 h-11 Z M303 128 h11 v11 h-11 Z M303 143 h11 v11 h-11 Z M318 128 h11 v11 h-11 Z M333 128 h11 v11 h-11 Z M348 143 h11 v11 h-11 Z M348 173 h11 v11 h-11 Z M363 173 h11 v11 h-11 Z M363 188 h11 v11 h-11 Z" fill="#9fc27a" stroke="none" data-loose="0"/>
+    <path d="M228 143 h11 v11 h-11 Z M228 158 h11 v11 h-11 Z M243 143 h11 v11 h-11 Z M243 188 h11 v11 h-11 Z M288 188 h11 v11 h-11 Z M303 188 h11 v11 h-11 Z M318 158 h11 v11 h-11 Z M318 173 h11 v11 h-11 Z" fill="#62802c" stroke="none" data-loose="0"/>
+    <path d="M228 128 h11 v11 h-11 Z M243 158 h11 v11 h-11 Z M258 143 h11 v11 h-11 Z M258 173 h11 v11 h-11 Z M258 188 h11 v11 h-11 Z M288 158 h11 v11 h-11 Z M303 158 h11 v11 h-11 Z M318 143 h11 v11 h-11 Z M333 158 h11 v11 h-11 Z M333 188 h11 v11 h-11 Z M348 128 h11 v11 h-11 Z M348 188 h11 v11 h-11 Z" fill="#3f5f1c" stroke="none" data-loose="0"/>
+    <text x="224" y="118" font-size="17" data-label="label" fill="#24272b">GitHub</text>
+    <path d="M226 222 L370 222 M226 232 L330 232" stroke="#8a8f94" stroke-width="1.3" fill="none" data-line="pencil"/>
+  </g>
+  <g transform="rotate(2 520 190)">
+    <rect x="432" y="104" width="182" height="150" fill="#fbfbf7" stroke="#24272b" stroke-width="2" data-shade="0.1"/>
+    <text x="444" y="130" font-size="17" data-label="label" fill="#24272b">Jira</text>
+    <g stroke="#24272b" stroke-width="1.3">
+      <rect x="446" y="142" width="46" height="22" fill="#7fa6c9"/>
+      <rect x="446" y="170" width="46" height="22" fill="#7fa6c9"/>
+      <rect x="500" y="142" width="46" height="22" fill="#f2c94c"/>
+      <rect x="554" y="142" width="46" height="22" fill="#8fb3a0"/>
+      <rect x="554" y="170" width="46" height="22" fill="#8fb3a0"/>
+      <rect x="554" y="198" width="46" height="22" fill="#8fb3a0"/>
+    </g>
+  </g>
+  <g transform="rotate(-2 740 180)">
+    <rect x="652" y="90" width="182" height="150" fill="#fbfbf7" stroke="#24272b" stroke-width="2" data-shade="0.1"/>
+    <text x="664" y="116" font-size="17" data-label="label" fill="#24272b">Datadog</text>
+    <path d="M666 210 L692 196 L716 204 L740 168 L764 182 L790 150 L818 160" stroke="#b24a6e" stroke-width="2.6" fill="none"/>
+    <path d="M666 222 L820 222 M666 222 L666 132" stroke="#24272b" stroke-width="1.3" fill="none"/>
+  </g>
+  <g transform="rotate(3 960 190)">
+    <rect x="872" y="104" width="182" height="150" fill="#fbfbf7" stroke="#24272b" stroke-width="2" data-shade="0.1"/>
+    <text x="884" y="130" font-size="17" data-label="label" fill="#24272b">Confluence</text>
+    <path d="M886 150 L1040 150 M886 164 L1040 164 M886 178 L1010 178 M886 200 L1040 200 M886 214 L1040 214 M886 228 L980 228" stroke="#8a8f94" stroke-width="1.3" fill="none" data-line="pencil"/>
+  </g>
+
+  <!-- red string from each printout to the deck -->
+  <path d="M372 100 C420 300 580 430 700 560 M592 110 C600 300 650 430 720 560 M812 96 C790 300 760 430 744 560 M1032 110 C950 300 840 430 770 560" stroke="#b23a2b" stroke-width="2" fill="none" data-overshoot="0"/>
+  <g stroke="#24272b" stroke-width="1.6">
+    <circle cx="372" cy="100" r="9" fill="#b23a2b"/>
+    <circle cx="592" cy="110" r="9" fill="#b23a2b"/>
+    <circle cx="812" cy="96" r="9" fill="#b23a2b"/>
+    <circle cx="1032" cy="110" r="9" fill="#b23a2b"/>
+  </g>
+
+  <!-- wall clock, late in the evening -->
+  <circle cx="1330" cy="200" r="92" fill="#f4f3ee" stroke="#24272b" stroke-width="3" data-shade="0.3"/>
+  <circle cx="1330" cy="200" r="78" fill="none" stroke="#8a8f94" stroke-width="1.4" data-line="pencil"/>
+  <path d="M1330 200 L1316 140 M1330 200 L1322 128" stroke="#24272b" stroke-width="4" fill="none"/>
+  <path d="M1330 128 L1330 138 M1402 200 L1392 200 M1330 272 L1330 262 M1258 200 L1268 200" stroke="#24272b" stroke-width="3" fill="none"/>
+  <circle cx="1330" cy="200" r="5" fill="#24272b"/>
+
+  <!-- table -->
+  <path d="M-20 486 L1620 480 L1620 820 L-20 820 Z" fill="#cbb38a" stroke="#24272b" stroke-width="2.4" data-shade="0.25"/>
+  <g fill="none" stroke="#8d7350" stroke-width="1.2" data-line="pencil">
+    <path d="M-20 560 C500 556 1000 552 1620 548 M-20 680 C600 676 1100 672 1620 668"/>
+  </g>
+
+  <!-- shadows -->
+  <path d="M500 772 L1040 772 L1080 742 L540 744 Z" fill="#4a3f30" fill-opacity="0.35" data-paint="glaze" data-wet="0.7" stroke="none"/>
+  <path d="M1110 720 L1300 724 L1320 700 Z" fill="#4a3f30" fill-opacity="0.3" data-paint="glaze" stroke="none"/>
+
+  <!-- the hand-built deck: three printed slides -->
+  <g transform="rotate(4 770 640)">
+    <rect x="540" y="520" width="460" height="252" fill="#efede6" stroke="#24272b" stroke-width="2"/>
+  </g>
+  <g transform="rotate(-2 770 640)">
+    <rect x="532" y="516" width="460" height="252" fill="#f5f4ee" stroke="#24272b" stroke-width="2"/>
+  </g>
+  <g transform="rotate(-0.5 770 640)">
+    <rect x="530" y="510" width="460" height="252" fill="#fdfdf9" stroke="#24272b" stroke-width="2.4" data-shade="0.1"/>
+    <rect x="530" y="510" width="460" height="40" fill="#8a8f94" stroke="#24272b" stroke-width="2"/>
+    <text x="548" y="538" font-size="20" data-label="label" fill="#fdfdf9">Q4 status</text>
+    <g stroke="#24272b" stroke-width="1.4">
+      <rect x="560" y="660" width="34" height="70" fill="#9aa3a6"/>
+      <rect x="606" y="630" width="34" height="100" fill="#9aa3a6"/>
+      <rect x="652" y="600" width="34" height="130" fill="#9aa3a6"/>
+    </g>
+    <path d="M552 730 L700 730" stroke="#24272b" stroke-width="1.4" fill="none"/>
+    <path d="M730 580 L960 580 M730 600 L940 600 M730 650 L960 650 M730 670 L900 670" stroke="#8a8f94" stroke-width="1.4" fill="none" data-line="pencil"/>
+    <!-- a figure cut from a printout and glued on -->
+    <path d="M760 690 L880 684 L884 732 L764 738 Z" fill="#fbfbf7" stroke="#24272b" stroke-width="1.8" data-shade="0.15"/>
+    <path d="M744 684 L790 680 L792 696 L746 700 Z" fill="#e2c98a" fill-opacity="0.7" data-paint="glaze" stroke="none"/>
+    <text x="822" y="722" font-size="30" text-anchor="middle" data-label="hand" fill="#24272b">??</text>
+  </g>
+
+  <!-- sticky notes asking the questions every reviewer asks -->
+  <g transform="rotate(-6 470 600)">
+    <rect x="398" y="540" width="150" height="120" fill="#f2d36b" stroke="#24272b" stroke-width="1.8" data-shade="0.15"/>
+    <text x="473" y="596" font-size="24" text-anchor="middle" data-label="hand" fill="#24272b">source?</text>
+  </g>
+  <g data-layer="note" data-motion="sway">
+    <g transform="rotate(7 1050 560)">
+      <rect x="976" y="500" width="150" height="120" fill="#f2b8c6" stroke="#24272b" stroke-width="1.8" data-shade="0.15"/>
+    </g>
+  </g>
+  <text x="1052" y="566" font-size="23" text-anchor="middle" data-label="hand" fill="#24272b" transform="rotate(7 1052 566)">as of when?</text>
+  <g transform="rotate(3 930 450)">
+    <rect x="854" y="400" width="150" height="110" fill="#bfe0d2" stroke="#24272b" stroke-width="1.8" data-shade="0.15"/>
+    <text x="929" y="450" font-size="21" text-anchor="middle" data-label="hand" fill="#24272b">who added</text>
+    <text x="929" y="476" font-size="21" text-anchor="middle" data-label="hand" fill="#24272b">this up?</text>
+  </g>
+
+  <!-- glue stick -->
+  <g>
+    <path d="M250 742 L430 702 L440 736 L262 776 Z" fill="#f4f3ee" stroke="#24272b" stroke-width="2.2" data-shade="0.5"/>
+    <path d="M430 702 L478 692 L486 724 L440 736 Z" fill="#2c4fa3" stroke="#24272b" stroke-width="2.2" data-shade="0.4"/>
+    <text x="340" y="748" font-size="18" data-label="label" fill="#24272b" transform="rotate(-12 340 748)">glue</text>
+  </g>
+
+  <!-- scissors -->
+  <g stroke="#24272b" stroke-width="2.2">
+    <path d="M1150 690 L1420 600 L1424 612 L1162 704 Z" fill="#c9cdd0" data-shade="0.4"/>
+    <path d="M1150 650 L1420 640 L1418 652 L1160 664 Z" fill="#c9cdd0" data-shade="0.4"/>
+    <ellipse cx="1118" cy="700" rx="40" ry="26" fill="#b23a2b" data-shade="0.4"/>
+    <ellipse cx="1114" cy="640" rx="40" ry="26" fill="#b23a2b" data-shade="0.4"/>
+    <ellipse cx="1118" cy="700" rx="22" ry="12" fill="#cbb38a"/>
+    <ellipse cx="1114" cy="640" rx="22" ry="12" fill="#cbb38a"/>
+    <circle cx="1200" cy="672" r="6" fill="#3d4247"/>
+  </g>
+  <path d="M1160 616 L1400 606" stroke="#ffffff" stroke-width="3" fill="none" data-line="lift"/>
+
+  <!-- paper scraps -->
+  <g stroke="#24272b" stroke-width="1.4" fill="#fbfbf7">
+    <path d="M300 640 L352 632 L356 660 L306 668 Z"/>
+    <path d="M1240 760 L1290 750 L1296 770 L1246 780 Z"/>
+    <path d="M470 760 L500 754 L504 772 L476 778 Z"/>
+  </g>
+
+  <circle cx="640" cy="300" r="1" fill="none" stroke="none" data-anchor="board"/>
+  <circle cx="360" cy="560" r="1" fill="none" stroke="none" data-anchor="notes"/>
+  <circle cx="1250" cy="570" r="1" fill="none" stroke="none" data-anchor="scissors"/>
+</svg>

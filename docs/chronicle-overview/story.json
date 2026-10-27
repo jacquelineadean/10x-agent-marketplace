@@ -1,0 +1,838 @@
+{
+ "schema_version": 1,
+ "meta": {
+  "title": "Chronicle",
+  "kicker": "10x agent marketplace · Executive overview · Version {{release.version|plain}}",
+  "dek": "chronicle turns a brief and the facts behind it into an illustrated, interactive web page made for its subject. Claude writes the story and draws the pictures; code computes every number, checks the page and paints the drawings in watercolor. It went from first commit to version {{release.version|plain}} in {{release.days}}, with {{tests.passed}} passing.",
+  "byline": [
+   "Prepared for developers and IT leadership",
+   "Built with chronicle from its own repository",
+   "Draft for review, {{release.as_of|date}}"
+  ],
+  "description": "An executive overview of the chronicle plugin: the problem it solves, where teams use it, how it works and what it runs on, built with chronicle itself.",
+  "colophon": "This page was built by chronicle {{release.version|plain}} from its own repository. The facts file holds every figure, read from the code, the git history, the RFCs and a test run on {{release.as_of|date}}; hover or tap a figure to see its source. The two paintings were drawn as SVG for this page and painted by the plugin's OpenCV painter. The architecture animation is one SVG with no script, built by `chronicle animate`.\n\nToken figures are estimates from {{rfc.story_rfc}}. Build timings come from one run on a cloud container and will differ on other machines."
+ },
+ "theme": {
+  "concept": "A painter's drafting table, from the material: Claude pencils each drawing as SVG and code washes it into watercolor, so the page reads like an engineer's sketchbook on graph paper, with ultramarine for chronicle's work and yellow ochre for the manual path it replaces.",
+  "palette": {
+   "paper": "#F1F3EF",
+   "ink": "#202428",
+   "accent": "#2C4FA3",
+   "legacy": "#A9740F",
+   "series": [
+    "#2C4FA3",
+    "#A9740F",
+    "#2E7D6B",
+    "#B24A6E",
+    "#3F8AB8",
+    "#62802C"
+   ],
+   "colors": {
+    "viridian": "#2E7D6B",
+    "rose": "#B24A6E",
+    "mat": "#8FB3A0",
+    "icon": "#2C4FA3"
+   }
+  },
+  "fonts": {
+   "display": "Bodoni Moda",
+   "body": "Spectral",
+   "ui": "Archivo",
+   "mono": "JetBrains Mono",
+   "hand": "Architects Daughter"
+  },
+  "progress": {
+   "kind": "route",
+   "path": "M8 24 C90 10 170 34 260 22 C350 10 430 30 520 20 C610 10 700 32 790 22 C860 14 930 26 992 18",
+   "icon_path": "M-10 -1 L1 -1.6 L1 1.6 L-10 1 Z M1 -2.2 L4 -2.2 L4 2.2 L1 2.2 Z M4 -2.4 C7 -2.4 9 -1 10.5 0 C9 1 7 2.4 4 2.4 Z",
+   "start_label": "Brief",
+   "end_label": "Publish"
+  },
+  "chapter_mark": {
+   "style": "plain",
+   "prefix": "Sheet",
+   "format": "roman"
+  },
+  "stats": "cards",
+  "surface": {
+   "texture": "grid",
+   "corners": "square",
+   "frame": "mat"
+  },
+  "words": {
+   "sources": "Provenance",
+   "show_numbers": "Show the figures",
+   "hide_numbers": "Hide the figures",
+   "overview": "Contents"
+  }
+ },
+ "sources": [
+  {
+   "id": "repo",
+   "label": "chronicle source",
+   "detail": "plugins/chronicle in the 10x-agent-marketplace repository",
+   "as_of": "2026-10-27"
+  },
+  {
+   "id": "git",
+   "label": "Git history",
+   "detail": "Commits touching plugins/chronicle, 14 to 20 October 2026",
+   "as_of": "2026-10-27"
+  },
+  {
+   "id": "rfc",
+   "label": "RFC-0002 to RFC-0005",
+   "detail": "DECISIONS folder; all four in draft, awaiting approval",
+   "as_of": "2026-10-27"
+  },
+  {
+   "id": "tests",
+   "label": "Test run",
+   "detail": "uv run pytest plugins/chronicle/tests",
+   "as_of": "2026-10-27"
+  },
+  {
+   "id": "bench",
+   "label": "Build timing",
+   "detail": "Keystone example, full repaint, one run on a cloud container",
+   "as_of": "2026-10-27"
+  }
+ ],
+ "art": {
+  "hero": {
+   "svg": "art/hero.svg",
+   "seed": 11,
+   "vignette": "soft",
+   "alt": "Watercolor of a drafting table: an open sketchbook whose left page holds a pencil drawing of a lighthouse on a headland and whose right page holds the same drawing painted in color, a check stamp in its corner. A paint tin, a brush wet with ultramarine and a jar of water sit to the right; a stack of index cards labeled facts.json sits in front; a finished web page is taped to the wall."
+  },
+  "pasteup": {
+   "svg": "art/pasteup.svg",
+   "seed": 5,
+   "vignette": "soft",
+   "alt": "Watercolor of a desk under a corkboard: printouts from GitHub, Jira, Datadog and Confluence are pinned to the board with red string running down to a printed status slide. A figure cut from a printout is glued onto the slide with two question marks on it. Sticky notes ask source, as of when, and who added this up. Scissors and a glue stick lie on the desk; a wall clock reads late evening."
+  }
+ },
+ "hero": {
+  "art": "hero",
+  "caption": "The pipeline as it stands: the left page is the SVG Claude writes, the right page is what the painter makes of it, and the card in front holds one fact with its source. The finished page hangs on the wall.",
+  "stats": [
+   {
+    "label": "Block types",
+    "value": "{{features.blocks|plain}}",
+    "delta": "Including {{features.charts}}",
+    "trend": "neutral"
+   },
+   {
+    "label": "Tests passing",
+    "value": "{{tests.passed|plain}}",
+    "delta": "In {{tests.seconds}}, none failing",
+    "trend": "good"
+   },
+   {
+    "label": "Lines of Python",
+    "value": "{{code.py_now|compact}}",
+    "delta": "{{code.growth}} the first release",
+    "trend": "neutral",
+    "spark": "@releases.py"
+   },
+   {
+    "label": "Runtime packages",
+    "value": "{{controls.runtime_deps|plain}}",
+    "delta": "NumPy and OpenCV, for painting only",
+    "trend": "neutral"
+   }
+  ]
+ },
+ "chapters": [
+  {
+   "id": "problem",
+   "short": "Problem",
+   "kicker": "The problem",
+   "title": "Status pages are assembled by hand, and their numbers lose their sources",
+   "blocks": [
+    {
+     "type": "prose",
+     "dropcap": true,
+     "text": "Every review cycle, someone opens GitHub, Jira, Confluence and Datadog in separate tabs, copies the numbers into a slide template and adds them up by hand. The deck is out of date by the meeting. Nobody can say where a figure came from, and next quarter the work starts again from a blank template.\n\nAsking a language model to write the page moves the problem without solving it. The model types numbers from memory, quality varies from page to page, and each page costs several times the tokens. {{rfc.story_rfc}} rejected that route for those three reasons."
+    },
+    {
+     "type": "plate",
+     "art": "pasteup",
+     "caption": "The hand-built status deck: four tools pinned to the board, a figure cut out and glued onto a slide, and the questions every reviewer asks.",
+     "spots": [
+      {
+       "anchor": "board",
+       "label": "Four tools",
+       "title": "Four tools, four tabs",
+       "text": "The facts live in GitHub, Jira, Confluence and Datadog. A person copies each one into the deck by hand."
+      },
+      {
+       "anchor": "notes",
+       "label": "No source",
+       "title": "No source, no date",
+       "text": "A pasted figure carries no source, no as-of date and no record of the arithmetic behind it."
+      },
+      {
+       "anchor": "scissors",
+       "label": "Every cycle",
+       "title": "Cut and paste, every cycle",
+       "text": "Nothing carries over. Next quarter the same person repeats the same copying."
+      }
+     ]
+    },
+    {
+     "type": "prose",
+     "text": "Custom pages show the same cost in code. Before the third release, a golf-simulator handbook built on chronicle still needed {{evidence.hand_css}} of hand-written CSS and about {{evidence.hand_js}} of script to look like its subject. A podcast guide written by hand outside chronicle carried over {{evidence.podcast_figures}}. Each later release moved that kind of work into the theme and the blocks."
+    },
+    {
+     "type": "compare",
+     "title": "The same page, by hand and with chronicle",
+     "subtitle": "Tap a card to turn it over, or switch them all at once.",
+     "labels": [
+      "By hand",
+      "chronicle"
+     ],
+     "items": [
+      {
+       "label": "Where numbers come from",
+       "before": "Copied from tool tabs into slides",
+       "after": "A facts file: each number with a source and a note",
+       "note": "Hover any figure on this page to see its source"
+      },
+      {
+       "label": "Arithmetic",
+       "before": "A spreadsheet, or someone's head",
+       "after": "The derive table: {{features.derive_fns}} in code",
+       "note": "Shares, ratios, percent changes, burnup forecasts"
+      },
+      {
+       "label": "Checking",
+       "before": "A reviewer reads the deck",
+       "after": "`chronicle check` before every build",
+       "note": "Unknown tokens stop the build; typed numbers are flagged"
+      },
+      {
+       "label": "Look",
+       "before": "The same template every quarter",
+       "after": "A theme drawn from the subject",
+       "note": "The check warns when a page shares three features with another"
+      },
+      {
+       "label": "Pictures",
+       "before": "Stock icons and clip art",
+       "after": "SVG drawn for the page, painted in watercolor",
+       "note": "No image model; the painter is a short OpenCV program"
+      },
+      {
+       "label": "Next cycle",
+       "before": "Start again from a blank deck",
+       "after": "Rebuild from the same files, republish to the same link",
+       "note": "The link stays the same"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "uses",
+   "short": "Uses",
+   "kicker": "Where teams use it",
+   "title": "One engine serves the steering committee, the new hire and the slide deck",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "chronicle reads its facts from connected tools ({{features.connectors}}: GitHub, Jira, Confluence, Datadog and PagerDuty) or from pasted notes, files and transcripts. The same builder then shapes the page for its forum, and the skill carries a chapter outline for each one. {{features.examples}} with invented data ship with the plugin to show the range."
+    },
+    {
+     "type": "table",
+     "title": "Forums and the figures each page leans on",
+     "columns": [
+      "Forum",
+      "Page",
+      "Figures it leans on",
+      "Shipped example"
+     ],
+     "rows": [
+      [
+       "Steering committee, portfolio review",
+       "Project status and history",
+       "Burnup forecast, scrollytelling, roadmap, risk matrix",
+       "Keystone: an order-platform migration"
+      ],
+      [
+       "Quarterly or business review",
+       "Goals against results",
+       "Slope charts, bars, small multiples",
+       "Lantern Bay: a support desk's quarter"
+      ],
+      [
+       "New hires and training",
+       "Onboarding handbook",
+       "Process flow, checklist, quiz, custom widget",
+       "Saltmarsh Coffee: a first-week handbook"
+      ],
+      [
+       "Architecture review, README, slides",
+       "Standalone animation",
+       "Animated TAD, drawn diagram, painted scene",
+       "Checkout TAD, pull-request pipeline, Keystone scene"
+      ],
+      [
+       "Incident review",
+       "Postmortem",
+       "Incident stepper, mechanism diagram, action table",
+       "Outline only"
+      ],
+      [
+       "Product launch",
+       "Launch recap",
+       "Timeline, usage calendar, regional tile map",
+       "Outline only"
+      ],
+      [
+       "Talks, podcasts, books",
+       "Guide",
+       "Timed progress clock, quizzes, diagrams",
+       "Outline only"
+      ]
+     ],
+     "caption": "Outlines for each forum are in the story skill's references/outlines.md."
+    },
+    {
+     "type": "prose",
+     "text": "Animations leave the page entirely. One `animation.json` builds a single SVG with no script, plus an HTML figure, a poster, a GIF and an MP4: {{features.exports}} in all, for docs sites, READMEs, Confluence, Slack and slides."
+    }
+   ]
+  },
+  {
+   "id": "how",
+   "short": "How it works",
+   "kicker": "How it works",
+   "title": "The model writes and draws; code computes, checks and paints",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "A run lives in one local folder and moves through seven steps. Claude settles the brief with the author, hands fact gathering to a subagent, designs the page's identity, draws each illustration as SVG and writes the story. Code does everything that has a right answer: the arithmetic, the checks, the painting and the HTML. The author confirms before anything leaves the machine."
+    },
+    {
+     "type": "flow",
+     "title": "Who does each step, by hand and with chronicle",
+     "subtitle": "Switch between the two ways of making the page, or select a step for what happens in it.",
+     "source": "repo",
+     "labels": [
+      "By hand",
+      "With chronicle"
+     ],
+     "token": "dot",
+     "statuses": {
+      "person": {
+       "label": "A person",
+       "color": "legacy"
+      },
+      "claude": {
+       "label": "Claude",
+       "color": "accent"
+      },
+      "code": {
+       "label": "Code",
+       "color": "s3"
+      }
+     },
+     "nodes": [
+      {
+       "label": "Gather",
+       "sub": "Facts from tools",
+       "values": [
+        "Copy from tool tabs",
+        "Gatherer subagent, read-only"
+       ],
+       "status": [
+        "person",
+        "claude"
+       ],
+       "text": "The `chronicle-gatherer` subagent queries connected tools read-only, asks for counts and aggregates, and writes facts.json. Its raw tool output stays inside the subagent."
+      },
+      {
+       "label": "Compute",
+       "sub": "Totals and forecasts",
+       "values": [
+        "Spreadsheet or mental math",
+        "Derive table"
+       ],
+       "status": [
+        "person",
+        "code"
+       ],
+       "text": "Averages, ratios, percent changes and burnup forecasts are entries in the derive table. Code computes them before the page is checked, so the prose and the charts agree."
+      },
+      {
+       "label": "Design",
+       "sub": "The page's identity",
+       "values": [
+        "The company template",
+        "A theme from the subject"
+       ],
+       "status": [
+        "person",
+        "claude"
+       ],
+       "text": "Claude writes a one-sentence concept, then the palette, fonts from a list of {{features.fonts}}, a progress bar, chapter marks and the words on every control."
+      },
+      {
+       "label": "Draw",
+       "sub": "Illustrations",
+       "values": [
+        "Stock icons",
+        "SVG drawn for the page"
+       ],
+       "status": [
+        "person",
+        "claude"
+       ],
+       "text": "Claude draws each picture as plain SVG: shapes back to front, ink outlines and live text labels that can hold facts."
+      },
+      {
+       "label": "Paint",
+       "sub": "Watercolor",
+       "values": [
+        "None",
+        "NumPy and OpenCV"
+       ],
+       "status": [
+        "person",
+        "code"
+       ],
+       "text": "The painter turns each drawing into ink and watercolor: washes with wet edges, granulation and pen lines that overshoot. A full Keystone build painted {{bench.keystone_plates}} in {{bench.keystone_seconds}}."
+      },
+      {
+       "label": "Check",
+       "sub": "Before anyone sees it",
+       "values": [
+        "A reviewer reads the deck",
+        "chronicle check"
+       ],
+       "status": [
+        "person",
+        "code"
+       ],
+       "text": "Unknown tokens stop the build. Numbers typed into prose, drawings outside the SVG allowlist and widget scripts that reach for the network are flagged first."
+      },
+      {
+       "label": "Publish",
+       "sub": "Share a link",
+       "values": [
+        "Email the deck",
+        "Private Artifact, after you confirm"
+       ],
+       "status": [
+        "person",
+        "person"
+       ],
+       "text": "The skill asks once before publishing data from company systems. The page goes to claude.ai as a private Artifact, and republishing keeps the same link."
+      }
+     ]
+    },
+    {
+     "type": "diagram",
+     "svg": "diagrams/build.svg",
+     "title": "Inside chronicle build",
+     "subtitle": "Hover or tap a box for detail, or step through the build.",
+     "source": "repo",
+     "alt": "Diagram: facts.json, story.json and the SVG drawings feed four stages in order: derive, check, paint and render. The build folder holds artifact.html and the paintings as WebP. An error at the check stops the build; unchanged drawings are not repainted.",
+     "steps": [
+      {
+       "title": "Derive",
+       "text": "Code runs the derive table: {{features.derive_fns}} compute every total, share, ratio and forecast from the gathered series.",
+       "focus": [
+        "facts",
+        "derive",
+        "in1"
+       ]
+      },
+      {
+       "title": "Check",
+       "text": "The check stops on unknown tokens, warns on numbers typed into prose, sanitizes every drawing and lints every widget script.",
+       "focus": [
+        "story",
+        "check",
+        "in2",
+        "stop",
+        "p1"
+       ]
+      },
+      {
+       "title": "Paint",
+       "text": "NumPy and OpenCV paint each drawing in ink and watercolor; a drawing that has not changed is not repainted.",
+       "focus": [
+        "drawings",
+        "paint",
+        "in3",
+        "cache",
+        "p2"
+       ]
+      },
+      {
+       "title": "Render",
+       "text": "The standard-library renderer writes static HTML for every word plus one JSON blob; a vanilla script draws the charts.",
+       "focus": [
+        "render",
+        "out",
+        "p3",
+        "p4"
+       ]
+      }
+     ]
+    },
+    {
+     "type": "lesson",
+     "title": "The rule",
+     "text": "Give the model the data and let code do the arithmetic. A figure enters the page only as a token, so every number on it traces back to a source."
+    }
+   ]
+  },
+  {
+   "id": "architecture",
+   "short": "Architecture",
+   "kicker": "Design and tech stack",
+   "title": "Everything runs on the author's machine until the author publishes",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "chronicle follows the repository's command-line layout. Pure rules with no I/O sit in `core/`. Every file read, browser call and video encode sits in `connectors/`, and the command line in `entrypoints/` wires them together. Rendering uses the Python standard library only. NumPy and OpenCV are the {{controls.runtime_deps}} the painter needs, and uv fetches them into its own cache without touching the user's Python."
+    },
+    {
+     "type": "widget",
+     "name": "tad-player",
+     "title": "The architecture, step by step",
+     "subtitle": "The plugin's own design as an animated technical architecture diagram (TAD), built by chronicle animate. Pause shows the still.",
+     "script": "widgets/tad-player.js",
+     "style": "widgets/tad-player.css",
+     "source": "repo",
+     "data": {
+      "src": "motion/chronicle-tad.svg",
+      "poster": "motion/chronicle-tad-poster.png",
+      "alt": "The story skill delegates to a read-only gatherer that turns connected tools into a facts file; Claude writes the story and drawings; chronicle build derives, checks, paints and renders on the author's machine; the page publishes as a private Artifact only after the author confirms.",
+      "note": "One SVG with no script. The same build exports a GIF and an MP4 for slides.",
+      "steps": [
+       "The author's brief starts the story skill: the audience, the point, the window and the sources.",
+       "A gatherer subagent queries connected tools read-only and writes only the facts file; raw tool output never reaches the main conversation.",
+       "Claude writes the story and draws each picture as SVG; numbers enter only as tokens that point into the facts file.",
+       "chronicle build derives every computed number, checks the story, paints each drawing and renders one page.",
+       "After a screenshot review and the author's go-ahead, the page publishes as a private Artifact.",
+       "Until that publish, every fact and file stays in a git-ignored folder on the author's machine."
+      ]
+     },
+     "fallback": "The story skill delegates to a read-only gatherer that turns connected tools into a facts file; Claude writes the story and drawings; chronicle build derives, checks, paints and renders on the author's machine; the page publishes as a private Artifact only after the author confirms."
+    },
+    {
+     "type": "table",
+     "title": "The stack, layer by layer",
+     "source": "repo",
+     "columns": [
+      "Layer",
+      "Holds",
+      "Built with",
+      "Size"
+     ],
+     "rows": [
+      [
+       "Skills and agent",
+       "The story and animation workflows, their references and the gatherer subagent",
+       "Markdown",
+       "{{code.skill_lines}}"
+      ],
+      [
+       "Story core",
+       "Facts, derive table, checks, themes, diagram sanitizer, HTML renderer",
+       "Python, standard library",
+       "{{code.story_core}}"
+      ],
+      [
+       "Watercolor painter",
+       "Paper, washes, ink, the SVG reader, motifs and presets",
+       "NumPy, OpenCV",
+       "{{code.watercolor}}"
+      ],
+      [
+       "Animation and TADs",
+       "Step clock, CSS keyframe timeline, TAD layout and line routing, GIF encoder",
+       "Python, NumPy for GIF frames",
+       "{{code.motion}}"
+      ],
+      [
+       "Page runtime",
+       "Charts, figures, plates, progress bar, explainers, quizzes",
+       "Vanilla JavaScript, no chart library",
+       "{{code.js_now}}"
+      ],
+      [
+       "Styles",
+       "Page and animation stylesheets in numbered parts",
+       "CSS, Google Fonts",
+       "{{code.css_now}}"
+      ],
+      [
+       "Connectors",
+       "Files, headless Chromium over the DevTools pipe, ffmpeg and OpenCV video",
+       "Python, local programs",
+       "{{code.connectors}}"
+      ],
+      [
+       "Command line",
+       "new, check, paint, build, shoot, motifs, animate",
+       "Python argparse",
+       "{{code.cli}}"
+      ]
+     ]
+    },
+    {
+     "type": "chart",
+     "chart": "bars",
+     "horizontal": true,
+     "title": "The painter and the animation engine hold most of the code",
+     "subtitle": "Lines of code by part of the plugin, version {{release.version|plain}}: painter, animation engine, story core, page script, styles, command line and connectors",
+     "source": "repo",
+     "data": {
+      "categories": "@code.modules",
+      "series": [
+       {
+        "name": "Lines",
+        "values": "@code.module_lines",
+        "color": "accent"
+       }
+      ]
+     },
+     "format": {
+      "y": "int"
+     }
+    },
+    {
+     "type": "prose",
+     "text": "Output is plain files. `build` writes the page, its paintings as WebP and a map of files for the Artifact tool. The Keystone example's page is {{bench.page_kb}} of HTML with {{bench.art_kb}} of paintings beside it, and it needs no server."
+    }
+   ]
+  },
+  {
+   "id": "controls",
+   "short": "Controls",
+   "kicker": "Security, privacy and cost",
+   "title": "Company data stays local and read-only until a person publishes it",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "The design assumes a page will hold company data and that text from source tools cannot be trusted. Each risk below has a control, and the strongest controls run inside the build, so a page that breaks them does not build."
+    },
+    {
+     "type": "table",
+     "title": "Risks and the controls that answer them",
+     "source": "repo",
+     "columns": [
+      "Risk",
+      "Control",
+      "Enforced by"
+     ],
+     "rows": [
+      [
+       "Raw tool output floods the model's context",
+       "The gatherer subagent reads the tools; only facts.json leaves it",
+       "Skill and agent instructions"
+      ],
+      [
+       "A number is typed from memory",
+       "Numbers enter only as tokens; computed numbers come from the derive table",
+       "`chronicle check`"
+      ],
+      [
+       "Source text carries markup or script",
+       "Every string is escaped in the HTML and the page's JSON blob; links allow only http(s) and page anchors",
+       "Renderer"
+      ],
+      [
+       "A drawing smuggles in script or outside content",
+       "Diagrams pass an allowlist sanitizer of {{controls.svg_elements}}",
+       "`chronicle check` and build"
+      ],
+      [
+       "A custom widget reaches the network or storage",
+       "{{controls.widget_bans}} are refused, from fetch to innerHTML",
+       "`chronicle check` and build"
+      ],
+      [
+       "Writes to source systems",
+       "Tools are only read; the gatherer never creates, edits or comments",
+       "Agent instructions"
+      ],
+      [
+       "Company data leaves the machine",
+       "Run folders are git-ignored; the skill asks before publishing; Artifacts are private by default",
+       "`chronicle new` and the skill"
+      ],
+      [
+       "Shell injection through file names",
+       "Chromium and ffmpeg run as argument lists with no shell, on built files only",
+       "Connectors"
+      ]
+     ]
+    },
+    {
+     "type": "stats",
+     "title": "What a run costs",
+     "subtitle": "Token figures are estimates from {{rfc.story_rfc}}. Raw tool output is not counted, because it never enters the main conversation.",
+     "items": [
+      {
+       "label": "Skill references read, tokens",
+       "value": "{{budget.references_tokens|plain}}",
+       "delta": "On demand, per run",
+       "trend": "neutral"
+      },
+      {
+       "label": "Story file written, tokens",
+       "value": "{{budget.story_tokens|plain}}",
+       "delta": "For a Keystone-sized page",
+       "trend": "neutral"
+      },
+      {
+       "label": "Build output read, lines",
+       "value": "{{budget.build_lines|plain}}",
+       "delta": "At most, per build",
+       "trend": "neutral"
+      },
+      {
+       "label": "Full build, seconds",
+       "value": "{{bench.keystone_seconds|plain}}",
+       "delta": "{{bench.keystone_plates}} painted",
+       "trend": "neutral"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "status",
+   "short": "Status",
+   "kicker": "Status and decisions",
+   "title": "Four releases in a week, and four RFCs waiting for sign-off",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "chronicle went from its first commit on {{release.first|date}} to version {{release.version|plain}} on {{release.latest|date}}: {{release.count}} across {{release.commits}}. Each release was built ahead of approval at the owner's request and recorded afterwards as an RFC, so the decisions below are still open."
+    },
+    {
+     "type": "timeline",
+     "title": "From story pages to animated architecture",
+     "today": "2026-10-27",
+     "source": "git",
+     "events": [
+      {
+       "date": "2026-10-14",
+       "kind": "launch",
+       "title": "Story pages",
+       "text": "Facts and story files, the derive table, the watercolor painter and the Keystone example."
+      },
+      {
+       "date": "2026-10-15",
+       "kind": "milestone",
+       "title": "Pages made for their subject",
+       "text": "Themes, SVG drawings painted in ink and wash, and new blocks for flows, tile maps, diagrams, quizzes, checklists and widgets."
+      },
+      {
+       "date": "2026-10-20",
+       "kind": "milestone",
+       "title": "No two pages alike",
+       "text": "A written concept for every theme, drawn route progress bars, paper surfaces, control words and a sameness review in the check."
+      },
+      {
+       "date": "2026-10-20",
+       "kind": "launch",
+       "title": "Standalone animations and TADs",
+       "text": "The animation skill: TADs, drawn diagrams and painted scenes, exported as SVG, HTML, PNG, GIF and MP4."
+      },
+      {
+       "date": "2026-10-27",
+       "kind": "milestone",
+       "title": "This overview",
+       "text": "Built with chronicle from its own repository."
+      }
+     ]
+    },
+    {
+     "type": "chart",
+     "chart": "bars",
+     "stacked": true,
+     "source": "git",
+     "title": "Python code grew {{code.growth}} from the first release to the fourth",
+     "subtitle": "Lines of code at each release, by language",
+     "data": {
+      "categories": "@releases.x",
+      "series": [
+       {
+        "name": "Python",
+        "values": "@releases.py",
+        "color": "accent"
+       },
+       {
+        "name": "JavaScript",
+        "values": "@releases.js",
+        "color": "s3"
+       },
+       {
+        "name": "CSS",
+        "values": "@releases.css",
+        "color": "legacy"
+       }
+      ]
+     },
+     "format": {
+      "y": "int"
+     }
+    },
+    {
+     "type": "table",
+     "title": "Decisions waiting for sign-off",
+     "source": "rfc",
+     "columns": [
+      "Decision",
+      "RFC",
+      "What it settles"
+     ],
+     "rows": [
+      [
+       "Approve NumPy and OpenCV as runtime packages, for painting only",
+       "RFC-0002",
+       "Without them, pages build with the paintings left out"
+      ],
+      [
+       "Let a subagent read raw tool data when its only output is a facts file",
+       "RFC-0002",
+       "Amends the Constitution's first principle: scripts compute, Claude writes"
+      ],
+      [
+       "Allow publishing to claude.ai after the user confirms",
+       "RFC-0002",
+       "Amends the third principle: local and private"
+      ],
+      [
+       "Accept Google Fonts in pages, screenshots and animation SVGs",
+       "RFC-0004, RFC-0005",
+       "The alternative embeds fonts or falls back to system faces"
+      ],
+      [
+       "Accept ffmpeg as an optional local program for MP4",
+       "RFC-0005",
+       "Without it, video exports as WebM through OpenCV"
+      ],
+      [
+       "Keep the sameness review as warnings, or fail the build",
+       "RFC-0004",
+       "Failing would block a page that copies an example's look"
+      ]
+     ]
+    },
+    {
+     "type": "prose",
+     "text": "**The ask.** Approve or amend {{rfc.story_rfc}} to {{rfc.last_rfc}}, starting with the runtime packages and the two Constitution amendments, which every later release builds on. The four RFCs list {{rfc.open_questions}} in all; the table holds the ones that change what ships.\n\nNext, from the RFCs' own lists: a browser test suite for the page script, which Python tests of the HTML and data cover today only indirectly; PDF or slide export; and turning photographs into watercolors for team pages."
+    }
+   ]
+  }
+ ]
+}

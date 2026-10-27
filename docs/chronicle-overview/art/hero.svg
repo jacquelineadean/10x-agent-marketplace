@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c9d3d6"/>
+      <stop offset="1" stop-color="#e3e6e0"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fa6c9"/>
+      <stop offset="1" stop-color="#e6d9b0"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a5f9e"/>
+      <stop offset="1" stop-color="#2c4fa3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- wall: a cool wet wash -->
+  <path d="M-20 40 C400 70 1000 30 1620 60 L1620 585 L-20 590 Z" fill="url(#wall)" fill-opacity="0.8" data-paint="wet" data-shade="0" stroke="none"/>
+
+  <!-- the finished page, taped to the wall -->
+  <g transform="rotate(-2.5 260 280)">
+    <path d="M168 96 L352 96 L352 486 L168 486 Z" fill="#000" fill-opacity="0.18" data-paint="glaze" stroke="none" transform="translate(10 10)"/>
+    <rect x="160" y="88" width="196" height="392" fill="#fbfbf7" stroke="#24272b" stroke-width="2.2" data-shade="0.1"/>
+    <path d="M176 104 L340 104" stroke="#2c4fa3" stroke-width="3" fill="none"/>
+    <circle cx="232" cy="104" r="4" fill="#2c4fa3" stroke="#24272b" stroke-width="1.4"/>
+    <rect x="176" y="118" width="164" height="96" fill="#8fb0cf" stroke="#24272b" stroke-width="1.6" data-paint="wet"/>
+    <path d="M176 186 C220 168 260 176 300 164 C318 160 330 166 340 162 L340 214 L176 214 Z" fill="#6f8f4a" stroke="none" data-paint="wet"/>
+    <path d="M182 236 L320 236" stroke="#24272b" stroke-width="5" fill="none"/>
+    <g stroke="#8a8f94" stroke-width="1.4" fill="none" data-line="pencil">
+      <path d="M182 258 L334 258 M182 272 L334 272 M182 286 L300 286 M182 384 L334 384 M182 398 L334 398 M182 412 L280 412"/>
+    </g>
+    <path d="M186 366 L186 314 M186 366 L334 366" stroke="#24272b" stroke-width="1.4" fill="none"/>
+    <rect x="200" y="342" width="22" height="24" fill="#a9740f" stroke="#24272b" stroke-width="1.4"/>
+    <rect x="236" y="330" width="22" height="36" fill="#a9740f" stroke="#24272b" stroke-width="1.4"/>
+    <rect x="272" y="318" width="22" height="48" fill="#2c4fa3" stroke="#24272b" stroke-width="1.4"/>
+    <rect x="308" y="308" width="22" height="58" fill="#2c4fa3" stroke="#24272b" stroke-width="1.4"/>
+    <path d="M150 84 L198 78 L202 100 L154 106 Z M318 78 L366 84 L362 106 L314 100 Z" fill="#e2c98a" fill-opacity="0.7" data-paint="glaze" stroke="#24272b" stroke-width="1.2"/>
+    <text x="258" y="458" font-size="17" text-anchor="middle" data-label="mono" fill="#24272b">artifact.html</text>
+  </g>
+
+  <!-- desk lamp clamped above the table, its light on the painted page -->
+  <path d="M1040 300 L760 650 L1340 660 L1150 300 Z" fill="#f6e7a8" fill-opacity="0.22" data-paint="glaze" data-wet="0.9" stroke="none"/>
+  <g stroke="#24272b" stroke-width="2.4">
+    <path d="M1620 96 L1300 150" fill="none" stroke-width="7"/>
+    <path d="M1300 150 L1150 236" fill="none" stroke-width="7"/>
+    <circle cx="1300" cy="150" r="11" fill="#3d4247"/>
+    <path d="M1170 214 L1222 264 L1130 330 C1100 312 1070 284 1060 262 Z" fill="#2e7d6b" data-shade="0.5"/>
+    <ellipse cx="1096" cy="296" rx="44" ry="18" fill="#f6e7a8" transform="rotate(-38 1096 296)"/>
+  </g>
+  <!-- the theme, pinned up as a swatch card -->
+  <g transform="rotate(2 640 230)">
+    <rect x="500" y="140" width="290" height="190" fill="#fbfbf7" stroke="#24272b" stroke-width="2.2" data-shade="0.1"/>
+    <g stroke="#24272b" stroke-width="1.6">
+      <rect x="522" y="164" width="72" height="72" fill="#2c4fa3"/>
+      <rect x="608" y="164" width="72" height="72" fill="#a9740f"/>
+      <rect x="694" y="164" width="72" height="72" fill="#2e7d6b"/>
+      <rect x="522" y="246" width="44" height="34" fill="#b24a6e"/>
+      <rect x="576" y="246" width="44" height="34" fill="#3f8ab8"/>
+      <rect x="630" y="246" width="44" height="34" fill="#62802c"/>
+      <rect x="684" y="246" width="44" height="34" fill="#f1f3ef"/>
+    </g>
+    <path d="M620 130 L664 128 L666 152 L622 154 Z" fill="#e2c98a" fill-opacity="0.7" data-paint="glaze" stroke="#24272b" stroke-width="1.2"/>
+    <text x="522" y="314" font-size="17" data-label="mono" fill="#24272b">theme.palette</text>
+  </g>
+  <g transform="translate(0 -70)">
+  <!-- jar of water with two brushes, back right -->
+  <g>
+    <path d="M1338 330 L1352 330 L1384 600 L1370 600 Z" fill="#b24a6e" stroke="#24272b" stroke-width="2"/>
+    <path d="M1446 300 L1460 300 L1418 600 L1404 600 Z" fill="#2e7d6b" stroke="#24272b" stroke-width="2"/>
+    <path d="M1334 316 C1340 296 1350 296 1356 316 Z" fill="#6d5236" stroke="#24272b" stroke-width="1.6"/>
+    <path d="M1444 286 C1452 266 1462 268 1462 288 Z" fill="#6d5236" stroke="#24272b" stroke-width="1.6"/>
+    <path d="M1318 440 L1488 440 L1480 612 C1440 626 1366 626 1326 612 Z" fill="#cfe0e6" fill-opacity="0.45" data-paint="glaze" stroke="#24272b" stroke-width="2.4"/>
+    <path d="M1322 520 L1484 520 L1480 612 C1440 626 1366 626 1326 612 Z" fill="#6b8fb8" fill-opacity="0.55" data-paint="glaze" stroke="none"/>
+    <ellipse cx="1403" cy="440" rx="85" ry="12" fill="none" stroke="#24272b" stroke-width="2.2"/>
+    <path d="M1338 470 L1342 590" stroke="#ffffff" stroke-width="6" fill="none" data-line="lift"/>
+  </g>
+
+  <!-- table top -->
+  <path d="M-20 586 L1620 576 L1620 1000 L-20 1000 Z" fill="#d6c4a2" stroke="#24272b" stroke-width="2.4" data-shade="0.25"/>
+
+  <!-- cutting mat with its grid -->
+  <path d="M84 594 L1532 586 L1556 904 L44 912 Z" fill="#8fb3a0" stroke="#24272b" stroke-width="2.2" data-shade="0.2"/>
+  <path d="M78 610 L1527 610 M75 644 L1529 644 M71 678 L1532 678 M68 712 L1535 712 M65 746 L1538 746 M62 780 L1540 780 M58 814 L1543 814 M55 848 L1546 848 M52 882 L1549 882 M110 596 L60 900 M156 596 L108 900 M202 596 L156 900 M248 596 L204 900 M294 596 L252 900 M340 596 L300 900 M386 596 L347 900 M432 596 L395 900 M478 596 L443 900 M524 596 L491 900 M570 596 L539 900 M616 596 L587 900 M662 596 L634 900 M708 596 L682 900 M754 596 L730 900 M800 596 L778 900 M846 596 L826 900 M892 596 L874 900 M938 596 L922 900 M984 596 L969 900 M1030 596 L1017 900 M1076 596 L1065 900 M1122 596 L1113 900 M1168 596 L1161 900 M1214 596 L1209 900 M1260 596 L1256 900 M1306 596 L1304 900 M1352 596 L1352 900 M1398 596 L1400 900 M1444 596 L1448 900 M1490 596 L1496 900" stroke="#4f6e5d" stroke-width="1.2" fill="none" data-line="pencil"/>
+
+  <!-- cast shadows -->
+  <path d="M262 852 L1300 852 L1360 828 L1290 816 L300 828 Z" fill="#3c4a44" fill-opacity="0.38" data-paint="glaze" data-wet="0.7" stroke="none"/>
+  <path d="M1170 786 L1540 786 L1590 742 L1560 740 Z" fill="#3c4a44" fill-opacity="0.38" data-paint="glaze" data-wet="0.7" stroke="none"/>
+  <path d="M1326 614 C1360 634 1470 634 1500 612 L1520 600 L1340 604 Z" fill="#3c4a44" fill-opacity="0.3" data-paint="glaze" data-wet="0.8" stroke="none"/>
+
+  <!-- the open sketchbook -->
+  <path d="M276 592 L792 602 L792 848 L250 840 Z" fill="#f7f6f0" stroke="#24272b" stroke-width="2.4" data-shade="0.15"/>
+  <path d="M792 602 L1306 590 L1334 836 L792 848 Z" fill="#f7f6f0" stroke="#24272b" stroke-width="2.4" data-shade="0.15"/>
+  <path d="M792 602 L792 848" stroke="#24272b" stroke-width="2.6" fill="none"/>
+  <path d="M760 604 C780 640 784 800 772 846 L792 848 L792 602 Z" fill="#9aa3a6" fill-opacity="0.35" data-paint="glaze" stroke="none"/>
+  <path d="M250 840 L792 848 L1334 836 L1334 846 L792 860 L248 852 Z" fill="#e2ddd0" stroke="#24272b" stroke-width="1.8"/>
+
+  <!-- left page: the drawing in pencil -->
+  <g transform="translate(318 618)" fill="none" stroke="#5b6066" stroke-width="1.8" data-line="pencil" data-paint="none">
+    <path d="M0 0 L432 0 L432 196 L0 196 Z"/>
+    <path d="M0 150 L432 150"/>
+    <path d="M190 196 C200 160 232 132 270 126 C320 118 380 120 432 112"/>
+    <path d="M312 122 L322 44 L346 44 L356 120"/>
+    <path d="M316 92 L352 92 M319 68 L349 68"/>
+    <path d="M314 44 L354 44 L354 36 L314 36 Z"/>
+    <path d="M321 36 L321 18 L347 18 L347 36"/>
+    <path d="M318 18 L334 4 L350 18"/>
+    <path d="M321 26 L140 0 M321 30 L140 56"/>
+    <path d="M60 40 L70 34 L80 40 M96 58 L104 52 L112 58"/>
+    <path d="M20 168 C60 164 100 172 150 166 M40 184 C90 180 130 186 170 182"/>
+  </g>
+
+  <!-- right page: the same drawing, painted -->
+  <g transform="translate(834 612)">
+    <rect x="0" y="0" width="432" height="150" fill="url(#sky)" stroke="none" data-paint="wet" data-shade="0"/>
+    <path d="M321 26 L120 -2 L120 58 Z" fill="#fffaf0" data-paint="reserve" stroke="none"/>
+    <path d="M0 150 L432 150 L432 200 L0 200 Z" fill="url(#sea)" stroke="#24272b" stroke-width="1.6" data-shade="0.2"/>
+    <path d="M190 200 C200 160 232 132 270 126 C320 118 380 120 432 112 L432 200 Z" fill="#6a8a3c" stroke="#24272b" stroke-width="2" data-shade="0.45"/>
+    <path d="M232 198 C246 170 268 156 300 150 L330 152 C300 166 276 180 262 198 Z" fill="#a9740f" fill-opacity="0.6" data-paint="glaze" stroke="none"/>
+    <path d="M312 122 L322 44 L346 44 L356 120 Z" fill="#f4f1ea" stroke="#24272b" stroke-width="2.2" data-shade="0.5"/>
+    <path d="M315 98 L353 98 L351 86 L317 86 Z M318 74 L350 74 L349 62 L319 62 Z" fill="#b24a6e" stroke="#24272b" stroke-width="1.4"/>
+    <path d="M314 44 L354 44 L354 36 L314 36 Z" fill="#3d4247" stroke="#24272b" stroke-width="1.6"/>
+    <path d="M321 36 L321 18 L347 18 L347 36 Z" fill="#f2c94c" stroke="#24272b" stroke-width="1.8"/>
+    <path d="M318 18 L334 4 L350 18 Z" fill="#b24a6e" stroke="#24272b" stroke-width="1.8"/>
+    <path d="M60 40 L70 34 L80 40 M96 58 L104 52 L112 58" stroke="#24272b" stroke-width="1.6" fill="none"/>
+    <path d="M20 168 C60 164 100 172 150 166 M40 184 C90 180 130 186 170 182" stroke="#e8eef5" stroke-width="2" fill="none" data-line="lift"/>
+  </g>
+
+  <text x="530" y="838" font-size="22" text-anchor="middle" data-label="hand" fill="#4a4f55">drawn as SVG</text>
+  <text x="1050" y="836" font-size="22" text-anchor="middle" data-label="hand" fill="#2c4fa3">painted in code</text>
+
+  <!-- the check stamp lands on the painted page -->
+  <g data-layer="stamp" data-motion="pop">
+    <circle cx="1236" cy="790" r="30" fill="none" stroke="#b24a6e" stroke-width="3.2"/>
+    <path d="M1220 790 L1232 802 L1254 776" fill="none" stroke="#b24a6e" stroke-width="4"/>
+  </g>
+
+  <!-- index cards: the facts file -->
+  <g transform="rotate(-7 220 800)">
+    <path d="M86 712 L346 712 L346 880 L86 880 Z" fill="#3c4a44" fill-opacity="0.3" data-paint="glaze" stroke="none" transform="translate(14 12)"/>
+    <rect x="92" y="722" width="250" height="152" fill="#efe9da" stroke="#24272b" stroke-width="2"/>
+    <rect x="86" y="714" width="250" height="152" fill="#f6f2e6" stroke="#24272b" stroke-width="2"/>
+    <rect x="80" y="706" width="250" height="152" fill="#fdfcf7" stroke="#24272b" stroke-width="2.2" data-shade="0.1"/>
+    <path d="M80 740 L330 740" stroke="#b24a6e" stroke-width="1.6" fill="none"/>
+    <g stroke="#7fa6c9" stroke-width="1.2" fill="none" data-line="pencil">
+      <path d="M80 772 L330 772 M80 802 L330 802 M80 832 L330 832"/>
+    </g>
+    <path d="M246 700 L302 700 L306 724 L242 724 Z" fill="#2b2f33" stroke="#24272b" stroke-width="1.8"/>
+    <path d="M254 700 C254 680 294 680 294 700" fill="none" stroke="#6f767c" stroke-width="2.4"/>
+    <text x="96" y="732" font-size="17" data-label="mono" fill="#24272b">facts.json</text>
+    <text x="96" y="766" font-size="16" data-label="mono" fill="#4a4f55">tests.passed</text>
+    <text x="96" y="796" font-size="22" data-label="hand" fill="#2c4fa3">{{tests.passed}}</text>
+    <text x="96" y="826" font-size="15" data-label="mono" fill="#4a4f55">source: pytest</text>
+  </g>
+
+  <!-- pencil resting on the left page -->
+  <g>
+    <path d="M430 812 L700 770 L706 784 L436 826 Z" fill="#e0b43c" stroke="#24272b" stroke-width="2" data-shade="0.35"/>
+    <path d="M700 770 L740 774 L706 784 Z" fill="#e8d2a8" stroke="#24272b" stroke-width="1.6"/>
+    <path d="M728 773 L740 774 L731 777 Z" fill="#3d4247" stroke="none"/>
+    <path d="M416 814 L430 812 L436 826 L422 828 Z" fill="#c9cdd0" stroke="#24272b" stroke-width="1.6"/>
+    <path d="M400 816 L416 814 L422 828 L406 830 Z" fill="#d98aa0" stroke="#24272b" stroke-width="1.6"/>
+  </g>
+
+  <!-- the open paint tin -->
+  <g>
+    <path d="M1240 690 L1556 684 L1584 556 L1262 562 Z" fill="#f4f3ee" stroke="#24272b" stroke-width="2.2" data-shade="0.2"/>
+    <path d="M1290 610 C1320 596 1360 604 1380 620 C1360 634 1310 632 1290 610 Z" fill="#2c4fa3" fill-opacity="0.6" data-paint="glaze" stroke="none"/>
+    <path d="M1420 600 C1450 590 1490 596 1500 612 C1478 626 1436 622 1420 600 Z" fill="#a9740f" fill-opacity="0.55" data-paint="glaze" stroke="none"/>
+    <path d="M1182 730 L1520 726 L1520 778 L1182 782 Z" fill="#2b2f33" stroke="#24272b" stroke-width="2.4" data-shade="0.4"/>
+    <path d="M1182 730 L1240 690 L1556 684 L1520 726 Z" fill="#3d4247" stroke="#24272b" stroke-width="2.2"/>
+    <path d="M1520 726 L1556 684 L1556 736 L1520 778 Z" fill="#1f2326" stroke="#24272b" stroke-width="2.2"/>
+    <g stroke="#24272b" stroke-width="1.4">
+      <path d="M1218 720 L1286 719 L1296 710 L1228 711 Z" fill="#2c4fa3"/>
+      <path d="M1296 718 L1364 717 L1374 708 L1306 709 Z" fill="#3f8ab8"/>
+      <path d="M1374 716 L1442 715 L1452 706 L1384 707 Z" fill="#2e7d6b"/>
+      <path d="M1452 714 L1508 713 L1518 704 L1462 705 Z" fill="#62802c"/>
+      <path d="M1236 706 L1304 705 L1314 696 L1246 697 Z" fill="#f2c94c"/>
+      <path d="M1314 704 L1382 703 L1392 694 L1324 695 Z" fill="#a9740f"/>
+      <path d="M1392 702 L1460 701 L1470 692 L1402 693 Z" fill="#9c4a2c"/>
+      <path d="M1470 700 L1526 699 L1536 690 L1480 691 Z" fill="#b24a6e"/>
+    </g>
+  </g>
+
+  <!-- the brush, its tip wet with ultramarine on the painted page -->
+  <g>
+    <path d="M1476 868 L1258 806 L1262 794 L1482 856 Z" fill="#9c4a2c" stroke="#24272b" stroke-width="2" data-shade="0.4"/>
+    <path d="M1258 806 L1218 794 L1222 782 L1262 794 Z" fill="#c9cdd0" stroke="#24272b" stroke-width="1.8" data-shade="0.3"/>
+    <path d="M1218 794 C1196 790 1176 784 1160 776 C1180 776 1200 778 1222 782 Z" fill="#2c4fa3" stroke="#24272b" stroke-width="1.8"/>
+    <path d="M1150 790 C1170 800 1196 804 1212 800" stroke="#2c4fa3" stroke-width="5" fill="none" data-line="ink"/>
+  </g>
+  </g>
+</svg>

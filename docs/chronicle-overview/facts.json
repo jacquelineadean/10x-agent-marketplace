@@ -1,0 +1,404 @@
+{
+  "release": {
+    "as_of": {
+      "value": "2026-10-27",
+      "source": "repo",
+      "note": "Day this overview was gathered from the repository"
+    },
+    "version": {
+      "value": "0.4.0",
+      "source": "repo",
+      "note": "Version in plugins/chronicle/.claude-plugin/plugin.json"
+    },
+    "first": {
+      "value": "2026-10-14",
+      "source": "git",
+      "note": "First chronicle commit, version 0.1"
+    },
+    "v02": {
+      "value": "2026-10-15",
+      "source": "git",
+      "note": "Commit 93e269b, chronicle 0.2.0"
+    },
+    "v03": {
+      "value": "2026-10-20",
+      "source": "git",
+      "note": "Commit 1802433, chronicle 0.3.0"
+    },
+    "latest": {
+      "value": "2026-10-20",
+      "source": "git",
+      "note": "Commit 1765482, chronicle 0.4.0"
+    },
+    "count": {
+      "value": 4,
+      "unit": "releases",
+      "source": "git",
+      "note": "Versions 0.1 to 0.4 in the git history"
+    },
+    "commits": {
+      "value": 10,
+      "unit": "commits",
+      "source": "git",
+      "note": "Commits touching plugins/chronicle, merges included"
+    }
+  },
+  "releases": {
+    "x": [
+      "0.1",
+      "0.2",
+      "0.3",
+      "0.4"
+    ],
+    "py": [
+      4515,
+      7094,
+      7500,
+      12034
+    ],
+    "js": [
+      1352,
+      2088,
+      2134,
+      2134
+    ],
+    "css": [
+      512,
+      852,
+      857,
+      949
+    ],
+    "tests": [
+      34,
+      57,
+      69,
+      103
+    ]
+  },
+  "code": {
+    "modules": [
+      "Painter",
+      "Motion",
+      "Story",
+      "Page JS",
+      "CSS",
+      "CLI",
+      "I/O"
+    ],
+    "module_lines": [
+      4046,
+      3813,
+      2904,
+      2134,
+      949,
+      738,
+      525
+    ],
+    "story_core": {
+      "value": 2904,
+      "unit": "lines",
+      "source": "repo",
+      "note": "Python in src/chronicle/core/story"
+    },
+    "watercolor": {
+      "value": 4046,
+      "unit": "lines",
+      "source": "repo",
+      "note": "Python in src/chronicle/core/watercolor"
+    },
+    "motion": {
+      "value": 3813,
+      "unit": "lines",
+      "source": "repo",
+      "note": "Python in src/chronicle/core/motion, TAD package included"
+    },
+    "tad": {
+      "value": 1706,
+      "unit": "lines",
+      "source": "repo",
+      "note": "Python in src/chronicle/core/motion/tad"
+    },
+    "connectors": {
+      "value": 525,
+      "unit": "lines",
+      "source": "repo",
+      "note": "Python in src/chronicle/connectors (files, browser, video)"
+    },
+    "cli": {
+      "value": 738,
+      "unit": "lines",
+      "source": "repo",
+      "note": "Python in src/chronicle/entrypoints/cli"
+    },
+    "js_now": {
+      "value": 2134,
+      "unit": "lines",
+      "source": "repo",
+      "note": "Vanilla JavaScript page runtime, 8 parts in assets/js"
+    },
+    "css_now": {
+      "value": 949,
+      "unit": "lines",
+      "source": "repo",
+      "note": "Page stylesheet (5 parts) and animation stylesheet (4 parts)"
+    },
+    "skill_lines": {
+      "value": 1627,
+      "unit": "lines",
+      "source": "repo",
+      "note": "Markdown in the 2 skills, their 12 references and the gatherer agent"
+    }
+  },
+  "tests": {
+    "passed": {
+      "value": 172,
+      "unit": "tests",
+      "source": "tests",
+      "note": "uv run pytest plugins/chronicle/tests: 172 passed, 0 failed"
+    },
+    "seconds": {
+      "value": 31,
+      "unit": "seconds",
+      "source": "tests",
+      "note": "Wall time of that pytest run"
+    },
+    "files": {
+      "value": 14,
+      "unit": "test files",
+      "source": "repo",
+      "note": "test_*.py modules in plugins/chronicle/tests"
+    },
+    "gates": {
+      "value": 4,
+      "unit": "gates",
+      "source": "repo",
+      "note": "ruff format, ruff check, mypy strict, pytest (AGENTS.md)"
+    }
+  },
+  "features": {
+    "blocks": {
+      "value": 21,
+      "unit": "block types",
+      "source": "repo",
+      "note": "Renderers in core/story/dispatch.py"
+    },
+    "charts": {
+      "value": 9,
+      "unit": "chart kinds",
+      "source": "repo",
+      "note": "CHARTS in core/story/model.py, from line to waffle"
+    },
+    "derive_fns": {
+      "value": 14,
+      "unit": "functions",
+      "source": "repo",
+      "note": "FUNCTIONS in core/story/derive.py"
+    },
+    "progress": {
+      "value": 7,
+      "unit": "devices",
+      "source": "repo",
+      "note": "Progress bar kinds in core/story/theme.py"
+    },
+    "fonts": {
+      "value": 60,
+      "unit": "families",
+      "source": "repo",
+      "note": "Google Fonts families a theme may pick, assets/fonts.json"
+    },
+    "tad_icons": {
+      "value": 23,
+      "unit": "icons",
+      "source": "repo",
+      "note": "Node kinds a TAD can draw, core/motion/tad/icons.py"
+    },
+    "anim_kinds": {
+      "value": 3,
+      "unit": "kinds",
+      "source": "repo",
+      "note": "tad, diagram and scene"
+    },
+    "exports": {
+      "value": 6,
+      "unit": "formats",
+      "source": "repo",
+      "note": "SVG, HTML, PNG, GIF, MP4 and WebM from animate build"
+    },
+    "examples": {
+      "value": 6,
+      "unit": "examples",
+      "source": "repo",
+      "note": "3 story pages and 3 animations, all with invented data"
+    },
+    "connectors": {
+      "value": 5,
+      "unit": "tools",
+      "source": "repo",
+      "note": "GitHub, Jira, Confluence, Datadog, PagerDuty (references/sources.md)"
+    }
+  },
+  "controls": {
+    "svg_elements": {
+      "value": 19,
+      "unit": "elements",
+      "source": "repo",
+      "note": "SVG elements the diagram sanitizer lets through, core/story/diagram.py"
+    },
+    "widget_bans": {
+      "value": 18,
+      "unit": "patterns",
+      "source": "repo",
+      "note": "Calls a widget script may not contain, FORBIDDEN in core/story/model.py"
+    },
+    "runtime_deps": {
+      "value": 2,
+      "unit": "packages",
+      "source": "repo",
+      "note": "numpy and opencv-python-headless, fetched by uv for painting only"
+    }
+  },
+  "bench": {
+    "keystone_seconds": {
+      "value": 8.5,
+      "unit": "seconds",
+      "source": "bench",
+      "note": "Full Keystone build: check, paint every plate, render"
+    },
+    "keystone_plates": {
+      "value": 9,
+      "unit": "paintings",
+      "source": "bench",
+      "note": "Plates and spot paintings painted in that build"
+    },
+    "page_kb": {
+      "value": 289,
+      "unit": "KB",
+      "source": "bench",
+      "note": "Keystone artifact.html: all text, styles, script and data"
+    },
+    "art_kb": {
+      "value": 548,
+      "unit": "KB",
+      "source": "bench",
+      "note": "Keystone art folder: 13 WebP files"
+    }
+  },
+  "budget": {
+    "references_tokens": {
+      "value": 6000,
+      "unit": "tokens",
+      "source": "rfc",
+      "note": "Skill references read on demand, estimate in RFC-0002 section 4.7"
+    },
+    "story_tokens": {
+      "value": 9000,
+      "unit": "tokens",
+      "source": "rfc",
+      "note": "Writing a Keystone-sized story file, estimate in RFC-0002"
+    },
+    "build_lines": {
+      "value": 20,
+      "unit": "lines",
+      "source": "rfc",
+      "note": "Upper bound on build output Claude reads, RFC-0002"
+    }
+  },
+  "evidence": {
+    "hand_css": {
+      "value": 335,
+      "unit": "lines",
+      "source": "rfc",
+      "note": "Hand-written CSS in the golf handbook before 0.3 (RFC-0004)"
+    },
+    "hand_js": {
+      "value": 700,
+      "unit": "lines",
+      "source": "rfc",
+      "note": "Hand-written script in the same handbook, about (RFC-0004)"
+    },
+    "podcast_figures": {
+      "value": 20,
+      "unit": "custom figures",
+      "source": "rfc",
+      "note": "Figures in a podcast guide written by hand outside chronicle, over (RFC-0004)"
+    }
+  },
+  "rfc": {
+    "count": {
+      "value": 4,
+      "unit": "RFCs",
+      "source": "rfc",
+      "note": "RFC-0002 to RFC-0005, every one in draft"
+    },
+    "open_questions": {
+      "value": 13,
+      "unit": "questions",
+      "source": "rfc",
+      "note": "Open questions listed across RFC-0002 to RFC-0005"
+    },
+    "story_rfc": {
+      "value": "RFC-0002",
+      "source": "rfc",
+      "note": "chronicle plugin: illustrated, interactive story pages"
+    },
+    "last_rfc": {
+      "value": "RFC-0005",
+      "source": "rfc",
+      "note": "chronicle 0.4: standalone animations and animated TADs"
+    }
+  },
+  "derive": {
+    "code.py_first": {
+      "fn": "min",
+      "of": "releases.py",
+      "unit": "lines",
+      "source": "git",
+      "note": "Python lines at 0.1"
+    },
+    "code.py_now": {
+      "fn": "last",
+      "of": "releases.py",
+      "unit": "lines",
+      "source": "repo",
+      "note": "Python lines in plugins/chronicle/src at 0.4"
+    },
+    "code.growth": {
+      "fn": "ratio",
+      "of": "code.py_now",
+      "to": "code.py_first",
+      "unit": "x",
+      "source": "git",
+      "note": "Python lines at 0.4 over 0.1"
+    },
+    "tests.functions": {
+      "fn": "last",
+      "of": "releases.tests",
+      "unit": "test functions",
+      "source": "repo",
+      "note": "def test_ in plugins/chronicle/tests at 0.4"
+    },
+    "tests.functions_first": {
+      "fn": "min",
+      "of": "releases.tests",
+      "unit": "test functions",
+      "source": "git",
+      "note": "def test_ at 0.1"
+    },
+    "release.days": {
+      "fn": "days_between",
+      "from": "release.first",
+      "to": "release.latest",
+      "unit": "days",
+      "source": "git",
+      "note": "From the first commit to 0.4.0"
+    },
+    "release.age_days": {
+      "fn": "days_between",
+      "from": "release.first",
+      "to": "release.as_of",
+      "unit": "days",
+      "source": "git",
+      "note": "From the first commit to this overview"
+    }
+  }
+}

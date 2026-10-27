@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "kind": "tad",
+  "facts_file": "../facts.json",
+  "meta": {
+    "title": "How chronicle builds a page",
+    "kicker": "Architecture walkthrough",
+    "description": "The story skill delegates to a read-only gatherer that turns connected tools into a facts file; Claude writes the story and drawings; chronicle build derives, checks, paints and renders on the author's machine; the page publishes as a private Artifact only after the author confirms.",
+    "credit": "chronicle {{release.version}}",
+    "sources": [
+      {
+        "label": "ARCHITECTURE.md and the chronicle README",
+        "detail": "10x-agent-marketplace, Oct 2026"
+      }
+    ]
+  },
+  "theme": {
+    "concept": "A painter's drafting table: graphite ink on cool cold-pressed paper, ultramarine for the work chronicle does, yellow ochre for the old manual path, from the plugin's own pipeline where pencil SVG becomes watercolor.",
+    "palette": {
+      "paper": "#F1F3EF",
+      "ink": "#202428",
+      "accent": "#2C4FA3",
+      "legacy": "#A9740F",
+      "series": [
+        "#2C4FA3",
+        "#A9740F",
+        "#2E7D6B",
+        "#B24A6E",
+        "#3F8AB8",
+        "#62802C"
+      ]
+    },
+    "fonts": {
+      "display": "Bodoni Moda",
+      "body": "Spectral",
+      "ui": "Archivo",
+      "mono": "JetBrains Mono"
+    }
+  },
+  "frame": {
+    "size": "16:9"
+  },
+  "timing": {
+    "pace": 1.1,
+    "hold": 3.0
+  },
+  "tad": {
+    "direction": "right",
+    "groups": [
+      {
+        "id": "machine",
+        "label": "The author's machine",
+        "style": "zone"
+      },
+      {
+        "id": "session",
+        "label": "Claude Code",
+        "style": "cluster",
+        "parent": "machine"
+      },
+      {
+        "id": "run",
+        "label": "Run folder, git-ignored",
+        "style": "boundary",
+        "parent": "machine"
+      },
+      {
+        "id": "builder",
+        "label": "chronicle build (Python)",
+        "style": "cluster",
+        "parent": "machine"
+      },
+      {
+        "id": "vendors",
+        "label": "Connected tools",
+        "style": "external"
+      },
+      {
+        "id": "cloud",
+        "label": "claude.ai",
+        "style": "external"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "skill",
+        "label": "Story skill",
+        "kind": "model",
+        "tech": "Claude",
+        "group": "session",
+        "tier": 0,
+        "lane": 0
+      },
+      {
+        "id": "gatherer",
+        "label": "Gatherer",
+        "kind": "model",
+        "tech": "subagent",
+        "group": "session",
+        "tier": 0,
+        "lane": 1
+      },
+      {
+        "id": "tools",
+        "label": "GitHub, Jira",
+        "kind": "external",
+        "tech": "MCP, read-only",
+        "group": "vendors",
+        "tier": 1,
+        "lane": 3
+      },
+      {
+        "id": "facts",
+        "label": "Facts file",
+        "kind": "storage",
+        "tech": "facts.json",
+        "group": "run",
+        "tier": 1,
+        "lane": 1
+      },
+      {
+        "id": "story",
+        "label": "Story, drawings",
+        "kind": "storage",
+        "tech": "story.json, SVG",
+        "group": "run",
+        "tier": 1,
+        "lane": 0
+      },
+      {
+        "id": "derive",
+        "label": "Derive, check",
+        "kind": "service",
+        "tech": "stdlib",
+        "group": "builder",
+        "lane": 0
+      },
+      {
+        "id": "paint",
+        "label": "Painter",
+        "kind": "function",
+        "tech": "NumPy, OpenCV",
+        "group": "builder",
+        "lane": 0
+      },
+      {
+        "id": "render",
+        "label": "Renderer",
+        "kind": "service",
+        "tech": "stdlib, vanilla JS",
+        "group": "builder",
+        "lane": 0
+      },
+      {
+        "id": "artifact",
+        "label": "Private Artifact",
+        "kind": "cdn",
+        "tech": "claude.ai",
+        "group": "cloud",
+        "lane": 0
+      }
+    ],
+    "edges": [
+      {
+        "from": "skill",
+        "to": "gatherer",
+        "label": "delegate"
+      },
+      {
+        "from": "gatherer",
+        "to": "tools",
+        "label": "read-only"
+      },
+      {
+        "from": "gatherer",
+        "to": "facts",
+        "label": "writes"
+      },
+      {
+        "from": "skill",
+        "to": "story",
+        "label": "writes, draws"
+      },
+      {
+        "from": "facts",
+        "to": "derive"
+      },
+      {
+        "from": "story",
+        "to": "derive"
+      },
+      {
+        "from": "derive",
+        "to": "paint"
+      },
+      {
+        "from": "paint",
+        "to": "render",
+        "label": "WebP"
+      },
+      {
+        "from": "render",
+        "to": "artifact",
+        "label": "after you confirm"
+      }
+    ],
+    "flows": [
+      {
+        "id": "gather",
+        "label": "The gatherer reads tools and writes only facts",
+        "path": [
+          "gatherer",
+          "tools",
+          "gatherer",
+          "facts"
+        ],
+        "tone": "s3"
+      },
+      {
+        "id": "write",
+        "label": "Claude writes the story",
+        "path": [
+          "skill",
+          "story"
+        ]
+      },
+      {
+        "id": "build",
+        "label": "chronicle build",
+        "path": [
+          "facts",
+          "derive",
+          "paint",
+          "render"
+        ]
+      },
+      {
+        "id": "publish",
+        "label": "Publish",
+        "path": [
+          "render",
+          "artifact"
+        ]
+      }
+    ]
+  },
+  "steps": [
+    {
+      "caption": "The author's brief starts the story skill: the audience, the point, the window and the sources.",
+      "show": [
+        "skill"
+      ],
+      "pulse": [
+        "skill"
+      ]
+    },
+    {
+      "caption": "A gatherer subagent queries connected tools read-only and writes only the facts file; raw tool output never reaches the main conversation.",
+      "show": [
+        "gatherer",
+        "tools",
+        "facts"
+      ],
+      "flow": [
+        "gather"
+      ]
+    },
+    {
+      "caption": "Claude writes the story and draws each picture as SVG; numbers enter only as tokens that point into the facts file.",
+      "show": [
+        "story"
+      ],
+      "flow": [
+        "write"
+      ]
+    },
+    {
+      "caption": "chronicle build derives every computed number, checks the story, paints each drawing and renders one page.",
+      "show": [
+        "derive",
+        "paint",
+        "render"
+      ],
+      "flow": [
+        "build"
+      ]
+    },
+    {
+      "caption": "After a screenshot review and the author's go-ahead, the page publishes as a private Artifact.",
+      "show": [
+        "artifact"
+      ],
+      "flow": [
+        "publish"
+      ],
+      "state": {
+        "artifact": "new"
+      }
+    },
+    {
+      "caption": "Until that publish, every fact and file stays in a git-ignored folder on the author's machine.",
+      "focus": [
+        "run",
+        "builder",
+        "session"
+      ],
+      "pulse": [
+        "facts",
+        "story"
+      ]
+    }
+  ]
+}
