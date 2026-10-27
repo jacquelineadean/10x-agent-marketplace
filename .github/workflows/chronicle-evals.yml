@@ -1,0 +1,134 @@
+# Runs the chronicle plugin's eval suite (plugins/chronicle/evals) with `claude plugin eval`
+# and fails the job when any case scores below THRESHOLD.
+#
+# Pull requests run the smoke cases (about $1 a run). The full suite, with the no-plugin
+# baseline, runs every Monday, from the Actions tab, and on a pull request labelled
+# full-evals (about $25 a run).
+#
+# Needs an ANTHROPIC_API_KEY repository secret.
+name: chronicle evals
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    paths:
+      - "plugins/chronicle/**"
+      - ".github/workflows/chronicle-evals.yml"
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "smoke (no baseline) or full (every case, with the no-plugin baseline)"
+        type: choice
+        options: [full, smoke]
+        default: full
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chronicle-evals-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Pinned so a model or CLI release is never read as a plugin regression.
+  CLAUDE_CODE_VERSION: "2.1.311"
+  # Not EVAL_*: the eval passes EVAL_* variables into every run.
+  AGENT_MODEL: claude-sonnet-5-5
+  JUDGE_MODEL: claude-haiku-5-5
+  THRESHOLD: "0.8"
+
+jobs:
+  evals:
+    # A labelled event re-runs the job only when the label is full-evals.
+    if: github.event.action != 'labeled' || github.event.label.name == 'full-evals'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pick the suite
+        id: suite
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_SUITE: ${{ inputs.suite }}
+          FULL_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'full-evals') }}
+        run: |
+          suite=full
+          if [ "$EVENT" = pull_request ] && [ "$FULL_LABEL" != true ]; then suite=smoke; fi
+          if [ "$EVENT" = workflow_dispatch ]; then suite="$INPUT_SUITE"; fi
+          if [ "$suite" = smoke ]; then
+            echo "args=--tag smoke --ablation none --max-cost-usd 5" >> "$GITHUB_OUTPUT"
+          else
+            echo "args=--ablation with-without --max-cost-usd 60" >> "$GITHUB_OUTPUT"
+          fi
+          echo "name=$suite" >> "$GITHUB_OUTPUT"
+
+      - name: Check the API key
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::error::Add an ANTHROPIC_API_KEY repository secret to run the chronicle evals."
+            exit 1
+          fi
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Install the sandbox, painting packages and Claude Code
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q bubblewrap socat
+          # Ubuntu 24.04 blocks the unprivileged user namespaces bubblewrap needs.
+          if [ -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns ]; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
+          # Eval runs cannot fetch packages, so the launcher uses a python3 that has them.
+          sudo "$(command -v uv)" pip install -q --system --break-system-packages \
+            --python /usr/bin/python3 "numpy>=2.0" "opencv-python-headless>=4.10"
+          npm install -g "@anthropic-ai/claude-code@$CLAUDE_CODE_VERSION"
+          claude --version
+
+      - name: Run the evals
+        env:
+          SUITE_ARGS: ${{ steps.suite.outputs.args }}
+        run: |
+          # The eval sandbox denies writes under /tmp, and each run's workspace is made in TMPDIR.
+          export TMPDIR=/mnt/claude-eval
+          sudo install -d -o "$(id -u)" -g "$(id -g)" "$TMPDIR"
+          read -r -a suite_args <<< "$SUITE_ARGS"
+          set +e
+          claude plugin eval plugins/chronicle "${suite_args[@]}" \
+            --trust-plugin --scaffold \
+            --allow-tools Bash Write Edit \
+            --model "$AGENT_MODEL" --judge-model "$JUDGE_MODEL" \
+            --threshold "$THRESHOLD" -j 4 --no-publish \
+            --json "$RUNNER_TEMP/results.json" \
+            --report "$RUNNER_TEMP/report.html"
+          code=$?
+          echo "code=$code" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Write the score table
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/results.json" ]; then
+            python3 .github/scripts/eval_summary.py "$RUNNER_TEMP/results.json" "$THRESHOLD" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chronicle-evals-${{ steps.suite.outputs.name }}
+          path: |
+            ${{ runner.temp }}/results.json
+            ${{ runner.temp }}/report.html
+          if-no-files-found: ignore
+
+      - name: Gate on the score
+        run: |
+          if [ "${code:-1}" != 0 ]; then
+            echo "::error::claude plugin eval exited $code: a case scored below $THRESHOLD, a case failed to load, or a run hit an API error or the cost ceiling."
+            exit 1
+          fi

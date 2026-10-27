@@ -22,6 +22,7 @@ uv run mypy plugins/chronicle/src/chronicle
 uv run mypy plugins/speedup/src/speedup
 claude plugin validate .                   # marketplace and plugin manifests
 claude --plugin-dir plugins/impact-review  # try one plugin in a session
+TMPDIR=~/chronicle-eval-tmp claude plugin eval plugins/chronicle --scaffold --allow-tools Bash Write Edit --tag smoke --ablation none  # chronicle evals: paid model calls, see its README
 ```
 All four checks must pass before "done"; `groundwork.py verify` runs them together.
 
@@ -38,7 +39,7 @@ Layout is the GroundWork standard `cli` profile, rooted at `plugins/impact-revie
 - Skills tell Claude to read the digest only; never point a skill at raw API data or full `metrics.json`.
 - Tests use recorded GitHub, Datadog and Prometheus responses under `tests/fixtures/`; no test calls a live API.
 - Test files outside a package need unique names across plugins (speedup uses `test_speedup_*.py` and `speedup_helpers.py`).
-- Run folders and anything under `impact-review-runs/`, `chronicle-runs/` or `speedup-runs/` are git-ignored; never commit them.
+- Run folders and anything under `impact-review-runs/`, `chronicle-runs/`, `speedup-runs/` or `plugins/*/evals/results/` are git-ignored; never commit them.
 
 ## Code quality
 Run `groundwork.py verify` after every change (it runs the commands below) and fix what fails. Never weaken a rule,

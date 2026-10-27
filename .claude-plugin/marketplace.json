@@ -24,7 +24,7 @@
       "name": "chronicle",
       "source": "./plugins/chronicle",
       "description": "Illustrated, interactive story pages (Artifacts) designed for their subject, and standalone animations in the same style, including technical architecture diagrams: status reports, launches, onboarding handbooks, guides and system walkthroughs, from a brief and facts gathered from connected tools.",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "author": {
         "name": "Jacqueline Dean"
       },
