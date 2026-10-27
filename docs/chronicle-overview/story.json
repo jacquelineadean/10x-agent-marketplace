@@ -68,6 +68,12 @@
  },
  "sources": [
   {
+   "id": "docs",
+   "label": "Claude Code docs: Plugins overview",
+   "detail": "code.claude.com/docs/en/plugins/overview",
+   "as_of": "2026-10-27"
+  },
+  {
    "id": "repo",
    "label": "chronicle source",
    "detail": "plugins/chronicle in the 10x-agent-marketplace repository",
@@ -301,6 +307,146 @@
     {
      "type": "prose",
      "text": "Animations leave the page entirely. One `animation.json` builds a single SVG with no script, plus an HTML figure, a poster, a GIF and an MP4: {{features.exports}} in all, for docs sites, READMEs, Confluence, Slack and slides."
+    }
+   ]
+  },
+  {
+   "id": "plugin",
+   "short": "Plugin",
+   "kicker": "What a Claude Code plugin is",
+   "title": "chronicle is one Claude Code plugin with two skills and a subagent",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "A Claude Code plugin is a directory of skills, agents, hooks, MCP servers or other components that Claude Code installs and loads as one unit. A manifest at `.claude-plugin/plugin.json` gives the plugin its name, and can add a version, a description and other metadata. Each component adds one kind of thing to a session, and chronicle uses three of them."
+    },
+    {
+     "type": "table",
+     "title": "What a plugin can hold, and what chronicle uses",
+     "source": "docs",
+     "columns": [
+      "Component",
+      "Lives at",
+      "What it adds to a session",
+      "In chronicle"
+     ],
+     "rows": [
+      [
+       "Manifest",
+       "`.claude-plugin/plugin.json`",
+       "The plugin's name, version and description",
+       "chronicle {{release.version|plain}}"
+      ],
+      [
+       "Skills",
+       "`skills/<name>/SKILL.md`",
+       "Instructions Claude loads when a request fits; people can also run each one as a command",
+       "`/chronicle:story` and `/chronicle:animation`"
+      ],
+      [
+       "Agents",
+       "`agents/<name>.md`",
+       "A subagent Claude can delegate work to, in its own context",
+       "`chronicle-gatherer`"
+      ],
+      [
+       "Hooks",
+       "`hooks/hooks.json`",
+       "Commands Claude Code runs at lifecycle events, such as after every edit",
+       "None"
+      ],
+      [
+       "MCP servers",
+       "`.mcp.json`",
+       "Tool servers that give Claude new tools while the plugin is enabled",
+       "None; the gatherer uses the servers the session already has"
+      ]
+     ]
+    },
+    {
+     "type": "diagram",
+     "svg": "diagrams/plugin.svg",
+     "title": "One directory, and what each file becomes in a session",
+     "subtitle": "Drawn after the plugin diagram in the Claude Code docs. Step through the components, or hover a box.",
+     "source": "repo",
+     "alt": "Diagram in two columns joined by five arrows. Left, the plugins/chronicle directory: .claude-plugin/plugin.json, skills/story/SKILL.md, skills/animation/SKILL.md, agents/chronicle-gatherer.md, and scripts/chronicle with src/chronicle. Right, what each becomes in a session: the plugin name chronicle with its version, the skills /chronicle:story and /chronicle:animation, a subagent that gathers facts read-only, and a builder the skills run through Bash. The plugin has no hooks and no .mcp.json.",
+     "steps": [
+      {
+       "title": "Manifest",
+       "text": "`plugin.json` gives the plugin its name, version and description. The marketplace entry points Claude Code at this folder.",
+       "focus": [
+        "r1",
+        "a1",
+        "o1"
+       ]
+      },
+      {
+       "title": "Skills",
+       "text": "Each `SKILL.md` runs as a command, and Claude also loads it when a request matches its description.",
+       "focus": [
+        "r2",
+        "a2",
+        "o2",
+        "r3",
+        "a3",
+        "o3"
+       ]
+      },
+      {
+       "title": "Subagent",
+       "text": "The gatherer runs in its own context with the session's MCP servers and hands back only a facts file.",
+       "focus": [
+        "r4",
+        "a4",
+        "o4"
+       ]
+      },
+      {
+       "title": "Builder",
+       "text": "The Python builder is plain files inside the plugin. The skills call it at the plugin root, so it installs and updates with them.",
+       "focus": [
+        "r5",
+        "a5",
+        "o5"
+       ]
+      }
+     ]
+    },
+    {
+     "type": "prose",
+     "text": "Plugins travel through marketplaces. A marketplace is a repository with `.claude-plugin/marketplace.json` that lists plugins and where to fetch each one; it is a catalog, and nothing is hosted. This repository is the 10x-agent-marketplace, and it lists {{marketplace.plugins}}. A teammate adds it once with `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then runs `/plugin install chronicle@10x-agent-marketplace`.\n\nSkills, subagents, hooks and MCP servers all work on their own. A plugin packages several of them as one unit, with one install command, versioned releases and updates from the marketplace. chronicle needs that packaging: its two skills, the gatherer and {{code.py_now|compact}} of Python builder code must move together, or a skill would call a builder that does not match it. The [Claude Code plugins overview](https://code.claude.com/docs/en/plugins/overview) covers the format in full."
+    },
+    {
+     "type": "table",
+     "title": "What an enabled plugin adds to every session",
+     "source": "docs",
+     "columns": [
+      "Cost",
+      "Any plugin",
+      "chronicle"
+     ],
+     "rows": [
+      [
+       "Context",
+       "Each skill's and agent's name and description sit in Claude's context on every turn; the full text loads only when used",
+       "Two skill descriptions and one agent description; the {{code.skill_lines}} of instructions and references load on demand"
+      ],
+      [
+       "Processes",
+       "MCP servers run alongside each session, and hooks fire at their events",
+       "None: chronicle defines no hooks and no MCP servers"
+      ],
+      [
+       "Permissions",
+       "What a plugin runs, it runs as the user",
+       "The builder runs only when a skill calls it, on files in the run folder"
+      ],
+      [
+       "Scope",
+       "User, project or local install; cloud sessions load their own plugins",
+       "Any scope works; painting needs uv, or NumPy and OpenCV, on that machine"
+      ]
+     ]
     }
    ]
   },
