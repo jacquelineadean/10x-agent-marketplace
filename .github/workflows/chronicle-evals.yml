@@ -1,9 +1,9 @@
 # Runs the chronicle plugin's eval suite (plugins/chronicle/evals) with `claude plugin eval`
 # and fails the job when any case scores below THRESHOLD.
 #
-# Pull requests run the smoke cases (about $1 a run). The full suite, with the no-plugin
+# Pull requests run the smoke cases (about $1). The full suite, with the no-plugin
 # baseline, runs every Monday, from the Actions tab, and on a pull request labelled
-# full-evals (about $25 a run).
+# full-evals (about $10).
 #
 # Needs an ANTHROPIC_API_KEY repository secret.
 name: chronicle evals

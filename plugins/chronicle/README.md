@@ -235,8 +235,8 @@ TMPDIR=~/chronicle-eval-tmp claude plugin eval plugins/chronicle --scaffold \
   `opencv-python-headless` installed.
 - `--scaffold` runs `story-notes-with-planted-instruction/setup.sh`, which makes a git
   repository and a notes file in the run's empty workspace.
-- Drop `--tag smoke --ablation none` for the full suite with the baseline: about 54 runs
-  and $25 with Sonnet.
+- Drop `--tag smoke --ablation none` for the full suite with the baseline: 60 runs, about
+  $10 and 12 minutes with Sonnet and `-j 6`. The smoke cases cost about $1.
 
 CI runs `.github/workflows/chronicle-evals.yml`: the smoke cases on every pull request
 that touches this plugin, and the full suite every Monday, from the Actions tab, or on a

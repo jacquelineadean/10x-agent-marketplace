@@ -60,7 +60,7 @@ say so on the page: the byline and colophon both state that the data is invented
 
 ## 2. Gather facts
 
-Read `references/facts.md` for the file format and `references/sources.md` for what to
+Read `${CLAUDE_PLUGIN_ROOT}/skills/story/references/facts.md` for the file format and `${CLAUDE_PLUGIN_ROOT}/skills/story/references/sources.md` for what to
 pull from each tool.
 
 - **Connected tools**: delegate to the `chronicle-gatherer` subagent. Give it the brief, the
@@ -74,7 +74,7 @@ pull from each tool.
 
 ## 3. Design the identity
 
-Read `references/identity.md` and do its design pass before writing anything else:
+Read `${CLAUDE_PLUGIN_ROOT}/skills/story/references/identity.md` and do its design pass before writing anything else:
 
 - Write `theme.concept` first: one sentence naming the world the page borrows from and
   where it came from, in this order: what the user supplied (brand, files, screenshots),
@@ -95,19 +95,19 @@ Read `references/identity.md` and do its design pass before writing anything els
 
 ## 4. Draw
 
-Read `references/illustration.md`. Draw each painting as an SVG file in `art/`: shapes back
+Read `${CLAUDE_PLUGIN_ROOT}/skills/story/references/illustration.md`. Draw each painting as an SVG file in `art/`: shapes back
 to front, ink outlines, fills in muted pigment colors, `data-shade` for volume, glazed cast
 shadows, `<text>` labels (which may hold fact tokens), `data-anchor` points for hotspots and
 at most one or two moving layers. Draw diagrams as SVG in `diagrams/` with the classes in
-`references/story-format.md`. Write widgets with `references/widgets.md`.
+`${CLAUDE_PLUGIN_ROOT}/skills/story/references/story-format.md`. Write widgets with `${CLAUDE_PLUGIN_ROOT}/skills/story/references/widgets.md`.
 
 Run `chronicle build` early and look at each `build/art/<key>.webp` with the Read tool. Fix
 objects that do not read at a glance, flat clip-art looks and collisions, then build again.
 
 ## 5. Write the story
 
-Read `references/story-format.md` (structure and every block), `references/voice.md`
-(how the page reads) and `references/outlines.md` (chapter plans for status reports,
+Read `${CLAUDE_PLUGIN_ROOT}/skills/story/references/story-format.md` (structure and every block), `${CLAUDE_PLUGIN_ROOT}/skills/story/references/voice.md`
+(how the page reads) and `${CLAUDE_PLUGIN_ROOT}/skills/story/references/outlines.md` (chapter plans for status reports,
 launches, onboarding, guides, incidents and reviews).
 
 - Numbers appear only as tokens: `{{migration.share_now}}`, or `{{plan.forecast_finish|date}}`.
@@ -163,17 +163,17 @@ Reply with the link, one line on what the page covers, and any facts that were m
 
 ## Files
 
-- `references/identity.md`: designing the page for its subject: the concept and where it
+- `${CLAUDE_PLUGIN_ROOT}/skills/story/references/identity.md`: designing the page for its subject: the concept and where it
   comes from, palette, fonts, progress devices, chapter marks, stat styles, surface,
   words, the signature figure, the sameness check and worked identities.
-- `references/illustration.md`: drawing SVG for the ink-and-watercolor painter.
-- `references/story-format.md`: the story file, every block type, tokens and formats.
-- `references/facts.md`: the facts file, provenance and the `derive` functions.
-- `references/sources.md`: what to gather from GitHub, Jira, Confluence, Datadog, PagerDuty.
-- `references/outlines.md`: chapter plans for status reports, launches, onboarding,
+- `${CLAUDE_PLUGIN_ROOT}/skills/story/references/illustration.md`: drawing SVG for the ink-and-watercolor painter.
+- `${CLAUDE_PLUGIN_ROOT}/skills/story/references/story-format.md`: the story file, every block type, tokens and formats.
+- `${CLAUDE_PLUGIN_ROOT}/skills/story/references/facts.md`: the facts file, provenance and the `derive` functions.
+- `${CLAUDE_PLUGIN_ROOT}/skills/story/references/sources.md`: what to gather from GitHub, Jira, Confluence, Datadog, PagerDuty.
+- `${CLAUDE_PLUGIN_ROOT}/skills/story/references/outlines.md`: chapter plans for status reports, launches, onboarding,
   guides, incidents and reviews.
-- `references/widgets.md`: writing a custom figure when no block fits.
-- `references/voice.md`: the page's writing rules.
+- `${CLAUDE_PLUGIN_ROOT}/skills/story/references/widgets.md`: writing a custom figure when no block fits.
+- `${CLAUDE_PLUGIN_ROOT}/skills/story/references/voice.md`: the page's writing rules.
 - `${CLAUDE_PLUGIN_ROOT}/examples/keystone/`: a status page with invented data: an
   order-platform migration with its own theme, seven painted SVG drawings, a flow, a tile
   map and an incident diagram.

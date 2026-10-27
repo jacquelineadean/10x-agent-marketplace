@@ -7,5 +7,5 @@ The user listed 11 components: rider app, API gateway, ride service, matching se
 
 You are shown the animation.json file the agent wrote. Its "tad" object lists nodes, groups, edges and flows.
 
-PASS if all of these hold: every one of the 11 components is a node (names may differ slightly); no node is a component the user did not list (a person node for the rider is fine); Twilio sits in a group separate from the production VPC; the edges for ride.requested or ride.matched use "style": "async"; and at least one flow's path runs from the rider app through the gateway to the ride service and the matching service.
-FAIL if any component is missing, an unlisted component was added, the events are drawn only as sync edges, or no flow follows the request path.
+PASS if all of these hold: every one of the 11 components is a node (names may differ slightly); no node is a component the user did not list (a person node for the rider is fine); Twilio sits in a group separate from the production VPC; the edges for ride.requested or ride.matched use "style": "async"; and the flows carry the request from the rider app through the gateway and the ride service to the matching service, in one flow or in several that join end to end.
+FAIL if any component is missing, an unlisted component was added, the events are drawn only as sync edges, or no flow or chain of flows follows the request path.
