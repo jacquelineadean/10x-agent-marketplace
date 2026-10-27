@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" class="head"/>
+    </marker>
+  </defs>
+  <text class="small" x="10" y="14">Written by Claude, in the run folder</text>
+  <g id="facts" data-tip="Every number with its value, unit, source and a note; series as arrays; the derive table.">
+    <rect class="box soft" x="10" y="22" width="160" height="78" rx="4"/>
+    <text class="title" x="90" y="54" text-anchor="middle">facts.json</text>
+    <text class="label" x="90" y="78" text-anchor="middle">value, unit, source</text>
+  </g>
+  <g id="story" data-tip="Theme, chapters and blocks. Numbers appear only as tokens that point into the facts file.">
+    <rect class="box soft" x="210" y="22" width="160" height="78" rx="4"/>
+    <text class="title" x="290" y="54" text-anchor="middle">story.json</text>
+    <text class="label" x="290" y="78" text-anchor="middle">chapters, tokens</text>
+  </g>
+  <g id="drawings" data-tip="Plain SVG drawn for this page: shapes back to front, ink outlines, live text labels.">
+    <rect class="box soft" x="410" y="22" width="160" height="78" rx="4"/>
+    <text class="title" x="490" y="54" text-anchor="middle">art/*.svg</text>
+    <text class="label" x="490" y="78" text-anchor="middle">drawings</text>
+  </g>
+
+  <text class="small" x="610" y="140">chronicle build, on the author's machine</text>
+  <g id="derive" data-tip="{{features.derive_fns}} functions: last, total, share, ratio, percent change, burnup forecast and more.">
+    <rect class="box accent" x="10" y="156" width="160" height="88" rx="4"/>
+    <text class="title" x="90" y="192" text-anchor="middle">Derive</text>
+    <text class="label" x="90" y="216" text-anchor="middle">code does the sums</text>
+  </g>
+  <g id="check" data-tip="Unknown tokens are errors. Typed numbers, stock themes and look-alike pages are warnings.">
+    <rect class="box accent" x="210" y="156" width="160" height="88" rx="4"/>
+    <text class="title" x="290" y="192" text-anchor="middle">Check</text>
+    <text class="label" x="290" y="216" text-anchor="middle">tokens, SVG, widgets</text>
+  </g>
+  <g id="paint" data-tip="Washes, wet edges, granulation and pen lines, painted with NumPy and OpenCV.">
+    <rect class="box accent" x="410" y="156" width="160" height="88" rx="4"/>
+    <text class="title" x="490" y="192" text-anchor="middle">Paint</text>
+    <text class="label" x="490" y="216" text-anchor="middle">NumPy, OpenCV</text>
+  </g>
+  <g id="render" data-tip="Python standard library only: static HTML for every word, one JSON blob for the figures.">
+    <rect class="box accent" x="610" y="156" width="160" height="88" rx="4"/>
+    <text class="title" x="690" y="192" text-anchor="middle">Render</text>
+    <text class="label" x="690" y="216" text-anchor="middle">stdlib, vanilla JS</text>
+  </g>
+  <g id="out" data-tip="The page to publish, its paintings as WebP, and the files map for the Artifact tool.">
+    <rect class="box" x="810" y="148" width="160" height="104" rx="4"/>
+    <text class="title" x="890" y="180" text-anchor="middle">build/</text>
+    <text class="label" x="890" y="204" text-anchor="middle">artifact.html</text>
+    <text class="label" x="890" y="224" text-anchor="middle">art/*.webp</text>
+  </g>
+
+  <path id="in1" class="line" d="M90 100 L90 152" marker-end="url(#arrow)"/>
+  <path id="in2" class="line" d="M290 100 L290 152" marker-end="url(#arrow)"/>
+  <path id="in3" class="line" d="M490 100 L490 152" marker-end="url(#arrow)"/>
+  <path id="p1" class="line accent" d="M170 200 L206 200" marker-end="url(#arrow)"/>
+  <path id="p2" class="line accent" d="M370 200 L406 200" marker-end="url(#arrow)"/>
+  <path id="p3" class="line accent" d="M570 200 L606 200" marker-end="url(#arrow)"/>
+  <path id="p4" class="line accent" d="M770 200 L806 200" marker-end="url(#arrow)"/>
+
+  <g id="stop">
+    <path class="line dashed" d="M290 244 L290 282"/>
+    <text class="hand" x="290" y="306" text-anchor="middle">errors stop here</text>
+  </g>
+  <g id="cache">
+    <path class="line dashed" d="M520 244 L540 282"/>
+    <text class="hand" x="500" y="306">unchanged drawings skip it</text>
+  </g>
+</svg>

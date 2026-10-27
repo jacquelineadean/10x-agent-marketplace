@@ -1,0 +1,48 @@
+.w-tad-player .frame {
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  line-height: 0;
+}
+.w-tad-player .frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.w-tad-player .bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 10px;
+  font-family: var(--f-ui);
+  font-size: 0.85rem;
+}
+.w-tad-player .toggle {
+  font: inherit;
+  font-weight: 600;
+  padding: 6px 14px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent-text);
+  cursor: pointer;
+}
+.w-tad-player .toggle:hover {
+  background: var(--accent-wash);
+}
+.w-tad-player .toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.w-tad-player .note {
+  color: var(--muted);
+}
+.w-tad-player .steps {
+  margin: 14px 0 0;
+  padding-left: 1.4em;
+  font-family: var(--f-ui);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.w-tad-player .steps li + li {
+  margin-top: 4px;
+}
