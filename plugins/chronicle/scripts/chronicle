@@ -1,10 +1,19 @@
 #!/bin/sh
 # Runs the chronicle command line from wherever the plugin is installed.
-# Painting needs NumPy and OpenCV; uv fetches them into its cache on first use, so the
-# user's own Python environment is never modified.
+# Painting needs NumPy and OpenCV. A python3 that already has both runs as is; otherwise
+# uv fetches them into its cache, so the user's own Python environment is never modified.
 here="$(cd "$(dirname "$0")/.." && pwd)"
 export PYTHONPATH="$here/src${PYTHONPATH:+:$PYTHONPATH}"
+if python3 -c "import sys, numpy, cv2; sys.exit(sys.version_info < (3, 11))" >/dev/null 2>&1; then
+  exec python3 -m chronicle "$@"
+fi
 if command -v uv >/dev/null 2>&1; then
+  # A sandboxed shell can leave the home folder read-only, and uv stops when it cannot
+  # create its cache there.
+  cache="${UV_CACHE_DIR:-$(uv cache dir 2>/dev/null)}"
+  if ! mkdir -p "$cache" 2>/dev/null || [ ! -w "$cache" ]; then
+    export UV_CACHE_DIR="${TMPDIR:-/tmp}/chronicle-uv-cache"
+  fi
   exec uv run --quiet --no-project --python ">=3.11" \
     --with "numpy>=2.0" --with "opencv-python-headless>=4.10" \
     python -m chronicle "$@"
