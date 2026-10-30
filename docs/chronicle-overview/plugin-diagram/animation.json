@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "kind": "diagram",
+  "facts_file": "../facts.json",
+  "meta": {
+    "title": "chronicle as a Claude Code plugin",
+    "kicker": "Plugin anatomy",
+    "description": "The plugins/chronicle directory and what each file becomes in a Claude Code session: a plugin name, two skills, a subagent and a builder.",
+    "credit": "chronicle {{release.version|plain}}",
+    "sources": [
+      {
+        "label": "Claude Code docs: Plugins overview",
+        "detail": "code.claude.com/docs/en/plugins/overview"
+      },
+      {
+        "label": "plugins/chronicle",
+        "detail": "10x-agent-marketplace"
+      }
+    ]
+  },
+  "theme": {
+    "concept": "A painter's drafting table: graphite ink on cool cold-pressed paper, ultramarine for the work chronicle does, yellow ochre for the old manual path, from the plugin's own pipeline where pencil SVG becomes watercolor.",
+    "palette": {
+      "paper": "#F1F3EF",
+      "ink": "#202428",
+      "accent": "#2C4FA3",
+      "legacy": "#A9740F",
+      "series": [
+        "#2C4FA3",
+        "#A9740F",
+        "#2E7D6B",
+        "#B24A6E",
+        "#3F8AB8",
+        "#62802C"
+      ]
+    },
+    "fonts": {
+      "display": "Bodoni Moda",
+      "body": "Spectral",
+      "ui": "Archivo",
+      "mono": "JetBrains Mono"
+    }
+  },
+  "frame": {
+    "size": "16:9"
+  },
+  "timing": {
+    "pace": 1.1,
+    "hold": 3.0
+  },
+  "diagram": {
+    "svg": "../diagrams/plugin.svg"
+  },
+  "steps": [
+    {
+      "caption": "A plugin is one directory; chronicle's manifest gives it its name and version.",
+      "show": [
+        "r1",
+        "o1"
+      ],
+      "draw": [
+        "a1"
+      ]
+    },
+    {
+      "caption": "Two SKILL.md files become two commands that Claude also loads when a request fits.",
+      "show": [
+        "r2",
+        "o2",
+        "r3",
+        "o3"
+      ],
+      "draw": [
+        "a2",
+        "a3"
+      ]
+    },
+    {
+      "caption": "The agent file becomes a subagent that gathers facts read-only, in its own context.",
+      "show": [
+        "r4",
+        "o4"
+      ],
+      "draw": [
+        "a4"
+      ]
+    },
+    {
+      "caption": "The Python builder ships in the same folder, and the skills run it through Bash.",
+      "show": [
+        "r5",
+        "o5"
+      ],
+      "draw": [
+        "a5"
+      ]
+    }
+  ]
+}

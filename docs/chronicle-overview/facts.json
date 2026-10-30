@@ -400,5 +400,13 @@
       "source": "git",
       "note": "From the first commit to this overview"
     }
+  },
+  "marketplace": {
+    "plugins": {
+      "value": 3,
+      "unit": "plugins",
+      "source": "repo",
+      "note": "impact-review, chronicle and speedup in .claude-plugin/marketplace.json"
+    }
   }
 }

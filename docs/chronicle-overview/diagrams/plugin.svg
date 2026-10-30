@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 410">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" class="head"/>
+    </marker>
+  </defs>
+  <text class="title" x="10" y="26">In the plugin directory</text>
+  <text class="title" x="560" y="26">In your session</text>
+
+  <rect class="box accent" x="10" y="44" width="440" height="356" rx="8"/>
+  <text class="title" x="30" y="76">plugins/chronicle/</text>
+
+  <g id="r1" data-tip="The manifest: name, version, description, author, license and keywords.">
+    <rect class="box soft" x="30" y="92" width="400" height="42" rx="4"/>
+    <text x="46" y="119">.claude-plugin/plugin.json</text>
+  </g>
+  <g id="r2" data-tip="The story workflow: brief, gather, design, draw, write, build, publish.">
+    <rect class="box soft" x="30" y="144" width="400" height="42" rx="4"/>
+    <text x="46" y="171">skills/story/SKILL.md</text>
+  </g>
+  <g id="r3" data-tip="The animation workflow: write the figure and its steps, build, look, deliver.">
+    <rect class="box soft" x="30" y="196" width="400" height="42" rx="4"/>
+    <text x="46" y="223">skills/animation/SKILL.md</text>
+  </g>
+  <g id="r4" data-tip="A subagent definition: its job, its rules (read only, no arithmetic) and its reply format.">
+    <rect class="box soft" x="30" y="248" width="400" height="42" rx="4"/>
+    <text x="46" y="275">agents/chronicle-gatherer.md</text>
+  </g>
+  <g id="r5" data-tip="A shell launcher and the Python package it runs: checks, derive, painter, renderer, animations.">
+    <rect class="box soft" x="30" y="300" width="400" height="42" rx="4"/>
+    <text x="46" y="327">scripts/chronicle, src/chronicle/</text>
+  </g>
+  <text class="small" x="230" y="376" text-anchor="middle">and README, examples, tests; no hooks, no .mcp.json</text>
+
+  <path id="a1" class="line" d="M430 113 L556 113" marker-end="url(#arrow)"/>
+  <path id="a2" class="line" d="M430 165 L556 165" marker-end="url(#arrow)"/>
+  <path id="a3" class="line" d="M430 217 L556 217" marker-end="url(#arrow)"/>
+  <path id="a4" class="line" d="M430 269 L556 269" marker-end="url(#arrow)"/>
+  <path id="a5" class="line" d="M430 321 L556 321" marker-end="url(#arrow)"/>
+
+  <g id="o1" data-tip="Installed by name from the marketplace: chronicle@10x-agent-marketplace.">
+    <rect class="box" x="560" y="92" width="410" height="42" rx="4"/>
+    <text class="title" x="576" y="119">Plugin name</text>
+    <text class="label" x="954" y="119" text-anchor="end">chronicle {{release.version|plain}}</text>
+  </g>
+  <g id="o2" data-tip="Run as a command, or loaded by Claude when a request asks for an illustrated page.">
+    <rect class="box" x="560" y="144" width="410" height="42" rx="4"/>
+    <text class="title" x="576" y="171">Skill</text>
+    <text class="label" x="954" y="171" text-anchor="end">/chronicle:story</text>
+  </g>
+  <g id="o3" data-tip="Run as a command, or loaded by Claude when a request asks to animate an architecture or a diagram.">
+    <rect class="box" x="560" y="196" width="410" height="42" rx="4"/>
+    <text class="title" x="576" y="223">Skill</text>
+    <text class="label" x="954" y="223" text-anchor="end">/chronicle:animation</text>
+  </g>
+  <g id="o4" data-tip="Claude delegates fact gathering to it; raw tool output stays in its context.">
+    <rect class="box" x="560" y="248" width="410" height="42" rx="4"/>
+    <text class="title" x="576" y="275">Subagent</text>
+    <text class="label" x="954" y="275" text-anchor="end">gathers facts, read-only</text>
+  </g>
+  <g id="o5" data-tip="Not a component type of its own: plain files the skills call at the plugin root.">
+    <rect class="box" x="560" y="300" width="410" height="42" rx="4"/>
+    <text class="title" x="576" y="327">Builder</text>
+    <text class="label" x="954" y="327" text-anchor="end">the skills run it through Bash</text>
+  </g>
+</svg>
