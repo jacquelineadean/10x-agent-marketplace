@@ -1,11 +1,11 @@
 # Runs the chronicle plugin's eval suite (plugins/chronicle/evals) with `claude plugin eval`
 # and fails the job when any case scores below THRESHOLD.
 #
-# Pull requests run the smoke cases (about $1). The full suite, with the no-plugin
-# baseline, runs every Monday, from the Actions tab, and on a pull request labelled
-# full-evals (about $10).
+# Pull requests run the 5 smoke cases, 15 runs. The full suite, with the no-plugin
+# baseline, runs from the Actions tab or on a pull request labelled full-evals, 60 runs.
 #
-# Needs an ANTHROPIC_API_KEY repository secret.
+# Needs a CLAUDE_CODE_OAUTH_TOKEN repository secret from `claude setup-token`. Every run
+# counts against that Claude plan's usage; the cost ceilings below are list-price estimates.
 name: chronicle evals
 
 on:
@@ -14,8 +14,6 @@ on:
     paths:
       - "plugins/chronicle/**"
       - ".github/workflows/chronicle-evals.yml"
-  schedule:
-    - cron: "17 6 * * 1"
   workflow_dispatch:
     inputs:
       suite:
@@ -46,7 +44,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -67,10 +65,10 @@ jobs:
           fi
           echo "name=$suite" >> "$GITHUB_OUTPUT"
 
-      - name: Check the API key
+      - name: Check credentials
         run: |
-          if [ -z "$ANTHROPIC_API_KEY" ]; then
-            echo "::error::Add an ANTHROPIC_API_KEY repository secret to run the chronicle evals."
+          if [ -z "$CLAUDE_CODE_OAUTH_TOKEN" ]; then
+            echo "::error::Add a CLAUDE_CODE_OAUTH_TOKEN repository secret (from claude setup-token) to run the chronicle evals."
             exit 1
           fi
 
@@ -90,11 +88,24 @@ jobs:
           npm install -g "@anthropic-ai/claude-code@$CLAUDE_CODE_VERSION"
           claude --version
 
+      - name: Check that the token signs in
+        run: |
+          claude auth status
+          # auth status reports a token as present without asking the server, so one
+          # short call shows a rejected or expired token in seconds.
+          cd "$RUNNER_TEMP"
+          if ! reply=$(claude -p "Reply with the word ok." --model "$JUDGE_MODEL" --max-turns 1 2>&1); then
+            echo "::error::CLAUDE_CODE_OAUTH_TOKEN was refused: $reply"
+            exit 1
+          fi
+
       - name: Run the evals
         env:
           SUITE_ARGS: ${{ steps.suite.outputs.args }}
         run: |
           # The eval sandbox denies writes under /tmp, and each run's workspace is made in TMPDIR.
+          # Two runs at a time: subscription rate limits are tighter than API limits, and a
+          # run that hits one scores 0.
           export TMPDIR=/mnt/claude-eval
           sudo install -d -o "$(id -u)" -g "$(id -g)" "$TMPDIR"
           read -r -a suite_args <<< "$SUITE_ARGS"
@@ -103,7 +114,7 @@ jobs:
             --trust-plugin --scaffold \
             --allow-tools Bash Write Edit \
             --model "$AGENT_MODEL" --judge-model "$JUDGE_MODEL" \
-            --threshold "$THRESHOLD" -j 4 --no-publish \
+            --threshold "$THRESHOLD" -j 2 --no-publish \
             --json "$RUNNER_TEMP/results.json" \
             --report "$RUNNER_TEMP/report.html"
           code=$?
@@ -129,6 +140,6 @@ jobs:
       - name: Gate on the score
         run: |
           if [ "${code:-1}" != 0 ]; then
-            echo "::error::claude plugin eval exited $code: a case scored below $THRESHOLD, a case failed to load, or a run hit an API error or the cost ceiling."
+            echo "::error::claude plugin eval exited $code: a case scored below $THRESHOLD, a case failed to load, or a run hit an API error, a usage limit or the cost ceiling."
             exit 1
           fi

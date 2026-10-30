@@ -22,7 +22,7 @@ uv run mypy plugins/chronicle/src/chronicle
 uv run mypy plugins/speedup/src/speedup
 claude plugin validate .                   # marketplace and plugin manifests
 claude --plugin-dir plugins/impact-review  # try one plugin in a session
-TMPDIR=~/chronicle-eval-tmp claude plugin eval plugins/chronicle --scaffold --allow-tools Bash Write Edit --tag smoke --ablation none  # chronicle evals: paid model calls, see its README
+TMPDIR=~/chronicle-eval-tmp claude plugin eval plugins/chronicle --scaffold --allow-tools Bash Write Edit --tag smoke --ablation none  # chronicle evals: model calls on your plan or API bill, see its README
 ```
 All four checks must pass before "done"; `groundwork.py verify` runs them together.
 

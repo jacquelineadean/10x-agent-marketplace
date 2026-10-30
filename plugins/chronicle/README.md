@@ -236,12 +236,19 @@ TMPDIR=~/chronicle-eval-tmp claude plugin eval plugins/chronicle --scaffold \
 - `--scaffold` runs `story-notes-with-planted-instruction/setup.sh`, which makes a git
   repository and a notes file in the run's empty workspace.
 - Drop `--tag smoke --ablation none` for the full suite with the baseline: 60 runs, about
-  $10 and 12 minutes with Sonnet and `-j 6`. The smoke cases cost about $1.
+  $10 at list price and 12 minutes with Sonnet and `-j 6`. The smoke cases are 15 runs,
+  about $1.
+- Every run counts against the plan usage or API bill of the account Claude Code is
+  signed in with.
 
 CI runs `.github/workflows/chronicle-evals.yml`: the smoke cases on every pull request
-that touches this plugin, and the full suite every Monday, from the Actions tab, or on a
-pull request labelled `full-evals`. The job fails when any case scores below 0.8, and it
-needs an `ANTHROPIC_API_KEY` repository secret.
+that touches this plugin, and the full suite from the Actions tab or on a pull request
+labelled `full-evals`. The job fails when any case scores below 0.8. It signs in with a
+Claude subscription: run `claude setup-token`, then add the token it prints as a
+`CLAUDE_CODE_OAUTH_TOKEN` repository secret. Never commit the token or paste it into a pull
+request. CI runs two cases at a time because subscription rate limits are tighter than API
+limits, and a run that hits a limit scores 0. Replace the secret when the token expires; the
+job's "Check that the token signs in" step fails within seconds on an expired one.
 
 ## License
 
