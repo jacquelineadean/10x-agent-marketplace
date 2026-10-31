@@ -5,8 +5,9 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from chronicle.connectors.files import store
-from chronicle.core.story import theme
+from chronicle.core.story import review
+from chronicle_engine.connectors.files import store
+from chronicle_engine.core.story import theme
 
 FONTS: dict[str, Any] = json.loads(store.asset("fonts.json"))
 
@@ -133,8 +134,8 @@ def test_route_icon_surface_and_words_come_through() -> None:
 
 
 def test_review_flags_a_missing_or_stock_theme() -> None:
-    assert "theme is missing" in theme.review(None, {})[0]
-    warnings = theme.review({"palette": {"paper": "#FBFAF6"}}, {})
+    assert "theme is missing" in review.review(None, {})[0]
+    warnings = review.review({"palette": {"paper": "#FBFAF6"}}, {})
     assert any("theme.concept is empty" in w for w in warnings)
     assert any("chronicle's defaults for type, accent" in w for w in warnings)
 
@@ -148,7 +149,7 @@ def test_review_flags_a_page_that_copies_another() -> None:
         "chapter_mark": "flag",
     }
     copy = {**golf, "concept": "a fishing guide", "palette": {"accent": "#2F6D3E"}}
-    assert theme.likeness(golf, copy) == [
+    assert review.likeness(golf, copy) == [
         "type",
         "accent",
         "paper",
@@ -156,14 +157,14 @@ def test_review_flags_a_page_that_copies_another() -> None:
         "chapter mark",
         "stat panel",
     ]
-    assert any("looks like golf" in w for w in theme.review(copy, {"golf": golf}))
+    assert any("looks like golf" in w for w in review.review(copy, {"golf": golf}))
     other = {
         **copy,
         "palette": {"accent": "#8A3B12", "paper": "#EEF2F4"},
         "fonts": {"display": "Gloock", "body": "Literata"},
         "stats": "cards",
     }
-    assert not any("looks like" in w for w in theme.review(other, {"golf": golf}))
+    assert not any("looks like" in w for w in review.review(other, {"golf": golf}))
 
 
 def test_the_bundled_examples_do_not_look_alike() -> None:
@@ -172,4 +173,4 @@ def test_the_bundled_examples_do_not_look_alike() -> None:
     assert len(themes) == 3
     for name, spec in themes.items():
         others = {k: v for k, v in themes.items() if k != name}
-        assert theme.review(spec, others) == [], name
+        assert review.review(spec, others) == [], name

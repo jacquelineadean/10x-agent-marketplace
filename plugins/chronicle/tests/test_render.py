@@ -5,7 +5,7 @@ import json
 import re
 from typing import Any
 
-from chronicle.core.story.render import Assets, render
+from chronicle_engine.core.story.render import Assets, render
 
 MANIFEST = {
     "hero": {

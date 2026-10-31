@@ -10,11 +10,11 @@ from typing import Any
 
 import numpy as np
 import pytest
-from chronicle.connectors.browser import shoot
-from chronicle.connectors.files import store
-from chronicle.connectors.video import encode
-from chronicle.core.motion import gif, render
-from chronicle.entrypoints.cli.main import main
+from chronicle_engine.connectors.browser import shoot
+from chronicle_engine.connectors.files import store
+from chronicle_engine.connectors.video import encode
+from chronicle_engine.core.motion import gif, render
+from chronicle_engine.entrypoints.cli.main import main
 
 EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
 CSS = store.asset_parts("motion", ".css") + store.asset("css/40-drawn.css")
@@ -100,7 +100,7 @@ def test_scene_spots_need_anchors_the_drawing_has() -> None:
 
 
 def _keystone_facts() -> dict[str, Any]:
-    from chronicle.core.story import derive
+    from chronicle_engine.core.story import derive
 
     raw = json.loads((EXAMPLES / "keystone" / "facts.json").read_text(encoding="utf-8"))
     facts: dict[str, Any] = derive.apply(raw)

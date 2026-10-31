@@ -51,23 +51,32 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 
 - Import rules: `core` imports nothing outside itself; `connectors` and `entrypoints` import `core` and `config`; only `__main__.py` imports both `connectors` and `entrypoints`.
 - `groundwork.py` is not vendored in this repo; this map was updated by hand on 2026-10-20 and the facts hash is stale until the next `groundwork.py codemap` run.
-- The facts above describe `plugins/impact-review` only. chronicle follows the same cli layout under `plugins/chronicle/src/chronicle/`:
+- The facts above describe `plugins/impact-review` only. chronicle's code lives in two places. The shared engine follows the cli layout under `packages/chronicle-engine/src/chronicle_engine/`, and each plugin that uses it links that folder into its own `src/`:
 
 | Folder | Holds |
 | --- | --- |
-| `core/story/` | facts and tokens, derive table, story checks, themes and the sameness review (`theme.py`), the diagram sanitizer, US tile grid (`geo.py`), HTML renderer and block renderers (`blocks.py`, `explainers.py`, `lessons.py`, joined in `dispatch.py`) |
-| `core/watercolor/` | painting engine (paper, washes, ink), motifs, presets and the scene language |
-| `core/motion/` | animations: the shared checks and step clock (`model.py`), CSS keyframe timeline, stage (title, captions, step strip, the SVG file), the diagram and scene kinds, the packet and visibility parts, render, the HTML figure, frame times and the GIF encoder |
-| `core/motion/tad/` | technical architecture diagrams: the spec reader, tier and lane layout, line routing, icons, and the drawing with its motion |
-| `core/watercolor/svg/` | SVG drawings: path and transform math (`pathdata.py`), the reader (`parse.py`) and the ink-and-wash painter (`paint.py`) |
-| `connectors/files/` | every file read and write: JSON, HTML, WebP, bundled assets |
+| `registry.py` | extension points plugins fill: block types, the art provider, animation kinds, theme policies, commands, asset roots and defaults |
+| `core/story/` | facts and tokens, derive table, story checks, theme tokens, fonts and contrast (`theme.py`), the diagram sanitizer, US tile grid (`geo.py`), HTML renderer and the neutral block renderers (`blocks.py`, `explainers.py`, `lessons.py`, joined in `dispatch.py`) |
+| `core/motion/` | animations: the shared checks and step clock (`model.py`), CSS keyframe timeline, stage (title, captions, step strip, the SVG file), the diagram kind, the packet and visibility parts, render, the HTML figure, frame times and the GIF encoder |
+| `connectors/files/` | every file read and write: JSON, HTML, WebP, bundled assets joined across the engine's and plugins' asset roots |
 | `connectors/browser/` | an installed headless Chromium or Chrome: page screenshots (`shoot.py`) and animation frames over the DevTools pipe (`devtools.py`) |
 | `connectors/video/` | MP4 through the installed ffmpeg program, WebM through OpenCV's video writer |
-| `entrypoints/cli/` | the `chronicle` command: new, check, paint, build, shoot, motifs (`main.py`), `animate new/check/build` (`animate.py`), painting shared by both (`art.py`), run folders (`runs.py`) |
-| `assets/` | `fonts.json`, the font families a theme may use, with their weight axes |
-| `assets/css/` | the page stylesheet in numbered parts: base, page, identity (marks, progress devices, stat skins), explainers, and the drawn-figure classes that animations share (`40-drawn.css`) |
-| `assets/motion/` | the animation stylesheet in numbered parts: stage, TAD, diagram, scene |
-| `assets/js/` | the page runtime in numbered parts, joined inside one IIFE: core, charts, figures, plates, progress, explainers, lessons, boot |
+| `entrypoints/cli/` | the command line a plugin runs after its pack registers: new, check, paint (with an art provider), build, shoot (`main.py`), `animate new/check/build` (`animate.py`), run folders (`runs.py`) |
+| `assets/` | `fonts.json`; `css/` the page stylesheet in numbered parts; `js/` the page runtime in numbered parts joined inside one IIFE; `motion/` the stage and diagram stylesheets |
+| `packages/chronicle-engine/tests/` | engine-only tests: the boundary (`test_engine_boundary.py`) and the command line with no plugin (`test_engine_cli.py`) |
+
+chronicle's own code lives under `plugins/chronicle/src/chronicle/`:
+
+| Folder | Holds |
+| --- | --- |
+| `pack.py` | chronicle's registrations: the painter as art provider, the `plate` block, the scene and TAD kinds, the `distinct` policy, the `motifs` command, defaults |
+| `core/story/` | plates on the page (`plates.py`) and the sameness review (`review.py`) |
+| `core/watercolor/` | painting engine (paper, washes, ink), motifs, presets and the scene language |
+| `core/watercolor/svg/` | SVG drawings: path and transform math (`pathdata.py`), the reader (`parse.py`) and the ink-and-wash painter (`paint.py`) |
+| `core/motion/` | the scene kind (`scene.py`) |
+| `core/motion/tad/` | technical architecture diagrams: the spec reader, tier and lane layout, line routing, icons, and the drawing with its motion |
+| `entrypoints/cli/` | painting shared by build, paint and animate (`art.py`), the `motifs` command (`commands.py`) |
+| `assets/` | chronicle's page and animation parts: `js/30-plates.js`, `motion/20-tad.css`, `motion/30-scene.css` |
 | `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, and the animations `animation-tad/`, `animation-diagram/`, `animation-scene/` |
 | `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |
 

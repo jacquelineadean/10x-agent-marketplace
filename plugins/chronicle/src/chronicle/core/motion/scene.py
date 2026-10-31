@@ -13,13 +13,13 @@ import math
 from collections.abc import Callable, Mapping
 from typing import Any
 
-from chronicle.core.motion import stage
-from chronicle.core.motion.model import Plan
-from chronicle.core.motion.parts import named
-from chronicle.core.motion.timeline import Point, Timeline, changes, eased, swells
-from chronicle.core.story.html import tag
-from chronicle.core.story.markup import plain
-from chronicle.core.story.model import Report, check_text
+from chronicle_engine.core.motion import stage
+from chronicle_engine.core.motion.model import Plan
+from chronicle_engine.core.motion.parts import named
+from chronicle_engine.core.motion.timeline import Point, Timeline, changes, eased, swells
+from chronicle_engine.core.story.html import tag
+from chronicle_engine.core.story.markup import plain
+from chronicle_engine.core.story.model import Report, check_text
 
 SCENE_KEYS = {"art", "develop", "spots"}
 DEVELOP = (0.6, 2.8)  # seconds the painting takes to wash from sketch into color

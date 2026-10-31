@@ -5,7 +5,7 @@ import shutil
 from pathlib import Path
 
 import pytest
-from chronicle.entrypoints.cli.main import main
+from chronicle_engine.entrypoints.cli.main import main
 
 
 def test_check_passes_the_example(example_dir: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -69,7 +69,7 @@ def test_onboarding_example_builds_its_widget_quiz_and_checklist(
 
 
 def test_runtime_carries_no_copy_from_one_example() -> None:
-    from chronicle.connectors.files import store
+    from chronicle_engine.connectors.files import store
 
     runtime = store.asset_parts("js", ".js") + store.asset_parts("css", ".css")
     for word in ("Keystone", "monolith", "Monolith", "ultramarine", "last arch"):
@@ -108,7 +108,7 @@ def test_shoot_opens_the_still_page_at_desktop_and_phone_width(
 ) -> None:
     import subprocess
 
-    from chronicle.connectors.browser import shoot
+    from chronicle_engine.connectors.browser import shoot
 
     (tmp_path / "build").mkdir()
     (tmp_path / "build" / "index.html").write_text("<p>page</p>", encoding="utf-8")
@@ -132,7 +132,7 @@ def test_shoot_opens_the_still_page_at_desktop_and_phone_width(
 
 
 def test_shoot_without_a_build_or_browser_says_so(tmp_path: Path) -> None:
-    from chronicle.connectors.browser import shoot
+    from chronicle_engine.connectors.browser import shoot
 
     assert main(["shoot", str(tmp_path / "story.json")]) == 1
     with pytest.raises(shoot.BrowserError, match="no Chromium"):

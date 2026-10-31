@@ -18,6 +18,7 @@ uv sync                                    # install dev tools (ruff, mypy, pyte
 uv run pytest                              # tests
 uv run ruff format --check . && uv run ruff check .
 uv run mypy plugins/impact-review/src/impact_review
+uv run mypy packages/chronicle-engine/src/chronicle_engine
 uv run mypy plugins/chronicle/src/chronicle
 uv run mypy plugins/speedup/src/speedup
 claude plugin validate .                   # marketplace and plugin manifests
@@ -33,6 +34,7 @@ Layout is the GroundWork standard `cli` profile, rooted at `plugins/impact-revie
 
 ## Conventions
 - One plugin per folder: `plugins/<name>/` with `.claude-plugin/plugin.json`, `skills/`, optional `agents/`, `README.md`.
+- Code shared by plugins lives once under `packages/<name>/`; a plugin links it into its own `src/` (Claude Code copies linked files at install). The engine imports no plugin.
 - Register every plugin in `.claude-plugin/marketplace.json` and bump its `version` in `plugin.json` on each release.
 - No top-level `bin/` folder in a plugin: claude.ai and Cowork refuse to install those. Skills call scripts through `${CLAUDE_PLUGIN_ROOT}`.
 - Skills tell Claude to read the digest only; never point a skill at raw API data or full `metrics.json`.
@@ -46,7 +48,7 @@ add an ignore comment or skip a test to make it pass; an ignore needs a reason o
 
 - format: `uv run ruff format --check .`
 - lint: `uv run ruff check .`
-- types: `uv run mypy plugins/impact-review/src/impact_review`, `uv run mypy plugins/chronicle/src/chronicle` and `uv run mypy plugins/speedup/src/speedup`
+- types: `uv run mypy plugins/impact-review/src/impact_review`, `uv run mypy packages/chronicle-engine/src/chronicle_engine`, `uv run mypy plugins/chronicle/src/chronicle` and `uv run mypy plugins/speedup/src/speedup`
 - test: `uv run pytest`
 
 1. Reuse before writing: look in CODEMAP.md and search for an existing function first. Never copy-paste a block.

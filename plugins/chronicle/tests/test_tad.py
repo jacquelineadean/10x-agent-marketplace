@@ -8,10 +8,10 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from chronicle.connectors.files import store
-from chronicle.core.motion import render
 from chronicle.core.motion.tad import draw, layout, route, spec
-from chronicle.core.story.model import Report
+from chronicle_engine.connectors.files import store
+from chronicle_engine.core.motion import render
+from chronicle_engine.core.story.model import Report
 
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples" / "animation-tad" / "animation.json"
 

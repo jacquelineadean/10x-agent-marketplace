@@ -13,17 +13,18 @@ from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass
 from typing import Any
 
-from chronicle.core.motion import stage
-from chronicle.core.motion.model import Plan, Step
-from chronicle.core.motion.parts import Life, named, packet
+from chronicle_engine.core.motion import stage
+from chronicle_engine.core.motion.model import Plan, Step
+from chronicle_engine.core.motion.parts import Life, named, packet
+from chronicle_engine.core.motion.timeline import Point, Timeline, changes, held, redraws, swells
+from chronicle_engine.core.story.html import tag
+from chronicle_engine.core.story.markup import plain
+from chronicle_engine.core.story.model import Report
+
 from chronicle.core.motion.tad import icons
 from chronicle.core.motion.tad.layout import NODE_W, Rect, place
 from chronicle.core.motion.tad.route import Route, arrowhead, bounds, route_all
 from chronicle.core.motion.tad.spec import EDGE_STATES, NODE_STATES, Edge, Node, Tad
-from chronicle.core.motion.timeline import Point, Timeline, changes, held, redraws, swells
-from chronicle.core.story.html import tag
-from chronicle.core.story.markup import plain
-from chronicle.core.story.model import Report
 
 LABEL_SIZE = 14.0
 TECH_SIZE = 11.0

@@ -6,10 +6,11 @@ import json
 from pathlib import Path
 from typing import Any
 
+import chronicle.pack  # noqa: F401  (registers chronicle's blocks, art, kinds and commands)
 import pytest
-from chronicle.connectors.files import store
-from chronicle.core.story import derive
-from chronicle.core.story.render import Assets
+from chronicle_engine.connectors.files import store
+from chronicle_engine.core.story import derive
+from chronicle_engine.core.story.render import Assets
 
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples" / "keystone"
 

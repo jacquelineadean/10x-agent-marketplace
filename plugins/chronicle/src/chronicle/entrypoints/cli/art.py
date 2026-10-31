@@ -12,8 +12,8 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
-from chronicle.connectors.files import store
-from chronicle.core.story import model
+from chronicle_engine.connectors.files import store
+from chronicle_engine.core.story import model
 
 ART_DIR = "art"
 MANIFEST = "manifest.json"

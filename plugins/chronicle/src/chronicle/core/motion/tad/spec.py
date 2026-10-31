@@ -22,8 +22,9 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
+from chronicle_engine.core.story.model import Report, check_text
+
 from chronicle.core.motion.tad.icons import GLYPHS
-from chronicle.core.story.model import Report, check_text
 
 DIRECTIONS = ("right", "down")
 GROUP_STYLES = ("zone", "boundary", "cluster", "external")

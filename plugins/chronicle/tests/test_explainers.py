@@ -6,9 +6,9 @@ import re
 from typing import Any
 
 import pytest
-from chronicle.core.story import model
-from chronicle.core.story.diagram import DiagramError, sanitize
-from chronicle.core.story.render import Assets, render
+from chronicle_engine.core.story import model
+from chronicle_engine.core.story.diagram import DiagramError, sanitize
+from chronicle_engine.core.story.render import Assets, render
 
 DIAGRAM = """<svg viewBox="0 0 400 200">
   <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"><path d="M0 0 L10 5 L0 10 Z"/>
