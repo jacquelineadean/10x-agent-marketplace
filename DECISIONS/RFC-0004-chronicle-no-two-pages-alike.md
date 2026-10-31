@@ -37,14 +37,14 @@ and adds two commands that save steps on every run.
    its stylesheet once; the `cup` and `book` icons the runtime draws are now accepted.
 
 ## 2. The need
-**User scenario:** Jacqueline Dean asked for each page's design to be unique to its inputs,
+**User scenario:** the request asked for each page's design to be unique to its inputs,
 prompt or derived theme, pointing at three pages: a golf-simulator employee handbook, a
 podcast episode guide and an Ossabaw Island field guide. All three were read in full for
 this RFC.
 
 | Page | How it was built | What it needed beyond chronicle 0.2 |
 | --- | --- | --- |
-| Golf-simulator handbook "ROK Yardage Book" (241 KB, 20 files) | chronicle 0.1 runtime plus a hand-written "Yardage Book" layer of about 1,000 lines (335 of CSS, about 700 of script) | a course bar of nine flags, quizzes played as holes with golf scores, a launch-monitor calibration drill, a scorecard, golf words on every control |
+| Golf-simulator handbook "Yardage Book" (241 KB, 20 files) | chronicle 0.1 runtime plus a hand-written "Yardage Book" layer of about 1,000 lines (335 of CSS, about 700 of script) | a course bar of nine flags, quizzes played as holes with golf scores, a launch-monitor calibration drill, a scorecard, golf words on every control |
 | Podcast guide "Four Mental Models, Illustrated" (167 KB, 10 files) | written by hand outside chronicle | a 45-minute interview clock with phases, red-pen notes that pop onto the painting, a marker hand font, over 20 custom figures |
 | Ossabaw field guide (432 KB, 120 files) | chronicle 0.2 with 6 widgets | a trail map in the top bar (drawn by a widget that hides the progress bar), a map tour, habitat views; the habitat stylesheet shipped three times |
 

@@ -30,8 +30,8 @@ fact so they can be approved, changed or rejected before merge. It conflicts wit
 Constitution rules (section 7), which need an explicit decision.
 
 ## 2. The need
-**User scenario:** Jacqueline Dean liked an illustrated, interactive companion page for a
-podcast episode and wants the same treatment for work forums: a software project's status,
+**User scenario:** an illustrated, interactive companion page for a podcast episode sets
+the model, and the request is for the same treatment in work forums: a software project's status,
 achievements, challenges, opportunities, history, roadmap and team, from what the user
 provides and from connected MCP servers (GitHub, Atlassian, Datadog). Pages should be
 beautiful, interactive, focused on the highlights, with watercolor illustrations and data

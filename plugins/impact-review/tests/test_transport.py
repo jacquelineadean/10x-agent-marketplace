@@ -8,7 +8,7 @@ from impact_review.connectors.github.errors import AuthError, GitHubError, Netwo
 def test_graphql_posts_query_with_bearer_token_and_api_headers() -> None:
     fake = FakeGitHub().on("Viewer", Reply(body=fixture("viewer")))
     data, warnings = transport_for(fake).graphql("query Viewer { viewer { login } }", {})
-    assert data["viewer"]["login"] == "jdean"
+    assert data["viewer"]["login"] == "srivera"
     assert warnings == []
     sent = fake.sent[0]
     assert sent.method == "POST"
@@ -75,7 +75,7 @@ def test_secondary_rate_limit_waits_retry_after_then_succeeds() -> None:
         Reply(body=fixture("viewer")),
     )
     data, _ = transport_for(fake).graphql("query Viewer { viewer { login } }", {})
-    assert data["viewer"]["login"] == "jdean"
+    assert data["viewer"]["login"] == "srivera"
     assert fake.sleeps == [7.0]
     assert len(fake.sent) == 2
 

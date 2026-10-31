@@ -1,6 +1,6 @@
 {
  "data": {
-  "viewer": {
+  "user": {
    "contributionsCollection": {
     "totalCommitContributions": 7,
     "totalPullRequestContributions": 4,

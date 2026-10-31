@@ -1,0 +1,20 @@
+{
+ "data": {
+  "organization": {
+   "membersWithRole": {
+    "pageInfo": {
+     "hasNextPage": true,
+     "endCursor": "m-1"
+    },
+    "nodes": [
+     {
+      "login": "srivera",
+      "name": "Sam Rivera",
+      "id": "MDQ6VXNlcjE=",
+      "createdAt": "2019-04-02T09:00:00Z"
+     }
+    ]
+   }
+  }
+ }
+}

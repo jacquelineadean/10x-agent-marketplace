@@ -17,7 +17,8 @@ import pytest
 from impact_review.connectors.github.hosts import endpoints_for
 from impact_review.connectors.github.http import GitHubTransport
 from impact_review.connectors.github.source import GitHubSource
-from impact_review.core.models import Timeframe
+from impact_review.core.models import Profile, Timeframe
+from impact_review.core.scope import Scope
 
 FIXTURES = Path(__file__).parent / "fixtures"
 TODAY = date(2026, 10, 11)
@@ -82,10 +83,10 @@ class FakeGitHub:
     def __call__(self, request: Any, timeout: float) -> _Raw:
         sent = _describe(request)
         self.sent.append(sent)
-        key = _key(sent)
-        queue = self.replies.get(key) or self.replies.get(sent.operation or "")
+        keys = _keys(sent)
+        queue = next((self.replies[k] for k in keys if self.replies.get(k)), None)
         if not queue:
-            raise AssertionError(f"no recorded reply for {key}")
+            raise AssertionError(f"no recorded reply for {keys[0]}")
         reply = queue.pop(0) if len(queue) > 1 else queue[0]
         if reply.status >= 400:
             headers = Message()
@@ -113,15 +114,21 @@ def _describe(request: Any) -> Sent:
     return Sent(request.get_method(), request.full_url, headers, operation, variables, query)
 
 
-def _key(sent: Sent) -> str:
+def _keys(sent: Sent) -> list[str]:
+    """Most specific first: `Op[login]:owner/repo@cursor`, then without the person, then `Op`.
+
+    The person is the `login` variable, or the `author` node id for commits.
+    """
     if sent.query is None:
-        return sent.operation or sent.url
+        return [sent.operation or sent.url]
     suffix = ""
     if sent.variables.get("after"):
         suffix = f"@{sent.variables['after']}"
     if sent.operation == "Commits" and "owner" in sent.variables:
         suffix = f":{sent.variables['owner']}/{sent.variables['name']}" + suffix
-    return f"{sent.operation}{suffix}"
+    who = sent.variables.get("login") or sent.variables.get("author")
+    keys = [f"{sent.operation}[{who}]{suffix}"] if who else []
+    return [*keys, f"{sent.operation}{suffix}", sent.operation or ""]
 
 
 def recorded_github() -> FakeGitHub:
@@ -166,3 +173,43 @@ def source(github: FakeGitHub) -> GitHubSource:
 
 
 SourceBuilder = Callable[[FakeGitHub], GitHubSource]
+
+
+def solo(person: Profile | None = None) -> Scope:
+    """A one-person scope, as `--scope me` resolves."""
+    return Scope("me", (), (person or Profile("x", "", "id"),), ())
+
+
+def me_scope(source: GitHubSource) -> Scope:
+    return solo(source.profile())
+
+
+TKIM_ID = "MDQ6VXNlcjI="
+LEE_ID = "MDQ6VXNlcjM="
+
+
+def team_github() -> FakeGitHub:
+    """The standard recording plus a second person (tkim), an idle member (lee) and lookups.
+
+    tkim opened acme/api#150 (reviewed by srivera), reviewed srivera's acme/api#101 and shares
+    commit a1 with srivera. Team acme/platform and org acme hold srivera, tkim and lee (org
+    members come over two pages, without lee). Enterprise acme-corp owns org acme.
+    """
+    fake = recorded_github()
+    fake.on("Contributions[tkim]", Reply(body=fixture("contributions_tkim")))
+    fake.on("PullRequests[tkim]", Reply(body=fixture("pull_requests_tkim")))
+    fake.on("Reviews[tkim]", Reply(body=fixture("reviews_tkim")))
+    fake.on("Issues[tkim]", Reply(body=fixture("issues_empty")))
+    fake.on(f"Commits[{TKIM_ID}]:acme/api", Reply(body=fixture("commits_tkim_acme_api")))
+    fake.on("Contributions[lee]", Reply(body=fixture("contributions_empty")))
+    fake.on("PullRequests[lee]", Reply(body=fixture("pull_requests_empty")))
+    fake.on("Reviews[lee]", Reply(body=fixture("reviews_empty")))
+    fake.on("Issues[lee]", Reply(body=fixture("issues_empty")))
+    fake.on("TeamMembers", Reply(body=fixture("team_members")))
+    fake.on("OrgMembers", Reply(body=fixture("org_members_page1")))
+    fake.on("OrgMembers@m-1", Reply(body=fixture("org_members_page2")))
+    fake.on("EnterpriseOrgs", Reply(body=fixture("enterprise_orgs")))
+    fake.on("User[tkim]", Reply(body=fixture("user_tkim")))
+    fake.on("User[srivera]", Reply(body={"data": {"user": fixture("viewer")["data"]["viewer"]}}))
+    fake.on("User[ghost-user]", Reply(body=fixture("user_missing")))
+    return fake

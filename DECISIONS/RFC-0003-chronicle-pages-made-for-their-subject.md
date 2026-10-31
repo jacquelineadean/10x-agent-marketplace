@@ -32,9 +32,9 @@ warehouse, a conveyor progress bar and a receipt for the hero numbers. A second 
 and a custom widget.
 
 ## 2. The need
-**User scenario:** Jacqueline Dean compared the Keystone page with a retailer's page whose
+**User scenario:** the request compared the Keystone page with a retailer's page whose
 progress bar was a tape measure and whose map showed its stores over time. Keystone's
-landscapes and bridge metaphor could have illustrated any project. She wants pages for
+landscapes and bridge metaphor could have illustrated any project. The request is for pages for
 project updates, product launches, onboarding and training handbooks, and guides to
 podcasts or talks, each designed for its content.
 **Done means:**

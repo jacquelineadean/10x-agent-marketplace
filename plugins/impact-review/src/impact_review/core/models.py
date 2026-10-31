@@ -11,6 +11,7 @@ class Profile:
     login: str
     name: str
     node_id: str
+    created_at: date | None = None
 
 
 @dataclass(frozen=True)
@@ -37,7 +38,7 @@ class Repository:
 
 @dataclass(frozen=True)
 class Review:
-    """A review someone left on the viewer's pull request."""
+    """A review someone left on a pull request opened by a person in scope."""
 
     author: str
     state: str
@@ -64,6 +65,7 @@ class PullRequest:
     comments: int
     language: str | None
     is_private: bool
+    author: str = ""
 
     @property
     def lines(self) -> int:
@@ -81,6 +83,7 @@ class ReviewGiven:
     state: str
     submitted_at: datetime
     comments: int
+    reviewer: str = ""
 
 
 @dataclass(frozen=True)
@@ -94,6 +97,7 @@ class Issue:
     created_at: datetime
     closed_at: datetime | None
     labels: tuple[str, ...]
+    author: str = ""
 
 
 @dataclass(frozen=True)
@@ -107,11 +111,12 @@ class Commit:
     deletions: int
     changed_files: int
     pr_number: int | None
+    author: str = ""
 
 
 @dataclass(frozen=True)
 class RepoShare:
-    """The viewer's part of a repository's commits and lines (REST contributor statistics)."""
+    """The scope's part of a repository's commits and lines (REST contributor statistics)."""
 
     repo: str
     commits: int
@@ -133,10 +138,15 @@ class Totals:
 
 @dataclass
 class Activity:
-    """Everything one run collected for the viewer inside the timeframe."""
+    """Everything one run collected for the people in scope inside the timeframe.
+
+    Each pull request, issue and commit carries its `author`, each review its `reviewer`.
+    `calendar` sums every person's daily counts; `calendars` keeps them per lowercase login.
+    """
 
     totals: Totals = field(default_factory=Totals)
     calendar: dict[date, int] = field(default_factory=dict)
+    calendars: dict[str, dict[date, int]] = field(default_factory=dict)
     repositories: list[Repository] = field(default_factory=list)
     pull_requests: list[PullRequest] = field(default_factory=list)
     reviews: list[ReviewGiven] = field(default_factory=list)

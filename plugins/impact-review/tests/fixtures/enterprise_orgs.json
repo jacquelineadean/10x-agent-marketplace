@@ -1,0 +1,17 @@
+{
+ "data": {
+  "enterprise": {
+   "organizations": {
+    "pageInfo": {
+     "hasNextPage": false,
+     "endCursor": null
+    },
+    "nodes": [
+     {
+      "login": "acme"
+     }
+    ]
+   }
+  }
+ }
+}

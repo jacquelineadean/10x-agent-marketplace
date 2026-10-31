@@ -1,8 +1,10 @@
-# Self-evaluation rubric (default)
+# Individual review rubric (default for one person)
 
-Replace this file with your company's framework through `--rubric PATH`. The writer covers
-each area below in one short section, cites a `metrics.json` key for every number, and marks
-outcomes GitHub cannot know as `[ADD OUTCOME: ...]`.
+Used when the scope is one person: a self-evaluation, a manager's review draft, a promotion
+packet, a resume refresh or interview preparation. Replace it with your own framework through
+`--rubric PATH`. The writer covers each area below in one short section, cites a
+`metrics.json` key for every number, and marks outcomes GitHub cannot know as
+`[ADD OUTCOME: ...]`.
 
 ## Delivery and impact
 What shipped, for whom, and what changed because of it. Lead with merged pull requests

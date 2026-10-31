@@ -2,13 +2,54 @@
 
 VIEWER = """
 query Viewer {
-  viewer { login name id }
+  viewer { login name id createdAt }
+}
+"""
+
+USER = """
+query User($login: String!) {
+  user(login: $login) { login name id createdAt }
+}
+"""
+
+TEAM_MEMBERS = """
+query TeamMembers($org: String!, $slug: String!, $after: String) {
+  organization(login: $org) {
+    team(slug: $slug) {
+      members(first: 100, after: $after, membership: ALL) {
+        pageInfo { hasNextPage endCursor }
+        nodes { login name id createdAt }
+      }
+    }
+  }
+}
+"""
+
+ORG_MEMBERS = """
+query OrgMembers($org: String!, $after: String) {
+  organization(login: $org) {
+    membersWithRole(first: 100, after: $after) {
+      pageInfo { hasNextPage endCursor }
+      nodes { login name id createdAt }
+    }
+  }
+}
+"""
+
+ENTERPRISE_ORGS = """
+query EnterpriseOrgs($slug: String!, $after: String) {
+  enterprise(slug: $slug) {
+    organizations(first: 100, after: $after) {
+      pageInfo { hasNextPage endCursor }
+      nodes { login }
+    }
+  }
 }
 """
 
 CONTRIBUTIONS = """
-query Contributions($from: DateTime!, $to: DateTime!) {
-  viewer {
+query Contributions($login: String!, $from: DateTime!, $to: DateTime!) {
+  user(login: $login) {
     contributionsCollection(from: $from, to: $to) {
       totalCommitContributions
       totalPullRequestContributions
@@ -29,8 +70,8 @@ query Contributions($from: DateTime!, $to: DateTime!) {
 """
 
 PULL_REQUESTS = """
-query PullRequests($from: DateTime!, $to: DateTime!, $after: String) {
-  viewer {
+query PullRequests($login: String!, $from: DateTime!, $to: DateTime!, $after: String) {
+  user(login: $login) {
     contributionsCollection(from: $from, to: $to) {
       pullRequestContributions(first: 100, after: $after) {
         pageInfo { hasNextPage endCursor }
@@ -51,8 +92,8 @@ query PullRequests($from: DateTime!, $to: DateTime!, $after: String) {
 """
 
 REVIEWS = """
-query Reviews($from: DateTime!, $to: DateTime!, $after: String) {
-  viewer {
+query Reviews($login: String!, $from: DateTime!, $to: DateTime!, $after: String) {
+  user(login: $login) {
     contributionsCollection(from: $from, to: $to) {
       pullRequestReviewContributions(first: 100, after: $after) {
         pageInfo { hasNextPage endCursor }
@@ -72,8 +113,8 @@ query Reviews($from: DateTime!, $to: DateTime!, $after: String) {
 """
 
 ISSUES = """
-query Issues($from: DateTime!, $to: DateTime!, $after: String) {
-  viewer {
+query Issues($login: String!, $from: DateTime!, $to: DateTime!, $after: String) {
+  user(login: $login) {
     contributionsCollection(from: $from, to: $to) {
       issueContributions(first: 100, after: $after) {
         pageInfo { hasNextPage endCursor }

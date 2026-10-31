@@ -38,12 +38,10 @@ specifics live in one reference file (`references/tad.md`) and one code package
 4. `chronicle animate new|check|build`, and the exports: SVG, HTML, PNG, GIF, MP4, WebM.
 
 ## 2. The need
-**User scenario:** Jacqueline Dean asked for "a new skill/scripts/etc. specifically for
-animations so I can create animations similar to ones from the existing story skill, but
-they should be standalone to allow easy integration into existing content across various
-platforms", plus "a variation specifically for creating TAD (technical architecture
-diagrams) animations", and asked Claude to decide between a separate TAD skill and a
-type of the generic skill.
+**User scenario:** the request asked for a new skill and scripts for animations like the
+story skill's, made standalone so they drop into existing content on any platform, plus a
+variation for TAD (technical architecture diagram) animations. It left Claude to decide
+between a separate TAD skill and a type of the generic skill.
 
 Story motion today needs the page's runtime script, its stylesheet and its scroll
 position. A slide, a README, a Confluence page or a Slack message has none of those.
