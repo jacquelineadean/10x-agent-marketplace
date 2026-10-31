@@ -35,10 +35,12 @@ code computes and paints, Claude writes and draws.
 
 ```
  user ──/chronicle:story──▶ Claude Code (skill)
-                              │ 1. chronicle-gatherer subagent queries connected tools (read-only)
+                              │ 1. researcher subagent digests the material (read-only);
+                              │    sources:gatherer reads company systems when sources is installed
                               ▼
             run folder chronicle-runs/<slug>/ (local, never committed)
-              facts.json   every number: value, unit, source, note; derive table
+              research/    facts.json (a locator on every fact) and material.md (a 12 KB digest)
+              facts.json   company numbers by system, with queries.json and digest.md
               story.json   theme, chapters and blocks written by Claude; numbers as {{tokens}}
               art/*.svg    drawings by Claude; diagrams/*.svg, widgets/*.js optional
                               │ 2. scripts/chronicle build
@@ -94,9 +96,11 @@ writes the post.
 | impact-review plugin shell `plugins/impact-review/` (`.claude-plugin/plugin.json`, `skills/report/`, `agents/impact-writer.md`) | User-facing command; the skill runs the collector and hands the run folder to the `impact-writer` subagent (Sonnet, Read and Write only), which writes the synthesis | Markdown | Jacqueline Dean |
 | impact-review collector `plugins/impact-review/src/impact_review/` | Calls GitHub, caches responses, computes metrics, renders dashboard and digest | Python 3.11+, standard library only at runtime | Jacqueline Dean |
 
-| chronicle plugin shell `plugins/chronicle/` (`.claude-plugin/plugin.json`, `skills/story/`, `skills/animation/`, `agents/chronicle-gatherer.md`, `scripts/chronicle`) | The story workflow (brief, gather, write, build, publish) and the animation workflow (write, build, look, deliver) | Markdown, POSIX sh | Jacqueline Dean |
+| chronicle plugin shell `plugins/chronicle/` (`.claude-plugin/plugin.json`, `skills/story/`, `skills/animation/`, `agents/researcher.md`, `scripts/chronicle`) | The story workflow (brief, gather, write, build, publish) and the animation workflow (write, build, look, deliver) | Markdown, POSIX sh | Jacqueline Dean |
 | chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story and widget checks, themes, diagram sanitizer, HTML renderer, page runtime (CSS and JS), SVG reader and watercolor painter; the animation timeline, TAD layout and routing, GIF encoder and frame capture | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting and raster exports; a local Chromium for frames and ffmpeg for MP4 | Jacqueline Dean |
 
+| sources plugin shell `plugins/sources/` (`.claude-plugin/plugin.json`, `agents/gatherer.md`, `skills/connect/`, `recipes/`, `scripts/sources`) | Reads company systems through the session's connectors into facts, queries and a digest; sets up each system | Markdown, POSIX sh | Jacqueline Dean |
+| sources package `packages/sources/src/sources/` | Detection, the source picker, named connections, the facts and queries contract, the digest, the user-level database agent | Python 3.11+, standard library only | Jacqueline Dean |
 | speedup plugin shell `plugins/speedup/` (`.claude-plugin/plugin.json`, `skills/{setup,measure,optimize,report}/`, `agents/perf-gatherer.md`, `agents/perf-writer.md`, `scripts/speedup`, `examples/`) | The optimization loop: choose journeys, measure, optimize against proxies, report and write up | Markdown, POSIX sh, YAML (CI example) | Jacqueline Dean |
 | speedup engine `plugins/speedup/src/speedup/` | Project file checks, Datadog and Prometheus reads, imports, benchmark runner, statistics, ratchet, metrics, digest, dashboard, write-up tokens | Python 3.11+, standard library only | Jacqueline Dean |
 
@@ -127,6 +131,15 @@ registers its own parts from `plugins/chronicle/src/chronicle/pack.py`: the wate
 painter as art provider, plates, the creative chrome (arches, tracks, routes, hang tags,
 receipts), the scene and TAD kinds, the sameness review and `motifs`.
 
+sources (RFC-0007, spec 002) gives the data plugins read-only access to company systems.
+Its code, `packages/sources/src/sources/`, uses the same layout and imports neither the
+engine nor a plugin: `core/` detects which systems a session can reach, builds the source
+picker, checks `facts.json` against `queries.json` and writes `digest.md`; `config/` reads
+only which key names are set. The plugin `plugins/sources/` links that package and adds the
+`gatherer` subagent, one recipe per system and the user-run `/sources:connect`. It bundles
+no MCP server: the gatherer reads the connectors the session already has, and databases
+with none can go through a user-level `sources-db` agent whose servers start only inside it.
+
 speedup uses the same layout under `plugins/speedup/src/speedup/`: `core/`
 (rules, statistics, rendering; no I/O), `connectors/datadog/`, `connectors/prometheus/`
 and the shared `connectors/http.py` (every network call), `connectors/bench/` (runs
@@ -142,7 +155,7 @@ benchmark commands), `connectors/files/` (every file read and write), `entrypoin
 
 ## Deployment and environments
 - No hosted environment; plugins run on each user's machine.
-- Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace` or `speedup@10x-agent-marketplace`.
+- Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace`, `sources@10x-agent-marketplace` or `speedup@10x-agent-marketplace`.
 - Releases: each plugin carries a semantic version in `plugin.json`; a git tag `<plugin>-vX.Y.Z` (for example `impact-review-v1.0.0`) marks each release.
 - Rollback: reinstall from the previous tag, or pin the marketplace to it.
 

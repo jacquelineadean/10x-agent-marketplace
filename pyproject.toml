@@ -17,12 +17,15 @@ dev = [
 testpaths = [
     "plugins/impact-review/tests",
     "packages/chronicle-engine/tests",
+    "packages/sources/tests",
     "plugins/chronicle/tests",
+    "plugins/sources/tests",
     "plugins/speedup/tests",
 ]
 pythonpath = [
     "plugins/impact-review/src",
     "packages/chronicle-engine/src",
+    "packages/sources/src",
     "plugins/chronicle/src",
     "plugins/speedup/src",
 ]

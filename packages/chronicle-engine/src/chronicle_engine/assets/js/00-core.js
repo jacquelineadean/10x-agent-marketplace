@@ -177,10 +177,12 @@
   function factTip(node) {
     var src = SOURCES[node.getAttribute("data-src") || ""];
     var note = node.getAttribute("data-note");
+    var loc = node.getAttribute("data-loc");
     var r = node.getBoundingClientRect();
     showTip(function (t) {
       html("div", "tip-h", src ? src.label : "Fact", t);
       if (note) html("div", null, note, t);
+      if (loc) html("div", "tip-src", loc, t);
       if (src && src.asOf) html("div", "tip-src", "As of " + src.asOf, t);
       if (!src) html("div", "tip-src", "No source recorded", t);
     }, r.left, r.bottom);

@@ -104,7 +104,8 @@ needs `ffmpeg` on PATH.
 
 In Claude Code: `/chronicle:story` with a brief, or ask for "an illustrated status page
 for ...". For an animation: `/chronicle:animation`, or ask to "animate our checkout
-architecture for the onboarding deck". The skill settles the brief, has the `chronicle-gatherer` subagent collect facts,
+architecture for the onboarding deck". The skill settles the brief, has the `researcher` subagent digest the material (and,
+with the sources plugin, `sources:gatherer` read company systems),
 designs the page's identity, draws the illustrations, writes the story, builds it and
 publishes it as a private Artifact.
 
@@ -137,7 +138,7 @@ scripts/chronicle motifs                                 # landscape presets and
 | --- | --- |
 | `skills/story/` | the skill and its references: identity, illustration, story format, facts, sources, outlines, widgets, voice |
 | `skills/animation/` | the animation skill and its references: the animation file, TADs, diagrams and scenes, export formats |
-| `agents/chronicle-gatherer.md` | subagent that gathers facts from connected tools |
+| `agents/researcher.md` | subagent that reads the material (files, transcripts, links, web, document connectors) and writes `research/facts.json` with a locator on every fact and `research/material.md` |
 | `scripts/chronicle` | launcher used by the skill through `${CLAUDE_PLUGIN_ROOT}` |
 | `src/chronicle_engine` | a link to `packages/chronicle-engine/src/chronicle_engine`, the shared engine: facts, derive, story checks and renderer, theme tokens, the animation clock and stage, the diagram kind, file, browser and video connectors, and the command line. Claude Code copies the linked files at install |
 | `src/chronicle/pack.py` | chronicle's registrations with the engine: the painter as art provider, the `plate` block, the page chrome, the scene and TAD kinds, the sameness review (`distinct` policy) and the `motifs` command |

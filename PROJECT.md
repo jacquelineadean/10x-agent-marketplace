@@ -73,3 +73,10 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Ceiling:** the highest value a proxy may reach before CI fails; `tighten` only lowers it. The rule as a whole is the **ratchet**.
 - **Change log:** `perf/changes.jsonl`, one optimization per line with its flag, rollout stage and proxy numbers.
 - **Data folder:** speedup's local, never-committed folder of history, benchmark runs and outputs for one project.
+- **Engine:** `packages/chronicle-engine`, the facts, page and animation code the chronicle plugins share; each links it into its own `src/`.
+- **Gatherer:** the sources plugin's subagent that reads company systems through the session's connectors and writes `facts.json`, `queries.json` and `digest.md`.
+- **Recipe:** one system's page in the sources plugin: how to reach it, what to read and what never to do.
+- **Queries file:** `queries.json` in a run folder: the query behind each fact, with its system, lane, connection, window and as-of date.
+- **Lane:** how a fact was read: `mcp` through a connector in the session, or `script` through a collector with keys.
+- **Named connection:** an entry in `connections.json` holding a system's host and the names of the variables with its keys, never a key.
+- **Researcher:** chronicle's subagent that reads provided material and writes `research/facts.json`, a locator on every fact, and `research/material.md`, a digest under 12 KB.

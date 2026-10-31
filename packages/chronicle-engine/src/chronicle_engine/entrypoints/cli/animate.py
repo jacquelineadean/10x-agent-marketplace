@@ -22,7 +22,6 @@ from chronicle_engine.connectors.files import store
 from chronicle_engine.connectors.video import encode
 from chronicle_engine.core.motion import embed, model
 from chronicle_engine.core.motion.render import Animation, Sources, check, render
-from chronicle_engine.core.story import derive
 from chronicle_engine.entrypoints.cli import runs
 
 FORMATS = ("svg", "html", "png", "gif", "mp4", "webm")
@@ -106,17 +105,7 @@ def run(args: argparse.Namespace) -> int:
 
 # ------------------------------------------------------------------------ input
 def _facts(path: Path, anim: Mapping[str, Any], override: Path | None) -> Any:
-    if override:
-        raw = store.read_json(override)
-    elif "facts_file" in anim:
-        raw = store.read_json(path.parent / str(anim["facts_file"]))
-    elif (path.parent / "facts.json").exists():
-        raw = store.read_json(path.parent / "facts.json")
-    else:
-        raw = {}
-    if not isinstance(raw, Mapping):
-        raise store.StoreError("the facts file must hold a JSON object")
-    return derive.apply(raw)
+    return runs.load_facts(path, anim, override, default_required=False)
 
 
 def _drawing(anim: Mapping[str, Any], folder: Path) -> str:

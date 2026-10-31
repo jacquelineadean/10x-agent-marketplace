@@ -61,24 +61,37 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 | `connectors/files/` | every file read and write: JSON, HTML, WebP, bundled assets joined across the engine's and plugins' asset roots |
 | `connectors/browser/` | an installed headless Chromium or Chrome: page screenshots (`shoot.py`) and animation frames over the DevTools pipe (`devtools.py`) |
 | `connectors/video/` | MP4 through the installed ffmpeg program, WebM through OpenCV's video writer |
-| `entrypoints/cli/` | the command line a plugin runs after its pack registers: new, check, paint (with an art provider), build, shoot (`main.py`), `animate new/check/build` (`animate.py`), run folders (`runs.py`) |
+| `entrypoints/cli/` | the command line a plugin runs after its pack registers: new, check, paint (with an art provider), build, shoot (`main.py`), `animate new/check/build` (`animate.py`), run folders and joined facts files (`runs.py`) |
+| `references/` | `facts.md`, the facts file contract every writer follows; plugins read it through their link |
 | `assets/` | `fonts.json`; `css/` the page stylesheet in numbered parts; `js/` the page runtime in numbered parts, each figure starting through the `INIT` table; a page ships the parts its figures use, joined inside one IIFE; `motion/` the stage and diagram stylesheets |
-| `packages/chronicle-engine/tests/` | engine-only tests run with no plugin: the boundary and vocabulary lint (`test_engine_boundary.py`), the command line (`test_engine_cli.py`), page parts and neutral chrome (`test_engine_pages.py`), shared helpers (`engine_helpers.py`) |
+| `packages/chronicle-engine/tests/` | engine-only tests run with no plugin: the boundary and vocabulary lint (`test_engine_boundary.py`), the command line (`test_engine_cli.py`), page parts and neutral chrome (`test_engine_pages.py`), joined facts files and locators (`test_engine_facts.py`), shared helpers (`engine_helpers.py`) |
 
 chronicle's own code lives under `plugins/chronicle/src/chronicle/`:
 
 | Folder | Holds |
 | --- | --- |
 | `pack.py` | chronicle's registrations: the painter as art provider, the `plate` block and its parts, the page chrome, the scene and TAD kinds, the `distinct` policy, the `motifs` command, defaults |
-| `core/story/` | plates on the page (`plates.py`), the creative page chrome and its parts (`chrome.py`) and the sameness review (`review.py`) |
+| `core/story/` | plates on the page (`plates.py`), the creative page chrome and its parts (`chrome.py`), the sameness review (`review.py`) and the checks on the researcher's files (`research.py`) |
 | `core/watercolor/` | painting engine (paper, washes, ink), motifs, presets and the scene language |
 | `core/watercolor/svg/` | SVG drawings: path and transform math (`pathdata.py`), the reader (`parse.py`) and the ink-and-wash painter (`paint.py`) |
 | `core/motion/` | the scene kind (`scene.py`) |
 | `core/motion/tad/` | technical architecture diagrams: the spec reader, tier and lane layout, line routing, icons, and the drawing with its motion |
-| `entrypoints/cli/` | painting shared by build, paint and animate (`art.py`), the `motifs` command (`commands.py`) |
+| `entrypoints/cli/` | painting shared by build, paint and animate (`art.py`), the `motifs` and `research` commands (`commands.py`) |
 | `assets/` | chronicle's page and animation parts: `css/11-plates.css`, `css/13-arch-mark.css`, `css/21-identity-devices.css`, `js/30-plates.js`, `js/41-devices.js` (progress devices), `motion/20-tad.css`, `motion/30-scene.css` |
 | `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, and the animations `animation-tad/`, `animation-diagram/`, `animation-scene/` |
 | `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |
+
+sources' code follows the same layout under `packages/sources/src/sources/`, linked into `plugins/sources/src/sources`:
+
+| Folder | Holds |
+| --- | --- |
+| `core/` | the nine systems and picker groups (`systems.py`), detection (`detect.py`), the AskUserQuestion picker (`picker.py`), named connections (`connections.py`), the facts and queries contract (`contract.py`), `digest.md` (`digest.py`), the user-level database agent (`agent.py`) |
+| `connectors/files/` | JSON and Markdown reads and writes |
+| `connectors/system/` | which programs are on `PATH` |
+| `entrypoints/cli/` | the `sources` command: detect, check, digest, connection, agent |
+| `config/` | the only environment reads: which key names are set, the connections file, Claude's user folder |
+| `packages/sources/tests/` | `test_sources_*.py` with `sources_helpers.py`; no test calls a system |
+| `plugins/sources/` | the plugin shell: `agents/gatherer.md`, `skills/connect/`, `recipes/` (one per system), `references/facts.md` (a link to the engine's), `scripts/sources`, `tests/` |
 
 speedup follows the same cli layout under `plugins/speedup/src/speedup/`:
 

@@ -71,7 +71,7 @@ class Builder:
 
     # ---------------------------------------------------------------- text bits
     def fact(self, path: str, fmt: str) -> str:
-        """A fact token as a span that names its source on hover."""
+        """A fact token as a span that names its source, and where in it, on hover."""
         found = lookup(self.facts, path)
         text = plain(format_value(found.value, found.unit, fmt))
         return tag(
@@ -81,6 +81,7 @@ class Builder:
             tabindex="0",
             data_src=found.source or None,
             data_note=found.note or None,
+            data_loc=found.locator or None,
         )
 
     def inline(self, text: Any) -> str:

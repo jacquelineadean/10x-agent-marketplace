@@ -3,6 +3,11 @@
 `facts.json` holds every number and date the page shows, each with where it came from.
 The story points into it; the page never shows a number that is not here.
 
+Each writer keeps its own top-level keys. A data gatherer writes one key per system
+(`github`, `jira`) to `facts.json`; a researcher writes everything under `research` to its
+own file. A story joins the files with `"facts_file": ["facts.json", "research/facts.json"]`;
+a key in two files stops the build.
+
 ## Shape
 
 Group facts by subject. A fact is a record or a bare value; series are arrays.
@@ -29,6 +34,7 @@ Group facts by subject. A fact is a record or a bare value; series are arrays.
 | `unit` | `%`, `x`, `$`, `ms`, `min`, `pts`, `pp` or a plural word (`days`, `engineers`). |
 | `source` | The `id` of a source in the story's `sources` list. |
 | `note` | What exactly was measured, over which period. Shown on hover. Keep it under 90 characters. |
+| `locator` | Where in the source: a page (`p. 14`), a timestamp (`at 31:02`) or a URL. Shown on hover. |
 
 Rules:
 - Store percentages as percent values (`71`, unit `%`), never fractions.
@@ -40,9 +46,9 @@ Rules:
 
 ## The derive table
 
-Arithmetic belongs to code. Put every computed number in `derive`; `chronicle build` and
-`chronicle check` compute them before reading the story, in table order, so an entry can
-use one computed above it. Each entry names its target path, a `fn`, the inputs as paths,
+Arithmetic belongs to code. Put every computed number in `derive`; the `build` and `check`
+commands compute them before reading the story, in table order, so an entry can use one
+computed above it. Each entry names its target path, a `fn`, the inputs as paths,
 and optional `unit`, `source` and `note` copied onto the result.
 
 ```json

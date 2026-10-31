@@ -248,6 +248,7 @@ registry.add_kind("scene", SCENE, first=True)
 registry.add_kind("tad", TAD)
 registry.POLICIES["distinct"] = distinct
 registry.COMMANDS["motifs"] = registry.Command(commands.motifs_parser, commands.motifs)
+registry.COMMANDS["research"] = registry.Command(commands.research_parser, commands.research)
 registry.add_asset_root(resources.files("chronicle.assets"))
 registry.DEFAULTS.prog = "chronicle"
 registry.DEFAULTS.policy = "distinct"

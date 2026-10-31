@@ -1,0 +1,12 @@
+{
+  "name": "sources",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Read-only access to company systems for pages that present data: GitHub, Jira, Confluence, Datadog, PagerDuty, ServiceNow, Databricks, Postgres and Oracle. A gatherer subagent reads the session's connectors and writes facts.json with the query behind every number and a digest for Claude to read; /sources:connect sets up a system.",
+  "author": {
+    "name": "Jacqueline Dean",
+    "url": "https://github.com/jacquelineadean"
+  },
+  "repository": "https://github.com/jacquelineadean/10x-agent-marketplace",
+  "keywords": ["data sources", "mcp", "github", "jira", "datadog", "databricks", "postgres", "read-only"]
+}

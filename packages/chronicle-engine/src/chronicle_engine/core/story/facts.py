@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import math
 import re
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date
 from typing import Any
@@ -49,6 +49,7 @@ class Fact:
     unit: str = ""
     source: str = ""
     note: str = ""
+    locator: str = ""
 
 
 def lookup(facts: Mapping[str, Any], path: str) -> Fact:
@@ -74,8 +75,39 @@ def lookup(facts: Mapping[str, Any], path: str) -> Fact:
             unit=str(node.get("unit", "")),
             source=str(node.get("source", "")),
             note=str(node.get("note", "")),
+            locator=str(node.get("locator", "")),
         )
     return Fact(path=path, value=node)
+
+
+def merge(files: Sequence[tuple[str, Mapping[str, Any]]]) -> dict[str, Any]:
+    """Join facts files by top-level key; their `derive` tables join entry by entry.
+
+    A key in two files is an error, so one gatherer cannot overwrite another's facts.
+    """
+    if len(files) == 1:
+        return dict(files[0][1])
+    out: dict[str, Any] = {}
+    owner: dict[str, str] = {}
+    derived: dict[str, Any] = {}
+    for name, data in files:
+        for key, value in data.items():
+            if key == "derive" and isinstance(value, Mapping):
+                for target, spec in value.items():
+                    if target in derived:
+                        raise FactError(f"derive target {target!r} is in two facts files")
+                    derived[target] = spec
+                continue
+            if key in out:
+                raise FactError(
+                    f"facts key {key!r} is in both {owner[key]} and {name}; "
+                    "give each facts file its own top-level keys"
+                )
+            out[key] = value
+            owner[key] = name
+    if derived:
+        out["derive"] = derived
+    return out
 
 
 def resolve_refs(spec: Any, facts: Mapping[str, Any]) -> Any:

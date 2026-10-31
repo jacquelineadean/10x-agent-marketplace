@@ -28,7 +28,7 @@ def test_engine_refuses_art_with_a_message(tmp_path: Path) -> None:
 
 def test_engine_has_no_paint_or_plugin_commands(tmp_path: Path) -> None:
     path = write_story(tmp_path)
-    for args in (("paint", str(path)), ("motifs",)):
+    for args in (("paint", str(path)), ("motifs",), ("research", str(tmp_path))):
         result = run(*args)
         assert result.returncode == 2
         assert "invalid choice" in result.stderr

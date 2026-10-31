@@ -23,7 +23,7 @@ from chronicle_engine import registry
 from chronicle_engine.connectors.browser import shoot
 from chronicle_engine.connectors.files import store
 from chronicle_engine.connectors.video.encode import VideoError
-from chronicle_engine.core.story import derive, model
+from chronicle_engine.core.story import model
 from chronicle_engine.core.story import theme as theming
 from chronicle_engine.core.story.facts import FactError
 from chronicle_engine.core.story.render import Assets, render
@@ -192,15 +192,7 @@ def _shoot(out: Path, browser: str | None, wait: int) -> int:
 
 
 def _facts(story_path: Path, story: Mapping[str, Any], override: Path | None) -> Any:
-    if override:
-        raw = store.read_json(override)
-    elif isinstance(story.get("facts"), Mapping):
-        raw = story["facts"]
-    else:
-        raw = store.read_json(story_path.parent / str(story.get("facts_file", "facts.json")))
-    if not isinstance(raw, Mapping):
-        raise store.StoreError("the facts file must hold a JSON object")
-    return derive.apply(raw)
+    return runs.load_facts(story_path, story, override, default_required=True)
 
 
 def _fonts() -> Any:
