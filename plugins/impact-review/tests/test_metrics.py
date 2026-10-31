@@ -21,7 +21,7 @@ def metrics(github: FakeGitHub) -> dict:
 def test_header_fields(metrics: dict) -> None:
     assert metrics["schema_version"] == 1
     assert metrics["generated_at"] == "2026-10-11T12:00:00+00:00"
-    assert metrics["profile"] == {"login": "jdean", "name": "Jacqueline Dean"}
+    assert metrics["profile"] == {"login": "srivera", "name": "Sam Rivera"}
     assert metrics["timeframe"] == {
         "since": "2026-01-01",
         "until": "2026-09-30",
@@ -211,6 +211,6 @@ def test_reviews_on_own_pr_by_self_do_not_count_as_reviewers() -> None:
     from impact_review.core.metrics import collaboration_metrics
 
     pr = _pr("x")
-    own = PullRequest(**{**pr.__dict__, "reviews": (Review("JDean", "COMMENTED", GENERATED),)})
+    own = PullRequest(**{**pr.__dict__, "reviews": (Review("SRivera", "COMMENTED", GENERATED),)})
     activity = Activity(pull_requests=[own])
-    assert collaboration_metrics(activity, "jdean")["reviewers_of_own_prs"] == 0
+    assert collaboration_metrics(activity, "srivera")["reviewers_of_own_prs"] == 0

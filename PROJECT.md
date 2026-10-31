@@ -13,14 +13,13 @@ The second, **chronicle** (RFC-0002 and RFC-0003, drafts), turns a brief plus fa
 The third, **speedup** (RFC-0006, draft), runs continuous performance optimization from monitoring data such as Datadog: it measures user journeys at p75 against targets, guards each win with a benchmark ceiling that only moves down, quantifies every change, and publishes a dashboard plus an optional blog-style write-up.
 
 ## Who it is for
-- Jacqueline Dean, who uses the plugins daily and runs impact-review against a corporate GitHub Enterprise account.
+- Jacqueline Dean, owner and maintainer.
 - Teammates who install the marketplace in Claude Code.
 
 The problem today: a year of GitHub work is spread across many repos, pull requests and Insights pages.
 Assembling it for a self-evaluation takes hours of clicking, and the result has few numbers.
 
-## Why now / what success looks like
-End-of-year review season is the trigger.
+## What success looks like
 Success for impact-review, phase 1:
 - One command produces a metrics dashboard, a self-evaluation draft, resume bullets and interview stories for a chosen timeframe (default: year to date).
 - It works against GitHub.com, GitHub Enterprise Cloud, GitHub Enterprise Server and GHE.com data residency hosts.

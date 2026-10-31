@@ -39,7 +39,7 @@ Four skills drive it: `setup`, `measure`, `optimize`, `report`. Two subagents ke
 output and long prose out of the main conversation: `perf-gatherer` and `perf-writer`.
 
 ## 2. The need
-**User scenario:** Jacqueline Dean asked for a performance optimization plugin inspired by
+**User scenario:** the request asked for a performance optimization plugin inspired by
 the claude.ai post, using monitoring tools such as Datadog to optimize continuously, with a
 dashboard that quantifies optimizations and an optional blog-style summary of every step.
 
@@ -76,7 +76,7 @@ No interview was held; the request asked for the most complete plugin possible.
 | 3 | Write-up | Optional, blog style, all steps taken | From request; section 4.7 |
 | 4 | Dashboard medium | claude.ai Artifact, as chronicle does | Coordinator default; assumed |
 | 5 | Continuous | Optimize continuously | Daily `measure`, CI ratchet, regression suspects |
-| 6 | Plugin name | speedup (first built as perf-ratchet) | Renamed at Jacqueline's request, 21 Oct 2026 |
+| 6 | Plugin name | speedup (first built as perf-ratchet) | Renamed at the owner's request, 21 Oct 2026 |
 
 ## 4. Proposal
 
@@ -127,7 +127,7 @@ Inline CSS and SVG, no script, every source string escaped, links http(s) only. 
 summary band, speedup bars (log scale), one chart per journey with target, windows and ship
 marks, priority table, change ledger, guardrail cards, write-up (sources folded), method.
 Light and dark tokens; no horizontal scroll at 390 px. The styling follows the inspiration
-post at Jacqueline's request (21 Oct 2026): ivory paper, Source Serif 4 headlines, DM Sans
+post at the owner's request (21 Oct 2026): ivory paper, Source Serif 4 headlines, DM Sans
 body, hairline rules, oat figure panels, a clay accent. The blog's own typefaces are not
 free to embed, so these Google Fonts stand in.
 

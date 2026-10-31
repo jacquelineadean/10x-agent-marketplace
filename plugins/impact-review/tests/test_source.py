@@ -10,8 +10,8 @@ from impact_review.core.models import Timeframe
 def test_profile_comes_from_viewer(source: GitHubSource) -> None:
     profile = source.profile()
     assert (profile.login, profile.name, profile.node_id) == (
-        "jdean",
-        "Jacqueline Dean",
+        "srivera",
+        "Sam Rivera",
         "MDQ6VXNlcjE=",
     )
 

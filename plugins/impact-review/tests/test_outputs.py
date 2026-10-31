@@ -22,7 +22,7 @@ def metrics(github: FakeGitHub) -> dict:
 
 def test_digest_labels_every_number_with_its_metrics_key(metrics: dict) -> None:
     digest = render_digest(metrics)
-    assert digest.startswith("# Impact digest for Jacqueline Dean (@jdean)")
+    assert digest.startswith("# Impact digest for Sam Rivera (@srivera)")
     assert "- PRs merged: 2 (volume.prs_merged)" in digest
     assert "- Median hours to merge: 27.0 (flow.merge_hours_median)" in digest
     assert "- acme/api#101 feat: add rate limiter (merged, feature, 455 lines" in digest
@@ -80,7 +80,7 @@ def test_digest_truncates_with_a_note_when_rows_alone_cannot_fit() -> None:
 
 def test_dashboard_markdown_has_summary_and_tables(metrics: dict) -> None:
     text = render_dashboard_md(metrics)
-    assert text.startswith("# Impact dashboard: @jdean 2026-01-01 to 2026-09-30")
+    assert text.startswith("# Impact dashboard: @srivera 2026-01-01 to 2026-09-30")
     assert "| PRs opened / merged / closed unmerged | 4 / 2 / 1 |" in text
     assert "| acme/api#101 | feat: add rate limiter | merged | feature | 455 | 3 | 3 | 2 |" in text
     assert "## Share of repository work" in text

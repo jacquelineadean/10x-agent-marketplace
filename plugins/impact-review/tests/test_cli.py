@@ -71,8 +71,8 @@ def test_default_run_folder_is_host_login_timeframe(tmp_path: Path) -> None:
         {"IMPACT_REVIEW_RUNS": str(tmp_path)},
     )
     assert code == 0
-    assert (tmp_path / "github.com" / "jdean" / "2026-09-12_2026-10-11" / "digest.md").is_file()
-    assert "run folder: " + str(tmp_path / "github.com" / "jdean") in out
+    assert (tmp_path / "github.com" / "srivera" / "2026-09-12_2026-10-11" / "digest.md").is_file()
+    assert "run folder: " + str(tmp_path / "github.com" / "srivera") in out
 
 
 def test_since_and_until_override_timeframe(tmp_path: Path) -> None:
@@ -156,6 +156,6 @@ def test_main_wires_settings_token_and_transport(
     )
     monkeypatch.setattr("sys.stdout", io.StringIO())
     assert entry.main(["collect", "--timeframe", "2026-01-01..2026-09-30"]) == 0
-    assert (tmp_path / "github.com" / "jdean" / "2026-01-01_2026-09-30" / "metrics.json").is_file()
+    assert (tmp_path / "github.com" / "srivera" / "2026-01-01_2026-09-30" / "metrics.json").is_file()
     assert github.sent[0].headers["Authorization"] == "Bearer env-token"
     assert seen == ["env-token"]
