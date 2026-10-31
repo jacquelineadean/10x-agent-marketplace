@@ -1,0 +1,1352 @@
+<title>RFC-0007 Proposal Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  /* Layout: a design-review board. The map sits on drafting film at the left, the open
+     questions hang on a rail at the right, and the walkthrough runs under the map. */
+  --paper: #E8EDF0;
+  --sheet: #EEF2F4;
+  --card: #F8FAFB;
+  --ink: #15202A;
+  --muted: #55626D;
+  --rule: #C8D2D9;
+  --grid: rgba(29, 92, 150, 0.075);
+  --creative: #B23A62;
+  --data: #1D5C96;
+  --engine: #47535E;
+  --teal: #2E7D6B;
+  --violet: #6B5BA8;
+  --pin: #E2A31B;
+  --pin-ink: #1E1606;
+  --picked: #2E784D;
+  --on-picked: #FFFFFF;
+  --f-display: "Big Shoulders Display", "Archivo Narrow", "Arial Narrow", sans-serif;
+  --f-ui: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0C1217; --sheet: #121A21; --card: #17212A; --ink: #E2E9EE; --muted: #98A7B3;
+    --rule: #2B3944; --grid: rgba(116, 169, 221, 0.07); --creative: #E27C9D; --data: #77ABDE;
+    --engine: #AAB7C2; --teal: #5FB8A2; --violet: #A497DC; --pin: #F0B43A; --pin-ink: #1E1606;
+    --picked: #63BF89; --on-picked: #0C1217; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0C1217; --sheet: #121A21; --card: #17212A; --ink: #E2E9EE; --muted: #98A7B3;
+  --rule: #2B3944; --grid: rgba(116, 169, 221, 0.07); --creative: #E27C9D; --data: #77ABDE;
+  --engine: #AAB7C2; --teal: #5FB8A2; --violet: #A497DC; --pin: #F0B43A; --pin-ink: #1E1606;
+  --picked: #63BF89; --on-picked: #0C1217; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 15px/1.5 var(--f-ui);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 32px;
+}
+.wrap { max-width: 1440px; margin: 0 auto; }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--data); outline-offset: 2px; }
+
+/* ---------- header */
+.top { padding-block: 26px 18px; display: grid; gap: 10px; }
+.eyebrow { margin: 0; font: 500 12px/1.4 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.eyebrow b { font-weight: 500; color: var(--ink); border: 1px solid var(--ink); padding: 2px 7px; border-radius: 3px; }
+h1 { margin: 0; font: 800 clamp(34px, 5vw, 52px)/0.95 var(--f-display); letter-spacing: .005em; text-wrap: balance; }
+.dek { margin: 0; max-width: 70ch; font-size: 16px; color: var(--ink); }
+.key { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--muted); }
+.key li { display: inline-flex; align-items: center; gap: 7px; }
+.sw { width: 18px; height: 10px; border-radius: 2px; display: inline-block; }
+.sw.creative { background: var(--creative); }
+.sw.data { background: var(--data); }
+.sw.engine { background: var(--engine); }
+.sw.dash { height: 0; border-top: 2px dashed var(--muted); border-radius: 0; }
+.pin-sw { width: 20px; height: 20px; border-radius: 50%; background: var(--pin); color: var(--pin-ink); font: 700 13px/20px var(--f-display); text-align: center; }
+
+/* ---------- board */
+.board { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 20px; align-items: start; }
+@media (max-width: 1100px) { .board { grid-template-columns: minmax(0, 1fr); } }
+.figure-col { min-width: 0; display: grid; gap: 12px; }
+.sheet {
+  background-color: var(--sheet);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow-x: auto;
+}
+.map svg { display: block; width: 100%; height: auto; min-width: 700px; }
+.map svg .m-node, .map svg .m-group { cursor: pointer; }
+.map svg .m-node, .map svg .m-edge, .map svg .m-group { transition: opacity .2s ease; }
+.map.q-on svg .m-node:not(.hl), .map.q-on svg .m-edge:not(.hl), .map.q-on svg .m-group:not(.hl) { opacity: .13 !important; }
+.map.q-on svg .m-packet { opacity: 0 !important; }
+.map.q-on svg .m-node.hl .m-outline { stroke: var(--c-pin) !important; stroke-width: 2.5px !important; opacity: 1 !important; }
+#a-rfc-0007-proposal-map-g-chron { --tone: var(--c-creative) !important; }
+.q-pin-g { cursor: pointer; }
+.q-pin-g circle { fill: var(--pin); stroke: var(--sheet); stroke-width: 3px; }
+.q-pin-g text { fill: var(--pin-ink); font: 700 18px var(--f-display); text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.q-pin-g.is-picked circle { fill: var(--picked); }
+.q-pin-g.is-picked text { fill: var(--on-picked); }
+.q-pin-g.is-active circle { stroke: var(--ink); stroke-width: 3.5px; }
+.q-pin-g:focus { outline: none; }
+.q-pin-g:focus-visible circle { stroke: var(--data); stroke-width: 4.5px; }
+.map.q-on .q-pin-g:not(.is-active) { opacity: .4; }
+.map.walk .q-pins { display: none; }
+
+.part-info { margin: 0; min-height: 1.5em; font-size: 14px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.part-info b { color: var(--ink); font-weight: 600; }
+.chip-btn { border: 1px solid var(--rule); background: var(--card); border-radius: 999px; padding: 1px 9px; font-size: 12px; cursor: pointer; }
+
+/* ---------- walkthrough */
+.player { display: grid; gap: 10px; background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; }
+.player-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.player h2 { margin: 0 8px 0 0; font: 700 22px/1 var(--f-display); letter-spacing: .02em; text-transform: uppercase; }
+.btn { font-weight: 600; font-size: 14px; padding: 7px 14px; border-radius: 4px; border: 1px solid var(--rule); background: var(--card); color: var(--ink); cursor: pointer; }
+.btn:hover { border-color: var(--ink); }
+.btn.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.btn.small { padding: 4px 10px; font-size: 13px; }
+.where { margin-left: auto; font: 500 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.track { display: flex; gap: 3px; height: 6px; }
+.seg { position: relative; flex: var(--w) 1 0; background: var(--rule); border-radius: 2px; overflow: hidden; }
+.seg i { position: absolute; inset: 0 auto 0 0; width: var(--fill, 0%); background: var(--tone, var(--data)); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+@media (max-width: 760px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.step { width: 100%; text-align: left; border: 1px solid var(--rule); border-top: 3px solid var(--tone, var(--rule)); border-radius: 4px; background: var(--card); padding: 6px 8px; cursor: pointer; display: grid; gap: 1px; }
+.step .n { font: 500 11px var(--f-mono); color: var(--muted); }
+.step .t { font-weight: 600; font-size: 13px; line-height: 1.25; }
+.step[aria-current="step"] { background: var(--sheet); border-color: var(--tone, var(--ink)); }
+.caption { margin: 0; font-size: 16px; line-height: 1.45; max-width: 75ch; min-height: 2.9em; }
+
+/* ---------- rail */
+.rail { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); max-height: calc(100vh - 24px); overflow: auto; }
+@media (max-width: 1100px) { .rail { position: static; max-height: none; } }
+.rail-head { padding: 14px 16px 12px; border-bottom: 1px solid var(--rule); display: grid; gap: 6px; position: sticky; top: 0; background: var(--card); z-index: 1; }
+.rail-head h2 { margin: 0; font: 700 22px/1 var(--f-display); letter-spacing: .02em; text-transform: uppercase; }
+.tallyrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.tally { margin: 0; font-size: 14px; }
+.tally b { font: 700 18px var(--f-display); }
+.save { margin: 0; font-size: 12px; color: var(--muted); }
+.copybox { width: 100%; min-height: 9em; font: 12px/1.45 var(--f-mono); border: 1px solid var(--rule); border-radius: 4px; background: var(--sheet); padding: 8px; }
+.qs { list-style: none; margin: 0; padding: 0; }
+.q { border-bottom: 1px solid var(--rule); }
+.q:last-child { border-bottom: 0; }
+.q-head { width: 100%; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 16px; background: none; border: 0; text-align: left; cursor: pointer; }
+.q-head:hover { background: var(--sheet); }
+.q-num { width: 26px; height: 26px; border-radius: 50%; background: var(--pin); color: var(--pin-ink); font: 700 15px/26px var(--f-display); text-align: center; }
+.q.is-picked .q-num { background: var(--picked); color: var(--on-picked); }
+.q-title { font-weight: 600; font-size: 14px; line-height: 1.3; }
+.q-state { font: 500 11px var(--f-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); max-width: 12em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.q.is-picked .q-state { color: var(--picked); }
+.q.is-open { background: var(--sheet); }
+.q-body { padding: 0 16px 16px 52px; display: grid; gap: 10px; }
+.q-ask { margin: 0; font-size: 15px; }
+.touches { margin: 0; font: 12px/1.5 var(--f-mono); color: var(--muted); }
+.opts { border: 0; margin: 0; padding: 0; display: grid; gap: 6px; }
+.opt { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 2px 8px; align-items: start; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 4px; background: var(--card); cursor: pointer; }
+.opt:has(input:checked) { border-color: var(--picked); box-shadow: inset 3px 0 0 var(--picked); }
+.opt input { margin: 3px 0 0; accent-color: var(--picked); }
+.opt-label { font-weight: 600; font-size: 14px; }
+.opt-note { grid-column: 2; font-size: 13px; color: var(--muted); }
+.badge { margin-left: 6px; font: 500 10px var(--f-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--data); border: 1px solid currentColor; border-radius: 3px; padding: 0 4px; white-space: nowrap; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--rule); border-radius: 999px; background: var(--card); font-size: 13px; cursor: pointer; }
+.chip:has(input:checked) { border-color: var(--picked); background: var(--sheet); }
+.chip:has(input:disabled) { opacity: .5; cursor: default; }
+.chip input { margin: 0; accent-color: var(--picked); }
+.chip.proposed::after { content: "RFC"; font: 500 9px var(--f-mono); color: var(--data); }
+.note-l { font-size: 12px; color: var(--muted); }
+.note { width: 100%; border: 1px solid var(--rule); border-radius: 4px; background: var(--card); padding: 6px 8px; font-size: 14px; resize: vertical; }
+.q-actions { display: flex; gap: 10px; align-items: center; }
+.linkish { border: 0; background: none; padding: 0; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: 13px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.foot { margin-top: 18px; font-size: 13px; color: var(--muted); max-width: 90ch; }
+.foot a { color: var(--data); }
+@media (prefers-reduced-motion: reduce) { .map svg .m-node, .map svg .m-edge, .map svg .m-group { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow"><b>RFC-0007</b><span>Draft of 31 Oct 2026</span><span>Proposal only, nothing built</span></p>
+    <h1>Two plugins, one engine</h1>
+    <p class="dek">chronicle splits into a creative plugin and a data plugin that link one shared engine. Play the walkthrough to build the map, then open a numbered pin to see the parts each open question changes and record your pick.</p>
+    <ul class="key" aria-label="Key">
+      <li><i class="sw creative"></i>chronicle, creative</li>
+      <li><i class="sw data"></i>briefing, data (working name)</li>
+      <li><i class="sw engine"></i>Shared engine and files</li>
+      <li><i class="sw dash"></i>Open link</li>
+      <li><i class="pin-sw">1</i>Open question</li>
+    </ul>
+  </header>
+
+  <main class="board">
+    <section class="figure-col" aria-label="Architecture map">
+      <div class="sheet">
+        <div class="map" id="map"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 750" width="1040" height="750" class="chr-a chr-a-a-rfc-0007-proposal-map" role="img" aria-labelledby="a-rfc-0007-proposal-map-title a-rfc-0007-proposal-map-desc"><title id="a-rfc-0007-proposal-map-title">RFC-0007 proposal map</title><desc id="a-rfc-0007-proposal-map-desc">chronicle splits into a creative plugin and a data plugin that link one shared engine; read-only collectors or a gatherer subagent fill the run folder, and the engine builds every page and export. Steps: 1. chronicle takes painted, illustrated requests and briefing takes data requests; both plugins link the same engine folder. 2. A creative request: the story skill draws in SVG, the painter washes it in watercolor, and the engine renders the page. 3. A data request: read-only collectors query company systems and write facts, and Claude reads only the digest. 4. Without keys, the gatherer subagent reads MCP connectors; raw output stays inside it and only facts come back. 5. Refresh replays the saved queries with no model call, then the engine rebuilds the page and the slide exports. 6. The dashed line is still open: chronicle could borrow briefing&#x27;s gatherer for company facts, with no dependency between plugins. Sources: RFC-0007 (DECISIONS/RFC-0007-chronicle-two-branches.md, 31 Oct 2026).</desc><style>@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800&amp;family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap");
+/* Theme: tokens derived by chronicle from the palette and fonts. */
+.chr-a-a-rfc-0007-proposal-map {
+  --paper: #EEF2F4;
+  --print: #F4F7F8;
+  --surface: #E5EAEC;
+  --surface-2: #FAFBFC;
+  --ink: #15202A;
+  --ink-2: #48515A;
+  --muted: #666E75;
+  --rule: #CDD2D6;
+  --rule-2: #DDE1E4;
+  --grid: #D8DDE0;
+  --accent: #1D5C96;
+  --accent-text: #1D5C96;
+  --accent-wash: rgba(29, 92, 150, 0.10);
+  --legacy: #9A6A12;
+  --legacy-text: #906414;
+  --good: #2E784D;
+  --warn: #996011;
+  --bad: #B23A2B;
+  --good-wash: rgba(47, 125, 79, 0.12);
+  --bad-wash: rgba(178, 58, 43, 0.12);
+  --tip-bg: #15202A;
+  --tip-ink: #EEF2F4;
+  --on-accent: #FFFFFF;
+  --s1: #1D5C96;
+  --s2: #B23A62;
+  --s3: #2E7D6B;
+  --s4: #94640A;
+  --s5: #6B5BA8;
+  --s6: #47535E;
+  --seq-0: #DDE6EC;
+  --seq-1: #C0D1DF;
+  --seq-2: #96B3CD;
+  --seq-3: #648FB6;
+  --seq-4: #1D5C96;
+  --seq-5: #1A446B;
+  --c-creative: #B23A62;
+  --c-data: #1D5C96;
+  --c-engine: #47535E;
+  --c-pin: #C88A12;
+  --f-display: "Big Shoulders Display", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-ui: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  .chr-a-a-rfc-0007-proposal-map:not([data-theme="light"]) {
+  --paper: #121A21;
+  --print: #F4F7F8;
+  --surface: #1C242B;
+  --surface-2: #232B31;
+  --ink: #E2E9EE;
+  --ink-2: #B8C0C5;
+  --muted: #8B9298;
+  --rule: #333B42;
+  --rule-2: #232B31;
+  --grid: #293138;
+  --accent: #5B89B3;
+  --accent-text: #749BBE;
+  --accent-wash: rgba(91, 137, 179, 0.16);
+  --legacy: #A77D30;
+  --legacy-text: #B69454;
+  --good: #4E9069;
+  --warn: #AB7A34;
+  --bad: #C56B60;
+  --good-wash: rgba(78, 144, 105, 0.16);
+  --bad-wash: rgba(197, 107, 96, 0.16);
+  --tip-bg: #E2E9EE;
+  --tip-ink: #121A21;
+  --on-accent: #121A21;
+  --s1: #3970A3;
+  --s2: #B43F66;
+  --s3: #2E7D6B;
+  --s4: #94640A;
+  --s5: #6F5FAA;
+  --s6: #636D76;
+  --seq-0: #192530;
+  --seq-1: #243544;
+  --seq-2: #31495E;
+  --seq-3: #41617E;
+  --seq-4: #5B89B3;
+  --seq-5: #A5BED5;
+  --c-creative: #B23A62;
+  --c-data: #2E689E;
+  --c-engine: #5E6872;
+  --c-pin: #C88A12;
+  --frame-pad: 12px; --frame-shadow: 0 18px 50px rgba(0, 0, 0, .55);
+  color-scheme: dark; }
+}
+.chr-a-a-rfc-0007-proposal-map[data-theme="dark"] {
+  --paper: #121A21;
+  --print: #F4F7F8;
+  --surface: #1C242B;
+  --surface-2: #232B31;
+  --ink: #E2E9EE;
+  --ink-2: #B8C0C5;
+  --muted: #8B9298;
+  --rule: #333B42;
+  --rule-2: #232B31;
+  --grid: #293138;
+  --accent: #5B89B3;
+  --accent-text: #749BBE;
+  --accent-wash: rgba(91, 137, 179, 0.16);
+  --legacy: #A77D30;
+  --legacy-text: #B69454;
+  --good: #4E9069;
+  --warn: #AB7A34;
+  --bad: #C56B60;
+  --good-wash: rgba(78, 144, 105, 0.16);
+  --bad-wash: rgba(197, 107, 96, 0.16);
+  --tip-bg: #E2E9EE;
+  --tip-ink: #121A21;
+  --on-accent: #121A21;
+  --s1: #3970A3;
+  --s2: #B43F66;
+  --s3: #2E7D6B;
+  --s4: #94640A;
+  --s5: #6F5FAA;
+  --s6: #636D76;
+  --seq-0: #192530;
+  --seq-1: #243544;
+  --seq-2: #31495E;
+  --seq-3: #41617E;
+  --seq-4: #5B89B3;
+  --seq-5: #A5BED5;
+  --c-creative: #B23A62;
+  --c-data: #2E689E;
+  --c-engine: #5E6872;
+  --c-pin: #C88A12;
+  --frame-pad: 12px; --frame-shadow: 0 18px 50px rgba(0, 0, 0, .55);
+  color-scheme: dark;
+}
+.chr-a-a-rfc-0007-proposal-map .f-accent { fill: var(--accent); } .chr-a-a-rfc-0007-proposal-map .s-accent { stroke: var(--accent); } .chr-a-a-rfc-0007-proposal-map .t-accent { color: var(--accent); }
+.chr-a-a-rfc-0007-proposal-map .f-legacy { fill: var(--legacy); } .chr-a-a-rfc-0007-proposal-map .s-legacy { stroke: var(--legacy); } .chr-a-a-rfc-0007-proposal-map .t-legacy { color: var(--legacy); }
+.chr-a-a-rfc-0007-proposal-map .f-ink { fill: var(--ink); } .chr-a-a-rfc-0007-proposal-map .s-ink { stroke: var(--ink); } .chr-a-a-rfc-0007-proposal-map .t-ink { color: var(--ink); }
+.chr-a-a-rfc-0007-proposal-map .f-muted { fill: var(--muted); } .chr-a-a-rfc-0007-proposal-map .s-muted { stroke: var(--muted); } .chr-a-a-rfc-0007-proposal-map .t-muted { color: var(--muted); }
+.chr-a-a-rfc-0007-proposal-map .f-paper { fill: var(--paper); } .chr-a-a-rfc-0007-proposal-map .s-paper { stroke: var(--paper); } .chr-a-a-rfc-0007-proposal-map .t-paper { color: var(--paper); }
+.chr-a-a-rfc-0007-proposal-map .f-surface { fill: var(--surface); } .chr-a-a-rfc-0007-proposal-map .s-surface { stroke: var(--surface); } .chr-a-a-rfc-0007-proposal-map .t-surface { color: var(--surface); }
+.chr-a-a-rfc-0007-proposal-map .f-good { fill: var(--good); } .chr-a-a-rfc-0007-proposal-map .s-good { stroke: var(--good); } .chr-a-a-rfc-0007-proposal-map .t-good { color: var(--good); }
+.chr-a-a-rfc-0007-proposal-map .f-bad { fill: var(--bad); } .chr-a-a-rfc-0007-proposal-map .s-bad { stroke: var(--bad); } .chr-a-a-rfc-0007-proposal-map .t-bad { color: var(--bad); }
+.chr-a-a-rfc-0007-proposal-map .f-s1 { fill: var(--s1); } .chr-a-a-rfc-0007-proposal-map .s-s1 { stroke: var(--s1); } .chr-a-a-rfc-0007-proposal-map .t-s1 { color: var(--s1); }
+.chr-a-a-rfc-0007-proposal-map .f-s2 { fill: var(--s2); } .chr-a-a-rfc-0007-proposal-map .s-s2 { stroke: var(--s2); } .chr-a-a-rfc-0007-proposal-map .t-s2 { color: var(--s2); }
+.chr-a-a-rfc-0007-proposal-map .f-s3 { fill: var(--s3); } .chr-a-a-rfc-0007-proposal-map .s-s3 { stroke: var(--s3); } .chr-a-a-rfc-0007-proposal-map .t-s3 { color: var(--s3); }
+.chr-a-a-rfc-0007-proposal-map .f-s4 { fill: var(--s4); } .chr-a-a-rfc-0007-proposal-map .s-s4 { stroke: var(--s4); } .chr-a-a-rfc-0007-proposal-map .t-s4 { color: var(--s4); }
+.chr-a-a-rfc-0007-proposal-map .f-s5 { fill: var(--s5); } .chr-a-a-rfc-0007-proposal-map .s-s5 { stroke: var(--s5); } .chr-a-a-rfc-0007-proposal-map .t-s5 { color: var(--s5); }
+.chr-a-a-rfc-0007-proposal-map .f-s6 { fill: var(--s6); } .chr-a-a-rfc-0007-proposal-map .s-s6 { stroke: var(--s6); } .chr-a-a-rfc-0007-proposal-map .t-s6 { color: var(--s6); }
+.chr-a-a-rfc-0007-proposal-map .f-creative { fill: var(--c-creative); } .chr-a-a-rfc-0007-proposal-map .s-creative { stroke: var(--c-creative); } .chr-a-a-rfc-0007-proposal-map .t-creative { color: var(--c-creative); }
+.chr-a-a-rfc-0007-proposal-map .f-data { fill: var(--c-data); } .chr-a-a-rfc-0007-proposal-map .s-data { stroke: var(--c-data); } .chr-a-a-rfc-0007-proposal-map .t-data { color: var(--c-data); }
+.chr-a-a-rfc-0007-proposal-map .f-engine { fill: var(--c-engine); } .chr-a-a-rfc-0007-proposal-map .s-engine { stroke: var(--c-engine); } .chr-a-a-rfc-0007-proposal-map .t-engine { color: var(--c-engine); }
+.chr-a-a-rfc-0007-proposal-map .f-pin { fill: var(--c-pin); } .chr-a-a-rfc-0007-proposal-map .s-pin { stroke: var(--c-pin); } .chr-a-a-rfc-0007-proposal-map .t-pin { color: var(--c-pin); }
+/* The frame of a standalone animation: background, title, captions and the step strip.
+   Every rule sits under .chr-a so an animation pasted into another page styles only
+   itself; its colors and fonts come from tokens set on .chr-a-&lt;slug>. */
+.chr-a { font-family: var(--f-body); }
+.chr-a .a-bg { fill: var(--paper); }
+.chr-a .a-bg.surface { fill: var(--surface); }
+.chr-a .a-kicker { font-family: var(--f-ui); font-weight: 700; letter-spacing: .12em; fill: var(--accent-text); }
+.chr-a .a-title { font-family: var(--f-display); fill: var(--ink); }
+.chr-a .a-credit { font-family: var(--f-ui); fill: var(--muted); }
+.chr-a .a-num { font-family: var(--f-mono); font-weight: 500; fill: var(--accent-text); }
+.chr-a .a-cap { font-family: var(--f-body); fill: var(--ink); }
+.chr-a .a-track { stroke: var(--rule); }
+.chr-a .a-fill { stroke: var(--accent); }
+
+/* Technical architecture diagrams: zones, components, lines, packets and state marks. */
+.chr-a .m-gfill { fill: none; }
+.chr-a .m-gfill.m-zone { fill: var(--surface); }
+.chr-a .m-gfill.m-cluster { fill: color-mix(in srgb, var(--tone) 7%, transparent); }
+.chr-a .m-gline { fill: none; stroke: var(--rule); stroke-width: 1.2; }
+.chr-a .m-gline.m-boundary { stroke: var(--muted); stroke-dasharray: 7 5; }
+.chr-a .m-gline.m-external { stroke: var(--muted); stroke-dasharray: .5 5; stroke-linecap: round; stroke-width: 1.6; }
+.chr-a .m-tinted .m-gline { stroke: color-mix(in srgb, var(--tone) 50%, transparent); }
+.chr-a .m-glabel { font-family: var(--f-ui); font-weight: 650; font-size: 11px; letter-spacing: .08em; fill: var(--muted); }
+.chr-a .m-tinted .m-glabel { fill: var(--tone); }
+.chr-a .m-gflash { fill: none; stroke: var(--accent); stroke-width: 2.5; opacity: 0; }
+
+.chr-a .m-line { fill: none; stroke: var(--ink-2); stroke-width: 1.6; stroke-linejoin: round; }
+.chr-a .m-async .m-line { stroke-dasharray: 6 5; }
+.chr-a .m-head { fill: var(--ink-2); }
+.chr-a .m-async .m-head { fill: none; stroke: var(--ink-2); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.chr-a .m-hot { fill: none; stroke: var(--tone, var(--accent)); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+.chr-a .m-mask { fill: none; stroke: #fff; stroke-width: 22; }
+.chr-a .m-elabel, .chr-a .m-legend { font-family: var(--f-ui); font-size: 12px; fill: var(--ink-2); paint-order: stroke; stroke: var(--paper); stroke-width: 4px; stroke-linejoin: round; }
+.chr-a .m-legend { fill: var(--muted); }
+.chr-a .m-line.m-new, .chr-a .m-line.m-legacy, .chr-a .m-line.m-bad { stroke-width: 2.2; }
+.chr-a .m-new.m-line { stroke: var(--accent); }
+.chr-a .m-new.m-head { fill: var(--accent); stroke: var(--accent); }
+.chr-a .m-legacy.m-line { stroke: var(--legacy); }
+.chr-a .m-legacy.m-head { fill: var(--legacy); stroke: var(--legacy); }
+.chr-a .m-bad.m-line, .chr-a .m-down.m-line { stroke: var(--bad); }
+.chr-a .m-bad.m-head, .chr-a .m-down.m-head { fill: var(--bad); stroke: var(--bad); }
+.chr-a .m-down.m-line { stroke-dasharray: 2 5; stroke-linecap: round; opacity: .7; }
+.chr-a .m-planned.m-line { stroke: var(--muted); stroke-dasharray: 4 5; opacity: .8; }
+.chr-a .m-planned.m-head { fill: var(--muted); stroke: var(--muted); opacity: .8; }
+
+.chr-a .m-halo, .chr-a .m-trail, .chr-a .m-dot { fill: none; stroke-linecap: round; }
+.chr-a .m-halo { stroke: var(--paper); stroke-width: 14; }
+.chr-a .m-trail { stroke: var(--tone); stroke-width: 4; opacity: .4; }
+.chr-a .m-dot { stroke: var(--tone); stroke-width: 9; }
+
+.chr-a .m-shadow { fill: var(--rule-2); }
+.chr-a .m-box, .chr-a .m-rep { fill: var(--surface-2); }
+.chr-a .m-rep { stroke: var(--rule); stroke-width: 1.2; }
+.chr-a .m-outline { fill: none; stroke: var(--rule); stroke-width: 1.2; }
+.chr-a .m-tile { fill: color-mix(in srgb, var(--tone) 14%, transparent); }
+.chr-a .m-glyph { fill: none; stroke: var(--tone); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chr-a .m-nlabel { font-family: var(--f-ui); font-weight: 600; font-size: 14px; fill: var(--ink); }
+.chr-a .m-tech { font-family: var(--f-mono); font-size: 11px; fill: var(--muted); }
+.chr-a .m-ping { fill: none; stroke: var(--tone); stroke-width: 2; opacity: 0; }
+.chr-a .m-ring { fill: none; stroke-width: 2.2; }
+.chr-a .m-ring.m-new { stroke: var(--accent); }
+.chr-a .m-ring.m-legacy { stroke: var(--legacy); }
+.chr-a .m-ring.m-good { stroke: var(--good); }
+.chr-a .m-ring.m-warn { stroke: var(--warn); }
+.chr-a .m-ring.m-bad, .chr-a .m-ring.m-down { stroke: var(--bad); }
+.chr-a .m-ring.m-planned { stroke: var(--muted); stroke-dasharray: 5 4; }
+.chr-a .m-pill rect { fill: var(--paper); stroke: var(--rule); }
+.chr-a .m-pill text { font-family: var(--f-ui); font-weight: 700; font-size: 9.5px; letter-spacing: .06em; fill: var(--muted); }
+.chr-a .m-flag.m-new rect { fill: var(--accent); stroke: none; }
+.chr-a .m-flag.m-new text { fill: var(--on-accent); }
+.chr-a .m-flag.m-legacy rect { fill: var(--legacy-text); stroke: none; }
+.chr-a .m-flag.m-down rect { fill: var(--bad); stroke: none; }
+.chr-a .m-flag.m-legacy text, .chr-a .m-flag.m-down text { fill: var(--paper); }
+.chr-a .m-flag.m-planned rect { stroke: var(--muted); stroke-dasharray: 3 2; }
+.chr-a .m-badge.m-good { fill: var(--good); }
+.chr-a .m-badge.m-warn { fill: var(--warn); }
+.chr-a .m-badge.m-bad { fill: var(--bad); }
+.chr-a .m-sign { fill: none; stroke: var(--paper); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Drawn diagrams: packets that run along Claude's paths take the accent unless a part
+   sets its own --tone. */
+.chr-a .dg-svg .m-packet { --tone: var(--accent); }
+.chr-a .dg-svg { overflow: visible; }
+
+/* Painted scenes: the paper under the painting, the focus shade and the spots. Paintings
+   sit on paper in both themes, so callouts keep paper colors. */
+.chr-a .m-print { fill: var(--print); }
+.chr-a .m-shade { fill: #101218; }
+.chr-a .m-spot-dot { fill: var(--accent); stroke: #FCFBF7; stroke-width: 3; }
+.chr-a .m-spot-num { font-family: var(--f-ui); font-weight: 700; fill: #FFFFFF; }
+.chr-a .m-spot-pill { fill: rgba(252, 251, 247, .94); stroke: rgba(30, 32, 38, .25); }
+.chr-a .m-spot-label { font-family: var(--f-ui); font-weight: 600; fill: #1E2026; }
+/* ------------------------------------------------- drawn figure classes */
+/* Shared by story pages and standalone animations: the classes Claude writes in
+   diagrams, and the styles of live labels on paintings. */
+.dg-svg text { fill: var(--ink); font-size: 15px; }
+.dg-svg .label { fill: var(--ink-2); font-size: 13px; }
+.dg-svg .small { font-size: 12px; fill: var(--muted); }
+.dg-svg .hand { font-family: var(--f-hand); font-size: 20px; fill: var(--accent-text); }
+.dg-svg .title { font-weight: 700; }
+.dg-svg .box { fill: var(--surface-2); stroke: var(--ink); stroke-width: 1.5; }
+.dg-svg .box.soft { fill: var(--surface); stroke: var(--rule); }
+.dg-svg .box.accent { fill: var(--accent-wash); stroke: var(--accent); stroke-width: 2; }
+.dg-svg .box.legacy { fill: color-mix(in srgb, var(--legacy) 12%, transparent); stroke: var(--legacy); stroke-width: 2; }
+.dg-svg .line { fill: none; stroke: var(--ink-2); stroke-width: 1.6; }
+.dg-svg .line.accent { stroke: var(--accent); stroke-width: 2.2; }
+.dg-svg .line.legacy { stroke: var(--legacy); stroke-width: 2.2; }
+.dg-svg .line.dashed { stroke-dasharray: 5 4; }
+.dg-svg .head { fill: var(--ink-2); }
+.overlay .lbl { pointer-events: none; }
+.overlay .lbl-hand { font-family: var(--f-hand); font-weight: 600; }
+.overlay .lbl-label { font-family: var(--f-ui); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.overlay .lbl-caption { font-family: var(--f-body); font-style: italic; }
+.overlay .lbl-display { font-family: var(--f-display); }
+.overlay .lbl-mono, .overlay .lbl-number { font-family: var(--f-mono); font-weight: 500; }
+.overlay .lbl-number { font-variant-numeric: tabular-nums; }
+@keyframes a-rfc-0007-proposal-map-k0 { 0% { opacity: 0.000; } 33.331% { opacity: 0.000; } 34.131% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k1 { 0% { opacity: 0.000; } 16.061% { opacity: 0.000; } 16.86% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k2 { 0% { opacity: 0.000; } 17.613% { opacity: 0.000; } 17.954% { opacity: 0.298; } 17.956% { opacity: 0.300; } 20.916% { opacity: 0.300; } 21.258% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k3 { 0% { stroke-dashoffset: 84.00px; } 16.86% { stroke-dashoffset: 84.00px; } 17.888% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 84.00px; }}
+@keyframes a-rfc-0007-proposal-map-k4 { 0% { opacity: 0.000; } 17.579% { opacity: 0.000; } 18.23% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k5 { 0% { opacity: 0.000; } 16.86% { opacity: 0.000; } 17.659% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k6 { 0% { opacity: 0.000; } 20.582% { opacity: 0.000; } 20.923% { opacity: 0.298; } 20.925% { opacity: 0.300; } 23.885% { opacity: 0.300; } 24.227% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k7 { 0% { stroke-dashoffset: 446.57px; } 16.86% { stroke-dashoffset: 446.57px; } 18.821% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 446.57px; }}
+@keyframes a-rfc-0007-proposal-map-k8 { 0% { opacity: 0.000; } 18.233% { opacity: 0.000; } 19.164% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k9 { 0% { stroke-dashoffset: 54.00px; } 34.816% { stroke-dashoffset: 54.00px; } 35.844% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 54.00px; }}
+@keyframes a-rfc-0007-proposal-map-k10 { 0% { opacity: 0.000; } 34.816% { opacity: 0.000; } 35.615% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k11 { 0% { opacity: 0.000; } 34.884% { opacity: 0.000; } 35.225% { opacity: 0.298; } 35.227% { opacity: 0.300; } 37.176% { opacity: 0.300; } 37.518% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k12 { 0% { stroke-dashoffset: 301.42px; } 34.131% { stroke-dashoffset: 301.42px; } 35.455% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 301.42px; }}
+@keyframes a-rfc-0007-proposal-map-k13 { 0% { opacity: 0.000; } 35.057% { opacity: 0.000; } 35.797% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k14 { 0% { opacity: 0.000; } 34.131% { opacity: 0.000; } 34.93% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k15 { 0% { opacity: 0.000; } 49.301% { opacity: 0.000; } 49.641% { opacity: 0.298; } 49.643% { opacity: 0.300; } 52.603% { opacity: 0.300; } 52.945% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k16 { 0% { stroke-dashoffset: 88.57px; } 48.547% { stroke-dashoffset: 88.57px; } 49.575% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 88.57px; }}
+@keyframes a-rfc-0007-proposal-map-k17 { 0% { opacity: 0.000; } 49.266% { opacity: 0.000; } 49.917% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k18 { 0% { opacity: 0.000; } 48.547% { opacity: 0.000; } 49.346% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k19 { 0% { opacity: 0.000; } 36.754% { opacity: 0.000; } 37.094% { opacity: 0.298; } 37.097% { opacity: 0.300; } 40.915% { opacity: 0.300; } 41.258% { opacity: 0.000; } 64.43% { opacity: 0.000; } 64.771% { opacity: 0.298; } 64.773% { opacity: 0.300; } 69.858% { opacity: 0.300; } 70.2% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k20 { 0% { stroke-dashoffset: 172.57px; } 34.359% { stroke-dashoffset: 172.57px; } 35.387% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 172.57px; }}
+@keyframes a-rfc-0007-proposal-map-k21 { 0% { opacity: 0.000; } 35.079% { opacity: 0.000; } 35.729% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k22 { 0% { opacity: 0.000; } 34.359% { opacity: 0.000; } 35.158% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k23 { 0% { opacity: 0.000; } 52.269% { opacity: 0.000; } 52.61% { opacity: 0.298; } 52.612% { opacity: 0.300; } 55.572% { opacity: 0.300; } 55.579% { opacity: 0.298; } 55.581% { opacity: 0.300; } 58.541% { opacity: 0.300; } 58.883% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k24 { 0% { stroke-dashoffset: 635.42px; } 48.775% { stroke-dashoffset: 635.42px; } 51.287% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 635.42px; }}
+@keyframes a-rfc-0007-proposal-map-k25 { 0% { opacity: 0.000; } 50.534% { opacity: 0.000; } 51.63% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k26 { 0% { opacity: 0.000; } 48.775% { opacity: 0.000; } 49.575% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k27 { 0% { opacity: 0.000; } 40.494% { opacity: 0.000; } 40.834% { opacity: 0.298; } 40.836% { opacity: 0.300; } 42.785% { opacity: 0.300; } 43.128% { opacity: 0.000; } 69.489% { opacity: 0.000; } 69.829% { opacity: 0.298; } 69.832% { opacity: 0.300; } 72.387% { opacity: 0.300; } 72.729% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k28 { 0% { stroke-dashoffset: 407.42px; } 34.587% { stroke-dashoffset: 407.42px; } 36.377% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 407.42px; }}
+@keyframes a-rfc-0007-proposal-map-k29 { 0% { opacity: 0.000; } 35.84% { opacity: 0.000; } 36.719% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k30 { 0% { opacity: 0.000; } 34.587% { opacity: 0.000; } 35.387% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k31 { 0% { opacity: 0.000; } 58.207% { opacity: 0.000; } 58.548% { opacity: 0.298; } 58.55% { opacity: 0.300; } 61.51% { opacity: 0.300; } 61.852% { opacity: 0.000; } 83.243% { opacity: 0.000; } 83.583% { opacity: 0.298; } 83.585% { opacity: 0.300; } 86.545% { opacity: 0.300; } 86.888% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k32 { 0% { stroke-dashoffset: 181.42px; } 48.547% { stroke-dashoffset: 181.42px; } 49.575% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 181.42px; }}
+@keyframes a-rfc-0007-proposal-map-k33 { 0% { opacity: 0.000; } 42.364% { opacity: 0.000; } 42.704% { opacity: 0.298; } 42.706% { opacity: 0.300; } 44.655% { opacity: 0.300; } 44.997% { opacity: 0.000; } 72.018% { opacity: 0.000; } 72.359% { opacity: 0.298; } 72.361% { opacity: 0.300; } 74.916% { opacity: 0.300; } 75.259% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k34 { 0% { stroke-dashoffset: 439.42px; } 34.587% { stroke-dashoffset: 439.42px; } 36.517% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 439.42px; }}
+@keyframes a-rfc-0007-proposal-map-k35 { 0% { opacity: 0.000; } 35.938% { opacity: 0.000; } 36.86% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k36 { 0% { opacity: 0.000; } 23.551% { opacity: 0.000; } 23.892% { opacity: 0.298; } 23.894% { opacity: 0.300; } 26.854% { opacity: 0.300; } 27.196% { opacity: 0.000; } 44.234% { opacity: 0.000; } 44.574% { opacity: 0.298; } 44.576% { opacity: 0.300; } 46.525% { opacity: 0.300; } 46.867% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k37 { 0% { stroke-dashoffset: 98.00px; } 17.088% { stroke-dashoffset: 98.00px; } 18.116% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 98.00px; }}
+@keyframes a-rfc-0007-proposal-map-k38 { 0% { opacity: 0.000; } 17.808% { opacity: 0.000; } 18.458% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k39 { 0% { opacity: 0.000; } 17.088% { opacity: 0.000; } 17.888% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k40 { 0% { opacity: 0.000; } 74.548% { opacity: 0.000; } 74.888% { opacity: 0.298; } 74.89% { opacity: 0.300; } 77.445% { opacity: 0.300; } 77.788% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k41 { 0% { stroke-dashoffset: 76.00px; } 63.677% { stroke-dashoffset: 76.00px; } 64.705% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 76.00px; }}
+@keyframes a-rfc-0007-proposal-map-k42 { 0% { opacity: 0.000; } 63.677% { opacity: 0.000; } 64.476% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k43 { 0% { opacity: 0.000; } 78.904% { opacity: 0.000; } 79.703% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k44 { 0% { opacity: 1.000; } 78.904% { opacity: 1.000; } 79.703% { opacity: 0.000; } 99.201% { opacity: 0.000; } 100% { opacity: 1.000; }}
+@keyframes a-rfc-0007-proposal-map-k45 { 0% { opacity: 0.000; } 80.274% { opacity: 0.000; } 80.614% { opacity: 0.298; } 80.617% { opacity: 0.300; } 83.576% { opacity: 0.300; } 83.919% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k46 { 0% { stroke-dashoffset: 337.42px; } 79.52% { stroke-dashoffset: 337.42px; } 81.002% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: 337.42px; }}
+@keyframes a-rfc-0007-proposal-map-k47 { 0% { opacity: 0.000; } 80.558% { opacity: 0.000; } 81.345% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k48 { 0% { opacity: 0.000; } 79.52% { opacity: 0.000; } 80.32% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k49 { 0% { stroke-dashoffset: 0.00px; } 17.956% { stroke-dashoffset: 0.00px; } 18.297% { stroke-dashoffset: -3.20px; } 18.639% { stroke-dashoffset: -12.30px; } 18.98% { stroke-dashoffset: -25.93px; } 19.322% { stroke-dashoffset: -42.00px; } 19.663% { stroke-dashoffset: -58.07px; } 20.005% { stroke-dashoffset: -71.70px; } 20.346% { stroke-dashoffset: -80.80px; } 20.687% { stroke-dashoffset: -84.00px; } 99.201% { stroke-dashoffset: -84.00px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k50 { 0% { stroke-dashoffset: 28.00px; } 17.956% { stroke-dashoffset: 28.00px; } 18.297% { stroke-dashoffset: 24.80px; } 18.639% { stroke-dashoffset: 15.70px; } 18.98% { stroke-dashoffset: 2.07px; } 19.322% { stroke-dashoffset: -14.00px; } 19.663% { stroke-dashoffset: -30.07px; } 20.005% { stroke-dashoffset: -43.70px; } 20.346% { stroke-dashoffset: -52.80px; } 20.687% { stroke-dashoffset: -56.00px; } 99.201% { stroke-dashoffset: -56.00px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k51 { 0% { opacity: 0.000; } 17.728% { opacity: 0.000; } 17.956% { opacity: 1.000; } 20.459% { opacity: 1.000; } 20.687% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k52 { 0% { stroke-dashoffset: 0.00px; } 20.925% { stroke-dashoffset: 0.00px; } 21.266% { stroke-dashoffset: -17.00px; } 21.608% { stroke-dashoffset: -65.40px; } 21.949% { stroke-dashoffset: -137.84px; } 22.291% { stroke-dashoffset: -223.28px; } 22.632% { stroke-dashoffset: -308.73px; } 22.973% { stroke-dashoffset: -381.17px; } 23.315% { stroke-dashoffset: -429.57px; } 23.656% { stroke-dashoffset: -446.57px; } 99.201% { stroke-dashoffset: -446.57px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k53 { 0% { stroke-dashoffset: 28.00px; } 20.925% { stroke-dashoffset: 28.00px; } 21.266% { stroke-dashoffset: 11.00px; } 21.608% { stroke-dashoffset: -37.40px; } 21.949% { stroke-dashoffset: -109.84px; } 22.291% { stroke-dashoffset: -195.28px; } 22.632% { stroke-dashoffset: -280.73px; } 22.973% { stroke-dashoffset: -353.17px; } 23.315% { stroke-dashoffset: -401.57px; } 23.656% { stroke-dashoffset: -418.57px; } 99.201% { stroke-dashoffset: -418.57px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k54 { 0% { opacity: 0.000; } 20.697% { opacity: 0.000; } 20.925% { opacity: 1.000; } 23.428% { opacity: 1.000; } 23.656% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k55 { 0% { stroke-dashoffset: 0.00px; } 23.894% { stroke-dashoffset: 0.00px; } 24.235% { stroke-dashoffset: -3.73px; } 24.577% { stroke-dashoffset: -14.35px; } 24.918% { stroke-dashoffset: -30.25px; } 25.259% { stroke-dashoffset: -49.00px; } 25.601% { stroke-dashoffset: -67.75px; } 25.942% { stroke-dashoffset: -83.65px; } 26.284% { stroke-dashoffset: -94.27px; } 26.625% { stroke-dashoffset: -98.00px; } 99.201% { stroke-dashoffset: -98.00px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k56 { 0% { stroke-dashoffset: 28.00px; } 23.894% { stroke-dashoffset: 28.00px; } 24.235% { stroke-dashoffset: 24.27px; } 24.577% { stroke-dashoffset: 13.65px; } 24.918% { stroke-dashoffset: -2.25px; } 25.259% { stroke-dashoffset: -21.00px; } 25.601% { stroke-dashoffset: -39.75px; } 25.942% { stroke-dashoffset: -55.65px; } 26.284% { stroke-dashoffset: -66.27px; } 26.625% { stroke-dashoffset: -70.00px; } 99.201% { stroke-dashoffset: -70.00px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k57 { 0% { opacity: 0.000; } 23.665% { opacity: 0.000; } 23.894% { opacity: 1.000; } 26.397% { opacity: 1.000; } 26.625% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k58 { 0% { stroke-dashoffset: 0.00px; } 35.227% { stroke-dashoffset: 0.00px; } 35.442% { stroke-dashoffset: -11.47px; } 35.657% { stroke-dashoffset: -44.14px; } 35.872% { stroke-dashoffset: -93.03px; } 36.087% { stroke-dashoffset: -150.71px; } 36.302% { stroke-dashoffset: -208.38px; } 36.517% { stroke-dashoffset: -257.27px; } 36.732% { stroke-dashoffset: -289.94px; } 36.947% { stroke-dashoffset: -301.42px; } 99.201% { stroke-dashoffset: -301.42px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k59 { 0% { stroke-dashoffset: 28.00px; } 35.227% { stroke-dashoffset: 28.00px; } 35.442% { stroke-dashoffset: 16.53px; } 35.657% { stroke-dashoffset: -16.14px; } 35.872% { stroke-dashoffset: -65.03px; } 36.087% { stroke-dashoffset: -122.71px; } 36.302% { stroke-dashoffset: -180.38px; } 36.517% { stroke-dashoffset: -229.27px; } 36.732% { stroke-dashoffset: -261.94px; } 36.947% { stroke-dashoffset: -273.42px; } 99.201% { stroke-dashoffset: -273.42px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k60 { 0% { opacity: 0.000; } 34.999% { opacity: 0.000; } 35.227% { opacity: 1.000; } 36.719% { opacity: 1.000; } 36.947% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k61 { 0% { stroke-dashoffset: 0.00px; } 37.097% { stroke-dashoffset: 0.00px; } 37.312% { stroke-dashoffset: -6.57px; } 37.527% { stroke-dashoffset: -25.27px; } 37.742% { stroke-dashoffset: -53.26px; } 37.957% { stroke-dashoffset: -86.28px; } 38.172% { stroke-dashoffset: -119.30px; } 38.387% { stroke-dashoffset: -147.29px; } 38.602% { stroke-dashoffset: -166.00px; } 38.817% { stroke-dashoffset: -172.57px; } 99.201% { stroke-dashoffset: -172.57px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k62 { 0% { stroke-dashoffset: 28.00px; } 37.097% { stroke-dashoffset: 28.00px; } 37.312% { stroke-dashoffset: 21.43px; } 37.527% { stroke-dashoffset: 2.73px; } 37.742% { stroke-dashoffset: -25.26px; } 37.957% { stroke-dashoffset: -58.28px; } 38.172% { stroke-dashoffset: -91.30px; } 38.387% { stroke-dashoffset: -119.29px; } 38.602% { stroke-dashoffset: -138.00px; } 38.817% { stroke-dashoffset: -144.57px; } 99.201% { stroke-dashoffset: -144.57px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k63 { 0% { opacity: 0.000; } 36.868% { opacity: 0.000; } 37.097% { opacity: 1.000; } 38.589% { opacity: 1.000; } 38.817% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k64 { 0% { stroke-dashoffset: -172.57px; } 38.967% { stroke-dashoffset: -172.57px; } 39.182% { stroke-dashoffset: -166.00px; } 39.397% { stroke-dashoffset: -147.29px; } 39.612% { stroke-dashoffset: -119.30px; } 39.827% { stroke-dashoffset: -86.28px; } 40.042% { stroke-dashoffset: -53.26px; } 40.257% { stroke-dashoffset: -25.27px; } 40.472% { stroke-dashoffset: -6.57px; } 40.687% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: -172.57px; }}
+@keyframes a-rfc-0007-proposal-map-k65 { 0% { opacity: 0.000; } 38.738% { opacity: 0.000; } 38.967% { opacity: 1.000; } 40.458% { opacity: 1.000; } 40.687% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k66 { 0% { stroke-dashoffset: 0.00px; } 40.836% { stroke-dashoffset: 0.00px; } 41.051% { stroke-dashoffset: -15.51px; } 41.266% { stroke-dashoffset: -59.66px; } 41.482% { stroke-dashoffset: -125.75px; } 41.697% { stroke-dashoffset: -203.71px; } 41.912% { stroke-dashoffset: -281.66px; } 42.127% { stroke-dashoffset: -347.75px; } 42.342% { stroke-dashoffset: -391.91px; } 42.557% { stroke-dashoffset: -407.42px; } 99.201% { stroke-dashoffset: -407.42px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k67 { 0% { stroke-dashoffset: 28.00px; } 40.836% { stroke-dashoffset: 28.00px; } 41.051% { stroke-dashoffset: 12.49px; } 41.266% { stroke-dashoffset: -31.66px; } 41.482% { stroke-dashoffset: -97.75px; } 41.697% { stroke-dashoffset: -175.71px; } 41.912% { stroke-dashoffset: -253.66px; } 42.127% { stroke-dashoffset: -319.75px; } 42.342% { stroke-dashoffset: -363.91px; } 42.557% { stroke-dashoffset: -379.42px; } 99.201% { stroke-dashoffset: -379.42px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k68 { 0% { opacity: 0.000; } 40.608% { opacity: 0.000; } 40.836% { opacity: 1.000; } 42.328% { opacity: 1.000; } 42.557% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k69 { 0% { stroke-dashoffset: 0.00px; } 42.706% { stroke-dashoffset: 0.00px; } 42.921% { stroke-dashoffset: -16.72px; } 43.136% { stroke-dashoffset: -64.35px; } 43.351% { stroke-dashoffset: -135.63px; } 43.566% { stroke-dashoffset: -219.71px; } 43.781% { stroke-dashoffset: -303.79px; } 43.996% { stroke-dashoffset: -375.06px; } 44.211% { stroke-dashoffset: -422.69px; } 44.426% { stroke-dashoffset: -439.42px; } 99.201% { stroke-dashoffset: -439.42px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k70 { 0% { stroke-dashoffset: 28.00px; } 42.706% { stroke-dashoffset: 28.00px; } 42.921% { stroke-dashoffset: 11.28px; } 43.136% { stroke-dashoffset: -36.35px; } 43.351% { stroke-dashoffset: -107.63px; } 43.566% { stroke-dashoffset: -191.71px; } 43.781% { stroke-dashoffset: -275.79px; } 43.996% { stroke-dashoffset: -347.06px; } 44.211% { stroke-dashoffset: -394.69px; } 44.426% { stroke-dashoffset: -411.42px; } 99.201% { stroke-dashoffset: -411.42px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k71 { 0% { opacity: 0.000; } 42.478% { opacity: 0.000; } 42.706% { opacity: 1.000; } 44.198% { opacity: 1.000; } 44.426% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k72 { 0% { stroke-dashoffset: 0.00px; } 44.576% { stroke-dashoffset: 0.00px; } 44.791% { stroke-dashoffset: -3.73px; } 45.006% { stroke-dashoffset: -14.35px; } 45.221% { stroke-dashoffset: -30.25px; } 45.436% { stroke-dashoffset: -49.00px; } 45.651% { stroke-dashoffset: -67.75px; } 45.866% { stroke-dashoffset: -83.65px; } 46.081% { stroke-dashoffset: -94.27px; } 46.296% { stroke-dashoffset: -98.00px; } 99.201% { stroke-dashoffset: -98.00px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k73 { 0% { stroke-dashoffset: 28.00px; } 44.576% { stroke-dashoffset: 28.00px; } 44.791% { stroke-dashoffset: 24.27px; } 45.006% { stroke-dashoffset: 13.65px; } 45.221% { stroke-dashoffset: -2.25px; } 45.436% { stroke-dashoffset: -21.00px; } 45.651% { stroke-dashoffset: -39.75px; } 45.866% { stroke-dashoffset: -55.65px; } 46.081% { stroke-dashoffset: -66.27px; } 46.296% { stroke-dashoffset: -70.00px; } 99.201% { stroke-dashoffset: -70.00px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k74 { 0% { opacity: 0.000; } 44.348% { opacity: 0.000; } 44.576% { opacity: 1.000; } 46.068% { opacity: 1.000; } 46.296% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k75 { 0% { stroke-dashoffset: 0.00px; } 49.643% { stroke-dashoffset: 0.00px; } 49.985% { stroke-dashoffset: -3.37px; } 50.326% { stroke-dashoffset: -12.97px; } 50.667% { stroke-dashoffset: -27.34px; } 51.009% { stroke-dashoffset: -44.28px; } 51.35% { stroke-dashoffset: -61.23px; } 51.692% { stroke-dashoffset: -75.60px; } 52.033% { stroke-dashoffset: -85.20px; } 52.375% { stroke-dashoffset: -88.57px; } 99.201% { stroke-dashoffset: -88.57px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k76 { 0% { stroke-dashoffset: 28.00px; } 49.643% { stroke-dashoffset: 28.00px; } 49.985% { stroke-dashoffset: 24.63px; } 50.326% { stroke-dashoffset: 15.03px; } 50.667% { stroke-dashoffset: 0.66px; } 51.009% { stroke-dashoffset: -16.28px; } 51.35% { stroke-dashoffset: -33.23px; } 51.692% { stroke-dashoffset: -47.60px; } 52.033% { stroke-dashoffset: -57.20px; } 52.375% { stroke-dashoffset: -60.57px; } 99.201% { stroke-dashoffset: -60.57px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k77 { 0% { opacity: 0.000; } 49.415% { opacity: 0.000; } 49.643% { opacity: 1.000; } 52.146% { opacity: 1.000; } 52.375% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k78 { 0% { stroke-dashoffset: 0.00px; } 52.612% { stroke-dashoffset: 0.00px; } 52.953% { stroke-dashoffset: -24.18px; } 53.295% { stroke-dashoffset: -93.05px; } 53.636% { stroke-dashoffset: -196.13px; } 53.978% { stroke-dashoffset: -317.71px; } 54.319% { stroke-dashoffset: -439.29px; } 54.661% { stroke-dashoffset: -542.36px; } 55.002% { stroke-dashoffset: -611.23px; } 55.343% { stroke-dashoffset: -635.42px; } 99.201% { stroke-dashoffset: -635.42px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k79 { 0% { stroke-dashoffset: 28.00px; } 52.612% { stroke-dashoffset: 28.00px; } 52.953% { stroke-dashoffset: 3.82px; } 53.295% { stroke-dashoffset: -65.05px; } 53.636% { stroke-dashoffset: -168.13px; } 53.978% { stroke-dashoffset: -289.71px; } 54.319% { stroke-dashoffset: -411.29px; } 54.661% { stroke-dashoffset: -514.36px; } 55.002% { stroke-dashoffset: -583.23px; } 55.343% { stroke-dashoffset: -607.42px; } 99.201% { stroke-dashoffset: -607.42px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k80 { 0% { opacity: 0.000; } 52.384% { opacity: 0.000; } 52.612% { opacity: 1.000; } 55.115% { opacity: 1.000; } 55.343% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k81 { 0% { stroke-dashoffset: -635.42px; } 55.581% { stroke-dashoffset: -635.42px; } 55.922% { stroke-dashoffset: -611.23px; } 56.264% { stroke-dashoffset: -542.36px; } 56.605% { stroke-dashoffset: -439.29px; } 56.947% { stroke-dashoffset: -317.71px; } 57.288% { stroke-dashoffset: -196.13px; } 57.629% { stroke-dashoffset: -93.05px; } 57.971% { stroke-dashoffset: -24.18px; } 58.312% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: -635.42px; }}
+@keyframes a-rfc-0007-proposal-map-k82 { 0% { opacity: 0.000; } 55.353% { opacity: 0.000; } 55.581% { opacity: 1.000; } 58.084% { opacity: 1.000; } 58.312% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k83 { 0% { stroke-dashoffset: 0.00px; } 58.55% { stroke-dashoffset: 0.00px; } 58.891% { stroke-dashoffset: -6.90px; } 59.233% { stroke-dashoffset: -26.57px; } 59.574% { stroke-dashoffset: -56.00px; } 59.916% { stroke-dashoffset: -90.71px; } 60.257% { stroke-dashoffset: -125.42px; } 60.598% { stroke-dashoffset: -154.85px; } 60.94% { stroke-dashoffset: -174.51px; } 61.281% { stroke-dashoffset: -181.42px; } 99.201% { stroke-dashoffset: -181.42px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k84 { 0% { stroke-dashoffset: 28.00px; } 58.55% { stroke-dashoffset: 28.00px; } 58.891% { stroke-dashoffset: 21.10px; } 59.233% { stroke-dashoffset: 1.43px; } 59.574% { stroke-dashoffset: -28.00px; } 59.916% { stroke-dashoffset: -62.71px; } 60.257% { stroke-dashoffset: -97.42px; } 60.598% { stroke-dashoffset: -126.85px; } 60.94% { stroke-dashoffset: -146.51px; } 61.281% { stroke-dashoffset: -153.42px; } 99.201% { stroke-dashoffset: -153.42px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k85 { 0% { opacity: 0.000; } 58.321% { opacity: 0.000; } 58.55% { opacity: 1.000; } 61.053% { opacity: 1.000; } 61.281% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k86 { 0% { stroke-dashoffset: 0.00px; } 64.773% { stroke-dashoffset: 0.00px; } 65.064% { stroke-dashoffset: -6.57px; } 65.355% { stroke-dashoffset: -25.27px; } 65.646% { stroke-dashoffset: -53.26px; } 65.937% { stroke-dashoffset: -86.28px; } 66.227% { stroke-dashoffset: -119.30px; } 66.518% { stroke-dashoffset: -147.29px; } 66.809% { stroke-dashoffset: -166.00px; } 67.1% { stroke-dashoffset: -172.57px; } 99.201% { stroke-dashoffset: -172.57px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k87 { 0% { stroke-dashoffset: 28.00px; } 64.773% { stroke-dashoffset: 28.00px; } 65.064% { stroke-dashoffset: 21.43px; } 65.355% { stroke-dashoffset: 2.73px; } 65.646% { stroke-dashoffset: -25.26px; } 65.937% { stroke-dashoffset: -58.28px; } 66.227% { stroke-dashoffset: -91.30px; } 66.518% { stroke-dashoffset: -119.29px; } 66.809% { stroke-dashoffset: -138.00px; } 67.1% { stroke-dashoffset: -144.57px; } 99.201% { stroke-dashoffset: -144.57px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k88 { 0% { opacity: 0.000; } 64.545% { opacity: 0.000; } 64.773% { opacity: 1.000; } 66.872% { opacity: 1.000; } 67.1% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k89 { 0% { stroke-dashoffset: -172.57px; } 67.302% { stroke-dashoffset: -172.57px; } 67.593% { stroke-dashoffset: -166.00px; } 67.884% { stroke-dashoffset: -147.29px; } 68.175% { stroke-dashoffset: -119.30px; } 68.466% { stroke-dashoffset: -86.28px; } 68.757% { stroke-dashoffset: -53.26px; } 69.048% { stroke-dashoffset: -25.27px; } 69.338% { stroke-dashoffset: -6.57px; } 69.629% { stroke-dashoffset: 0.00px; } 99.201% { stroke-dashoffset: 0.00px; } 100% { stroke-dashoffset: -172.57px; }}
+@keyframes a-rfc-0007-proposal-map-k90 { 0% { opacity: 0.000; } 67.074% { opacity: 0.000; } 67.302% { opacity: 1.000; } 69.401% { opacity: 1.000; } 69.629% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k91 { 0% { stroke-dashoffset: 0.00px; } 69.832% { stroke-dashoffset: 0.00px; } 70.122% { stroke-dashoffset: -15.51px; } 70.413% { stroke-dashoffset: -59.66px; } 70.704% { stroke-dashoffset: -125.75px; } 70.995% { stroke-dashoffset: -203.71px; } 71.286% { stroke-dashoffset: -281.66px; } 71.577% { stroke-dashoffset: -347.75px; } 71.868% { stroke-dashoffset: -391.91px; } 72.158% { stroke-dashoffset: -407.42px; } 99.201% { stroke-dashoffset: -407.42px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k92 { 0% { stroke-dashoffset: 28.00px; } 69.832% { stroke-dashoffset: 28.00px; } 70.122% { stroke-dashoffset: 12.49px; } 70.413% { stroke-dashoffset: -31.66px; } 70.704% { stroke-dashoffset: -97.75px; } 70.995% { stroke-dashoffset: -175.71px; } 71.286% { stroke-dashoffset: -253.66px; } 71.577% { stroke-dashoffset: -319.75px; } 71.868% { stroke-dashoffset: -363.91px; } 72.158% { stroke-dashoffset: -379.42px; } 99.201% { stroke-dashoffset: -379.42px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k93 { 0% { opacity: 0.000; } 69.603% { opacity: 0.000; } 69.832% { opacity: 1.000; } 71.93% { opacity: 1.000; } 72.158% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k94 { 0% { stroke-dashoffset: 0.00px; } 72.361% { stroke-dashoffset: 0.00px; } 72.652% { stroke-dashoffset: -16.72px; } 72.943% { stroke-dashoffset: -64.35px; } 73.233% { stroke-dashoffset: -135.63px; } 73.524% { stroke-dashoffset: -219.71px; } 73.815% { stroke-dashoffset: -303.79px; } 74.106% { stroke-dashoffset: -375.06px; } 74.397% { stroke-dashoffset: -422.69px; } 74.688% { stroke-dashoffset: -439.42px; } 99.201% { stroke-dashoffset: -439.42px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k95 { 0% { stroke-dashoffset: 28.00px; } 72.361% { stroke-dashoffset: 28.00px; } 72.652% { stroke-dashoffset: 11.28px; } 72.943% { stroke-dashoffset: -36.35px; } 73.233% { stroke-dashoffset: -107.63px; } 73.524% { stroke-dashoffset: -191.71px; } 73.815% { stroke-dashoffset: -275.79px; } 74.106% { stroke-dashoffset: -347.06px; } 74.397% { stroke-dashoffset: -394.69px; } 74.688% { stroke-dashoffset: -411.42px; } 99.201% { stroke-dashoffset: -411.42px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k96 { 0% { opacity: 0.000; } 72.132% { opacity: 0.000; } 72.361% { opacity: 1.000; } 74.459% { opacity: 1.000; } 74.688% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k97 { 0% { stroke-dashoffset: 0.00px; } 74.89% { stroke-dashoffset: 0.00px; } 75.181% { stroke-dashoffset: -2.89px; } 75.472% { stroke-dashoffset: -11.13px; } 75.763% { stroke-dashoffset: -23.46px; } 76.054% { stroke-dashoffset: -38.00px; } 76.344% { stroke-dashoffset: -52.54px; } 76.635% { stroke-dashoffset: -64.87px; } 76.926% { stroke-dashoffset: -73.11px; } 77.217% { stroke-dashoffset: -76.00px; } 99.201% { stroke-dashoffset: -76.00px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k98 { 0% { stroke-dashoffset: 28.00px; } 74.89% { stroke-dashoffset: 28.00px; } 75.181% { stroke-dashoffset: 25.11px; } 75.472% { stroke-dashoffset: 16.87px; } 75.763% { stroke-dashoffset: 4.54px; } 76.054% { stroke-dashoffset: -10.00px; } 76.344% { stroke-dashoffset: -24.54px; } 76.635% { stroke-dashoffset: -36.87px; } 76.926% { stroke-dashoffset: -45.11px; } 77.217% { stroke-dashoffset: -48.00px; } 99.201% { stroke-dashoffset: -48.00px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k99 { 0% { opacity: 0.000; } 74.662% { opacity: 0.000; } 74.89% { opacity: 1.000; } 76.989% { opacity: 1.000; } 77.217% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k100 { 0% { stroke-dashoffset: 0.00px; } 80.617% { stroke-dashoffset: 0.00px; } 80.958% { stroke-dashoffset: -12.84px; } 81.299% { stroke-dashoffset: -49.41px; } 81.641% { stroke-dashoffset: -104.15px; } 81.982% { stroke-dashoffset: -168.71px; } 82.324% { stroke-dashoffset: -233.27px; } 82.665% { stroke-dashoffset: -288.00px; } 83.007% { stroke-dashoffset: -324.57px; } 83.348% { stroke-dashoffset: -337.42px; } 99.201% { stroke-dashoffset: -337.42px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k101 { 0% { stroke-dashoffset: 28.00px; } 80.617% { stroke-dashoffset: 28.00px; } 80.958% { stroke-dashoffset: 15.16px; } 81.299% { stroke-dashoffset: -21.41px; } 81.641% { stroke-dashoffset: -76.15px; } 81.982% { stroke-dashoffset: -140.71px; } 82.324% { stroke-dashoffset: -205.27px; } 82.665% { stroke-dashoffset: -260.00px; } 83.007% { stroke-dashoffset: -296.57px; } 83.348% { stroke-dashoffset: -309.42px; } 99.201% { stroke-dashoffset: -309.42px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k102 { 0% { opacity: 0.000; } 80.388% { opacity: 0.000; } 80.617% { opacity: 1.000; } 83.12% { opacity: 1.000; } 83.348% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k103 { 0% { stroke-dashoffset: 0.00px; } 83.585% { stroke-dashoffset: 0.00px; } 83.927% { stroke-dashoffset: -6.90px; } 84.268% { stroke-dashoffset: -26.57px; } 84.61% { stroke-dashoffset: -56.00px; } 84.951% { stroke-dashoffset: -90.71px; } 85.293% { stroke-dashoffset: -125.42px; } 85.634% { stroke-dashoffset: -154.85px; } 85.975% { stroke-dashoffset: -174.51px; } 86.317% { stroke-dashoffset: -181.42px; } 99.201% { stroke-dashoffset: -181.42px; } 100% { stroke-dashoffset: 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k104 { 0% { stroke-dashoffset: 28.00px; } 83.585% { stroke-dashoffset: 28.00px; } 83.927% { stroke-dashoffset: 21.10px; } 84.268% { stroke-dashoffset: 1.43px; } 84.61% { stroke-dashoffset: -28.00px; } 84.951% { stroke-dashoffset: -62.71px; } 85.293% { stroke-dashoffset: -97.42px; } 85.634% { stroke-dashoffset: -126.85px; } 85.975% { stroke-dashoffset: -146.51px; } 86.317% { stroke-dashoffset: -153.42px; } 99.201% { stroke-dashoffset: -153.42px; } 100% { stroke-dashoffset: 28.00px; }}
+@keyframes a-rfc-0007-proposal-map-k105 { 0% { opacity: 0.000; } 83.357% { opacity: 0.000; } 83.585% { opacity: 1.000; } 86.088% { opacity: 1.000; } 86.317% { opacity: 0.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k106 { 0% { scale: 1.000; opacity: 0.000; } 20.685% { scale: 1.000; opacity: 0.000; } 20.687% { scale: 1.000; opacity: 0.800; } 22.012% { scale: 1.135; opacity: 0.027; } 22.058% { scale: 1.140; opacity: 0.000; } 22.103% { scale: 1.000; opacity: 0.000; } 100% { scale: 1.000; opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k107 { 0% { scale: 1.000; translate: 0.00px 0.00px; } 16.015% { scale: 1.000; translate: 0.00px 0.00px; } 16.061% { scale: 0.940; translate: 0.00px 6.00px; } 17.088% { scale: 1.000; translate: 0.00px 0.00px; } 100% { scale: 1.000; translate: 0.00px 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k108 { 0% { scale: 1.000; translate: 0.00px 0.00px; } 33.971% { scale: 1.000; translate: 0.00px 0.00px; } 34.017% { scale: 0.940; translate: 0.00px 6.00px; } 35.044% { scale: 1.000; translate: 0.00px 0.00px; } 100% { scale: 1.000; translate: 0.00px 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k109 { 0% { opacity: 0.000; } 34.017% { opacity: 0.000; } 34.816% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k110 { 0% { scale: 1.000; opacity: 0.000; } 52.372% { scale: 1.000; opacity: 0.000; } 52.375% { scale: 1.000; opacity: 0.800; } 53.699% { scale: 1.135; opacity: 0.027; } 53.745% { scale: 1.140; opacity: 0.000; } 53.79% { scale: 1.000; opacity: 0.000; } 58.31% { scale: 1.000; opacity: 0.000; } 58.312% { scale: 1.000; opacity: 0.800; } 59.637% { scale: 1.135; opacity: 0.027; } 59.683% { scale: 1.140; opacity: 0.000; } 59.728% { scale: 1.000; opacity: 0.000; } 83.346% { scale: 1.000; opacity: 0.000; } 83.348% { scale: 1.000; opacity: 0.800; } 84.673% { scale: 1.135; opacity: 0.027; } 84.718% { scale: 1.140; opacity: 0.000; } 84.764% { scale: 1.000; opacity: 0.000; } 100% { scale: 1.000; opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k111 { 0% { scale: 1.000; translate: 0.00px 0.00px; } 47.702% { scale: 1.000; translate: 0.00px 0.00px; } 47.748% { scale: 0.940; translate: 0.00px 6.00px; } 48.775% { scale: 1.000; translate: 0.00px 0.00px; } 100% { scale: 1.000; translate: 0.00px 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k112 { 0% { opacity: 0.000; } 47.748% { opacity: 0.000; } 48.547% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k113 { 0% { scale: 1.000; opacity: 0.000; } 36.945% { scale: 1.000; opacity: 0.000; } 36.947% { scale: 1.000; opacity: 0.800; } 38.272% { scale: 1.135; opacity: 0.027; } 38.317% { scale: 1.140; opacity: 0.000; } 38.363% { scale: 1.000; opacity: 0.000; } 40.685% { scale: 1.000; opacity: 0.000; } 40.687% { scale: 1.000; opacity: 0.800; } 42.011% { scale: 1.135; opacity: 0.027; } 42.057% { scale: 1.140; opacity: 0.000; } 42.103% { scale: 1.000; opacity: 0.000; } 69.627% { scale: 1.000; opacity: 0.000; } 69.629% { scale: 1.000; opacity: 0.800; } 70.954% { scale: 1.135; opacity: 0.027; } 70.999% { scale: 1.140; opacity: 0.000; } 71.045% { scale: 1.000; opacity: 0.000; } 100% { scale: 1.000; opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k114 { 0% { scale: 1.000; translate: 0.00px 0.00px; } 33.286% { scale: 1.000; translate: 0.00px 0.00px; } 33.331% { scale: 0.940; translate: 0.00px 6.00px; } 34.359% { scale: 1.000; translate: 0.00px 0.00px; } 100% { scale: 1.000; translate: 0.00px 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k115 { 0% { scale: 1.000; opacity: 0.000; } 23.654% { scale: 1.000; opacity: 0.000; } 23.656% { scale: 1.000; opacity: 0.800; } 24.981% { scale: 1.135; opacity: 0.027; } 25.027% { scale: 1.140; opacity: 0.000; } 25.072% { scale: 1.000; opacity: 0.000; } 44.424% { scale: 1.000; opacity: 0.000; } 44.426% { scale: 1.000; opacity: 0.800; } 45.751% { scale: 1.135; opacity: 0.027; } 45.797% { scale: 1.140; opacity: 0.000; } 45.842% { scale: 1.000; opacity: 0.000; } 74.685% { scale: 1.000; opacity: 0.000; } 74.688% { scale: 1.000; opacity: 0.800; } 76.012% { scale: 1.135; opacity: 0.027; } 76.058% { scale: 1.140; opacity: 0.000; } 76.104% { scale: 1.000; opacity: 0.000; } 100% { scale: 1.000; opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k116 { 0% { scale: 1.000; } 1.941% { scale: 1.000; } 2.626% { scale: 1.060; } 3.311% { scale: 1.000; } 3.997% { scale: 1.060; } 4.682% { scale: 1.000; } 100% { scale: 1.000; }}
+@keyframes a-rfc-0007-proposal-map-k117 { 0% { scale: 1.000; opacity: 0.000; } 42.554% { scale: 1.000; opacity: 0.000; } 42.557% { scale: 1.000; opacity: 0.800; } 43.881% { scale: 1.135; opacity: 0.027; } 43.927% { scale: 1.140; opacity: 0.000; } 43.973% { scale: 1.000; opacity: 0.000; } 61.279% { scale: 1.000; opacity: 0.000; } 61.281% { scale: 1.000; opacity: 0.800; } 62.606% { scale: 1.135; opacity: 0.027; } 62.651% { scale: 1.140; opacity: 0.000; } 62.697% { scale: 1.000; opacity: 0.000; } 72.156% { scale: 1.000; opacity: 0.000; } 72.158% { scale: 1.000; opacity: 0.800; } 73.483% { scale: 1.135; opacity: 0.027; } 73.529% { scale: 1.140; opacity: 0.000; } 73.574% { scale: 1.000; opacity: 0.000; } 86.315% { scale: 1.000; opacity: 0.000; } 86.317% { scale: 1.000; opacity: 0.800; } 87.641% { scale: 1.135; opacity: 0.027; } 87.687% { scale: 1.140; opacity: 0.000; } 87.733% { scale: 1.000; opacity: 0.000; } 100% { scale: 1.000; opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k118 { 0% { scale: 1.000; translate: 0.00px 0.00px; } 33.743% { scale: 1.000; translate: 0.00px 0.00px; } 33.788% { scale: 0.940; translate: 0.00px 6.00px; } 34.816% { scale: 1.000; translate: 0.00px 0.00px; } 100% { scale: 1.000; translate: 0.00px 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k119 { 0% { opacity: 0.000; } 33.788% { opacity: 0.000; } 34.587% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k120 { 0% { scale: 1.000; opacity: 0.000; } 38.815% { scale: 1.000; opacity: 0.000; } 38.817% { scale: 1.000; opacity: 0.800; } 40.142% { scale: 1.135; opacity: 0.027; } 40.187% { scale: 1.140; opacity: 0.000; } 40.233% { scale: 1.000; opacity: 0.000; } 67.098% { scale: 1.000; opacity: 0.000; } 67.1% { scale: 1.000; opacity: 0.800; } 68.425% { scale: 1.135; opacity: 0.027; } 68.47% { scale: 1.140; opacity: 0.000; } 68.516% { scale: 1.000; opacity: 0.000; } 100% { scale: 1.000; opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k121 { 0% { scale: 1.000; translate: 0.00px 0.00px; } 33.514% { scale: 1.000; translate: 0.00px 0.00px; } 33.56% { scale: 0.940; translate: 0.00px 6.00px; } 34.587% { scale: 1.000; translate: 0.00px 0.00px; } 100% { scale: 1.000; translate: 0.00px 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k122 { 0% { opacity: 0.000; } 33.56% { opacity: 0.000; } 34.359% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k123 { 0% { scale: 1.000; opacity: 0.000; } 55.341% { scale: 1.000; opacity: 0.000; } 55.343% { scale: 1.000; opacity: 0.800; } 56.668% { scale: 1.135; opacity: 0.027; } 56.714% { scale: 1.140; opacity: 0.000; } 56.759% { scale: 1.000; opacity: 0.000; } 100% { scale: 1.000; opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k124 { 0% { scale: 1.000; translate: 0.00px 0.00px; } 47.93% { scale: 1.000; translate: 0.00px 0.00px; } 47.976% { scale: 0.940; translate: 0.00px 6.00px; } 49.004% { scale: 1.000; translate: 0.00px 0.00px; } 100% { scale: 1.000; translate: 0.00px 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k125 { 0% { opacity: 0.000; } 47.976% { opacity: 0.000; } 48.775% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k126 { 0% { scale: 1.000; opacity: 0.000; } 26.623% { scale: 1.000; opacity: 0.000; } 26.625% { scale: 1.000; opacity: 0.800; } 27.95% { scale: 1.135; opacity: 0.027; } 27.995% { scale: 1.140; opacity: 0.000; } 28.041% { scale: 1.000; opacity: 0.000; } 46.294% { scale: 1.000; opacity: 0.000; } 46.296% { scale: 1.000; opacity: 0.800; } 47.621% { scale: 1.135; opacity: 0.027; } 47.667% { scale: 1.140; opacity: 0.000; } 47.712% { scale: 1.000; opacity: 0.000; } 100% { scale: 1.000; opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k127 { 0% { scale: 1.000; translate: 0.00px 0.00px; } 16.243% { scale: 1.000; translate: 0.00px 0.00px; } 16.289% { scale: 0.940; translate: 0.00px 6.00px; } 17.317% { scale: 1.000; translate: 0.00px 0.00px; } 100% { scale: 1.000; translate: 0.00px 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k128 { 0% { opacity: 0.000; } 16.289% { opacity: 0.000; } 17.088% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k129 { 0% { scale: 1.000; opacity: 0.000; } 77.215% { scale: 1.000; opacity: 0.000; } 77.217% { scale: 1.000; opacity: 0.800; } 78.542% { scale: 1.135; opacity: 0.027; } 78.587% { scale: 1.140; opacity: 0.000; } 78.633% { scale: 1.000; opacity: 0.000; } 100% { scale: 1.000; opacity: 0.000; }}
+@keyframes a-rfc-0007-proposal-map-k130 { 0% { scale: 1.000; translate: 0.00px 0.00px; } 62.832% { scale: 1.000; translate: 0.00px 0.00px; } 62.878% { scale: 0.940; translate: 0.00px 6.00px; } 63.905% { scale: 1.000; translate: 0.00px 0.00px; } 100% { scale: 1.000; translate: 0.00px 0.00px; }}
+@keyframes a-rfc-0007-proposal-map-k131 { 0% { opacity: 0.000; } 62.878% { opacity: 0.000; } 63.677% { opacity: 1.000; } 99.201% { opacity: 1.000; } 100% { opacity: 0.000; }}
+#a-rfc-0007-proposal-map-g-systems { animation: a-rfc-0007-proposal-map-k0 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-g-cloud { animation: a-rfc-0007-proposal-map-k1 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-cskills-painter-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k2 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-cskills-painter-p { animation: a-rfc-0007-proposal-map-k3 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-cskills-painter-l { animation: a-rfc-0007-proposal-map-k4 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-cskills-painter { animation: a-rfc-0007-proposal-map-k5 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-painter-engine-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k6 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-painter-engine-p { animation: a-rfc-0007-proposal-map-k7 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-painter-engine-l { animation: a-rfc-0007-proposal-map-k8 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-painter-engine { animation: a-rfc-0007-proposal-map-k5 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-bskills-brand-p { animation: a-rfc-0007-proposal-map-k9 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-bskills-brand { animation: a-rfc-0007-proposal-map-k10 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-bskills-collectors-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k11 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-bskills-collectors-p { animation: a-rfc-0007-proposal-map-k12 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-bskills-collectors-l { animation: a-rfc-0007-proposal-map-k13 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-bskills-collectors { animation: a-rfc-0007-proposal-map-k14 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-bskills-gatherer-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k15 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-bskills-gatherer-p { animation: a-rfc-0007-proposal-map-k16 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-bskills-gatherer-l { animation: a-rfc-0007-proposal-map-k17 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-bskills-gatherer { animation: a-rfc-0007-proposal-map-k18 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-collectors-sys-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k19 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-collectors-sys-p { animation: a-rfc-0007-proposal-map-k20 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-collectors-sys-l { animation: a-rfc-0007-proposal-map-k21 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-collectors-sys { animation: a-rfc-0007-proposal-map-k22 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-gatherer-mcp-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k23 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-gatherer-mcp-p { animation: a-rfc-0007-proposal-map-k24 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-gatherer-mcp-l { animation: a-rfc-0007-proposal-map-k25 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-gatherer-mcp { animation: a-rfc-0007-proposal-map-k26 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-collectors-run-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k27 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-collectors-run-p { animation: a-rfc-0007-proposal-map-k28 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-collectors-run-l { animation: a-rfc-0007-proposal-map-k29 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-collectors-run { animation: a-rfc-0007-proposal-map-k30 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-gatherer-run-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k31 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-gatherer-run-p { animation: a-rfc-0007-proposal-map-k32 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-gatherer-run-l { animation: a-rfc-0007-proposal-map-k17 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-gatherer-run { animation: a-rfc-0007-proposal-map-k18 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-run-engine-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k33 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-run-engine-p { animation: a-rfc-0007-proposal-map-k34 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-run-engine-l { animation: a-rfc-0007-proposal-map-k35 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-run-engine { animation: a-rfc-0007-proposal-map-k30 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-engine-page-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k36 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-engine-page-p { animation: a-rfc-0007-proposal-map-k37 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-engine-page-l { animation: a-rfc-0007-proposal-map-k38 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-engine-page { animation: a-rfc-0007-proposal-map-k39 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-engine-exports-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k40 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-engine-exports-p { animation: a-rfc-0007-proposal-map-k41 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-engine-exports { animation: a-rfc-0007-proposal-map-k42 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-cskills-gatherer-s-planned { animation: a-rfc-0007-proposal-map-k43 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-cskills-gatherer-b { opacity: 0.000; animation: a-rfc-0007-proposal-map-k44 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-cskills-gatherer-h { opacity: 0.000; animation: a-rfc-0007-proposal-map-k45 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-mk-cskills-gatherer-p { animation: a-rfc-0007-proposal-map-k46 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-cskills-gatherer-l { animation: a-rfc-0007-proposal-map-k47 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-e-cskills-gatherer { animation: a-rfc-0007-proposal-map-k48 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-0-h { animation: a-rfc-0007-proposal-map-k49 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-0-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k50 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-0-d { animation: a-rfc-0007-proposal-map-k49 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-0 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k51 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-1-h { animation: a-rfc-0007-proposal-map-k52 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-1-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k53 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-1-d { animation: a-rfc-0007-proposal-map-k52 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-1 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k54 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-2-h { animation: a-rfc-0007-proposal-map-k55 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-2-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k56 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-2-d { animation: a-rfc-0007-proposal-map-k55 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-2 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k57 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-3-h { animation: a-rfc-0007-proposal-map-k58 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-3-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k59 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-3-d { animation: a-rfc-0007-proposal-map-k58 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-3 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k60 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-4-h { animation: a-rfc-0007-proposal-map-k61 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-4-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k62 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-4-d { animation: a-rfc-0007-proposal-map-k61 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-4 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k63 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-5-h { stroke-dashoffset: -172.57px; animation: a-rfc-0007-proposal-map-k64 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-5-t { stroke-dashoffset: -172.57px; animation: a-rfc-0007-proposal-map-k64 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-5-d { stroke-dashoffset: -172.57px; animation: a-rfc-0007-proposal-map-k64 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-5 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k65 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-6-h { animation: a-rfc-0007-proposal-map-k66 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-6-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k67 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-6-d { animation: a-rfc-0007-proposal-map-k66 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-6 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k68 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-7-h { animation: a-rfc-0007-proposal-map-k69 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-7-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k70 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-7-d { animation: a-rfc-0007-proposal-map-k69 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-7 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k71 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-8-h { animation: a-rfc-0007-proposal-map-k72 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-8-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k73 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-8-d { animation: a-rfc-0007-proposal-map-k72 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-8 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k74 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-9-h { animation: a-rfc-0007-proposal-map-k75 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-9-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k76 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-9-d { animation: a-rfc-0007-proposal-map-k75 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-9 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k77 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-10-h { animation: a-rfc-0007-proposal-map-k78 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-10-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k79 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-10-d { animation: a-rfc-0007-proposal-map-k78 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-10 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k80 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-11-h { stroke-dashoffset: -635.42px; animation: a-rfc-0007-proposal-map-k81 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-11-t { stroke-dashoffset: -635.42px; animation: a-rfc-0007-proposal-map-k81 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-11-d { stroke-dashoffset: -635.42px; animation: a-rfc-0007-proposal-map-k81 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-11 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k82 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-12-h { animation: a-rfc-0007-proposal-map-k83 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-12-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k84 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-12-d { animation: a-rfc-0007-proposal-map-k83 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-12 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k85 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-13-h { animation: a-rfc-0007-proposal-map-k86 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-13-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k87 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-13-d { animation: a-rfc-0007-proposal-map-k86 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-13 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k88 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-14-h { stroke-dashoffset: -172.57px; animation: a-rfc-0007-proposal-map-k89 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-14-t { stroke-dashoffset: -172.57px; animation: a-rfc-0007-proposal-map-k89 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-14-d { stroke-dashoffset: -172.57px; animation: a-rfc-0007-proposal-map-k89 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-14 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k90 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-15-h { animation: a-rfc-0007-proposal-map-k91 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-15-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k92 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-15-d { animation: a-rfc-0007-proposal-map-k91 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-15 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k93 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-16-h { animation: a-rfc-0007-proposal-map-k94 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-16-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k95 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-16-d { animation: a-rfc-0007-proposal-map-k94 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-16 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k96 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-17-h { animation: a-rfc-0007-proposal-map-k97 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-17-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k98 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-17-d { animation: a-rfc-0007-proposal-map-k97 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-17 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k99 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-18-h { animation: a-rfc-0007-proposal-map-k100 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-18-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k101 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-18-d { animation: a-rfc-0007-proposal-map-k100 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-18 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k102 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-19-h { animation: a-rfc-0007-proposal-map-k103 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-19-t { stroke-dashoffset: 28.00px; animation: a-rfc-0007-proposal-map-k104 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-19-d { animation: a-rfc-0007-proposal-map-k103 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-pk-19 { opacity: 0.000; animation: a-rfc-0007-proposal-map-k105 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-painter-g { opacity: 0.000; transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k106 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-painter-p { transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k107 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-painter { animation: a-rfc-0007-proposal-map-k1 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-brand-p { transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k108 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-brand { animation: a-rfc-0007-proposal-map-k109 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-gatherer-g { opacity: 0.000; transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k110 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-gatherer-p { transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k111 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-gatherer { animation: a-rfc-0007-proposal-map-k112 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-collectors-g { opacity: 0.000; transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k113 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-collectors-p { transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k114 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-collectors { animation: a-rfc-0007-proposal-map-k0 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-engine-g { opacity: 0.000; transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k115 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-engine-u { transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k116 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-run-g { opacity: 0.000; transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k117 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-run-p { transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k118 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-run { animation: a-rfc-0007-proposal-map-k119 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-sys-g { opacity: 0.000; transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k120 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-sys-p { transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k121 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-sys { animation: a-rfc-0007-proposal-map-k122 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-mcp-g { opacity: 0.000; transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k123 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-mcp-p { transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k124 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-mcp { animation: a-rfc-0007-proposal-map-k125 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-page-g { opacity: 0.000; transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k126 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-page-p { transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k127 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-page { animation: a-rfc-0007-proposal-map-k128 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-exports-g { opacity: 0.000; transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k129 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-exports-p { transform-box: fill-box; transform-origin: center; animation: a-rfc-0007-proposal-map-k130 43.788s linear infinite both; }
+#a-rfc-0007-proposal-map-n-exports { animation: a-rfc-0007-proposal-map-k131 43.788s linear infinite both; }
+@media (prefers-reduced-motion: reduce) {
+  .chr-a-a-rfc-0007-proposal-map, .chr-a-a-rfc-0007-proposal-map * { animation: none !important; }
+}
+</style><g class="m-tad" transform="translate(39.65 88.28) scale(0.7413)"><defs><mask id="a-rfc-0007-proposal-map-mk-cskills-painter" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-cskills-painter-p" d="M385.0 82.0 L385.0 166.0" pathLength="84.0" stroke-dasharray="84.0 84.0"></path></mask><mask id="a-rfc-0007-proposal-map-mk-painter-engine" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-painter-engine-p" d="M385.0 248.0 L385.0 318.0 A4.0 4.0 0 0 1 381.0 322.0 L381.0 322.0 A4.0 4.0 0 0 0 377.0 326.0 L377.0 690.0" pathLength="446.6" stroke-dasharray="446.6 446.6"></path></mask><mask id="a-rfc-0007-proposal-map-mk-bskills-brand" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-bskills-brand-p" d="M765.0 41.0 L819.0 41.0" pathLength="54.0" stroke-dasharray="54.0 54.0"></path></mask><mask id="a-rfc-0007-proposal-map-mk-bskills-collectors" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-bskills-collectors-p" d="M687.0 82.0 L687.0 109.0 A10.0 10.0 0 0 0 697.0 119.0 L903.0 119.0 A10.0 10.0 0 0 1 913.0 129.0 L913.0 166.0" pathLength="301.4" stroke-dasharray="301.4 301.4"></path></mask><mask id="a-rfc-0007-proposal-map-mk-bskills-gatherer" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-bskills-gatherer-p" d="M671.0 82.0 L671.0 125.0 A4.0 4.0 0 0 0 675.0 129.0 L675.0 129.0 A4.0 4.0 0 0 1 679.0 133.0 L679.0 166.0" pathLength="88.6" stroke-dasharray="88.6 88.6"></path></mask><mask id="a-rfc-0007-proposal-map-mk-collectors-sys" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-collectors-sys-p" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" pathLength="172.6" stroke-dasharray="172.6 172.6"></path></mask><mask id="a-rfc-0007-proposal-map-mk-gatherer-mcp" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-gatherer-mcp-p" d="M679.0 248.0 L679.0 312.0 A10.0 10.0 0 0 0 689.0 322.0 L1145.0 322.0 A10.0 10.0 0 0 1 1155.0 332.0 L1155.0 416.0" pathLength="635.4" stroke-dasharray="635.4 635.4"></path></mask><mask id="a-rfc-0007-proposal-map-mk-collectors-run" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-collectors-run-p" d="M905.0 248.0 L905.0 322.0 A10.0 10.0 0 0 1 895.0 332.0 L667.0 332.0 A10.0 10.0 0 0 0 657.0 342.0 L657.0 416.0" pathLength="407.4" stroke-dasharray="407.4 407.4"></path></mask><mask id="a-rfc-0007-proposal-map-mk-gatherer-run" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-gatherer-run-p" d="M663.0 248.0 L663.0 312.0 A10.0 10.0 0 0 1 653.0 322.0 L651.0 322.0 A10.0 10.0 0 0 0 641.0 332.0 L641.0 416.0" pathLength="181.4" stroke-dasharray="181.4 181.4"></path></mask><mask id="a-rfc-0007-proposal-map-mk-run-engine" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-run-engine-p" d="M649.0 498.0 L649.0 579.0 A10.0 10.0 0 0 1 639.0 589.0 L403.0 589.0 A10.0 10.0 0 0 0 393.0 599.0 L393.0 690.0" pathLength="439.4" stroke-dasharray="439.4 439.4"></path></mask><mask id="a-rfc-0007-proposal-map-mk-engine-page" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-engine-page-p" d="M479.0 731.0 L577.0 731.0" pathLength="98.0" stroke-dasharray="98.0 98.0"></path></mask><mask id="a-rfc-0007-proposal-map-mk-engine-exports" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-engine-exports-p" d="M291.0 731.0 L215.0 731.0" pathLength="76.0" stroke-dasharray="76.0 76.0"></path></mask><mask id="a-rfc-0007-proposal-map-mk-cskills-gatherer" maskUnits="userSpaceOnUse" x="9" y="-62" width="1278" height="910"><path class="m-mask" id="a-rfc-0007-proposal-map-mk-cskills-gatherer-p" d="M401.0 82.0 L401.0 109.0 A10.0 10.0 0 0 0 411.0 119.0 L653.0 119.0 A10.0 10.0 0 0 1 663.0 129.0 L663.0 166.0" pathLength="337.4" stroke-dasharray="337.4 337.4"></path></mask></defs><g id="a-rfc-0007-proposal-map-g-chron" class="m-group m-tinted" style="--tone: var(--accent)"><g id="a-rfc-0007-proposal-map-g-chron-d"><rect class="m-gfill m-cluster" rx="14" x="271.0" y="-44.0" width="228.0" height="312.0"></rect><rect class="m-gline m-cluster" id="a-rfc-0007-proposal-map-g-chron-o" rx="14" x="271.0" y="-44.0" width="228.0" height="312.0"></rect><text class="m-glabel" x="285.0" y="-25.0">CHRONICLE PLUGIN, CREATIVE</text></g></g><g id="a-rfc-0007-proposal-map-g-brief" class="m-group m-tinted" style="--tone: var(--accent)"><g id="a-rfc-0007-proposal-map-g-brief-d"><rect class="m-gfill m-cluster" rx="14" x="557.0" y="-44.0" width="470.0" height="312.0"></rect><rect class="m-gline m-cluster" id="a-rfc-0007-proposal-map-g-brief-o" rx="14" x="557.0" y="-44.0" width="470.0" height="312.0"></rect><text class="m-glabel" x="571.0" y="-25.0">BRIEFING PLUGIN, DATA</text></g></g><g id="a-rfc-0007-proposal-map-g-shared" class="m-group"><g id="a-rfc-0007-proposal-map-g-shared-d"><rect class="m-gfill m-boundary" rx="14" x="271.0" y="646.0" width="228.0" height="146.0"></rect><rect class="m-gline m-boundary" id="a-rfc-0007-proposal-map-g-shared-o" rx="14" x="271.0" y="646.0" width="228.0" height="146.0"></rect><text class="m-glabel" x="285.0" y="665.0">PACKAGES/</text></g></g><g id="a-rfc-0007-proposal-map-g-systems" class="m-group"><g id="a-rfc-0007-proposal-map-g-systems-d"><rect class="m-gfill m-external" rx="14" x="799.0" y="372.0" width="470.0" height="146.0"></rect><rect class="m-gline m-external" id="a-rfc-0007-proposal-map-g-systems-o" rx="14" x="799.0" y="372.0" width="470.0" height="146.0"></rect><text class="m-glabel" x="813.0" y="391.0">COMPANY SYSTEMS</text></g></g><g id="a-rfc-0007-proposal-map-g-cloud" class="m-group"><g id="a-rfc-0007-proposal-map-g-cloud-d"><rect class="m-gfill m-external" rx="14" x="557.0" y="646.0" width="228.0" height="146.0"></rect><rect class="m-gline m-external" id="a-rfc-0007-proposal-map-g-cloud-o" rx="14" x="557.0" y="646.0" width="228.0" height="146.0"></rect><text class="m-glabel" x="571.0" y="665.0">CLAUDE.AI</text></g></g><g id="a-rfc-0007-proposal-map-e-cskills-painter" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-cskills-painter-d"><g mask="url(#a-rfc-0007-proposal-map-mk-cskills-painter)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-cskills-painter-h" d="M385.0 82.0 L385.0 159.0" style="--tone: var(--c-creative)"></path><g id="a-rfc-0007-proposal-map-e-cskills-painter-b"><path class="m-line" d="M385.0 82.0 L385.0 159.0"></path><path class="m-head" d="M385.0 166.0 L380.4 157.0 L389.6 157.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-cskills-painter-l" x="392.0" y="128.0" text-anchor="start">drawings</text></g></g><g id="a-rfc-0007-proposal-map-e-painter-engine" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-painter-engine-d"><g mask="url(#a-rfc-0007-proposal-map-mk-painter-engine)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-painter-engine-h" d="M385.0 248.0 L385.0 318.0 A4.0 4.0 0 0 1 381.0 322.0 L381.0 322.0 A4.0 4.0 0 0 0 377.0 326.0 L377.0 683.0" style="--tone: var(--c-creative)"></path><g id="a-rfc-0007-proposal-map-e-painter-engine-b"><path class="m-line" d="M385.0 248.0 L385.0 318.0 A4.0 4.0 0 0 1 381.0 322.0 L381.0 322.0 A4.0 4.0 0 0 0 377.0 326.0 L377.0 683.0"></path><path class="m-head" d="M377.0 690.0 L372.4 681.0 L381.6 681.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-painter-engine-l" x="384.0" y="510.0" text-anchor="start">paintings</text></g></g><g id="a-rfc-0007-proposal-map-e-cskills-engine" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-cskills-engine-d"><g><path class="m-hot" id="a-rfc-0007-proposal-map-e-cskills-engine-h" d="M369.0 82.0 L369.0 109.0 A10.0 10.0 0 0 1 359.0 119.0 L280.0 119.0 A10.0 10.0 0 0 0 270.0 129.0 L270.0 579.0 A10.0 10.0 0 0 0 280.0 589.0 L351.0 589.0 A10.0 10.0 0 0 1 361.0 599.0 L361.0 683.0"></path><g id="a-rfc-0007-proposal-map-e-cskills-engine-b"><path class="m-line" d="M369.0 82.0 L369.0 109.0 A10.0 10.0 0 0 1 359.0 119.0 L280.0 119.0 A10.0 10.0 0 0 0 270.0 129.0 L270.0 579.0 A10.0 10.0 0 0 0 280.0 589.0 L351.0 589.0 A10.0 10.0 0 0 1 361.0 599.0 L361.0 683.0"></path><path class="m-head" d="M361.0 690.0 L356.4 681.0 L365.6 681.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-cskills-engine-l" x="319.5" y="112.0" text-anchor="middle">story.json</text></g></g><g id="a-rfc-0007-proposal-map-e-bskills-engine" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-bskills-engine-d"><g><path class="m-hot" id="a-rfc-0007-proposal-map-e-bskills-engine-h" d="M655.0 82.0 L655.0 119.0 A10.0 10.0 0 0 1 645.0 129.0 L527.0 129.0 A10.0 10.0 0 0 0 517.0 139.0 L517.0 589.0 A10.0 10.0 0 0 1 507.0 599.0 L419.0 599.0 A10.0 10.0 0 0 0 409.0 609.0 L409.0 683.0"></path><g id="a-rfc-0007-proposal-map-e-bskills-engine-b"><path class="m-line" d="M655.0 82.0 L655.0 119.0 A10.0 10.0 0 0 1 645.0 129.0 L527.0 129.0 A10.0 10.0 0 0 0 517.0 139.0 L517.0 589.0 A10.0 10.0 0 0 1 507.0 599.0 L419.0 599.0 A10.0 10.0 0 0 0 409.0 609.0 L409.0 683.0"></path><path class="m-head" d="M409.0 690.0 L404.4 681.0 L413.6 681.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-bskills-engine-l" x="586.0" y="122.0" text-anchor="middle">deck.json</text></g></g><g id="a-rfc-0007-proposal-map-e-bskills-brand" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-bskills-brand-d"><g mask="url(#a-rfc-0007-proposal-map-mk-bskills-brand)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-bskills-brand-h" d="M765.0 41.0 L812.0 41.0"></path><g id="a-rfc-0007-proposal-map-e-bskills-brand-b"><path class="m-line" d="M765.0 41.0 L812.0 41.0"></path><path class="m-head" d="M819.0 41.0 L810.0 45.6 L810.0 36.4Z"></path></g></g></g></g><g id="a-rfc-0007-proposal-map-e-bskills-collectors" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-bskills-collectors-d"><g mask="url(#a-rfc-0007-proposal-map-mk-bskills-collectors)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-bskills-collectors-h" d="M687.0 82.0 L687.0 109.0 A10.0 10.0 0 0 0 697.0 119.0 L903.0 119.0 A10.0 10.0 0 0 1 913.0 129.0 L913.0 159.0" style="--tone: var(--accent)"></path><g id="a-rfc-0007-proposal-map-e-bskills-collectors-b"><path class="m-line" d="M687.0 82.0 L687.0 109.0 A10.0 10.0 0 0 0 697.0 119.0 L903.0 119.0 A10.0 10.0 0 0 1 913.0 129.0 L913.0 159.0"></path><path class="m-head" d="M913.0 166.0 L908.4 157.0 L917.6 157.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-bskills-collectors-l" x="800.0" y="112.0" text-anchor="middle">gather</text></g></g><g id="a-rfc-0007-proposal-map-e-bskills-gatherer" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-bskills-gatherer-d"><g mask="url(#a-rfc-0007-proposal-map-mk-bskills-gatherer)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-bskills-gatherer-h" d="M671.0 82.0 L671.0 125.0 A4.0 4.0 0 0 0 675.0 129.0 L675.0 129.0 A4.0 4.0 0 0 1 679.0 133.0 L679.0 159.0" style="--tone: var(--s3)"></path><g id="a-rfc-0007-proposal-map-e-bskills-gatherer-b"><path class="m-line" d="M671.0 82.0 L671.0 125.0 A4.0 4.0 0 0 0 675.0 129.0 L675.0 129.0 A4.0 4.0 0 0 1 679.0 133.0 L679.0 159.0"></path><path class="m-head" d="M679.0 166.0 L674.4 157.0 L683.6 157.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-bskills-gatherer-l" x="678.0" y="109.5" text-anchor="start">delegate</text></g></g><g id="a-rfc-0007-proposal-map-e-collectors-sys" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-collectors-sys-d"><g mask="url(#a-rfc-0007-proposal-map-mk-collectors-sys)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-collectors-sys-h" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 409.0" style="--tone: var(--accent)"></path><g id="a-rfc-0007-proposal-map-e-collectors-sys-b"><path class="m-line" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 409.0"></path><path class="m-head" d="M913.0 416.0 L908.4 407.0 L917.6 407.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-collectors-sys-l" x="928.0" y="299.0" text-anchor="start">read-only</text></g></g><g id="a-rfc-0007-proposal-map-e-gatherer-mcp" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-gatherer-mcp-d"><g mask="url(#a-rfc-0007-proposal-map-mk-gatherer-mcp)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-gatherer-mcp-h" d="M679.0 248.0 L679.0 312.0 A10.0 10.0 0 0 0 689.0 322.0 L1145.0 322.0 A10.0 10.0 0 0 1 1155.0 332.0 L1155.0 409.0" style="--tone: var(--s3)"></path><g id="a-rfc-0007-proposal-map-e-gatherer-mcp-b"><path class="m-line" d="M679.0 248.0 L679.0 312.0 A10.0 10.0 0 0 0 689.0 322.0 L1145.0 322.0 A10.0 10.0 0 0 1 1155.0 332.0 L1155.0 409.0"></path><path class="m-head" d="M1155.0 416.0 L1150.4 407.0 L1159.6 407.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-gatherer-mcp-l" x="917.0" y="315.0" text-anchor="middle">read-only</text></g></g><g id="a-rfc-0007-proposal-map-e-collectors-run" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-collectors-run-d"><g mask="url(#a-rfc-0007-proposal-map-mk-collectors-run)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-collectors-run-h" d="M905.0 248.0 L905.0 322.0 A10.0 10.0 0 0 1 895.0 332.0 L667.0 332.0 A10.0 10.0 0 0 0 657.0 342.0 L657.0 409.0" style="--tone: var(--accent)"></path><g id="a-rfc-0007-proposal-map-e-collectors-run-b"><path class="m-line" d="M905.0 248.0 L905.0 322.0 A10.0 10.0 0 0 1 895.0 332.0 L667.0 332.0 A10.0 10.0 0 0 0 657.0 342.0 L657.0 409.0"></path><path class="m-head" d="M657.0 416.0 L652.4 407.0 L661.6 407.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-collectors-run-l" x="781.0" y="325.0" text-anchor="middle">facts</text></g></g><g id="a-rfc-0007-proposal-map-e-gatherer-run" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-gatherer-run-d"><g mask="url(#a-rfc-0007-proposal-map-mk-gatherer-run)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-gatherer-run-h" d="M663.0 248.0 L663.0 312.0 A10.0 10.0 0 0 1 653.0 322.0 L651.0 322.0 A10.0 10.0 0 0 0 641.0 332.0 L641.0 409.0" style="--tone: var(--s3)"></path><g id="a-rfc-0007-proposal-map-e-gatherer-run-b"><path class="m-line" d="M663.0 248.0 L663.0 312.0 A10.0 10.0 0 0 1 653.0 322.0 L651.0 322.0 A10.0 10.0 0 0 0 641.0 332.0 L641.0 409.0"></path><path class="m-head" d="M641.0 416.0 L636.4 407.0 L645.6 407.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-gatherer-run-l" x="648.0" y="373.0" text-anchor="start">facts</text></g></g><g id="a-rfc-0007-proposal-map-e-run-engine" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-run-engine-d"><g mask="url(#a-rfc-0007-proposal-map-mk-run-engine)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-run-engine-h" d="M649.0 498.0 L649.0 579.0 A10.0 10.0 0 0 1 639.0 589.0 L403.0 589.0 A10.0 10.0 0 0 0 393.0 599.0 L393.0 683.0" style="--tone: var(--accent)"></path><g id="a-rfc-0007-proposal-map-e-run-engine-b"><path class="m-line" d="M649.0 498.0 L649.0 579.0 A10.0 10.0 0 0 1 639.0 589.0 L403.0 589.0 A10.0 10.0 0 0 0 393.0 599.0 L393.0 683.0"></path><path class="m-head" d="M393.0 690.0 L388.4 681.0 L397.6 681.0Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-run-engine-l" x="521.0" y="582.0" text-anchor="middle">digest</text></g></g><g id="a-rfc-0007-proposal-map-e-engine-page" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-engine-page-d"><g mask="url(#a-rfc-0007-proposal-map-mk-engine-page)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-engine-page-h" d="M479.0 731.0 L570.0 731.0" style="--tone: var(--c-creative)"></path><g id="a-rfc-0007-proposal-map-e-engine-page-b"><path class="m-line" d="M479.0 731.0 L570.0 731.0"></path><path class="m-head" d="M577.0 731.0 L568.0 735.6 L568.0 726.4Z"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-engine-page-l" x="528.0" y="724.0" text-anchor="middle">publish</text></g></g><g id="a-rfc-0007-proposal-map-e-engine-exports" class="m-edge m-sync"><g id="a-rfc-0007-proposal-map-e-engine-exports-d"><g mask="url(#a-rfc-0007-proposal-map-mk-engine-exports)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-engine-exports-h" d="M291.0 731.0 L222.0 731.0" style="--tone: var(--s5)"></path><g id="a-rfc-0007-proposal-map-e-engine-exports-b"><path class="m-line" d="M291.0 731.0 L222.0 731.0"></path><path class="m-head" d="M215.0 731.0 L224.0 726.4 L224.0 735.6Z"></path></g></g></g></g><g id="a-rfc-0007-proposal-map-e-cskills-gatherer" class="m-edge m-async"><g id="a-rfc-0007-proposal-map-e-cskills-gatherer-d"><g mask="url(#a-rfc-0007-proposal-map-mk-cskills-gatherer)"><path class="m-hot" id="a-rfc-0007-proposal-map-e-cskills-gatherer-h" d="M401.0 82.0 L401.0 109.0 A10.0 10.0 0 0 0 411.0 119.0 L653.0 119.0 A10.0 10.0 0 0 1 663.0 129.0 L663.0 159.0" style="--tone: var(--c-creative)"></path><g id="a-rfc-0007-proposal-map-e-cskills-gatherer-b"><path class="m-line" d="M401.0 82.0 L401.0 109.0 A10.0 10.0 0 0 0 411.0 119.0 L653.0 119.0 A10.0 10.0 0 0 1 663.0 129.0 L663.0 159.0"></path><path class="m-head" d="M658.4 157.0 L663.0 166.0 L667.6 157.0"></path></g><g id="a-rfc-0007-proposal-map-e-cskills-gatherer-s-planned"><path class="m-line m-planned" d="M401.0 82.0 L401.0 109.0 A10.0 10.0 0 0 0 411.0 119.0 L653.0 119.0 A10.0 10.0 0 0 1 663.0 129.0 L663.0 159.0"></path><path class="m-head m-planned" d="M658.4 157.0 L663.0 166.0 L667.6 157.0"></path></g></g><text class="m-elabel" id="a-rfc-0007-proposal-map-e-cskills-gatherer-l" x="532.0" y="112.0" text-anchor="middle">if installed</text></g></g><g id="a-rfc-0007-proposal-map-pk-0" class="m-packet" style="--tone: var(--c-creative)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-0-h" d="M385.0 82.0 L385.0 166.0" stroke-dasharray="0.0084 228" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-0-t" d="M385.0 82.0 L385.0 166.0" stroke-dasharray="28 228" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-0-d" d="M385.0 82.0 L385.0 166.0" stroke-dasharray="0.0084 228" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-1" class="m-packet" style="--tone: var(--c-creative)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-1-h" d="M385.0 248.0 L385.0 318.0 A4.0 4.0 0 0 1 381.0 322.0 L381.0 322.0 A4.0 4.0 0 0 0 377.0 326.0 L377.0 690.0" stroke-dasharray="0.04466 953.1" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-1-t" d="M385.0 248.0 L385.0 318.0 A4.0 4.0 0 0 1 381.0 322.0 L381.0 322.0 A4.0 4.0 0 0 0 377.0 326.0 L377.0 690.0" stroke-dasharray="28 953.1" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-1-d" d="M385.0 248.0 L385.0 318.0 A4.0 4.0 0 0 1 381.0 322.0 L381.0 322.0 A4.0 4.0 0 0 0 377.0 326.0 L377.0 690.0" stroke-dasharray="0.04466 953.1" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-2" class="m-packet" style="--tone: var(--c-creative)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-2-h" d="M479.0 731.0 L577.0 731.0" stroke-dasharray="0.0098 256" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-2-t" d="M479.0 731.0 L577.0 731.0" stroke-dasharray="28 256" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-2-d" d="M479.0 731.0 L577.0 731.0" stroke-dasharray="0.0098 256" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-3" class="m-packet" style="--tone: var(--accent)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-3-h" d="M687.0 82.0 L687.0 109.0 A10.0 10.0 0 0 0 697.0 119.0 L903.0 119.0 A10.0 10.0 0 0 1 913.0 129.0 L913.0 166.0" stroke-dasharray="0.03014 662.8" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-3-t" d="M687.0 82.0 L687.0 109.0 A10.0 10.0 0 0 0 697.0 119.0 L903.0 119.0 A10.0 10.0 0 0 1 913.0 129.0 L913.0 166.0" stroke-dasharray="28 662.8" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-3-d" d="M687.0 82.0 L687.0 109.0 A10.0 10.0 0 0 0 697.0 119.0 L903.0 119.0 A10.0 10.0 0 0 1 913.0 129.0 L913.0 166.0" stroke-dasharray="0.03014 662.8" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-4" class="m-packet" style="--tone: var(--accent)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-4-h" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="0.01726 405.1" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-4-t" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="28 405.1" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-4-d" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="0.01726 405.1" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-5" class="m-packet" style="--tone: var(--accent)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-5-h" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="0.01726 405.1" stroke-dashoffset="-172.6"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-5-t" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="28 405.1" stroke-dashoffset="-172.6"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-5-d" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="0.01726 405.1" stroke-dashoffset="-172.6"></path></g><g id="a-rfc-0007-proposal-map-pk-6" class="m-packet" style="--tone: var(--accent)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-6-h" d="M905.0 248.0 L905.0 322.0 A10.0 10.0 0 0 1 895.0 332.0 L667.0 332.0 A10.0 10.0 0 0 0 657.0 342.0 L657.0 416.0" stroke-dasharray="0.04074 874.8" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-6-t" d="M905.0 248.0 L905.0 322.0 A10.0 10.0 0 0 1 895.0 332.0 L667.0 332.0 A10.0 10.0 0 0 0 657.0 342.0 L657.0 416.0" stroke-dasharray="28 874.8" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-6-d" d="M905.0 248.0 L905.0 322.0 A10.0 10.0 0 0 1 895.0 332.0 L667.0 332.0 A10.0 10.0 0 0 0 657.0 342.0 L657.0 416.0" stroke-dasharray="0.04074 874.8" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-7" class="m-packet" style="--tone: var(--accent)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-7-h" d="M649.0 498.0 L649.0 579.0 A10.0 10.0 0 0 1 639.0 589.0 L403.0 589.0 A10.0 10.0 0 0 0 393.0 599.0 L393.0 690.0" stroke-dasharray="0.04394 938.8" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-7-t" d="M649.0 498.0 L649.0 579.0 A10.0 10.0 0 0 1 639.0 589.0 L403.0 589.0 A10.0 10.0 0 0 0 393.0 599.0 L393.0 690.0" stroke-dasharray="28 938.8" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-7-d" d="M649.0 498.0 L649.0 579.0 A10.0 10.0 0 0 1 639.0 589.0 L403.0 589.0 A10.0 10.0 0 0 0 393.0 599.0 L393.0 690.0" stroke-dasharray="0.04394 938.8" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-8" class="m-packet" style="--tone: var(--accent)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-8-h" d="M479.0 731.0 L577.0 731.0" stroke-dasharray="0.0098 256" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-8-t" d="M479.0 731.0 L577.0 731.0" stroke-dasharray="28 256" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-8-d" d="M479.0 731.0 L577.0 731.0" stroke-dasharray="0.0098 256" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-9" class="m-packet" style="--tone: var(--s3)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-9-h" d="M671.0 82.0 L671.0 125.0 A4.0 4.0 0 0 0 675.0 129.0 L675.0 129.0 A4.0 4.0 0 0 1 679.0 133.0 L679.0 166.0" stroke-dasharray="0.008857 237.1" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-9-t" d="M671.0 82.0 L671.0 125.0 A4.0 4.0 0 0 0 675.0 129.0 L675.0 129.0 A4.0 4.0 0 0 1 679.0 133.0 L679.0 166.0" stroke-dasharray="28 237.1" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-9-d" d="M671.0 82.0 L671.0 125.0 A4.0 4.0 0 0 0 675.0 129.0 L675.0 129.0 A4.0 4.0 0 0 1 679.0 133.0 L679.0 166.0" stroke-dasharray="0.008857 237.1" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-10" class="m-packet" style="--tone: var(--s3)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-10-h" d="M679.0 248.0 L679.0 312.0 A10.0 10.0 0 0 0 689.0 322.0 L1145.0 322.0 A10.0 10.0 0 0 1 1155.0 332.0 L1155.0 416.0" stroke-dasharray="0.06354 1331" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-10-t" d="M679.0 248.0 L679.0 312.0 A10.0 10.0 0 0 0 689.0 322.0 L1145.0 322.0 A10.0 10.0 0 0 1 1155.0 332.0 L1155.0 416.0" stroke-dasharray="28 1331" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-10-d" d="M679.0 248.0 L679.0 312.0 A10.0 10.0 0 0 0 689.0 322.0 L1145.0 322.0 A10.0 10.0 0 0 1 1155.0 332.0 L1155.0 416.0" stroke-dasharray="0.06354 1331" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-11" class="m-packet" style="--tone: var(--s3)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-11-h" d="M679.0 248.0 L679.0 312.0 A10.0 10.0 0 0 0 689.0 322.0 L1145.0 322.0 A10.0 10.0 0 0 1 1155.0 332.0 L1155.0 416.0" stroke-dasharray="0.06354 1331" stroke-dashoffset="-635.4"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-11-t" d="M679.0 248.0 L679.0 312.0 A10.0 10.0 0 0 0 689.0 322.0 L1145.0 322.0 A10.0 10.0 0 0 1 1155.0 332.0 L1155.0 416.0" stroke-dasharray="28 1331" stroke-dashoffset="-635.4"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-11-d" d="M679.0 248.0 L679.0 312.0 A10.0 10.0 0 0 0 689.0 322.0 L1145.0 322.0 A10.0 10.0 0 0 1 1155.0 332.0 L1155.0 416.0" stroke-dasharray="0.06354 1331" stroke-dashoffset="-635.4"></path></g><g id="a-rfc-0007-proposal-map-pk-12" class="m-packet" style="--tone: var(--s3)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-12-h" d="M663.0 248.0 L663.0 312.0 A10.0 10.0 0 0 1 653.0 322.0 L651.0 322.0 A10.0 10.0 0 0 0 641.0 332.0 L641.0 416.0" stroke-dasharray="0.01814 422.8" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-12-t" d="M663.0 248.0 L663.0 312.0 A10.0 10.0 0 0 1 653.0 322.0 L651.0 322.0 A10.0 10.0 0 0 0 641.0 332.0 L641.0 416.0" stroke-dasharray="28 422.8" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-12-d" d="M663.0 248.0 L663.0 312.0 A10.0 10.0 0 0 1 653.0 322.0 L651.0 322.0 A10.0 10.0 0 0 0 641.0 332.0 L641.0 416.0" stroke-dasharray="0.01814 422.8" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-13" class="m-packet" style="--tone: var(--s5)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-13-h" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="0.01726 405.1" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-13-t" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="28 405.1" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-13-d" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="0.01726 405.1" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-14" class="m-packet" style="--tone: var(--s5)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-14-h" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="0.01726 405.1" stroke-dashoffset="-172.6"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-14-t" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="28 405.1" stroke-dashoffset="-172.6"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-14-d" d="M921.0 248.0 L921.0 338.0 A4.0 4.0 0 0 1 917.0 342.0 L917.0 342.0 A4.0 4.0 0 0 0 913.0 346.0 L913.0 416.0" stroke-dasharray="0.01726 405.1" stroke-dashoffset="-172.6"></path></g><g id="a-rfc-0007-proposal-map-pk-15" class="m-packet" style="--tone: var(--s5)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-15-h" d="M905.0 248.0 L905.0 322.0 A10.0 10.0 0 0 1 895.0 332.0 L667.0 332.0 A10.0 10.0 0 0 0 657.0 342.0 L657.0 416.0" stroke-dasharray="0.04074 874.8" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-15-t" d="M905.0 248.0 L905.0 322.0 A10.0 10.0 0 0 1 895.0 332.0 L667.0 332.0 A10.0 10.0 0 0 0 657.0 342.0 L657.0 416.0" stroke-dasharray="28 874.8" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-15-d" d="M905.0 248.0 L905.0 322.0 A10.0 10.0 0 0 1 895.0 332.0 L667.0 332.0 A10.0 10.0 0 0 0 657.0 342.0 L657.0 416.0" stroke-dasharray="0.04074 874.8" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-16" class="m-packet" style="--tone: var(--s5)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-16-h" d="M649.0 498.0 L649.0 579.0 A10.0 10.0 0 0 1 639.0 589.0 L403.0 589.0 A10.0 10.0 0 0 0 393.0 599.0 L393.0 690.0" stroke-dasharray="0.04394 938.8" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-16-t" d="M649.0 498.0 L649.0 579.0 A10.0 10.0 0 0 1 639.0 589.0 L403.0 589.0 A10.0 10.0 0 0 0 393.0 599.0 L393.0 690.0" stroke-dasharray="28 938.8" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-16-d" d="M649.0 498.0 L649.0 579.0 A10.0 10.0 0 0 1 639.0 589.0 L403.0 589.0 A10.0 10.0 0 0 0 393.0 599.0 L393.0 690.0" stroke-dasharray="0.04394 938.8" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-17" class="m-packet" style="--tone: var(--s5)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-17-h" d="M291.0 731.0 L215.0 731.0" stroke-dasharray="0.0076 212" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-17-t" d="M291.0 731.0 L215.0 731.0" stroke-dasharray="28 212" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-17-d" d="M291.0 731.0 L215.0 731.0" stroke-dasharray="0.0076 212" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-18" class="m-packet" style="--tone: var(--c-creative)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-18-h" d="M401.0 82.0 L401.0 109.0 A10.0 10.0 0 0 0 411.0 119.0 L653.0 119.0 A10.0 10.0 0 0 1 663.0 129.0 L663.0 166.0" stroke-dasharray="0.03374 734.8" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-18-t" d="M401.0 82.0 L401.0 109.0 A10.0 10.0 0 0 0 411.0 119.0 L653.0 119.0 A10.0 10.0 0 0 1 663.0 129.0 L663.0 166.0" stroke-dasharray="28 734.8" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-18-d" d="M401.0 82.0 L401.0 109.0 A10.0 10.0 0 0 0 411.0 119.0 L653.0 119.0 A10.0 10.0 0 0 1 663.0 129.0 L663.0 166.0" stroke-dasharray="0.03374 734.8" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-pk-19" class="m-packet" style="--tone: var(--c-creative)"><path class="m-halo" id="a-rfc-0007-proposal-map-pk-19-h" d="M663.0 248.0 L663.0 312.0 A10.0 10.0 0 0 1 653.0 322.0 L651.0 322.0 A10.0 10.0 0 0 0 641.0 332.0 L641.0 416.0" stroke-dasharray="0.01814 422.8" stroke-dashoffset="0"></path><path class="m-trail" id="a-rfc-0007-proposal-map-pk-19-t" d="M663.0 248.0 L663.0 312.0 A10.0 10.0 0 0 1 653.0 322.0 L651.0 322.0 A10.0 10.0 0 0 0 641.0 332.0 L641.0 416.0" stroke-dasharray="28 422.8" stroke-dashoffset="28"></path><path class="m-dot" id="a-rfc-0007-proposal-map-pk-19-d" d="M663.0 248.0 L663.0 312.0 A10.0 10.0 0 0 1 653.0 322.0 L651.0 322.0 A10.0 10.0 0 0 0 641.0 332.0 L641.0 416.0" stroke-dasharray="0.01814 422.8" stroke-dashoffset="0"></path></g><g id="a-rfc-0007-proposal-map-n-cskills" class="m-node" style="--tone: var(--c-creative)"><g id="a-rfc-0007-proposal-map-n-cskills-d"><g id="a-rfc-0007-proposal-map-n-cskills-u"><g id="a-rfc-0007-proposal-map-n-cskills-p"><g id="a-rfc-0007-proposal-map-n-cskills-c"><rect class="m-shadow" rx="10" x="291.0" y="2.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="291.0" y="0.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-cskills-o" rx="10" x="291.0" y="0.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="303.0" y="25.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6-5.6-1.9 5.6-1.9z M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" transform="translate(309.4 31.4) scale(0.8)"></path><text class="m-nlabel" x="345.0" y="38.0">Creative skills</text><text class="m-tech" x="345.0" y="54.0">story, animation</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-painter" class="m-node" style="--tone: var(--c-creative)"><g id="a-rfc-0007-proposal-map-n-painter-d"><g id="a-rfc-0007-proposal-map-n-painter-u"><g id="a-rfc-0007-proposal-map-n-painter-p"><rect class="m-ping" id="a-rfc-0007-proposal-map-n-painter-g" rx="10" x="291.0" y="166.0" width="188.0" height="82.0"></rect><g id="a-rfc-0007-proposal-map-n-painter-c"><rect class="m-shadow" rx="10" x="291.0" y="168.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="291.0" y="166.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-painter-o" rx="10" x="291.0" y="166.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="303.0" y="191.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M6.5 3.5h2.2a1.5 1.5 0 0 1 1.4 1l7 15.5h2.4 M12.2 10.2L6.5 20.5" transform="translate(309.4 197.4) scale(0.8)"></path><text class="m-nlabel" x="345.0" y="195.5">Watercolor</text><text class="m-nlabel" x="345.0" y="212.5">painter</text><text class="m-tech" x="345.0" y="228.5">NumPy, OpenCV</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-bskills" class="m-node" style="--tone: var(--c-data)"><g id="a-rfc-0007-proposal-map-n-bskills-d"><g id="a-rfc-0007-proposal-map-n-bskills-u"><g id="a-rfc-0007-proposal-map-n-bskills-p"><g id="a-rfc-0007-proposal-map-n-bskills-c"><rect class="m-shadow" rx="10" x="577.0" y="2.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="577.0" y="0.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-bskills-o" rx="10" x="577.0" y="0.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="589.0" y="25.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6-5.6-1.9 5.6-1.9z M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" transform="translate(595.4 31.4) scale(0.8)"></path><text class="m-nlabel" x="631.0" y="38.0">Data skills</text><text class="m-tech" x="631.0" y="54.0">deck, dashboard</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-brand" class="m-node" style="--tone: var(--c-data)"><g id="a-rfc-0007-proposal-map-n-brand-d"><g id="a-rfc-0007-proposal-map-n-brand-u"><g id="a-rfc-0007-proposal-map-n-brand-p"><g id="a-rfc-0007-proposal-map-n-brand-c"><rect class="m-shadow" rx="10" x="819.0" y="2.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="819.0" y="0.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-brand-o" rx="10" x="819.0" y="0.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="831.0" y="25.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M3.5 6.5h17 M5 6.5l1.5 13.1a1.6 1.6 0 0 0 1.6 1.4h7.8a1.6 1.6 0 0 0 1.6-1.4L19 6.5 M9 3.5h6 M8 11.5h8" transform="translate(837.4 31.4) scale(0.8)"></path><text class="m-nlabel" x="873.0" y="38.0">Brand kit</text><text class="m-tech" x="873.0" y="54.0">brand.json</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-gatherer" class="m-node" style="--tone: var(--c-data)"><g id="a-rfc-0007-proposal-map-n-gatherer-d"><g id="a-rfc-0007-proposal-map-n-gatherer-u"><g id="a-rfc-0007-proposal-map-n-gatherer-p"><rect class="m-ping" id="a-rfc-0007-proposal-map-n-gatherer-g" rx="10" x="577.0" y="166.0" width="188.0" height="82.0"></rect><g id="a-rfc-0007-proposal-map-n-gatherer-c"><rect class="m-shadow" rx="10" x="577.0" y="168.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="577.0" y="166.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-gatherer-o" rx="10" x="577.0" y="166.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="589.0" y="191.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6-5.6-1.9 5.6-1.9z M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" transform="translate(595.4 197.4) scale(0.8)"></path><text class="m-nlabel" x="631.0" y="204.0">Gatherer</text><text class="m-tech" x="631.0" y="220.0">subagent</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-collectors" class="m-node" style="--tone: var(--c-data)"><g id="a-rfc-0007-proposal-map-n-collectors-d"><g id="a-rfc-0007-proposal-map-n-collectors-u"><g id="a-rfc-0007-proposal-map-n-collectors-p"><rect class="m-ping" id="a-rfc-0007-proposal-map-n-collectors-g" rx="10" x="819.0" y="166.0" width="188.0" height="82.0"></rect><g id="a-rfc-0007-proposal-map-n-collectors-c"><rect class="m-shadow" rx="10" x="819.0" y="168.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="819.0" y="166.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-collectors-o" rx="10" x="819.0" y="166.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="831.0" y="191.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7v5l3.5 2.2" transform="translate(837.4 197.4) scale(0.8)"></path><text class="m-nlabel" x="873.0" y="204.0">Collectors</text><text class="m-tech" x="873.0" y="220.0">packages/sources</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-engine" class="m-node" style="--tone: var(--c-engine)"><g id="a-rfc-0007-proposal-map-n-engine-d"><g id="a-rfc-0007-proposal-map-n-engine-u"><g id="a-rfc-0007-proposal-map-n-engine-p"><rect class="m-ping" id="a-rfc-0007-proposal-map-n-engine-g" rx="10" x="291.0" y="690.0" width="188.0" height="82.0"></rect><g id="a-rfc-0007-proposal-map-n-engine-c"><rect class="m-shadow" rx="10" x="291.0" y="692.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="291.0" y="690.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-engine-o" rx="10" x="291.0" y="690.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="303.0" y="715.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M4.5 3.5h15a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1z M4.5 13.5h15a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1z M7 7h.01 M7 17h.01 M10 7h4 M10 17h4" transform="translate(309.4 721.4) scale(0.8)"></path><text class="m-nlabel" x="345.0" y="728.0">chronicle-engine</text><text class="m-tech" x="345.0" y="744.0">one copy in git</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-run" class="m-node" style="--tone: var(--c-engine)"><g id="a-rfc-0007-proposal-map-n-run-d"><g id="a-rfc-0007-proposal-map-n-run-u"><g id="a-rfc-0007-proposal-map-n-run-p"><rect class="m-ping" id="a-rfc-0007-proposal-map-n-run-g" rx="10" x="555.0" y="416.0" width="188.0" height="82.0"></rect><g id="a-rfc-0007-proposal-map-n-run-c"><rect class="m-shadow" rx="10" x="555.0" y="418.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="555.0" y="416.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-run-o" rx="10" x="555.0" y="416.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="567.0" y="441.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M3.5 6.5h17 M5 6.5l1.5 13.1a1.6 1.6 0 0 0 1.6 1.4h7.8a1.6 1.6 0 0 0 1.6-1.4L19 6.5 M9 3.5h6 M8 11.5h8" transform="translate(573.4 447.4) scale(0.8)"></path><text class="m-nlabel" x="609.0" y="454.0">Run folder</text><text class="m-tech" x="609.0" y="470.0">facts, digest</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-sys" class="m-node" style="--tone: var(--s3)"><g id="a-rfc-0007-proposal-map-n-sys-d"><g id="a-rfc-0007-proposal-map-n-sys-u"><g id="a-rfc-0007-proposal-map-n-sys-p"><rect class="m-ping" id="a-rfc-0007-proposal-map-n-sys-g" rx="10" x="819.0" y="416.0" width="188.0" height="82.0"></rect><g id="a-rfc-0007-proposal-map-n-sys-c"><rect class="m-shadow" rx="10" x="819.0" y="418.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="819.0" y="416.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-sys-o" rx="10" x="819.0" y="416.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="831.0" y="441.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M4.5 6c0-1.7 3.4-3 7.5-3s7.5 1.3 7.5 3-3.4 3-7.5 3-7.5-1.3-7.5-3z M4.5 6v12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6 M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3" transform="translate(837.4 447.4) scale(0.8)"></path><text class="m-nlabel" x="873.0" y="454.0">Source systems</text><text class="m-tech" x="873.0" y="470.0">GitHub, Oracle</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-mcp" class="m-node" style="--tone: var(--muted)"><g id="a-rfc-0007-proposal-map-n-mcp-d"><g id="a-rfc-0007-proposal-map-n-mcp-u"><g id="a-rfc-0007-proposal-map-n-mcp-p"><rect class="m-ping" id="a-rfc-0007-proposal-map-n-mcp-g" rx="10" x="1061.0" y="416.0" width="188.0" height="82.0"></rect><g id="a-rfc-0007-proposal-map-n-mcp-c"><rect class="m-shadow" rx="10" x="1061.0" y="418.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="1061.0" y="416.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-mcp-o" rx="10" x="1061.0" y="416.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="1073.0" y="441.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M7 19h10.5a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.6 9.2 5 5 0 0 0 7 19z" transform="translate(1079.4 447.4) scale(0.8)"></path><text class="m-nlabel" x="1115.0" y="454.0">MCP connectors</text><text class="m-tech" x="1115.0" y="470.0">your connectors</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-page" class="m-node" style="--tone: var(--ink)"><g id="a-rfc-0007-proposal-map-n-page-d"><g id="a-rfc-0007-proposal-map-n-page-u"><g id="a-rfc-0007-proposal-map-n-page-p"><rect class="m-ping" id="a-rfc-0007-proposal-map-n-page-g" rx="10" x="577.0" y="690.0" width="188.0" height="82.0"></rect><g id="a-rfc-0007-proposal-map-n-page-c"><rect class="m-shadow" rx="10" x="577.0" y="692.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="577.0" y="690.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-page-o" rx="10" x="577.0" y="690.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="589.0" y="715.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M4 4.5h16a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18V6A1.5 1.5 0 0 1 4 4.5z M2.5 8.5h19 M5.5 6.5h.01 M8 6.5h.01" transform="translate(595.4 721.4) scale(0.8)"></path><text class="m-nlabel" x="631.0" y="728.0">Artifact page</text><text class="m-tech" x="631.0" y="744.0">private link</text></g></g></g></g></g><g id="a-rfc-0007-proposal-map-n-exports" class="m-node" style="--tone: var(--c-engine)"><g id="a-rfc-0007-proposal-map-n-exports-d"><g id="a-rfc-0007-proposal-map-n-exports-u"><g id="a-rfc-0007-proposal-map-n-exports-p"><rect class="m-ping" id="a-rfc-0007-proposal-map-n-exports-g" rx="10" x="27.0" y="690.0" width="188.0" height="82.0"></rect><g id="a-rfc-0007-proposal-map-n-exports-c"><rect class="m-shadow" rx="10" x="27.0" y="692.0" width="188.0" height="82.0"></rect><rect class="m-box" rx="10" x="27.0" y="690.0" width="188.0" height="82.0"></rect><rect class="m-outline" id="a-rfc-0007-proposal-map-n-exports-o" rx="10" x="27.0" y="690.0" width="188.0" height="82.0"></rect><rect class="m-tile" x="39.0" y="715.0" width="32" height="32" rx="8"></rect><path class="m-glyph" d="M3.5 6.5h17 M5 6.5l1.5 13.1a1.6 1.6 0 0 0 1.6 1.4h7.8a1.6 1.6 0 0 0 1.6-1.4L19 6.5 M9 3.5h6 M8 11.5h8" transform="translate(45.4 721.4) scale(0.8)"></path><text class="m-nlabel" x="81.0" y="728.0">Exports</text><text class="m-tech" x="81.0" y="744.0">SVG, GIF, MP4, PDF</text></g></g></g></g></g><g class="m-key"><g class="m-edge m-sync"><path class="m-line" d="M27.0 822.0 H53.0"></path><path class="m-head" d="M57.0 822.0 L48.0 826.6 L48.0 817.4Z"></path></g><text class="m-legend" x="65.0" y="826.0">Call or file</text><g class="m-edge m-async"><path class="m-line" d="M172.2 822.0 H198.2"></path><path class="m-head" d="M193.2 826.6 L202.2 822.0 L193.2 817.4"></path></g><text class="m-legend" x="210.2" y="826.0">Open question</text></g></g></svg></div>
+      </div>
+      <p class="part-info" id="partinfo" aria-live="polite">Select a box on the map to see what it holds and which questions touch it.</p>
+      <div class="player" aria-label="Walkthrough">
+        <div class="player-top">
+          <h2>Walkthrough</h2>
+          <button class="btn primary" id="play" type="button">Play all six steps</button>
+          <button class="btn" id="showall" type="button">Show the whole map</button>
+          <span class="where" id="where">Whole map</span>
+        </div>
+        <div class="track" id="track" aria-hidden="true"></div>
+        <ol class="steps" id="steps"></ol>
+        <p class="caption" id="caption" aria-live="polite">The whole proposal is on screen. Play the walkthrough to build it in six steps, or pick one step.</p>
+      </div>
+    </section>
+
+    <aside class="rail" aria-label="Open questions">
+      <div class="rail-head">
+        <h2>Open questions</h2>
+        <div class="tallyrow">
+          <p class="tally"><b id="tally">0 of 10</b> picked</p>
+          <button class="btn small" id="copy" type="button">Copy picks</button>
+        </div>
+        <p class="save" id="save">Picks save as you make them.</p>
+        <textarea class="copybox" id="copybox" readonly hidden aria-label="Your picks as text"></textarea>
+      </div>
+      <ol class="qs" id="qs"></ol>
+    </aside>
+  </main>
+
+  <p class="foot">Source: <code>DECISIONS/RFC-0007-chronicle-two-branches.md</code>, in <a href="https://github.com/jacquelineadean/10x-agent-marketplace/pull/14">jacquelineadean/10x-agent-marketplace#14</a>. The map is a chronicle TAD built from <code>docs/rfc-0007-map/animation.json</code>. Picks marked RFC are the proposal's own recommendation.</p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var SLUG = "a-rfc-0007-proposal-map";
+  var CLOCK = {"duration": 43.788, "steps": [{"start": 0.6, "end": 6.912, "caption": "chronicle takes painted, illustrated requests and briefing takes data requests; both plugins link the same engine folder."}, {"start": 6.912, "end": 14.475, "caption": "A creative request: the story skill draws in SVG, the painter washes it in watercolor, and the engine renders the page."}, {"start": 14.475, "end": 20.788, "caption": "A data request: read-only collectors query company systems and write facts, and Claude reads only the digest."}, {"start": 20.788, "end": 27.413, "caption": "Without keys, the gatherer subagent reads MCP connectors; raw output stays inside it and only facts come back."}, {"start": 27.413, "end": 34.35, "caption": "Refresh replays the saved queries with no model call, then the engine rebuilds the page and the slide exports."}, {"start": 34.35, "end": 41.288, "caption": "The dashed line is still open: chronicle could borrow briefing's gatherer for company facts, with no dependency between plugins."}]};
+  /* Every looping track eases back to its first value in the loop's last 0.35 s, so the
+     whole picture is read earlier, inside the final hold. */
+  var END = CLOCK.duration - 0.6;
+
+  var STEP_INFO = [
+    { title: "Two plugins", tone: "var(--engine)", parts: ["g:chron", "g:brief", "g:shared", "n:cskills", "n:bskills", "n:engine", "e:cskills-engine", "e:bskills-engine"] },
+    { title: "Creative ask", tone: "var(--creative)", parts: ["g:chron", "n:cskills", "n:painter", "n:engine", "n:page", "g:cloud", "e:cskills-painter", "e:painter-engine", "e:engine-page"] },
+    { title: "Data ask", tone: "var(--data)", parts: ["g:brief", "n:bskills", "n:brand", "n:collectors", "n:sys", "g:systems", "n:run", "n:engine", "n:page", "e:bskills-brand", "e:bskills-collectors", "e:collectors-sys", "e:collectors-run", "e:run-engine", "e:engine-page"] },
+    { title: "Connectors", tone: "var(--teal)", parts: ["g:brief", "n:bskills", "n:gatherer", "n:mcp", "g:systems", "n:run", "e:bskills-gatherer", "e:gatherer-mcp", "e:gatherer-run"] },
+    { title: "Refresh", tone: "var(--violet)", parts: ["n:collectors", "n:sys", "g:systems", "n:run", "n:engine", "n:exports", "e:collectors-sys", "e:collectors-run", "e:run-engine", "e:engine-exports"] },
+    { title: "Still open", tone: "var(--creative)", parts: ["n:cskills", "n:gatherer", "n:run", "e:cskills-gatherer", "e:gatherer-run"] }
+  ];
+
+  var PARTS = {
+    "n:cskills": ["Creative skills", "chronicle's story and animation skills. They write story.json and SVG drawings for illustrated pages and painted animations."],
+    "n:painter": ["Watercolor painter", "Washes each SVG drawing into an ink-and-watercolor plate with NumPy and OpenCV. Only chronicle ships it."],
+    "n:bskills": ["Data skills", "briefing's deck, dashboard, architecture and prototype skills. They write deck and dashboard files whose numbers are fact tokens."],
+    "n:brand": ["Brand kit", "brand.json: palette, fonts, logo, chart colors and slide master. briefing checks every page against it."],
+    "n:gatherer": ["Gatherer", "A subagent that reads your MCP connectors and writes facts.json. Raw tool output never reaches the main conversation."],
+    "n:collectors": ["Collectors", "Read-only scripts from packages/sources: HTTPS for GitHub, Datadog, Jira, Confluence, PagerDuty, ServiceNow and Databricks; psql and SQLcl for Postgres and Oracle."],
+    "n:engine": ["chronicle-engine", "One folder in git, linked into both plugins: facts and derive, the block registry, the renderer, theme tokens, the motion clock and every export."],
+    "n:run": ["Run folder", "facts.json, queries.json and a digest under 12 KB. Claude reads only the digest, and refresh replays queries.json."],
+    "n:sys": ["Source systems", "GitHub, Datadog, Jira, Confluence, Databricks, Postgres, Oracle, ServiceNow and PagerDuty, read only."],
+    "n:mcp": ["MCP connectors", "Your own claude.ai connectors. Neither plugin bundles an MCP server, so no session loads one it does not use."],
+    "n:page": ["Artifact page", "A private claude.ai page, published only after you confirm."],
+    "n:exports": ["Exports", "SVG, PNG, GIF and MP4 for animations; PDF and one PNG per slide for decks."],
+    "g:chron": ["chronicle plugin", "The creative branch: painted pages, rigged animals, map tours and games. It carries no data skill, agent or recipe."],
+    "g:brief": ["briefing plugin", "The data branch, working name: decks, dashboards, architecture visuals and prototypes. It carries no painter or identity guide."],
+    "g:shared": ["packages/", "Code shared by a link. Claude Code copies linked files into each plugin's cache at install, so git keeps one copy."],
+    "g:systems": ["Company systems", "Reached only through the collectors or your connectors, always read only."],
+    "g:cloud": ["claude.ai", "Where pages publish as private Artifacts."]
+  };
+
+  var QUESTIONS = [
+    { n: 1, title: "Packaging", ask: "Two plugins over one linked engine, or two skill families in one plugin?", anchor: "n:engine",
+      parts: ["g:shared", "n:engine", "e:cskills-engine", "e:bskills-engine", "g:chron", "g:brief", "n:cskills", "n:bskills"],
+      options: [
+        { id: "A", label: "Two plugins, linked engine", rfc: true, note: "One engine folder in git, linked into each plugin. Needs an install test on claude.ai, Cowork and Windows." },
+        { id: "B", label: "Generated copies", note: "A script copies the engine into each plugin. Two committed copies of about 6,400 lines, checked for drift." },
+        { id: "C", label: "One plugin, two skill families", note: "No links. Every user loads six skill descriptions, and both branches share one version." } ] },
+    { n: 2, title: "Data plugin name", ask: "What should the data plugin be called?", anchor: "n:bskills",
+      parts: ["g:brief", "n:bskills", "n:brand", "n:gatherer", "n:collectors"],
+      options: [
+        { id: "briefing", label: "briefing", rfc: true, note: "Commands read /briefing:deck and /briefing:dashboard." },
+        { id: "blueprint", label: "blueprint", note: "Leans toward architecture visuals and prototypes." },
+        { id: "other", label: "Another name", note: "Write it in the note." } ] },
+    { n: 3, title: "Company data in creative pages", ask: "How does chronicle reach company data?", anchor: "e:cskills-gatherer",
+      parts: ["n:cskills", "e:cskills-gatherer", "n:gatherer", "e:gatherer-run", "n:run", "g:chron"],
+      options: [
+        { id: "borrow", label: "Borrow briefing's gatherer", rfc: true, note: "Used when briefing is installed. No dependency, so creative sessions stay lean." },
+        { id: "own", label: "Keep its own gatherer", note: "Works alone. Two gatherers to keep in step." },
+        { id: "pasted", label: "Pasted content only", note: "Simplest. Company numbers arrive only when you paste them." } ] },
+    { n: 4, title: "First three sources", ask: "Which three sources should briefing read first?", anchor: "n:sys", pickMax: 3,
+      parts: ["n:collectors", "e:collectors-sys", "n:sys", "g:systems"],
+      chips: ["GitHub", "Datadog", "Jira", "Confluence", "PagerDuty", "ServiceNow", "Databricks", "Postgres", "Oracle"],
+      rfcChips: ["GitHub", "Datadog", "Jira"],
+      hint: "The RFC proposes GitHub and Datadog, whose code exists in impact-review and speedup, plus Jira." },
+    { n: 5, title: "Database access", ask: "Databases through the script lane only, or also through a user-level gatherer with MCP servers?", anchor: "n:mcp",
+      parts: ["n:collectors", "e:collectors-sys", "n:sys", "n:gatherer", "e:gatherer-mcp", "n:mcp", "g:systems"],
+      options: [
+        { id: "script", label: "Script lane only", note: "psql and SQLcl run as argument lists behind the SQL guard. Your machine must reach the database." },
+        { id: "both", label: "Also a user-level gatherer", note: "/briefing:connect writes an agent to ~/.claude/agents/, and its server starts only inside that subagent. Works in claude.ai and Cowork." } ] },
+    { n: 6, title: "Deck exports", ask: "Which files should a deck export?", anchor: "n:exports",
+      parts: ["n:engine", "e:engine-exports", "n:exports", "n:bskills"],
+      options: [
+        { id: "html-pdf-png", label: "HTML, PDF and PNG", rfc: true, note: "Chromium prints the PDF and one PNG per slide. No new dependency." },
+        { id: "pptx", label: "Add PPTX", note: "Editable in PowerPoint. Needs a writer library or the pptx skill." } ] },
+    { n: 7, title: "Where dashboards publish", ask: "Dashboards as plain pages, or as claude.ai's Dashboard type where an account offers it?", anchor: "n:page",
+      parts: ["n:engine", "e:engine-page", "n:page", "g:cloud"],
+      options: [
+        { id: "plain", label: "Plain pages, as today", note: "One renderer for decks and dashboards, and chronicle check covers every number." },
+        { id: "type", label: "claude.ai Dashboard type", note: "The platform's dashboard features. Numbers skip chronicle check." } ] },
+    { n: 8, title: "Brand kit location", ask: "Where does the brand kit live?", anchor: "n:brand",
+      parts: ["n:brand", "e:bskills-brand", "n:bskills"],
+      options: [
+        { id: "repo", label: "Your repo", note: "Versioned with the team's code; one kit per repo." },
+        { id: "run", label: "The run folder", note: "One kit per page. Easy to vary, easy to drift." },
+        { id: "config", label: "A config folder", note: "One kit for every project on your machine." } ] },
+    { n: 9, title: "speedup and impact-review", ask: "Should speedup and impact-review move onto the shared sources and charts?", anchor: "n:collectors",
+      parts: ["n:collectors", "e:collectors-sys", "n:sys"],
+      options: [
+        { id: "yes", label: "Yes, in phase 5", note: "Removes two HTTPS transports and two chart modules." },
+        { id: "no", label: "Keep them separate", note: "No churn in shipped plugins; the duplicate code stays." } ] },
+    { n: 10, title: "Keystone example", ask: "What happens to the Keystone example?", anchor: "n:run",
+      parts: ["n:run", "e:run-engine", "n:engine", "e:cskills-engine", "e:bskills-engine", "n:cskills", "n:bskills"],
+      options: [
+        { id: "both", label: "Both, from one facts file", rfc: true, note: "Proves the contract: one facts.json builds a painted story and a deck." },
+        { id: "creative", label: "Keep it as chronicle's story", note: "No change; briefing needs a new example." },
+        { id: "data", label: "Rebuild it as briefing's deck", note: "chronicle loses its status-page example." } ] }
+  ];
+  var byN = {};
+  QUESTIONS.forEach(function (q) { byN[q.n] = q; });
+
+  var doc = document;
+  var map = doc.getElementById("map");
+  var svg = map.querySelector("svg");
+  var tad = svg.querySelector(".m-tad");
+  var NS = "http://www.w3.org/2000/svg";
+  function $(id) { return doc.getElementById(id); }
+  function el(tag, cls, text, parent) {
+    var node = doc.createElement(tag);
+    if (cls) node.className = cls;
+    if (text != null) node.textContent = text;
+    if (parent) parent.appendChild(node);
+    return node;
+  }
+  function partEl(key) { return doc.getElementById(SLUG + "-" + key.replace(":", "-")); }
+
+  /* The SVG keeps its own palette; mirror the viewer's theme choice onto it. */
+  function syncTheme() {
+    var t = doc.documentElement.getAttribute("data-theme");
+    if (t === "dark" || t === "light") svg.setAttribute("data-theme", t); else svg.removeAttribute("data-theme");
+  }
+  syncTheme();
+  new MutationObserver(syncTheme).observe(doc.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  /* ---------------- the clock: every track is a CSS animation on one loop */
+  var anims = [];
+  var stopAt = END, playing = false, raf = 0, mode = "whole", current = -1;
+  function grab() {
+    try { anims = svg.getAnimations ? svg.getAnimations({ subtree: true }) : []; } catch (e) { anims = []; }
+  }
+  function setTime(sec) { var ms = sec * 1000; anims.forEach(function (a) { a.currentTime = ms; }); }
+  function pauseAll() { anims.forEach(function (a) { a.pause(); }); }
+  function runAll() { anims.forEach(function (a) { a.play(); }); }
+  function clockNow() { return anims.length ? (Number(anims[0].currentTime) || 0) / 1000 : END; }
+  function stepAt(t) {
+    for (var i = CLOCK.steps.length - 1; i >= 0; i--) if (t >= CLOCK.steps[i].start - 0.001) return i;
+    return 0;
+  }
+
+  var track = $("track"), stepsList = $("steps"), caption = $("caption"), where = $("where"), playBtn = $("play");
+  var segs = [], stepBtns = [];
+  CLOCK.steps.forEach(function (s, i) {
+    var seg = el("span", "seg", null, track);
+    seg.style.setProperty("--w", String(s.end - s.start));
+    seg.style.setProperty("--tone", STEP_INFO[i].tone);
+    segs.push(el("i", null, null, seg));
+    var li = el("li", null, null, stepsList);
+    var b = el("button", "step", null, li);
+    b.type = "button";
+    b.style.setProperty("--tone", STEP_INFO[i].tone);
+    b.setAttribute("aria-label", "Step " + (i + 1) + ": " + s.caption);
+    el("span", "n", "Step " + (i + 1), b);
+    el("span", "t", STEP_INFO[i].title, b);
+    b.addEventListener("click", function () { playStep(i); });
+    stepBtns.push(b);
+  });
+
+  function paint(t, whole) {
+    var idx = whole ? -1 : stepAt(t);
+    CLOCK.steps.forEach(function (s, i) {
+      var f = whole ? 1 : Math.max(0, Math.min(1, (t - s.start) / (s.end - s.start)));
+      segs[i].style.setProperty("--fill", (f * 100).toFixed(1) + "%");
+      if (i === idx) stepBtns[i].setAttribute("aria-current", "step"); else stepBtns[i].removeAttribute("aria-current");
+    });
+    if (idx !== current) {
+      current = idx;
+      caption.textContent = whole
+        ? "The whole proposal is on screen. Play the walkthrough to build it in six steps, or pick one step."
+        : CLOCK.steps[idx].caption;
+      where.textContent = whole ? "Whole map" : "Step " + (idx + 1) + " of " + CLOCK.steps.length;
+    }
+  }
+
+  function loop() {
+    var t = clockNow();
+    if (t >= stopAt) {
+      pauseAll(); setTime(stopAt); playing = false;
+      paint(stopAt, mode === "all" && stopAt >= END);
+      if (mode === "all" && stopAt >= END) map.classList.remove("walk");
+      playBtn.textContent = "Play all six steps";
+      return;
+    }
+    paint(t, false);
+    raf = requestAnimationFrame(loop);
+  }
+  function start(from, to, m) {
+    clearQuestion();
+    mode = m;
+    map.classList.add("walk");
+    if (!anims.length) { staticStep(m === "all" ? 0 : stepAt(from + 0.01)); return; }
+    cancelAnimationFrame(raf);
+    setTime(from); runAll(); stopAt = to; playing = true;
+    playBtn.textContent = "Pause";
+    raf = requestAnimationFrame(loop);
+  }
+  /* Hold just before the next step starts, so the strip and caption stay on this step. */
+  function playStep(i) { start(CLOCK.steps[i].start, CLOCK.steps[i].end - 0.02, "step"); }
+  function showWhole() {
+    cancelAnimationFrame(raf); playing = false; mode = "whole";
+    map.classList.remove("walk");
+    if (anims.length) { pauseAll(); setTime(END); }
+    clearHighlight();
+    playBtn.textContent = anims.length ? "Play all six steps" : "Step through";
+    current = -3;
+    paint(END, true);
+  }
+  playBtn.addEventListener("click", function () {
+    if (!anims.length) { staticStep(current < 0 ? 0 : (current + 1) % CLOCK.steps.length); return; }
+    if (playing) {
+      cancelAnimationFrame(raf); pauseAll(); playing = false; playBtn.textContent = "Resume";
+      return;
+    }
+    if (playBtn.textContent === "Resume") {
+      runAll(); playing = true; playBtn.textContent = "Pause"; raf = requestAnimationFrame(loop);
+      return;
+    }
+    start(0, END, "all");
+  });
+  $("showall").addEventListener("click", showWhole);
+
+  /* Without motion (reduced motion, or no animation API), a step lights its parts. */
+  function staticStep(i) {
+    mode = "step";
+    highlight(STEP_INFO[i].parts);
+    current = -2;
+    paint(CLOCK.steps[i].end - 0.01, false);
+    segs.forEach(function (s, k) { s.style.setProperty("--fill", k <= i ? "100%" : "0%"); });
+    playBtn.textContent = "Next step";
+  }
+
+  /* ---------------- highlight and pins */
+  var lit = [];
+  function highlight(keys) {
+    clearHighlight();
+    keys.forEach(function (k) { var p = partEl(k); if (p) { p.classList.add("hl"); lit.push(p); } });
+    map.classList.add("q-on");
+  }
+  function clearHighlight() {
+    lit.forEach(function (p) { p.classList.remove("hl"); });
+    lit = [];
+    map.classList.remove("q-on");
+  }
+
+  var pins = {};
+  function anchorPoint(key) {
+    var kind = key.charAt(0);
+    var id = SLUG + "-" + key.replace(":", "-") + (kind === "e" ? "-l" : "-o");
+    var node = doc.getElementById(id);
+    if (!node) return null;
+    var b;
+    try { b = node.getBBox(); } catch (e) { return null; }
+    if (kind === "e") return { x: b.x + b.width + 20, y: b.y + b.height / 2 };
+    return { x: b.x + b.width - 4, y: b.y + 4 };
+  }
+  function placePins() {
+    var layer = doc.createElementNS(NS, "g");
+    layer.setAttribute("class", "q-pins");
+    QUESTIONS.forEach(function (q) {
+      var p = anchorPoint(q.anchor);
+      if (!p) return;
+      var g = doc.createElementNS(NS, "g");
+      g.setAttribute("class", "q-pin-g");
+      g.setAttribute("tabindex", "0");
+      g.setAttribute("role", "button");
+      g.setAttribute("aria-label", "Question " + q.n + ": " + q.title);
+      g.setAttribute("data-q", String(q.n));
+      var c = doc.createElementNS(NS, "circle");
+      c.setAttribute("cx", p.x.toFixed(1)); c.setAttribute("cy", p.y.toFixed(1)); c.setAttribute("r", "16");
+      var tx = doc.createElementNS(NS, "text");
+      tx.setAttribute("x", p.x.toFixed(1)); tx.setAttribute("y", (p.y + 1).toFixed(1));
+      tx.textContent = String(q.n);
+      g.appendChild(c); g.appendChild(tx);
+      layer.appendChild(g);
+      pins[q.n] = g;
+    });
+    tad.appendChild(layer);
+  }
+
+  /* ---------------- picks: kept in this page's store when the viewer offers one */
+  var picks = {};
+  var store = { mode: "local", db: null };
+  var saveNote = $("save");
+  function setSave(text) { saveNote.textContent = text; }
+  function isPicked(n) {
+    var p = picks[n];
+    if (!p) return false;
+    return Boolean(p.choice) || (Array.isArray(p.chips) && p.chips.length > 0);
+  }
+  function pickLabel(n) {
+    var q = byN[n], p = picks[n];
+    if (!p) return "";
+    if (q.chips) return (p.chips || []).join(", ");
+    var o = (q.options || []).filter(function (x) { return x.id === p.choice; })[0];
+    return o ? o.label : "";
+  }
+
+  var queue = {};
+  function save(n) {
+    var p = picks[n] ? JSON.parse(JSON.stringify(picks[n])) : null;
+    if (p) p.at = new Date().toISOString();
+    if (store.mode === "db") {
+      var ref = store.db.collection("picks").doc("q" + n);
+      queue[n] = (queue[n] || Promise.resolve()).then(function () {
+        return p ? ref.set(p) : ref.delete();
+      }).then(function () {
+        setSave("Saved to this page, where Claude can read your picks.");
+      }, function (e) {
+        if (e && e.code === "invalid_argument") {
+          store.mode = "readonly"; renderRail();
+          setSave("View only: your picks are not saved. Copy them to share.");
+        } else {
+          setSave("Not saved (" + (e && e.code ? e.code : "error") + "). Copy your picks to keep them.");
+        }
+      });
+    } else if (store.mode === "local") {
+      try { localStorage.setItem("rfc0007-picks", JSON.stringify(picks)); setSave("Saved in this browser only."); }
+      catch (e) { setSave("Not saved here. Copy your picks before you leave."); }
+    }
+  }
+  function loadLocal() {
+    try { var raw = localStorage.getItem("rfc0007-picks"); if (raw) picks = JSON.parse(raw) || {}; } catch (e) { picks = {}; }
+  }
+
+  /* ---------------- the rail */
+  var qsList = $("qs"), openN = 0, items = {};
+  function touchesText(q) {
+    var names = [];
+    q.parts.forEach(function (k) { if (PARTS[k] && names.indexOf(PARTS[k][0]) < 0) names.push(PARTS[k][0]); });
+    return "Lights up: " + names.join(", ");
+  }
+  function buildRail() {
+    QUESTIONS.forEach(function (q) {
+      var li = el("li", "q", null, qsList);
+      li.setAttribute("data-q", String(q.n));
+      var head = el("button", "q-head", null, li);
+      head.type = "button";
+      head.setAttribute("aria-expanded", "false");
+      head.setAttribute("aria-controls", "q" + q.n + "-body");
+      el("span", "q-num", String(q.n), head);
+      el("span", "q-title", q.title, head);
+      var state = el("span", "q-state", "Open", head);
+      var body = el("div", "q-body", null, li);
+      body.id = "q" + q.n + "-body";
+      body.hidden = true;
+      el("p", "q-ask", q.ask, body);
+      el("p", "touches", touchesText(q), body);
+      var inputs = [];
+      if (q.chips) {
+        var fs = el("fieldset", "opts", null, body);
+        el("legend", "sr", "Pick up to " + q.pickMax, fs);
+        var row = el("div", "chips", null, fs);
+        q.chips.forEach(function (name) {
+          var lab = el("label", "chip" + (q.rfcChips.indexOf(name) >= 0 ? " proposed" : ""), null, row);
+          var inp = el("input", null, null, lab);
+          inp.type = "checkbox"; inp.value = name; inp.id = "q" + q.n + "-" + name.toLowerCase();
+          el("span", null, name, lab);
+          inp.addEventListener("change", function () {
+            var chosen = inputs.filter(function (x) { return x.checked; }).map(function (x) { return x.value; });
+            picks[q.n] = picks[q.n] || {};
+            picks[q.n].chips = chosen;
+            if (!chosen.length && !picks[q.n].note) delete picks[q.n];
+            save(q.n); renderRail();
+          });
+          inputs.push(inp);
+        });
+        el("p", "opt-note", q.hint, fs);
+      } else {
+        var fs2 = el("fieldset", "opts", null, body);
+        el("legend", "sr", "Your pick", fs2);
+        q.options.forEach(function (o) {
+          var lab = el("label", "opt", null, fs2);
+          var inp = el("input", null, null, lab);
+          inp.type = "radio"; inp.name = "q" + q.n; inp.value = o.id; inp.id = "q" + q.n + "-" + o.id;
+          var top = el("span", "opt-label", o.label, lab);
+          if (o.rfc) el("span", "badge", "RFC proposal", top);
+          el("span", "opt-note", o.note, lab);
+          inp.addEventListener("change", function () {
+            if (!inp.checked) return;
+            picks[q.n] = picks[q.n] || {};
+            picks[q.n].choice = o.id;
+            save(q.n); renderRail();
+          });
+          inputs.push(inp);
+        });
+      }
+      var noteId = "q" + q.n + "-note";
+      var nl = el("label", "note-l", "Note", body);
+      nl.setAttribute("for", noteId);
+      var note = el("textarea", "note", null, body);
+      note.id = noteId; note.rows = 2; note.placeholder = "Why, or a different answer";
+      var timer = 0;
+      note.addEventListener("input", function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          var text = note.value.slice(0, 600);
+          picks[q.n] = picks[q.n] || {};
+          picks[q.n].note = text;
+          if (!text && !isPicked(q.n)) delete picks[q.n];
+          save(q.n); renderRail();
+        }, 700);
+      });
+      var acts = el("div", "q-actions", null, body);
+      var clear = el("button", "linkish", "Clear this pick", acts);
+      clear.type = "button";
+      clear.addEventListener("click", function () { delete picks[q.n]; save(q.n); renderRail(); });
+      head.addEventListener("click", function () { toggleQuestion(q.n); });
+      items[q.n] = { li: li, head: head, body: body, state: state, inputs: inputs, note: note };
+    });
+  }
+  function renderRail() {
+    var count = 0;
+    var locked = store.mode === "readonly";
+    QUESTIONS.forEach(function (q) {
+      var it = items[q.n], p = picks[q.n] || {};
+      var picked = isPicked(q.n);
+      if (picked) count++;
+      it.li.classList.toggle("is-picked", picked);
+      it.state.textContent = picked ? pickLabel(q.n) : "Open";
+      if (q.chips) {
+        var chosen = p.chips || [];
+        it.inputs.forEach(function (inp) {
+          inp.checked = chosen.indexOf(inp.value) >= 0;
+          inp.disabled = locked || (!inp.checked && chosen.length >= q.pickMax);
+        });
+      } else {
+        it.inputs.forEach(function (inp) { inp.checked = inp.value === p.choice; inp.disabled = locked; });
+      }
+      if (doc.activeElement !== it.note) it.note.value = p.note || "";
+      it.note.disabled = locked;
+      if (pins[q.n]) pins[q.n].classList.toggle("is-picked", picked);
+    });
+    $("tally").textContent = count + " of " + QUESTIONS.length;
+  }
+
+  function toggleQuestion(n) {
+    if (openN === n) { clearQuestion(); return; }
+    selectQuestion(n);
+  }
+  function selectQuestion(n) {
+    var q = byN[n];
+    if (openN) closeItem(openN);
+    openN = n;
+    cancelAnimationFrame(raf); playing = false;
+    if (anims.length) { pauseAll(); setTime(END); }
+    mode = "question";
+    map.classList.remove("walk");
+    paint(END, true);
+    highlight(q.parts);
+    Object.keys(pins).forEach(function (k) { pins[k].classList.toggle("is-active", Number(k) === n); });
+    var it = items[n];
+    it.body.hidden = false; it.li.classList.add("is-open"); it.head.setAttribute("aria-expanded", "true");
+    caption.textContent = "Question " + n + " lights up the parts it changes: " + q.ask;
+    where.textContent = "Question " + n;
+    try { it.li.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); } catch (e) { it.li.scrollIntoView(); }
+  }
+  function closeItem(n) {
+    var it = items[n];
+    it.body.hidden = true; it.li.classList.remove("is-open"); it.head.setAttribute("aria-expanded", "false");
+  }
+  function clearQuestion() {
+    if (!openN) return;
+    closeItem(openN);
+    openN = 0;
+    Object.keys(pins).forEach(function (k) { pins[k].classList.remove("is-active"); });
+    clearHighlight();
+    current = -3;
+    paint(END, true);
+  }
+
+  /* ---------------- selecting parts and pins on the map */
+  var info = $("partinfo");
+  svg.addEventListener("click", function (ev) {
+    var pin = ev.target.closest ? ev.target.closest(".q-pin-g") : null;
+    if (pin) { toggleQuestion(Number(pin.getAttribute("data-q"))); return; }
+    var part = ev.target.closest ? ev.target.closest(".m-node, .m-group") : null;
+    if (!part) return;
+    var key = part.id.slice(SLUG.length + 1).replace("-", ":");
+    var meta = PARTS[key];
+    if (!meta) return;
+    info.textContent = "";
+    el("b", null, meta[0], info);
+    el("span", null, meta[1], info);
+    var related = QUESTIONS.filter(function (q) { return q.parts.indexOf(key) >= 0; });
+    related.forEach(function (q) {
+      var b = el("button", "chip-btn", "Q" + q.n + " " + q.title, info);
+      b.type = "button";
+      b.addEventListener("click", function () { selectQuestion(q.n); });
+    });
+  });
+  svg.addEventListener("keydown", function (ev) {
+    var pin = ev.target.closest ? ev.target.closest(".q-pin-g") : null;
+    if (pin && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); toggleQuestion(Number(pin.getAttribute("data-q"))); }
+  });
+
+  /* ---------------- copy picks */
+  function summary() {
+    var lines = ["RFC-0007 picks (" + $("tally").textContent + "), " + new Date().toISOString().slice(0, 10)];
+    var open = [];
+    QUESTIONS.forEach(function (q) {
+      var p = picks[q.n] || {};
+      if (!isPicked(q.n) && !p.note) { open.push(q.n); return; }
+      var line = q.n + ". " + q.title + ": " + (isPicked(q.n) ? pickLabel(q.n) : "no pick");
+      var o = (q.options || []).filter(function (x) { return x.id === p.choice; })[0];
+      if (o && o.rfc) line += " (RFC proposal)";
+      if (p.note) line += ". Note: " + p.note;
+      lines.push(line);
+    });
+    if (open.length) lines.push("Still open: " + open.join(", "));
+    return lines.join("\n");
+  }
+  $("copy").addEventListener("click", function () {
+    var text = summary();
+    var box = $("copybox");
+    function fallback() { box.value = text; box.hidden = false; box.focus(); box.select(); setSave("Select the text below and copy it."); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { box.hidden = true; setSave("Copied your picks as text."); }, fallback);
+    } else { fallback(); }
+  });
+
+  /* ---------------- start */
+  buildRail();
+  placePins();
+  loadLocal();
+  renderRail();
+  requestAnimationFrame(function () {
+    grab();
+    if (anims.length) { pauseAll(); setTime(END); }
+    else playBtn.textContent = "Step through";
+    paint(END, true);
+  });
+
+  (function connect() {
+    if (!(window.claude && typeof window.claude.use === "function")) {
+      setSave("Picks save in this browser only.");
+      return;
+    }
+    Promise.all([window.claude.use("db"), window.claude.use("user")]).then(function (got) {
+      var db = got[0], user = got[1];
+      if (!db) { setSave("Picks save in this browser only."); return; }
+      store.db = db;
+      var canWrite = user ? user.can("data.write") : Promise.resolve(null);
+      return Promise.resolve(canWrite).then(function (can) {
+        store.mode = can === false ? "readonly" : "db";
+        picks = {};
+        renderRail();
+        setSave(store.mode === "readonly" ? "View only: these are the owner's picks." : "Loading saved picks...");
+        var waiting = setTimeout(function () { setSave("Saved picks can't be reached yet. New picks stay on this screen."); }, 10000);
+        db.collection("picks").onSnapshot(function (snap) {
+          if (!snap.metadata.fromCache) clearTimeout(waiting);
+          var next = {};
+          snap.docs.forEach(function (d) {
+            if (!d.exists) return;
+            var n = Number(String(d.id).replace(/^q/, ""));
+            if (byN[n]) next[n] = JSON.parse(JSON.stringify(d.data() || {}));
+          });
+          picks = next;
+          renderRail();
+          if (!snap.metadata.fromCache && store.mode === "db") setSave("Picks save to this page, where Claude can read them.");
+        }, function (err) {
+          clearTimeout(waiting);
+          store.mode = "local";
+          setSave("Saving stopped (" + (err && err.code ? err.code : "error") + "). Copy your picks to keep them.");
+        });
+      });
+    }).catch(function () { setSave("Picks save in this browser only."); });
+  })();
+})();
+</script>

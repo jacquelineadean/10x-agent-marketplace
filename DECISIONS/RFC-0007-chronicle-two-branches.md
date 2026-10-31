@@ -31,6 +31,7 @@ Claude Code copies linked files into its plugin cache at install, so each plugin
 Integrations run only in scripts and subagents, so neither plugin adds an MCP server to a session.
 
 Status: proposal for discussion. Nothing is built.
+`docs/rfc-0007-map/` holds an interactive map of this proposal with the open questions pinned to the parts they change.
 
 ## 2. The need
 **User scenario:** Jacqueline Dean asked to "bifurcate the chronicle plugin story and animation skills" into
