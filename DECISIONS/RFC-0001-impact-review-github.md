@@ -44,7 +44,6 @@ Each run is capped at 25,000 model tokens; Claude never sees raw API data, and a
 | 16 | Which repos count with no org filter? | Every repo the token sees; `--org` narrows | Confirmed |
 | 17 | Lines of code in written outputs? | Everywhere: dashboard, digest, self-evaluation, resume, stories | Confirmed |
 | 18 | Does the read-back match what you want? | Add a maximum token usage so one turn cannot burn through tokens | Confirmed (see 4.8) |
-| 19 | Where did the request come from? | Owner request | Confirmed |
 | 20 | Who supports the plugin after release? | Jacqueline Dean | Confirmed |
 | 21 | Have you read PROJECT.md and ARCHITECTURE.md? | Not yet read; both stay unconfirmed | Doc update |
 | 22 | Maximum model token budget per run? | 25,000 tokens | Confirmed |
