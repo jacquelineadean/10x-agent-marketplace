@@ -1,0 +1,39 @@
+{
+ "data": {
+  "user": {
+   "contributionsCollection": {
+    "pullRequestReviewContributions": {
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": null
+     },
+     "nodes": [
+      {
+       "pullRequestReview": {
+        "state": "APPROVED",
+        "submittedAt": "2026-02-04T09:00:00Z",
+        "comments": {
+         "totalCount": 1
+        },
+        "pullRequest": {
+         "number": 101,
+         "title": "feat: add rate limiter",
+         "url": "https://github.com/acme/api/pull/101",
+         "author": {
+          "login": "srivera"
+         },
+         "repository": {
+          "nameWithOwner": "acme/api",
+          "owner": {
+           "login": "acme"
+          }
+         }
+        }
+       }
+      }
+     ]
+    }
+   }
+  }
+ }
+}

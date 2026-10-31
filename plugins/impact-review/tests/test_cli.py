@@ -55,7 +55,7 @@ def test_collect_writes_the_run_folder_and_prints_at_most_15_lines(tmp_path: Pat
         "rubric.md",
     }
     metrics = json.loads((tmp_path / "metrics.json").read_text())
-    assert metrics["schema_version"] == 1
+    assert metrics["schema_version"] == 2
     assert metrics["volume"]["prs_merged"] == 2
     assert "## Delivery and impact" in (tmp_path / "rubric.md").read_text()
     budget = json.loads((tmp_path / "budget.json").read_text())
@@ -81,7 +81,7 @@ def test_since_and_until_override_timeframe(tmp_path: Path) -> None:
         ["collect", "--since", "2026-01-01", "--until", "2026-09-30", "--out", str(tmp_path)],
     )
     assert code == 0
-    assert "timeframe: 2026-01-01 to 2026-09-30 (273 days)" in out
+    assert "timeframe: 2026-01-01 to 2026-09-30 (2026-01-01..2026-09-30, 273 days)" in out
 
 
 def test_over_cap_exits_2_and_says_what_to_do(tmp_path: Path) -> None:
@@ -156,6 +156,8 @@ def test_main_wires_settings_token_and_transport(
     )
     monkeypatch.setattr("sys.stdout", io.StringIO())
     assert entry.main(["collect", "--timeframe", "2026-01-01..2026-09-30"]) == 0
-    assert (tmp_path / "github.com" / "srivera" / "2026-01-01_2026-09-30" / "metrics.json").is_file()
+    assert (
+        tmp_path / "github.com" / "srivera" / "2026-01-01_2026-09-30" / "metrics.json"
+    ).is_file()
     assert github.sent[0].headers["Authorization"] == "Bearer env-token"
     assert seen == ["env-token"]

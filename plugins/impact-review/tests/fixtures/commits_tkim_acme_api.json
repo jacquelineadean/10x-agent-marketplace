@@ -1,0 +1,49 @@
+{
+ "data": {
+  "repository": {
+   "defaultBranchRef": {
+    "name": "main",
+    "target": {
+     "history": {
+      "pageInfo": {
+       "hasNextPage": false,
+       "endCursor": null
+      },
+      "nodes": [
+       {
+        "oid": "t1",
+        "committedDate": "2026-06-02T09:00:00Z",
+        "messageHeadline": "fix: handle empty payload (#150)",
+        "additions": 20,
+        "deletions": 5,
+        "changedFilesIfAvailable": 2,
+        "associatedPullRequests": {
+         "nodes": [
+          {
+           "number": 150
+          }
+         ]
+        }
+       },
+       {
+        "oid": "a1",
+        "committedDate": "2026-02-05T10:00:00Z",
+        "messageHeadline": "feat: add rate limiter (#101)",
+        "additions": 420,
+        "deletions": 35,
+        "changedFilesIfAvailable": 6,
+        "associatedPullRequests": {
+         "nodes": [
+          {
+           "number": 101
+          }
+         ]
+        }
+       }
+      ]
+     }
+    }
+   }
+  }
+ }
+}

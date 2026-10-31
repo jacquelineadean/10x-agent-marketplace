@@ -1,0 +1,17 @@
+{
+ "data": {
+  "user": {
+   "contributionsCollection": {
+    "totalCommitContributions": 0,
+    "totalPullRequestContributions": 0,
+    "totalPullRequestReviewContributions": 0,
+    "totalIssueContributions": 0,
+    "restrictedContributionsCount": 0,
+    "contributionCalendar": {
+     "weeks": []
+    },
+    "commitContributionsByRepository": []
+   }
+  }
+ }
+}

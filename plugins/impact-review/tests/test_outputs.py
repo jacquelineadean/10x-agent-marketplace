@@ -1,12 +1,12 @@
 from datetime import UTC, datetime
 
 import pytest
-from conftest import TIMEFRAME, FakeGitHub, transport_for
+from conftest import TIMEFRAME, FakeGitHub, solo, transport_for
 from impact_review.connectors.github.source import GitHubSource
 from impact_review.core.budget import estimate_budget
 from impact_review.core.dashboard import render_dashboard_html, render_dashboard_md
 from impact_review.core.digest import DIGEST_CAP_BYTES, render_digest
-from impact_review.core.models import Activity, Profile, PullRequest
+from impact_review.core.models import Activity, PullRequest
 from impact_review.core.report import build_metrics
 
 GENERATED = datetime(2026, 10, 11, 12, 0, tzinfo=UTC)
@@ -15,9 +15,9 @@ GENERATED = datetime(2026, 10, 11, 12, 0, tzinfo=UTC)
 @pytest.fixture
 def metrics(github: FakeGitHub) -> dict:
     source = GitHubSource(transport_for(github))
-    profile = source.profile()
-    activity = source.collect(TIMEFRAME, profile, orgs=[], repo_share=True)
-    return build_metrics(profile, TIMEFRAME, activity, "github.com", GENERATED)
+    scope = solo(source.profile())
+    activity = source.collect(TIMEFRAME, scope, orgs=[], repo_share=True)
+    return build_metrics(scope, TIMEFRAME, activity, "github.com", GENERATED)
 
 
 def test_digest_labels_every_number_with_its_metrics_key(metrics: dict) -> None:
@@ -25,7 +25,9 @@ def test_digest_labels_every_number_with_its_metrics_key(metrics: dict) -> None:
     assert digest.startswith("# Impact digest for Sam Rivera (@srivera)")
     assert "- PRs merged: 2 (volume.prs_merged)" in digest
     assert "- Median hours to merge: 27.0 (flow.merge_hours_median)" in digest
-    assert "- acme/api#101 feat: add rate limiter (merged, feature, 455 lines" in digest
+    assert "- acme/api#101 feat: add rate limiter (@srivera, merged, feature, 455 lines" in digest
+    assert "Scope: individual, 1 person (scope.people)" in digest
+    assert "## People" not in digest
     assert "(highlights.top_prs[0])" in digest
     assert "- acme/api: 3 of 10 commits (0.3)" in digest
     assert "## Limits" in digest
@@ -62,7 +64,7 @@ def _huge_activity(count: int) -> Activity:
 
 
 def test_digest_drops_top_pr_rows_to_fit_the_cap() -> None:
-    metrics = build_metrics(Profile("x", "", "id"), TIMEFRAME, _huge_activity(15), "h", GENERATED)
+    metrics = build_metrics(solo(), TIMEFRAME, _huge_activity(15), "h", GENERATED)
     digest = render_digest(metrics)
     assert len(digest.encode("utf-8")) <= DIGEST_CAP_BYTES
     assert digest.count("(highlights.top_prs[") < 15
@@ -71,7 +73,7 @@ def test_digest_drops_top_pr_rows_to_fit_the_cap() -> None:
 
 
 def test_digest_truncates_with_a_note_when_rows_alone_cannot_fit() -> None:
-    metrics = build_metrics(Profile("x", "", "id"), TIMEFRAME, _huge_activity(15), "h", GENERATED)
+    metrics = build_metrics(solo(), TIMEFRAME, _huge_activity(15), "h", GENERATED)
     metrics["warnings"] = ["w" * 2000] * 10
     digest = render_digest(metrics, cap_bytes=4_000)
     assert len(digest.encode("utf-8")) <= 4_000
@@ -80,7 +82,7 @@ def test_digest_truncates_with_a_note_when_rows_alone_cannot_fit() -> None:
 
 def test_dashboard_markdown_has_summary_and_tables(metrics: dict) -> None:
     text = render_dashboard_md(metrics)
-    assert text.startswith("# Impact dashboard: @srivera 2026-01-01 to 2026-09-30")
+    assert text.startswith("# Impact dashboard: Sam Rivera (@srivera) 2026-01-01 to 2026-09-30")
     assert "| PRs opened / merged / closed unmerged | 4 / 2 / 1 |" in text
     assert "| acme/api#101 | feat: add rate limiter | merged | feature | 455 | 3 | 3 | 2 |" in text
     assert "## Share of repository work" in text

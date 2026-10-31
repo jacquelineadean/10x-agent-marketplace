@@ -1,0 +1,53 @@
+{
+ "data": {
+  "user": {
+   "contributionsCollection": {
+    "totalCommitContributions": 2,
+    "totalPullRequestContributions": 1,
+    "totalPullRequestReviewContributions": 1,
+    "totalIssueContributions": 0,
+    "restrictedContributionsCount": 0,
+    "contributionCalendar": {
+     "weeks": [
+      {
+       "contributionDays": [
+        {
+         "date": "2026-03-10",
+         "contributionCount": 2
+        }
+       ]
+      },
+      {
+       "contributionDays": [
+        {
+         "date": "2026-06-02",
+         "contributionCount": 1
+        }
+       ]
+      }
+     ]
+    },
+    "commitContributionsByRepository": [
+     {
+      "repository": {
+       "nameWithOwner": "acme/api",
+       "isPrivate": true,
+       "owner": {
+        "login": "acme"
+       },
+       "primaryLanguage": {
+        "name": "Python"
+       },
+       "defaultBranchRef": {
+        "name": "main"
+       }
+      },
+      "contributions": {
+       "totalCount": 2
+      }
+     }
+    ]
+   }
+  }
+ }
+}

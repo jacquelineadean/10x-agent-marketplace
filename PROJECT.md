@@ -7,7 +7,7 @@
 ## What this is
 A Claude Code plugin marketplace that holds Jacqueline Dean's agent extensions: plugins, skills, agents and commands.
 Teammates add it once with `/plugin marketplace add` and install the plugins they want.
-The first plugin, **impact-review**, turns one person's GitHub activity over a date range into metrics and written material for performance reviews, resumes and job interviews.
+The first plugin, **impact-review**, turns GitHub activity for one person, a team, an organization or an enterprise over any timeframe into metrics and written material: individual reviews, resumes and interview stories, or team and organization impact reports.
 The second, **chronicle** (RFC-0002 and RFC-0003, drafts), turns a brief plus facts from connected tools or pasted notes into an illustrated, interactive story page designed for its subject: a project's status for a steering committee, a launch, an onboarding handbook or a guide to a podcast. Its animation skill (RFC-0005, draft) makes standalone animations in the same style, including technical architecture diagrams, for web pages, docs, chat and slides.
 
 The third, **speedup** (RFC-0006, draft), runs continuous performance optimization from monitoring data such as Datadog: it measures user journeys at p75 against targets, guards each win with a benchmark ceiling that only moves down, quantifies every change, and publishes a dashboard plus an optional blog-style write-up.
@@ -17,11 +17,11 @@ The third, **speedup** (RFC-0006, draft), runs continuous performance optimizati
 - Teammates who install the marketplace in Claude Code.
 
 The problem today: a year of GitHub work is spread across many repos, pull requests and Insights pages.
-Assembling it for a self-evaluation takes hours of clicking, and the result has few numbers.
+Assembling it for a review, for one person or a whole team, takes hours of clicking, and the result has few numbers.
 
 ## What success looks like
 Success for impact-review, phase 1:
-- One command produces a metrics dashboard, a self-evaluation draft, resume bullets and interview stories for a chosen timeframe (default: year to date).
+- One command produces a metrics dashboard, a rubric-based review, highlight bullets and STAR stories for a chosen scope (default: the token's owner) and timeframe (default: year to date).
 - It works against GitHub.com, GitHub Enterprise Cloud, GitHub Enterprise Server and GHE.com data residency hosts.
 - Model token use stays flat as activity grows: Claude reads a compact digest, never raw API responses.
 - Every number in the written output traces back to a value in the collected GitHub data.
@@ -47,11 +47,12 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Marketplace:** a git repo with `.claude-plugin/marketplace.json` that lists plugins Claude Code can install.
 - **Plugin:** a folder with `.claude-plugin/plugin.json` plus skills, agents, commands or hooks.
 - **Skill:** a `SKILL.md` file of instructions Claude loads on demand, invoked as `/<plugin>:<skill>`.
-- **Timeframe:** the inclusive start and end dates of one impact-review run; default year to date.
+- **Timeframe:** the inclusive start and end dates of one impact-review run; default year to date, any period up to all time.
 - **Collector:** the impact-review Python command that calls GitHub APIs and writes local files.
-- **Contribution:** a commit, pull request, review or issue GitHub attributes to the user inside the timeframe.
+- **Contribution:** a commit, pull request, review or issue GitHub attributes to a person in scope inside the timeframe.
 - **Digest:** the compact Markdown summary the collector writes for Claude to read.
-- **Synthesis:** the written outputs Claude produces from the digest: self-evaluation draft, resume bullets, interview stories.
+- **Scope:** whose work a run covers: one person, a list of people, a team, an organization or an enterprise.
+- **Synthesis:** the written outputs Claude produces from the digest: `review.md`, `highlights.md`, `stories.md`.
 - **Run folder:** the local, never-committed folder holding one run's data and outputs.
 - **Story:** chronicle's `story.json`: the chapters and blocks of one page, with numbers only as fact tokens.
 - **Facts file:** chronicle's `facts.json`: every number and date on a page, each with its source and a note.

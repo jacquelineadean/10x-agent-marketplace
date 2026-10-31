@@ -24,7 +24,13 @@ def _table(headers: list[str], rows: list[list[Any]]) -> list[str]:
 def _summary_rows(metrics: dict[str, Any]) -> list[list[Any]]:
     v, c, f, col = metrics["volume"], metrics["code"], metrics["flow"], metrics["collaboration"]
     cons = metrics["consistency"]
+    people = (
+        []
+        if metrics["scope"]["individual"]
+        else [["People active / in scope", f"{v['active_people']} / {v['people']}"]]
+    )
     return [
+        *people,
         ["Commits (default branches)", v["commits"]],
         [
             "PRs opened / merged / closed unmerged",
@@ -80,7 +86,47 @@ def _theme_rows(metrics: dict[str, Any]) -> list[list[Any]]:
 
 def _title(metrics: dict[str, Any]) -> str:
     frame = metrics["timeframe"]
-    return f"Impact dashboard: @{metrics['profile']['login']} {frame['since']} to {frame['until']}"
+    return f"Impact dashboard: {metrics['scope']['label']} {frame['since']} to {frame['until']}"
+
+
+def _people_rows(metrics: dict[str, Any]) -> list[list[Any]]:
+    if metrics["scope"]["individual"]:
+        return []
+    return [
+        [
+            f"@{login}",
+            d["name"],
+            d["prs_opened"],
+            d["prs_merged"],
+            d["reviews"],
+            d["commits"],
+            d["issues_opened"],
+            d["lines_changed"],
+            d["active_days"],
+        ]
+        for login, d in metrics["people"].items()
+    ]
+
+
+_PEOPLE_HEADERS = [
+    "Person",
+    "Name",
+    "PRs",
+    "Merged",
+    "Reviews",
+    "Commits",
+    "Issues",
+    "Lines",
+    "Active days",
+]
+
+
+def _periods(metrics: dict[str, Any]) -> tuple[str, list[tuple[str, int]]]:
+    """Months for up to 24 months of data, years beyond that."""
+    c = metrics["consistency"]
+    if len(c["by_month"]) > 24:
+        return "year", list(c["by_year"].items())
+    return "month", list(c["by_month"].items())
 
 
 def render_dashboard_md(metrics: dict[str, Any]) -> str:
@@ -91,6 +137,8 @@ def render_dashboard_md(metrics: dict[str, Any]) -> str:
         "",
     ]
     lines += ["## Summary", *_table(["Metric", "Value"], _summary_rows(metrics)), ""]
+    if people := _people_rows(metrics):
+        lines += ["## People", *_table(_PEOPLE_HEADERS, people), ""]
     lines += ["## Themes", *_table(["Theme", "PRs", "Merged", "Lines"], _theme_rows(metrics)), ""]
     lines += [
         "## Top repositories",
@@ -105,8 +153,12 @@ def render_dashboard_md(metrics: dict[str, Any]) -> str:
         ),
         "",
     ]
-    months = [[m, n] for m, n in metrics["consistency"]["by_month"].items()]
-    lines += ["## Contributions by month", *_table(["Month", "Contributions"], months), ""]
+    unit, periods = _periods(metrics)
+    lines += [
+        f"## Contributions by {unit}",
+        *_table([unit.capitalize(), "Contributions"], [[p, n] for p, n in periods]),
+        "",
+    ]
     if metrics["repo_share"]:
         rows = [
             [
@@ -144,8 +196,9 @@ def _html_table(headers: list[str], rows: list[list[Any]]) -> str:
 def render_dashboard_html(metrics: dict[str, Any]) -> str:
     """One self-contained HTML file: inline CSS and inline SVG, no scripts or remote assets."""
     c = metrics["consistency"]
+    unit, periods = _periods(metrics)
     charts = [
-        bar_chart("Contributions by month", list(c["by_month"].items())),
+        bar_chart(f"Contributions by {unit}", periods),
         bar_chart("Contributions by weekday", list(c["by_weekday"].items()), "#5b9a3c"),
         bar_chart(
             "Merged PR size bands (lines)", list(metrics["code"]["size_bands"].items()), "#c97b1a"
@@ -161,6 +214,11 @@ def render_dashboard_html(metrics: dict[str, Any]) -> str:
         f"<p>Host {escape(metrics['host'])}, generated {escape(metrics['generated_at'])}.</p>",
         "<h2>Summary</h2>",
         _html_table(["Metric", "Value"], _summary_rows(metrics)),
+        *(
+            ["<h2>People</h2>", _html_table(_PEOPLE_HEADERS, people)]
+            if (people := _people_rows(metrics))
+            else []
+        ),
         "<h2>Charts</h2>",
         *charts,
         "<h2>Top repositories</h2>",

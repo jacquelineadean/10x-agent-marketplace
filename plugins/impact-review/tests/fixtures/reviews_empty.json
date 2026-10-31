@@ -1,0 +1,15 @@
+{
+ "data": {
+  "user": {
+   "contributionsCollection": {
+    "pullRequestReviewContributions": {
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": null
+     },
+     "nodes": []
+    }
+   }
+  }
+ }
+}

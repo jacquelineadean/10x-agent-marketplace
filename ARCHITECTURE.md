@@ -21,13 +21,13 @@ a Python **collector** does every API call and every calculation, and Claude rea
                      GitHub API (github.com / GHE Cloud / GHES / ghe.com)
                            │
                            ▼
-       run folder ~/impact-review-runs/<host>/<login>/<since>_<until>/ (local, never committed)
+       run folder ~/impact-review-runs/<host>/<scope>/<since>_<until>/ (local, never committed)
          raw/  cached API responses   ← Claude never reads
          metrics.json, dashboard.md, dashboard.html, budget.json
          digest.md (12 KB cap), rubric.md  ← the impact-writer subagent reads only these
                            │ 2. skill checks budget.json, then invokes impact-writer (Sonnet)
                            ▼
-         self-evaluation.md, resume-bullets.md, interview-stories.md
+         review.md, highlights.md, stories.md
 ```
 
 The second plugin, chronicle (RFC-0002 and RFC-0003, drafts), builds illustrated story pages the same way:
@@ -105,9 +105,9 @@ The collector follows the standard `cli` layout (see CODEMAP.md):
 `entrypoints/cli/` parses arguments, `config/` reads environment variables, and `__main__.py` wires them.
 
 ## Data flow
-1. The user runs `/impact-review:report` with an optional timeframe (default year to date), host and org filter.
+1. The user runs `/impact-review:report` with an optional scope (default the token's owner; also user lists, teams, organizations, an enterprise), timeframe (default year to date; any period up to all time), host and org filter.
 2. The skill runs the collector through Bash.
-3. The collector resolves the token, identifies the user, then fetches contributions, pull requests, reviews, issues and commits for the timeframe.
+3. The collector resolves the token and the scope's people (team, organization or enterprise members), then fetches each person's contributions, pull requests, reviews, issues and commits for the timeframe through `user(login:)` and merges them.
 4. Raw responses are cached in the run folder, so a rerun makes no repeat API calls.
 5. `core/` computes metrics; the CLI writes `metrics.json`, `dashboard.md`, `dashboard.html`, `digest.md`, `budget.json` and `rubric.md`. Over the token cap it exits 2 and the skill asks the user first.
 6. The skill passes the run folder path to the `impact-writer` subagent, which reads `digest.md` and `rubric.md` only and writes the three synthesis files there.

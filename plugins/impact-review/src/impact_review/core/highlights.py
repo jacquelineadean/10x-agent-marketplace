@@ -14,9 +14,13 @@ TOP_PRS = 15
 TOP_REPOS = 10
 
 
-def pr_score(pr: PullRequest, login: str) -> float:
+def _other_reviewers(pr: PullRequest) -> set[str]:
+    return {r.author.lower() for r in pr.reviews if r.author.lower() != pr.author.lower()}
+
+
+def pr_score(pr: PullRequest) -> float:
     """Size on a log scale, plus review discussion, plus distinct reviewers counted twice."""
-    reviewers = {r.author.lower() for r in pr.reviews if r.author.lower() != login.lower()}
+    reviewers = _other_reviewers(pr)
     return round(math.log2(pr.lines + 1) + len(pr.reviews) + pr.comments + 2 * len(reviewers), 2)
 
 
@@ -34,11 +38,12 @@ def theme_metrics(activity: Activity) -> dict[str, Any]:
     }
 
 
-def top_pull_requests(activity: Activity, login: str) -> list[dict[str, Any]]:
-    ranked = sorted(activity.pull_requests, key=lambda pr: pr_score(pr, login), reverse=True)
+def top_pull_requests(activity: Activity) -> list[dict[str, Any]]:
+    ranked = sorted(activity.pull_requests, key=pr_score, reverse=True)
     return [
         {
             "repo": pr.repo,
+            "author": pr.author,
             "number": pr.number,
             "title": pr.title,
             "url": pr.url,
@@ -48,11 +53,9 @@ def top_pull_requests(activity: Activity, login: str) -> list[dict[str, Any]]:
             "files": pr.changed_files,
             "reviews": len(pr.reviews),
             "comments": pr.comments,
-            "reviewers": len(
-                {r.author.lower() for r in pr.reviews if r.author.lower() != login.lower()}
-            ),
+            "reviewers": len(_other_reviewers(pr)),
             "merged_at": pr.merged_at.date().isoformat() if pr.merged_at else None,
-            "score": pr_score(pr, login),
+            "score": pr_score(pr),
         }
         for pr in ranked[:TOP_PRS]
     ]

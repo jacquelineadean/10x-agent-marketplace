@@ -43,9 +43,15 @@ def _repo_name(node: dict[str, Any]) -> tuple[str, str]:
     return name, str((repository.get("owner") or {}).get("login") or name.split("/")[0])
 
 
-def parse_profile(data: dict[str, Any]) -> Profile:
-    viewer = data["viewer"]
-    return Profile(login=viewer["login"], name=viewer.get("name") or "", node_id=viewer["id"])
+def parse_profile(node: dict[str, Any]) -> Profile:
+    """A `viewer`, `user` or member node: login, name, id and createdAt."""
+    created = parse_datetime(node.get("createdAt"))
+    return Profile(
+        login=str(node["login"]),
+        name=str(node.get("name") or ""),
+        node_id=str(node["id"]),
+        created_at=created.date() if created else None,
+    )
 
 
 def parse_totals(collection: dict[str, Any]) -> Totals:
@@ -83,7 +89,7 @@ def parse_repositories(collection: dict[str, Any]) -> list[Repository]:
     return repos
 
 
-def parse_pull_request(node: dict[str, Any]) -> PullRequest:
+def parse_pull_request(node: dict[str, Any], author: str = "") -> PullRequest:
     name, owner = _repo_name(node)
     repository = node.get("repository") or {}
     reviews = tuple(
@@ -113,10 +119,11 @@ def parse_pull_request(node: dict[str, Any]) -> PullRequest:
         comments=int((node.get("comments") or {}).get("totalCount") or 0),
         language=(repository.get("primaryLanguage") or {}).get("name"),
         is_private=bool(repository.get("isPrivate")),
+        author=author,
     )
 
 
-def parse_review(node: dict[str, Any]) -> ReviewGiven:
+def parse_review(node: dict[str, Any], reviewer: str = "") -> ReviewGiven:
     pull_request = node.get("pullRequest") or {}
     name, owner = _repo_name(pull_request)
     return ReviewGiven(
@@ -129,10 +136,11 @@ def parse_review(node: dict[str, Any]) -> ReviewGiven:
         state=str(node.get("state") or "COMMENTED"),
         submitted_at=_required_datetime(node.get("submittedAt")),
         comments=int((node.get("comments") or {}).get("totalCount") or 0),
+        reviewer=reviewer,
     )
 
 
-def parse_issue(node: dict[str, Any]) -> Issue:
+def parse_issue(node: dict[str, Any], author: str = "") -> Issue:
     name, owner = _repo_name(node)
     return Issue(
         repo=name,
@@ -144,10 +152,11 @@ def parse_issue(node: dict[str, Any]) -> Issue:
         created_at=_required_datetime(node.get("createdAt")),
         closed_at=parse_datetime(node.get("closedAt")),
         labels=_labels(node),
+        author=author,
     )
 
 
-def parse_commit(node: dict[str, Any], repo: str, owner: str) -> Commit:
+def parse_commit(node: dict[str, Any], repo: str, owner: str, author: str = "") -> Commit:
     linked = (node.get("associatedPullRequests") or {}).get("nodes") or []
     return Commit(
         repo=repo,
@@ -159,14 +168,20 @@ def parse_commit(node: dict[str, Any], repo: str, owner: str) -> Commit:
         deletions=int(node.get("deletions") or 0),
         changed_files=int(node.get("changedFilesIfAvailable") or 0),
         pr_number=int(linked[0]["number"]) if linked else None,
+        author=author,
     )
 
 
-def parse_repo_share(repo: str, login: str, since: date, until: date, rows: list[Any]) -> RepoShare:
-    """REST stats/contributors rows: weekly buckets per author, summed inside the timeframe."""
+def parse_repo_share(
+    repo: str, logins: frozenset[str], since: date, until: date, rows: list[Any]
+) -> RepoShare:
+    """REST stats/contributors rows: weekly buckets per author, summed inside the timeframe.
+
+    `logins` are lowercase; every author among them counts toward the scope's share.
+    """
     mine_commits = mine_lines = all_commits = all_lines = 0
     for row in rows:
-        is_me = _login(row.get("author")).lower() == login.lower()
+        is_me = _login(row.get("author")).lower() in logins
         for week in row.get("weeks") or []:
             day = datetime.fromtimestamp(int(week.get("w") or 0), UTC).date()
             if not since <= day <= until:

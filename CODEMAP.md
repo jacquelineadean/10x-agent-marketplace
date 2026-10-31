@@ -13,12 +13,12 @@ New code goes in its role folder; `groundwork.py layout` shows the rules.
 
 | Folder | Role | Code files | Holds |
 | --- | --- | --- | --- |
-| `plugins/impact-review/src/impact_review/core` | core | 12 | Pure rules: domain records (`models.py`), timeframe parsing and year chunks, the `ActivitySource` port, metric rules (`metrics.py`, `cadence.py`, `highlights.py`, `themes.py`, `stats.py`), `report.py` (metrics.json shape), `digest.md` renderer with the 12 KB cap, dashboard and SVG charts, token budget |
-| `plugins/impact-review/src/impact_review/connectors/github` | connectors | 7 | Every GitHub call: host endpoints, token lookup (`gh auth token` fallback), the https transport with retries and SSO detection, GraphQL documents, the `raw/` cache, payload parsing, and `GitHubSource` (collection with year chunking, paging and org filter) |
+| `plugins/impact-review/src/impact_review/core` | core | 13 | Pure rules: domain records (`models.py`), scope parsing (`scope.py`), timeframe parsing and year chunks, the `ActivitySource` port, metric rules (`metrics.py`, `cadence.py`, `highlights.py`, `themes.py`, `stats.py`), `report.py` (metrics.json shape), `digest.md` renderer with the 12 KB cap, dashboard and SVG charts, token budget |
+| `plugins/impact-review/src/impact_review/connectors/github` | connectors | 7 | Every GitHub call: host endpoints, token lookup (`gh auth token` fallback), the https transport with retries and SSO detection, GraphQL documents, the `raw/` cache, payload parsing, and `GitHubSource` (scope member lookups, per-person collection with year chunking, paging and org filter) |
 | `plugins/impact-review/src/impact_review/entrypoints/cli` | entrypoints | 1 | `collect` command: flags, run folder, writes the seven output files, prints at most 15 lines, exit codes 0/1/2 |
 | `plugins/impact-review/src/impact_review/config` | config | 1 | The only environment reads: token names, `IMPACT_REVIEW_HOST`, `IMPACT_REVIEW_RUNS`, and the standard-library `.env` reader |
-| `plugins/impact-review/src/impact_review/prompts` | prompts | 0 | `rubric.md`, the default five-area self-evaluation rubric copied into each run folder |
-| `plugins/impact-review/tests` | tests | 8 | pytest suite with a fake HTTP opener; `fixtures/` holds recorded GitHub responses |
+| `plugins/impact-review/src/impact_review/prompts` | prompts | 0 | `rubric-individual.md` and `rubric-group.md`, the default five-area rubrics; the CLI copies one into each run folder as `rubric.md` |
+| `plugins/impact-review/tests` | tests | 10 | pytest suite with a fake HTTP opener; `fixtures/` holds recorded GitHub responses |
 | `plugins/impact-review/skills/report` | plugin | 0 | `SKILL.md` for `/impact-review:report` |
 | `plugins/impact-review/agents` | plugin | 0 | `impact-writer.md`, the Sonnet subagent that writes the synthesis files |
 
