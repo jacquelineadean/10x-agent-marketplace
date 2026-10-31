@@ -13,7 +13,7 @@
       "name": "impact-review",
       "source": "./plugins/impact-review",
       "description": "Turn GitHub activity for one person, a team, an organization or an enterprise, over any timeframe, into metrics, a dashboard, a rubric-based review, highlight bullets and STAR stories.",
-      "version": "0.2.0",
+      "version": "0.1.0",
       "author": {
         "name": "Jacqueline Dean"
       },
