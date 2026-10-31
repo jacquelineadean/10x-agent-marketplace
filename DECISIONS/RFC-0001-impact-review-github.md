@@ -5,7 +5,6 @@ status: draft
 classification: internal
 signoffs_required: 1
 requested_by: Jacqueline Dean
-request_source: owner request
 support: [Jacqueline Dean]
 owner: Jacqueline Dean
 supersedes: []
