@@ -1,4 +1,9 @@
-"""GitHubSource: every GitHub call the collector makes, with caching and year chunking."""
+"""GitHubSource: every GitHub call the collector makes, with caching and year chunking.
+
+Scope lookups resolve people (the token owner, named users, team, organization or enterprise
+members). Collection then runs each person's contributionsCollection through
+`user(login:)`, chunked by year, and merges the results.
+"""
 
 from __future__ import annotations
 
@@ -10,6 +15,7 @@ from typing import Any, TypeVar
 
 from impact_review.connectors.github import queries
 from impact_review.connectors.github.cache import RawCache
+from impact_review.connectors.github.errors import GitHubError
 from impact_review.connectors.github.http import GitHubTransport
 from impact_review.connectors.github.parse import (
     parse_calendar,
@@ -23,6 +29,7 @@ from impact_review.connectors.github.parse import (
     parse_totals,
 )
 from impact_review.core.models import Activity, Profile, Repository, Timeframe, Totals
+from impact_review.core.scope import Scope, ScopeRequest
 from impact_review.core.timeframe import end_of, start_of, year_chunks
 
 log = logging.getLogger(__name__)
@@ -30,6 +37,7 @@ T = TypeVar("T")
 
 STATS_ATTEMPTS = 3
 STATS_WAIT_SECONDS = 2.0
+_COLLECTION = ("user", "contributionsCollection")
 
 
 def _iso(moment: datetime) -> str:
@@ -46,26 +54,114 @@ class GitHubSource:
         self.cache = RawCache(folder, refresh)
 
     def profile(self) -> Profile:
+        """The token's owner. Never cached: it is the first call and checks the token."""
         data, _ = self.transport.graphql(queries.VIEWER, {})
-        return parse_profile(data)
+        return parse_profile(data["viewer"])
+
+    # Scope resolution -------------------------------------------------------------------
+
+    def resolve(self, request: ScopeRequest) -> tuple[list[Profile], list[str]]:
+        if request.kind == "me":
+            return [self.profile()], []
+        if request.kind == "user":
+            return [self._user(login) for login in request.targets], []
+        if request.kind == "team":
+            people: list[Profile] = []
+            for target in request.targets:
+                org, slug = target.split("/", 1)
+                people.extend(self._team_members(org, slug))
+            return people, [t.split("/", 1)[0] for t in request.targets]
+        if request.kind == "org":
+            people = [p for org in request.targets for p in self._org_members(org)]
+            return people, list(request.targets)
+        orgs = self._enterprise_orgs(request.targets[0])
+        return [p for org in orgs for p in self._org_members(org)], orgs
+
+    def _user(self, login: str) -> Profile:
+        data, _ = self.transport.graphql(queries.USER, {"login": login})
+        if not data.get("user"):
+            raise GitHubError(f"GitHub user {login!r} not found on this host")
+        return parse_profile(data["user"])
+
+    def _team_members(self, org: str, slug: str) -> list[Profile]:
+        nodes = self._pages(
+            "team_members",
+            queries.TEAM_MEMBERS,
+            {"org": org, "slug": slug},
+            "organization",
+            "team",
+            "members",
+            missing=f"team {org}/{slug} not found, or the token lacks read:org for {org}",
+        )
+        return [parse_profile(node) for node in nodes]
+
+    def _org_members(self, org: str) -> list[Profile]:
+        nodes = self._pages(
+            "org_members",
+            queries.ORG_MEMBERS,
+            {"org": org},
+            "organization",
+            "membersWithRole",
+            missing=f"organization {org} not found, or the token lacks read:org",
+        )
+        return [parse_profile(node) for node in nodes]
+
+    def _enterprise_orgs(self, slug: str) -> list[str]:
+        nodes = self._pages(
+            "enterprise_orgs",
+            queries.ENTERPRISE_ORGS,
+            {"slug": slug},
+            "enterprise",
+            "organizations",
+            missing=f"enterprise {slug} not found, or the token lacks read:enterprise",
+        )
+        return [str(node["login"]) for node in nodes]
+
+    # Collection -------------------------------------------------------------------------
 
     def collect(
-        self, timeframe: Timeframe, profile: Profile, orgs: Sequence[str], repo_share: bool
+        self, timeframe: Timeframe, scope: Scope, orgs: Sequence[str], repo_share: bool
     ) -> Activity:
         wanted = {org.lower() for org in orgs}
         activity = Activity()
-        chunks = year_chunks(timeframe)
-        for start, stop in chunks:
-            variables = {"from": _iso(start), "to": _iso(stop)}
-            self._collect_summary(activity, variables)
-            self._collect_lists(activity, variables)
-        self._keep_orgs(activity, wanted)
+        for person in scope.people:
+            self._collect_person(activity, timeframe, person, wanted)
+        activity.repositories = _unique(activity.repositories, lambda r: r.name)
         self._dedupe(activity)
-        self._collect_commits(activity, timeframe, profile)
         if repo_share:
-            self._collect_repo_shares(activity, timeframe, profile)
+            self._collect_repo_shares(activity, timeframe, scope.logins)
         activity.warnings.extend(self.warnings)
         return activity
+
+    def _collect_person(
+        self, activity: Activity, timeframe: Timeframe, person: Profile, wanted: set[str]
+    ) -> None:
+        mine = Activity()
+        for start, stop in year_chunks(timeframe):
+            variables = {"login": person.login, "from": _iso(start), "to": _iso(stop)}
+            self._collect_summary(mine, variables)
+            self._collect_lists(mine, variables, person.login)
+        mine.repositories = _unique(mine.repositories, lambda r: r.name)
+        self._keep_orgs(mine, wanted)
+        self._collect_commits(mine, timeframe, person)
+        self._merge(activity, mine, person.login.lower())
+
+    def _merge(self, into: Activity, part: Activity, login: str) -> None:
+        into.totals = Totals(
+            commits=into.totals.commits + part.totals.commits,
+            pull_requests=into.totals.pull_requests + part.totals.pull_requests,
+            reviews=into.totals.reviews + part.totals.reviews,
+            issues=into.totals.issues + part.totals.issues,
+            restricted=into.totals.restricted + part.totals.restricted,
+        )
+        for day, count in part.calendar.items():
+            into.calendar[day] = into.calendar.get(day, 0) + count
+        into.calendars[login] = dict(part.calendar)
+        into.repositories.extend(part.repositories)
+        into.pull_requests.extend(part.pull_requests)
+        into.reviews.extend(part.reviews)
+        into.issues.extend(part.issues)
+        into.commits.extend(part.commits)
 
     def _query(self, name: str, document: str, variables: dict[str, Any]) -> Any:
         if self.cache and (cached := self.cache.get(name, variables)) is not None:
@@ -78,14 +174,25 @@ class GitHubSource:
         return data
 
     def _pages(
-        self, name: str, document: str, variables: dict[str, Any], *path: str
+        self,
+        name: str,
+        document: str,
+        variables: dict[str, Any],
+        *path: str,
+        missing: str | None = None,
     ) -> Iterator[Any]:
+        """Follow `path` to a connection and yield its nodes page by page.
+
+        With `missing` set, a null anywhere on the path raises GitHubError with that message.
+        """
         cursor: str | None = None
         while True:
             data = self._query(name, document, {**variables, "after": cursor})
             connection: Any = data
             for key in path:
                 connection = (connection or {}).get(key)
+                if connection is None and missing:
+                    raise GitHubError(missing)
             connection = connection or {}
             yield from (node for node in connection.get("nodes") or [] if node)
             page = connection.get("pageInfo") or {}
@@ -95,7 +202,10 @@ class GitHubSource:
 
     def _collect_summary(self, activity: Activity, variables: dict[str, Any]) -> None:
         data = self._query("contributions", queries.CONTRIBUTIONS, variables)
-        collection = data["viewer"]["contributionsCollection"]
+        user = data.get("user")
+        if not user:
+            raise GitHubError(f"GitHub user {variables['login']!r} not found on this host")
+        collection = user["contributionsCollection"]
         totals = parse_totals(collection)
         activity.totals = Totals(
             commits=activity.totals.commits + totals.commits,
@@ -108,29 +218,28 @@ class GitHubSource:
             activity.calendar[day] = activity.calendar.get(day, 0) + count
         activity.repositories.extend(parse_repositories(collection))
 
-    def _collect_lists(self, activity: Activity, variables: dict[str, Any]) -> None:
-        collection = ("viewer", "contributionsCollection")
+    def _collect_lists(self, activity: Activity, variables: dict[str, Any], login: str) -> None:
         for node in self._pages(
             "pull_requests",
             queries.PULL_REQUESTS,
             variables,
-            *collection,
+            *_COLLECTION,
             "pullRequestContributions",
         ):
             if node.get("pullRequest"):
-                activity.pull_requests.append(parse_pull_request(node["pullRequest"]))
+                activity.pull_requests.append(parse_pull_request(node["pullRequest"], login))
         for node in self._pages(
-            "reviews", queries.REVIEWS, variables, *collection, "pullRequestReviewContributions"
+            "reviews", queries.REVIEWS, variables, *_COLLECTION, "pullRequestReviewContributions"
         ):
             if node.get("pullRequestReview"):
-                activity.reviews.append(parse_review(node["pullRequestReview"]))
+                activity.reviews.append(parse_review(node["pullRequestReview"], login))
         for node in self._pages(
-            "issues", queries.ISSUES, variables, *collection, "issueContributions"
+            "issues", queries.ISSUES, variables, *_COLLECTION, "issueContributions"
         ):
             if node.get("issue"):
-                activity.issues.append(parse_issue(node["issue"]))
+                activity.issues.append(parse_issue(node["issue"], login))
 
-    def _collect_commits(self, activity: Activity, timeframe: Timeframe, profile: Profile) -> None:
+    def _collect_commits(self, activity: Activity, timeframe: Timeframe, person: Profile) -> None:
         since, until = _iso(start_of(timeframe.since)), _iso(end_of(timeframe.until))
         for repo in activity.repositories:
             if repo.default_branch is None:
@@ -142,7 +251,7 @@ class GitHubSource:
                 "name": name,
                 "since": since,
                 "until": until,
-                "author": profile.node_id,
+                "author": person.node_id,
             }
             for node in self._pages(
                 "commits",
@@ -153,10 +262,10 @@ class GitHubSource:
                 "target",
                 "history",
             ):
-                activity.commits.append(parse_commit(node, repo.name, repo.owner))
+                activity.commits.append(parse_commit(node, repo.name, repo.owner, person.login))
 
     def _collect_repo_shares(
-        self, activity: Activity, timeframe: Timeframe, profile: Profile
+        self, activity: Activity, timeframe: Timeframe, logins: frozenset[str]
     ) -> None:
         for repo in activity.repositories:
             rows = self._contributor_stats(repo)
@@ -167,7 +276,7 @@ class GitHubSource:
                 )
                 continue
             activity.repo_shares.append(
-                parse_repo_share(repo.name, profile.login, timeframe.since, timeframe.until, rows)
+                parse_repo_share(repo.name, logins, timeframe.since, timeframe.until, rows)
             )
 
     def _contributor_stats(self, repo: Repository) -> list[Any] | None:
@@ -194,11 +303,13 @@ class GitHubSource:
         activity.issues = [i for i in activity.issues if i.owner.lower() in wanted]
 
     def _dedupe(self, activity: Activity) -> None:
-        """Year chunks can repeat a repository or an item at a boundary; keep the first copy."""
-        activity.repositories = _unique(activity.repositories, lambda r: r.name)
+        """Year chunks repeat items at a boundary; two people can share a commit. Keep one."""
         activity.pull_requests = _unique(activity.pull_requests, lambda p: p.url)
-        activity.reviews = _unique(activity.reviews, lambda r: (r.pr_url, r.submitted_at))
+        activity.reviews = _unique(
+            activity.reviews, lambda r: (r.pr_url, r.submitted_at, r.reviewer.lower())
+        )
         activity.issues = _unique(activity.issues, lambda i: i.url)
+        activity.commits = _unique(activity.commits, lambda c: (c.repo, c.oid))
 
     def _warn(self, message: str) -> None:
         log.warning("%s", message)

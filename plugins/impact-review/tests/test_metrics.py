@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 
 import pytest
-from conftest import TIMEFRAME, FakeGitHub, transport_for
+from conftest import TIMEFRAME, FakeGitHub, solo, transport_for
 from impact_review.connectors.github.source import GitHubSource
 from impact_review.core.models import Activity, PullRequest, Review
 from impact_review.core.report import build_metrics
@@ -13,15 +13,22 @@ GENERATED = datetime(2026, 10, 11, 12, 0, tzinfo=UTC)
 @pytest.fixture
 def metrics(github: FakeGitHub) -> dict:
     source = GitHubSource(transport_for(github))
-    profile = source.profile()
-    activity = source.collect(TIMEFRAME, profile, orgs=[], repo_share=True)
-    return build_metrics(profile, TIMEFRAME, activity, "github.com", GENERATED)
+    scope = solo(source.profile())
+    activity = source.collect(TIMEFRAME, scope, orgs=[], repo_share=True)
+    return build_metrics(scope, TIMEFRAME, activity, "github.com", GENERATED)
 
 
 def test_header_fields(metrics: dict) -> None:
-    assert metrics["schema_version"] == 1
+    assert metrics["schema_version"] == 2
     assert metrics["generated_at"] == "2026-10-11T12:00:00+00:00"
-    assert metrics["profile"] == {"login": "jdean", "name": "Jacqueline Dean"}
+    assert metrics["scope"] == {
+        "kind": "me",
+        "targets": [],
+        "label": "Sam Rivera (@srivera)",
+        "individual": True,
+        "people": 1,
+        "orgs": [],
+    }
     assert metrics["timeframe"] == {
         "since": "2026-01-01",
         "until": "2026-09-30",
@@ -85,8 +92,12 @@ def test_collaboration(metrics: dict) -> None:
     col = metrics["collaboration"]
     assert col == {
         "authors_reviewed": 3,
+        "authors_reviewed_outside_scope": 3,
         "reviewers_of_own_prs": 3,
+        "reviewers_outside_scope": 3,
         "reviews_per_pr_opened": 0.75,
+        "reviews_inside_scope": 0,
+        "reviews_outside_scope": 3,
         "repos_reviewed_in": 2,
         "repos_reviewed_only": 0,
         "cross_repo_reach": 3,
@@ -147,7 +158,7 @@ def test_repo_share_and_warnings(metrics: dict) -> None:
     }
     assert list(metrics["repo_share"]) == ["acme/api", "acme/web"]
     assert any("partners/sdk" in w for w in metrics["warnings"])
-    assert len(metrics["limits"]) == 2
+    assert len(metrics["limits"]) == 3
 
 
 def _pr(title: str, labels: tuple[str, ...] = ()) -> PullRequest:
@@ -197,9 +208,7 @@ def test_classify(title: str, labels: tuple[str, ...], theme: str) -> None:
 
 
 def test_empty_activity_produces_zeroes_not_errors() -> None:
-    from impact_review.core.models import Profile
-
-    metrics = build_metrics(Profile("x", "", "id"), TIMEFRAME, Activity(), "github.com", GENERATED)
+    metrics = build_metrics(solo(), TIMEFRAME, Activity(), "github.com", GENERATED)
     assert metrics["volume"]["prs_opened"] == 0
     assert metrics["flow"]["merge_hours_median"] is None
     assert metrics["code"]["median_pr_lines"] is None
@@ -211,6 +220,12 @@ def test_reviews_on_own_pr_by_self_do_not_count_as_reviewers() -> None:
     from impact_review.core.metrics import collaboration_metrics
 
     pr = _pr("x")
-    own = PullRequest(**{**pr.__dict__, "reviews": (Review("JDean", "COMMENTED", GENERATED),)})
+    own = PullRequest(
+        **{
+            **pr.__dict__,
+            "author": "srivera",
+            "reviews": (Review("SRivera", "COMMENTED", GENERATED),),
+        }
+    )
     activity = Activity(pull_requests=[own])
-    assert collaboration_metrics(activity, "jdean")["reviewers_of_own_prs"] == 0
+    assert collaboration_metrics(activity, {"srivera"})["reviewers_of_own_prs"] == 0

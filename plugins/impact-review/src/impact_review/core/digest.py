@@ -4,7 +4,11 @@ from __future__ import annotations
 
 from typing import Any
 
+from impact_review.core.scope import people_count
+
 DIGEST_CAP_BYTES = 12_000
+MONTHS_SHOWN = 24
+PEOPLE_SHOWN = 25
 _TRUNCATED_NOTE = "\n_Digest trimmed to fit the 12 KB cap; metrics.json holds the full data._\n"
 
 
@@ -13,11 +17,13 @@ def _line(label: str, value: Any, key: str) -> str:
 
 
 def _header(metrics: dict[str, Any]) -> list[str]:
-    profile, frame = metrics["profile"], metrics["timeframe"]
-    who = f"{profile['name']} (@{profile['login']})" if profile["name"] else f"@{profile['login']}"
+    scope, frame = metrics["scope"], metrics["timeframe"]
+    kind = "individual" if scope["individual"] else f"group ({scope['kind']})"
+    orgs = ", ".join(scope["orgs"]) or "any owner"
     return [
-        f"# Impact digest for {who}",
+        f"# Impact digest for {scope['label']}",
         "",
+        f"Scope: {kind}, {people_count(scope['people'])} (scope.people). Repositories: {orgs}.",
         f"Host: {metrics['host']}. Timeframe: {frame['since']} to {frame['until']} "
         f"({frame['label']}, {frame['days']} days). Generated {metrics['generated_at']}.",
         "Cite every number by its key in parentheses, for example (volume.prs_merged).",
@@ -30,6 +36,17 @@ def _volume(metrics: dict[str, Any]) -> list[str]:
     bands = ", ".join(f"{name} {count}" for name, count in c["size_bands"].items())
     return [
         "## Volume and code",
+        *(
+            []
+            if metrics["scope"]["individual"]
+            else [
+                _line(
+                    "People active",
+                    f"{v['active_people']} of {v['people']}",
+                    "volume.active_people",
+                )
+            ]
+        ),
         _line("Commits on default branches", v["commits"], "volume.commits"),
         _line("PRs opened", v["prs_opened"], "volume.prs_opened"),
         _line("PRs merged", v["prs_merged"], "volume.prs_merged"),
@@ -75,6 +92,17 @@ def _flow_and_collaboration(metrics: dict[str, Any]) -> list[str]:
             "flow.first_review_hours_median",
         ),
         _line("PRs merged per week", f["prs_merged_per_week"], "flow.prs_merged_per_week"),
+        *(
+            []
+            if metrics["scope"]["individual"]
+            else [
+                _line(
+                    "PRs merged per person per week",
+                    f["prs_merged_per_person_per_week"],
+                    "flow.prs_merged_per_person_per_week",
+                )
+            ]
+        ),
         "",
         "## Collaboration",
         _line(
@@ -90,6 +118,22 @@ def _flow_and_collaboration(metrics: dict[str, Any]) -> list[str]:
             col["reviews_per_pr_opened"],
             "collaboration.reviews_per_pr_opened",
         ),
+        *(
+            []
+            if metrics["scope"]["individual"]
+            else [
+                _line(
+                    "Reviews of work inside / outside the scope",
+                    f"{col['reviews_inside_scope']} / {col['reviews_outside_scope']}",
+                    "collaboration.reviews_inside_scope, collaboration.reviews_outside_scope",
+                ),
+                _line(
+                    "Reviewers from outside the scope",
+                    col["reviewers_outside_scope"],
+                    "collaboration.reviewers_outside_scope",
+                ),
+            ]
+        ),
         _line("Repos reviewed in", col["repos_reviewed_in"], "collaboration.repos_reviewed_in"),
         _line(
             "Repos reached (own work plus reviews)",
@@ -102,7 +146,12 @@ def _flow_and_collaboration(metrics: dict[str, Any]) -> list[str]:
 
 def _consistency(metrics: dict[str, Any]) -> list[str]:
     c = metrics["consistency"]
-    months = ", ".join(f"{month} {count}" for month, count in c["by_month"].items())
+    if len(c["by_month"]) > MONTHS_SHOWN:
+        periods = ", ".join(f"{year} {count}" for year, count in c["by_year"].items())
+        period_line = _line("Contributions by year", periods, "consistency.by_year")
+    else:
+        months = ", ".join(f"{month} {count}" for month, count in c["by_month"].items())
+        period_line = _line("Contributions by month", months, "consistency.by_month")
     weekdays = ", ".join(f"{day} {count}" for day, count in c["by_weekday"].items())
     return [
         "## Consistency",
@@ -113,10 +162,26 @@ def _consistency(metrics: dict[str, Any]) -> list[str]:
         ),
         _line("Longest streak (days)", c["longest_streak_days"], "consistency.longest_streak_days"),
         _line("Share of weeks active", c["active_weeks_share"], "consistency.active_weeks_share"),
-        _line("Contributions by month", months, "consistency.by_month"),
+        period_line,
         _line("Contributions by weekday", weekdays, "consistency.by_weekday"),
         "",
     ]
+
+
+def _people(metrics: dict[str, Any], limit: int) -> list[str]:
+    if metrics["scope"]["individual"]:
+        return []
+    rows = [
+        f"- @{login}{' (' + d['name'] + ')' if d['name'] else ''}: {d['prs_merged']} PRs merged "
+        f"of {d['prs_opened']}, {d['reviews']} reviews, {d['commits']} commits, "
+        f"{d['issues_opened']} issues, {d['lines_changed']} merged lines, "
+        f"{d['active_days']} active days (people.{login})"
+        for login, d in list(metrics["people"].items())[:limit]
+    ]
+    hidden = len(metrics["people"]) - limit
+    if hidden > 0:
+        rows.append(f"- {hidden} more people in metrics.json (people)")
+    return ["## People (most active first)", *rows, ""]
 
 
 def _themes(metrics: dict[str, Any]) -> list[str]:
@@ -152,7 +217,9 @@ def _top_repos(metrics: dict[str, Any]) -> list[str]:
 
 def _top_prs(metrics: dict[str, Any], limit: int) -> list[str]:
     rows = [
-        f"- {pr['repo']}#{pr['number']} {pr['title']} ({pr['state'].lower()}, {pr['theme']}, "
+        f"- {pr['repo']}#{pr['number']} {pr['title']} "
+        f"({'@' + pr['author'] + ', ' if pr.get('author') else ''}{pr['state'].lower()}, "
+        f"{pr['theme']}, "
         f"{pr['lines']} lines, {pr['files']} files, {pr['reviews']} reviews, "
         f"{pr['comments']} comments, "
         f"{pr['reviewers']} reviewers) (highlights.top_prs[{i}])"
@@ -173,14 +240,16 @@ def _top_items(counts: dict[str, int], limit: int) -> str:
 
 
 def render_digest(metrics: dict[str, Any], cap_bytes: int = DIGEST_CAP_BYTES) -> str:
-    """Render the digest; drop top PR rows, then truncate, until it fits `cap_bytes`."""
+    """Render the digest; drop top PR rows and people rows, then truncate, to fit `cap_bytes`."""
     top_limit = len(metrics["highlights"]["top_prs"])
+    people_limit = min(PEOPLE_SHOWN, len(metrics["people"]))
     while True:
         text = "\n".join(
             _header(metrics)
             + _volume(metrics)
             + _flow_and_collaboration(metrics)
             + _consistency(metrics)
+            + _people(metrics, people_limit)
             + _themes(metrics)
             + _repo_share(metrics)
             + _top_repos(metrics)
@@ -191,6 +260,9 @@ def render_digest(metrics: dict[str, Any], cap_bytes: int = DIGEST_CAP_BYTES) ->
             return text
         if top_limit > 3:
             top_limit -= 1
+            continue
+        if people_limit > 5:
+            people_limit -= 5
             continue
         return _truncate(text, cap_bytes)
 

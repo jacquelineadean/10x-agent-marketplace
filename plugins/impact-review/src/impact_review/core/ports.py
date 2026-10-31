@@ -7,17 +7,20 @@ from pathlib import Path
 from typing import Protocol
 
 from impact_review.core.models import Activity, Profile, Timeframe
+from impact_review.core.scope import Scope, ScopeRequest
 
 
 class ActivitySource(Protocol):
-    def profile(self) -> Profile: ...
-
     def enable_cache(self, folder: Path, refresh: bool) -> None: ...
+
+    def resolve(self, request: ScopeRequest) -> tuple[list[Profile], list[str]]:
+        """The people a scope request names, plus the organizations it limits work to."""
+        ...
 
     def collect(
         self,
         timeframe: Timeframe,
-        profile: Profile,
+        scope: Scope,
         orgs: Sequence[str],
         repo_share: bool,
     ) -> Activity: ...

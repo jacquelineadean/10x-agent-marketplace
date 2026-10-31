@@ -1,0 +1,20 @@
+{
+ "data": {
+  "organization": {
+   "membersWithRole": {
+    "pageInfo": {
+     "hasNextPage": false,
+     "endCursor": null
+    },
+    "nodes": [
+     {
+      "login": "tkim",
+      "name": "Taylor Kim",
+      "id": "MDQ6VXNlcjI=",
+      "createdAt": "2021-06-15T09:00:00Z"
+     }
+    ]
+   }
+  }
+ }
+}

@@ -5,7 +5,6 @@ status: draft
 classification: internal
 signoffs_required: 1
 requested_by: Jacqueline Dean
-request_source: personal review prep
 support: [Jacqueline Dean]
 owner: Jacqueline Dean
 supersedes: []
@@ -23,8 +22,6 @@ A Claude subagent reads only the digest and writes a self-evaluation draft, resu
 Each run is capped at 25,000 model tokens; Claude never sees raw API data, and a run that would exceed the cap stops and asks first.
 
 ## 2. The need
-**User scenario:** Jacqueline Dean prepares an end-of-year self-evaluation from a corporate GitHub Enterprise account. Today that means hours in repo pages, pull request lists and Insights tabs, and the result has few numbers. The same material is reused later for a resume and interview answers.
-**Done means:** one command in Claude Code produces, in a local run folder, a metrics dashboard (Markdown and HTML), a self-evaluation draft, resume bullets and interview stories. Every number in the written files matches a value in `metrics.json`.
 
 ## 3. Interview record
 | # | Question | Answer | Effect |
@@ -47,7 +44,6 @@ Each run is capped at 25,000 model tokens; Claude never sees raw API data, and a
 | 16 | Which repos count with no org filter? | Every repo the token sees; `--org` narrows | Confirmed |
 | 17 | Lines of code in written outputs? | Everywhere: dashboard, digest, self-evaluation, resume, stories | Confirmed |
 | 18 | Does the read-back match what you want? | Add a maximum token usage so one turn cannot burn through tokens | Confirmed (see 4.8) |
-| 19 | Where did the request come from? | Personal review prep | Confirmed |
 | 20 | Who supports the plugin after release? | Jacqueline Dean | Confirmed |
 | 21 | Have you read PROJECT.md and ARCHITECTURE.md? | Not yet read; both stay unconfirmed | Doc update |
 | 22 | Maximum model token budget per run? | 25,000 tokens | Confirmed |

@@ -1,0 +1,65 @@
+{
+ "data": {
+  "user": {
+   "contributionsCollection": {
+    "pullRequestContributions": {
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": null
+     },
+     "nodes": [
+      {
+       "pullRequest": {
+        "number": 150,
+        "title": "fix: handle empty payload",
+        "url": "https://github.com/acme/api/pull/150",
+        "state": "MERGED",
+        "isDraft": false,
+        "createdAt": "2026-06-01T09:00:00Z",
+        "mergedAt": "2026-06-02T09:00:00Z",
+        "closedAt": "2026-06-02T09:00:00Z",
+        "additions": 20,
+        "deletions": 5,
+        "changedFiles": 2,
+        "repository": {
+         "nameWithOwner": "acme/api",
+         "isPrivate": true,
+         "owner": {
+          "login": "acme"
+         },
+         "primaryLanguage": {
+          "name": "Python"
+         }
+        },
+        "labels": {
+         "nodes": []
+        },
+        "reviews": {
+         "nodes": [
+          {
+           "author": {
+            "login": "tkim"
+           },
+           "state": "COMMENTED",
+           "submittedAt": "2026-06-01T10:00:00Z"
+          },
+          {
+           "author": {
+            "login": "srivera"
+           },
+           "state": "APPROVED",
+           "submittedAt": "2026-06-01T15:00:00Z"
+          }
+         ]
+        },
+        "comments": {
+         "totalCount": 1
+        }
+       }
+      }
+     ]
+    }
+   }
+  }
+ }
+}

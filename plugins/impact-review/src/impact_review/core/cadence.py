@@ -42,8 +42,10 @@ def consistency_metrics(calendar: dict[date, int], timeframe: Timeframe) -> dict
         WEEKDAYS[day.weekday()] for day, count in inside.items() for _ in range(count)
     )
     by_month: Counter[str] = Counter()
+    by_year: Counter[str] = Counter()
     for day, count in inside.items():
         by_month[day.strftime("%Y-%m")] += count
+        by_year[str(day.year)] += count
     return {
         "contributions": sum(inside.values()),
         "active_days": len(active),
@@ -56,4 +58,5 @@ def consistency_metrics(calendar: dict[date, int], timeframe: Timeframe) -> dict
         else 0.0,
         "by_weekday": {name: by_weekday.get(name, 0) for name in WEEKDAYS},
         "by_month": dict(sorted(by_month.items())),
+        "by_year": dict(sorted(by_year.items())),
     }
