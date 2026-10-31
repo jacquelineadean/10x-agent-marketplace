@@ -7,8 +7,8 @@ docs, READMEs, chat and slides.
 
 Give Claude a brief ("the Q4 portfolio review of our order-platform migration", "a
 first-week handbook for new store staff", "a guide to this podcast episode") and point it
-at your data: connected GitHub, Jira, Confluence or Datadog, files, transcripts or pasted
-notes. chronicle returns one long-form page in the manner of a newspaper graphics feature,
+at your material: files, transcripts, links or pasted notes, and company systems through
+the sources plugin. chronicle returns one long-form page in the manner of a newspaper graphics feature,
 designed for that subject:
 
 - **An identity from the subject's world.** A theme sets the palette, the type and a
@@ -55,14 +55,9 @@ Three worked examples ship with the plugin, all with invented data:
 
 ## Animations
 
-`/chronicle:animation` makes one animation that plays outside a story page. Three kinds
-share one timeline, stage and theme:
+`/chronicle:animation` makes one animation that plays outside a story page. Two kinds
+share one timeline, stage and theme (technical architecture diagrams moved to blueprint):
 
-- **`tad`**: a technical architecture diagram written as data: components with icons and
-  their technology, groups (a VPC, a cluster, a trust boundary, vendors), sync and async
-  links, and flows. Code places the parts in tiers, routes every line around the boxes,
-  and plays the steps: parts appear and lines draw themselves on, packets run along a
-  flow, the view focuses, and parts turn new, failing, down or planned.
 - **`diagram`**: an SVG drawing in the story diagram format, played by id: parts appear,
   lines draw, packets run, the rest dims. A story page's diagram plays as it is.
 - **`scene`**: a watercolor painting from a story drawing that washes from sketch into
@@ -75,14 +70,13 @@ pause button, and, with a local Chromium or Chrome, a poster PNG, a contact shee
 steps, a GIF from its own encoder, and an MP4 through ffmpeg (WebM without it).
 
 ```bash
-scripts/chronicle animate new chronicle-runs/checkout --kind tad --title "Checkout"
-scripts/chronicle animate check examples/animation-tad/animation.json
-scripts/chronicle animate build examples/animation-tad/animation.json --formats svg,html,png,gif,mp4
+scripts/chronicle animate new chronicle-runs/release --kind diagram --title "Release"
+scripts/chronicle animate check examples/animation-diagram/animation.json
+scripts/chronicle animate build examples/animation-diagram/animation.json --formats svg,html,png,gif,mp4
 ```
 
 | Example | Shows |
 | --- | --- |
-| `examples/animation-tad/` | an order's path through a checkout system: 10 components in 4 groups, 3 flows, a card processor going down and a planned fraud check |
 | `examples/animation-diagram/` | a pull request's path to production, drawn as SVG, with a retry loop and a canary |
 | `examples/animation-scene/` | the Keystone story's jammed conveyor, animated from the story's own drawing and facts |
 
@@ -137,20 +131,20 @@ scripts/chronicle motifs                                 # landscape presets and
 | Path | Holds |
 | --- | --- |
 | `skills/story/` | the skill and its references: identity, illustration, story format, facts, sources, outlines, widgets, voice |
-| `skills/animation/` | the animation skill and its references: the animation file, TADs, diagrams and scenes, export formats |
+| `skills/animation/` | the animation skill and its reference on diagrams and scenes; the animation file and export formats are engine references |
 | `agents/researcher.md` | subagent that reads the material (files, transcripts, links, web, document connectors) and writes `research/facts.json` with a locator on every fact and `research/material.md` |
 | `scripts/chronicle` | launcher used by the skill through `${CLAUDE_PLUGIN_ROOT}` |
 | `src/chronicle_engine` | a link to `packages/chronicle-engine/src/chronicle_engine`, the shared engine: facts, derive, story checks and renderer, theme tokens, the animation clock and stage, the diagram kind, file, browser and video connectors, and the command line. Claude Code copies the linked files at install |
-| `src/chronicle/pack.py` | chronicle's registrations with the engine: the painter as art provider, the `plate` block, the page chrome, the scene and TAD kinds, the sameness review (`distinct` policy) and the `motifs` command |
+| `src/chronicle/pack.py` | chronicle's registrations with the engine: the painter as art provider, the `plate` block, the page chrome, the scene kind, the sameness review (`distinct` policy) and the `motifs` command |
 | `src/chronicle/core/story/` | plates on the page (`plates.py`), the progress devices, chapter marks, stat slips and frames a theme picks (`chrome.py`), and the sameness review (`review.py`) |
 | `src/chronicle/core/watercolor/` | the painting engine, the SVG reader and ink-and-wash painter, landscape motifs and presets |
-| `src/chronicle/core/motion/` | the scene kind; `tad/` holds TADs: spec reader, layout, line routing, icons and the drawing |
-| `src/chronicle/assets/` | chronicle's own page and animation parts: the plate stylesheet and runtime, the identity stylesheets and progress devices, the TAD and scene stylesheets |
-| `src/chronicle/entrypoints/cli/` | painting shared by `build`, `paint` and `animate` (`art.py`), and the `motifs` command |
+| `src/chronicle/core/motion/` | the scene kind |
+| `src/chronicle/assets/` | chronicle's own page and animation parts: the plate stylesheet and runtime, the identity stylesheets and progress devices, the scene stylesheet |
+| `src/chronicle/entrypoints/cli/` | painting shared by `build`, `paint` and `animate` (`art.py`), and the `motifs` and `research` commands |
 | `examples/keystone/` | status page example: story, facts, SVG drawings and a diagram, with invented data |
 | `examples/onboarding/` | handbook example: story, facts, drawings and a custom widget, with invented data |
 | `examples/quarterly/` | support-desk review with a drawn route and icon, with invented data |
-| `examples/animation-*/` | a TAD, a drawn diagram and a painted scene animation |
+| `examples/animation-*/` | a drawn diagram and a painted scene animation |
 | `tests/` | pytest suite |
 
 ## Privacy
@@ -188,13 +182,12 @@ scripts/chronicle motifs                                 # landscape presets and
     numbers.
 12. `scripts/chronicle shoot examples/quarterly/story.json --out /tmp/quarterly` writes
     `shots/desktop.png` and `shots/phone.png` with the painting in color.
-13. `scripts/chronicle animate build examples/animation-tad/animation.json --out /tmp/tad
-    --formats svg,html,png,gif,mp4`, then open `/tmp/tad/index.html`. The web app and
-    gateway appear, the order service's lines draw on, a packet runs from the web app to
-    the card processor, events run to the workers, the view dims around a card processor
-    marked DOWN, and a planned fraud check appears. Hover the figure and press Pause.
-14. Open `/tmp/tad/animation.gif`, `animation.mp4` and `poster.png`; the poster shows every
-    part. Look at `steps.png`: one frame per step.
+13. `scripts/chronicle animate build examples/animation-diagram/animation.json --out
+    /tmp/diagram --formats svg,html,png,gif,mp4`, then open `/tmp/diagram/index.html`. The
+    pull request, CI and review boxes appear, the retry loop draws, and a packet runs to
+    production through the canary. Hover the figure and press Pause.
+14. Open `/tmp/diagram/animation.gif`, `animation.mp4` and `poster.png`; the poster shows
+    every part. Look at `steps.png`: one frame per step.
 15. Build `examples/animation-scene/animation.json`: the painting washes from gray to color,
     the beacon turns, and three numbered spots come in with the focus.
 

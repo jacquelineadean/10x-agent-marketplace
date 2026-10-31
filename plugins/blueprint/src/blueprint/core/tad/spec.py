@@ -24,7 +24,7 @@ from typing import Any
 
 from chronicle_engine.core.story.model import Report, check_text
 
-from chronicle.core.motion.tad.icons import GLYPHS
+from blueprint.core.tad.icons import GLYPHS
 
 DIRECTIONS = ("right", "down")
 GROUP_STYLES = ("zone", "boundary", "cluster", "external")

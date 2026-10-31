@@ -17,7 +17,7 @@ briefing, blueprint and sources, and records the owner's answers to the ten ques
 ## Rebuild
 
 ```bash
-S=plugins/chronicle/scripts/chronicle
+S=plugins/blueprint/scripts/blueprint  # TADs build with blueprint since RFC-0007 phase 4
 $S animate check docs/rfc-0007-map/animation.json
 $S animate build docs/rfc-0007-map/animation.json --out /tmp/rfc-0007-map --formats svg,png
 ```

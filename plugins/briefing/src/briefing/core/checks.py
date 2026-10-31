@@ -9,10 +9,11 @@ from collections.abc import Iterator, Mapping
 from datetime import date
 from typing import Any
 
+from chronicle_engine.core.motion.embed import check_built
 from chronicle_engine.core.story.facts import TOKEN, FactError, lookup
 from chronicle_engine.core.story.model import Report, check_text
 
-from briefing.core import animation, slices
+from briefing.core import slices
 from briefing.core.kpi import ITEM_KEYS
 
 SLIDE_WORDS = 60
@@ -155,5 +156,5 @@ def stale(entries: Mapping[str, Any], today: date, report: Report) -> None:
 def animations(story: Mapping[str, Any], files: Mapping[str, str], report: Report) -> None:
     for where, _, block in _blocks(story):
         if block.get("type") == "animation":
-            for problem in animation.lint(files.get(str(block.get("svg", "")), "")):
+            for problem in check_built(files.get(str(block.get("svg", "")), "")):
                 report.errors.append(f"{where}.svg {block.get('svg')}: {problem}")

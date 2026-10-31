@@ -1,7 +1,7 @@
 """chronicle's registrations with the engine.
 
-Plates, the painter, the page chrome, scenes, TADs, the sameness review and the `motifs`
-command.
+Plates, the painter, the page chrome, scenes, the sameness review and the `motifs` and
+`research` commands. TADs moved to blueprint (RFC-0007 phase 4).
 
 Importing this module registers everything once; `python -m chronicle` imports it before
 running the engine's command line.
@@ -25,9 +25,6 @@ from chronicle_engine.core.story.render import Builder
 from chronicle_engine.registry import Kind, Prepared, Sources
 
 from chronicle.core.motion import scene
-from chronicle.core.motion.tad import draw as tad_draw
-from chronicle.core.motion.tad import spec as tad_spec
-from chronicle.core.motion.tad.spec import Tad
 from chronicle.core.story import chrome, plates, review
 from chronicle.entrypoints.cli import art, commands
 
@@ -187,57 +184,6 @@ SCENE = Kind(
 )
 
 
-# ----------------------------------------------------------------------- tad
-def _tad_check(
-    anim: Mapping[str, Any], facts: Mapping[str, Any], sources: Sources, report: Report
-) -> None:
-    tad = tad_spec.read(anim["tad"], report, facts)
-    if tad is not None:
-        tad_draw.check_steps(anim.get("steps", []), tad, report)
-
-
-def _tad_prepare(anim: Mapping[str, Any], facts: Mapping[str, Any]) -> Prepared:
-    found = Report()
-    tad = tad_spec.read(anim["tad"], found, facts)
-    if tad is None or found.errors:
-        raise ValueError("; ".join(found.errors) or "the tad object is invalid")
-    if not anim.get("steps"):
-        anim = {**anim, "steps": tad_draw.default_steps(tad)}
-    return Prepared(anim, _tad_floor(tad), lambda plan: tad_draw.captions(plan, tad), tad)
-
-
-def _tad_floor(tad: Tad) -> Callable[[Mapping[str, Any]], float]:
-    return lambda raw: tad_draw.floor(raw, tad)
-
-
-def _tad_figure(
-    anim: Mapping[str, Any],
-    prepared: Prepared,
-    plan: Plan,
-    box: stage.Box,
-    timeline: Timeline,
-    sources: Sources,
-    words: Callable[[str], str],
-) -> tuple[str, list[str]]:
-    tad: Tad = prepared.state
-    return tad_draw.figure(tad, plan, box, timeline)
-
-
-TAD = Kind(
-    skeleton={
-        "direction": "right",
-        "groups": [],
-        "nodes": [{"id": "client", "label": "Client", "kind": "client"}],
-        "edges": [],
-        "flows": [],
-    },
-    next_step="write the nodes, groups, edges and flows",
-    check=_tad_check,
-    prepare=_tad_prepare,
-    figure=_tad_figure,
-)
-
-
 # ---------------------------------------------------------------- register
 registry.set_art(Painter())
 registry.add_block("plate", ("art",), ("caption", "spots", "width"), _plate_block, after="table")
@@ -245,14 +191,13 @@ registry.add_block("plate", ("art",), ("caption", "spots", "width"), _plate_bloc
 registry.add_parts(by_type={"plate": ("js/30-plates.js", "css/11-plates.css", "css/40-drawn.css")})
 chrome.register()
 registry.add_kind("scene", SCENE, first=True)
-registry.add_kind("tad", TAD)
 registry.POLICIES["distinct"] = distinct
 registry.COMMANDS["motifs"] = registry.Command(commands.motifs_parser, commands.motifs)
 registry.COMMANDS["research"] = registry.Command(commands.research_parser, commands.research)
 registry.add_asset_root(resources.files("chronicle.assets"))
 registry.DEFAULTS.prog = "chronicle"
 registry.DEFAULTS.policy = "distinct"
-registry.DEFAULTS.kind = "tad"
+registry.DEFAULTS.kind = "scene"
 registry.DEFAULTS.new_folders = (art.ART_DIR, "diagrams", "widgets")
 registry.DEFAULTS.new_next = (
     "do the design pass (references/identity.md), then fill theme.concept first"

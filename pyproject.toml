@@ -21,6 +21,7 @@ testpaths = [
     "plugins/chronicle/tests",
     "plugins/sources/tests",
     "plugins/briefing/tests",
+    "plugins/blueprint/tests",
     "plugins/speedup/tests",
 ]
 pythonpath = [
@@ -29,5 +30,6 @@ pythonpath = [
     "packages/sources/src",
     "plugins/chronicle/src",
     "plugins/briefing/src",
+    "plugins/blueprint/src",
     "plugins/speedup/src",
 ]

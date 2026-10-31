@@ -1,7 +1,8 @@
 # The animation file
 
-`animation.json` holds one animation. The keys every kind shares are below; the kind's
-own object (`tad`, `diagram` or `scene`) is in `tad.md` and `diagram-and-scene.md`.
+`animation.json` holds one animation. The keys every kind shares are below. Each kind's
+own object is in its plugin's reference: blueprint's `tad.md`, `sequence.md` and `erd.md`,
+chronicle's `diagram-and-scene.md` (the `diagram` kind ships with the engine).
 
 ```json
 {

@@ -63,7 +63,7 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Widget:** a script Claude writes for one page when no block fits; `chronicle check` lints it.
 - **Preset:** a named, composed painting such as `bridge-hero`; **motif:** a paintable element such as `sky` or `arch_bridge`.
 - **Artifact:** a web page hosted privately on claude.ai, where a story page is published.
-- **Animation:** chronicle's `animation.json` and the one self-contained SVG built from it, with its HTML, PNG, GIF and video exports; its kind is `tad`, `diagram` or `scene`.
+- **Animation:** an `animation.json` and the one self-contained SVG built from it, with its HTML, PNG, GIF and video exports; its kind is `diagram` (engine), `scene` (chronicle), or `tad`, `sequence` or `erd` (blueprint).
 - **TAD:** a technical architecture diagram: components (nodes), groups such as a VPC or vendors, links (edges) and flows, written as data; code places and routes it.
 - **Step:** one beat of an animation with one caption; it shows, draws, focuses, pulses or sets states on parts, and runs flows.
 - **Flow:** a path through a TAD's nodes, along its edges, that a packet runs during a step.
@@ -79,6 +79,8 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Queries file:** `queries.json` in a run folder: the query behind each fact, with its system, lane, connection, window and as-of date.
 - **Lane:** how a fact was read: `mcp` through a connector in the session, or `script` through a collector with keys.
 - **Named connection:** an entry in `connections.json` holding a system's host and the names of the variables with its keys, never a key.
+- **Architecture block:** blueprint's page figure around a built animation, with part details, pins for decisions and a step player.
+- **Prototype:** blueprint's layout of clickable screens behind tabs, fed by facts.
 - **Layout:** how a story file becomes a document: a scrolling `page`, a `deck` of 16:9 slides or a `dashboard`.
 - **Brand kit:** `brand.json`, an organization's colors and fonts applied under every page's theme; `--brand` picks it.
 - **Slice:** one precomputed copy of a dashboard block for one filter option, such as a team or a region.

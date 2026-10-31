@@ -62,7 +62,7 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 | `connectors/browser/` | an installed headless Chromium or Chrome: page screenshots (`shoot.py`), animation frames, slide images and PDFs over the DevTools pipe (`devtools.py`) |
 | `connectors/video/` | MP4 through the installed ffmpeg program, WebM through OpenCV's video writer |
 | `entrypoints/cli/` | the command line a plugin runs after its pack registers: new, check, paint (with an art provider), build, shoot (`main.py`), `animate new/check/build` (`animate.py`), run folders and joined facts files (`runs.py`) |
-| `references/` | what every plugin's skills read through their link: the facts file (`facts.md`), blocks, tokens and formats (`blocks.md`), widgets (`widgets.md`) |
+| `references/` | what every plugin's skills read through their link: the facts file (`facts.md`), blocks, tokens and formats (`blocks.md`), widgets (`widgets.md`), the animation file (`animation-format.md`) and export formats (`formats.md`) |
 | `config/` | the only environment reads: the user's brand kit folder |
 | `assets/` | `fonts.json`; `css/` the page stylesheet in numbered parts; `js/` the page runtime in numbered parts, each figure starting through the `INIT` table; a page ships the parts its figures use, joined inside one IIFE; `motion/` the stage and diagram stylesheets |
 | `packages/chronicle-engine/tests/` | engine-only tests run with no plugin: the boundary and vocabulary lint (`test_engine_boundary.py`), the command line (`test_engine_cli.py`), page parts and neutral chrome (`test_engine_pages.py`), joined facts files and locators (`test_engine_facts.py`), shared helpers (`engine_helpers.py`) |
@@ -71,16 +71,27 @@ chronicle's own code lives under `plugins/chronicle/src/chronicle/`:
 
 | Folder | Holds |
 | --- | --- |
-| `pack.py` | chronicle's registrations: the painter as art provider, the `plate` block and its parts, the page chrome, the scene and TAD kinds, the `distinct` policy, the `motifs` command, defaults |
+| `pack.py` | chronicle's registrations: the painter as art provider, the `plate` block and its parts, the page chrome, the scene kind, the `distinct` policy, the `motifs` and `research` commands, defaults |
 | `core/story/` | plates on the page (`plates.py`), the creative page chrome and its parts (`chrome.py`), the sameness review (`review.py`) and the checks on the researcher's files (`research.py`) |
 | `core/watercolor/` | painting engine (paper, washes, ink), motifs, presets and the scene language |
 | `core/watercolor/svg/` | SVG drawings: path and transform math (`pathdata.py`), the reader (`parse.py`) and the ink-and-wash painter (`paint.py`) |
 | `core/motion/` | the scene kind (`scene.py`) |
-| `core/motion/tad/` | technical architecture diagrams: the spec reader, tier and lane layout, line routing, icons, and the drawing with its motion |
 | `entrypoints/cli/` | painting shared by build, paint and animate (`art.py`), the `motifs` and `research` commands (`commands.py`) |
-| `assets/` | chronicle's page and animation parts: `css/11-plates.css`, `css/13-arch-mark.css`, `css/21-identity-devices.css`, `js/30-plates.js`, `js/41-devices.js` (progress devices), `motion/20-tad.css`, `motion/30-scene.css` |
-| `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, and the animations `animation-tad/`, `animation-diagram/`, `animation-scene/` |
+| `assets/` | chronicle's page and animation parts: `css/11-plates.css`, `css/13-arch-mark.css`, `css/21-identity-devices.css`, `js/30-plates.js`, `js/41-devices.js` (progress devices), `motion/30-scene.css` |
+| `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, and the animations `animation-diagram/` and `animation-scene/` |
 | `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |
+
+blueprint's code lives under `plugins/blueprint/src/blueprint/`, beside links to the engine and to `packages/sources`:
+
+| Folder | Holds |
+| --- | --- |
+| `pack.py` | blueprint's registrations: the tad, sequence and erd kinds, the architecture, cards and list blocks, the prototype layout, their page parts, checks and the schema and sources commands |
+| `core/tad/` | technical architecture diagrams (moved from chronicle): spec reader, tier and lane layout, line routing, icons, the drawing with its motion, and the kind (`kind.py`) |
+| `core/` | kinds drawn as diagrams (`drawn.py`, `sequence.py`, `erd.py`), the architecture block (`architecture.py`), the prototype layout with cards and lists (`prototype.py`), checks (`checks.py`), schema exports to ERDs (`schema.py`) |
+| `entrypoints/cli/` | the check that reads animation files beside the story, `schema`, and the linked `sources` command |
+| `assets/` | the architecture, cards and lists, and prototype stylesheets and scripts; `motion/20-tad.css` |
+| `plugins/blueprint/examples/` | `animation-tad/`, `checkout-sequence/`, `orders-erd/`, `checkout-architecture/`, `oncall-prototype/` |
+| `plugins/blueprint/tests/` | `test_blueprint_*.py` with `blueprint_helpers.py`; TAD tests register the kind per test, builds run in their own process |
 
 briefing's code lives under `plugins/briefing/src/briefing/`, beside links to the engine and to `packages/sources`:
 

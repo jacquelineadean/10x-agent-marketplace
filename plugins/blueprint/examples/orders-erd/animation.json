@@ -1,0 +1,129 @@
+{
+ "schema_version": 1,
+ "kind": "erd",
+ "meta": {
+  "title": "The orders schema",
+  "description": "Five tables: customers place orders, orders hold items of products and are paid by payments.",
+  "credit": "Example data"
+ },
+ "theme": {
+  "concept": "A plain engineering figure: ink on white paper, one accent for what moves."
+ },
+ "erd": {
+  "entities": [
+   {
+    "id": "customers",
+    "columns": [
+     {
+      "name": "id",
+      "type": "bigint",
+      "key": "pk"
+     },
+     {
+      "name": "email",
+      "type": "text"
+     }
+    ]
+   },
+   {
+    "id": "orders",
+    "columns": [
+     {
+      "name": "id",
+      "type": "bigint",
+      "key": "pk"
+     },
+     {
+      "name": "customer_id",
+      "type": "bigint",
+      "key": "fk"
+     },
+     {
+      "name": "placed_at",
+      "type": "timestamptz"
+     }
+    ]
+   },
+   {
+    "id": "order_items",
+    "columns": [
+     {
+      "name": "id",
+      "type": "bigint",
+      "key": "pk"
+     },
+     {
+      "name": "order_id",
+      "type": "bigint",
+      "key": "fk"
+     },
+     {
+      "name": "sku",
+      "type": "text",
+      "key": "fk"
+     },
+     {
+      "name": "quantity",
+      "type": "int"
+     }
+    ]
+   },
+   {
+    "id": "products",
+    "columns": [
+     {
+      "name": "sku",
+      "type": "text",
+      "key": "pk"
+     },
+     {
+      "name": "name",
+      "type": "text"
+     }
+    ]
+   },
+   {
+    "id": "payments",
+    "columns": [
+     {
+      "name": "id",
+      "type": "bigint",
+      "key": "pk"
+     },
+     {
+      "name": "order_id",
+      "type": "bigint",
+      "key": "fk"
+     },
+     {
+      "name": "status",
+      "type": "text"
+     }
+    ]
+   }
+  ],
+  "relations": [
+   {
+    "from": "orders.customer_id",
+    "to": "customers.id",
+    "kind": "many-to-one"
+   },
+   {
+    "from": "order_items.order_id",
+    "to": "orders.id",
+    "kind": "many-to-one",
+    "label": "lines of"
+   },
+   {
+    "from": "order_items.sku",
+    "to": "products.sku",
+    "kind": "many-to-one"
+   },
+   {
+    "from": "payments.order_id",
+    "to": "orders.id",
+    "kind": "many-to-one"
+   }
+  ]
+ }
+}

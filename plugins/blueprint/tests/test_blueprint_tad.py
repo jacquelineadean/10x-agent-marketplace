@@ -4,16 +4,25 @@ from __future__ import annotations
 
 import copy
 import json
+from importlib import resources
 from pathlib import Path
 from typing import Any
 
 import pytest
-from chronicle.core.motion.tad import draw, layout, route, spec
+from blueprint.core.tad import draw, kind, layout, route, spec
+from chronicle_engine import registry
 from chronicle_engine.connectors.files import store
 from chronicle_engine.core.motion import render
 from chronicle_engine.core.story.model import Report
 
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples" / "animation-tad" / "animation.json"
+
+
+@pytest.fixture(autouse=True)
+def _blueprint(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The TAD kind and blueprint's assets for this test only, as blueprint's pack sets them."""
+    monkeypatch.setitem(registry.KINDS, "tad", kind.TAD)
+    monkeypatch.setattr(registry, "ASSET_ROOTS", [resources.files("blueprint.assets")])
 
 
 @pytest.fixture

@@ -1,0 +1,14 @@
+{
+ "oncall": {
+  "open": {"value": 3, "unit": "incidents", "source": "pagerduty", "note": "open incidents, 31 Oct 2026, 09:00"},
+  "acked": {"value": 2, "unit": "incidents", "source": "pagerduty", "note": "acknowledged of the open incidents"},
+  "pages_week": {"value": 14, "unit": "pages", "source": "pagerduty", "note": "pages in the last 7 days"},
+  "mtta_min": {"value": 4, "unit": "min", "source": "pagerduty", "note": "median time to acknowledge, last 7 days"},
+  "day": ["Oct 25", "Oct 26", "Oct 27", "Oct 28", "Oct 29", "Oct 30", "Oct 31"],
+  "pages": [1, 0, 3, 2, 4, 3, 1]
+ },
+ "services": {
+  "checkout_slo": {"value": 99.93, "unit": "%", "source": "datadog", "note": "30-day availability, Checkout"},
+  "search_slo": {"value": 99.98, "unit": "%", "source": "datadog", "note": "30-day availability, Search"}
+ }
+}

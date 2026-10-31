@@ -141,7 +141,43 @@ Design decisions:
 | AC-33 | Installing briefing from the marketplace installs sources too | manual check M-6 |
 | AC-34 | The quality gates pass, now with `mypy plugins/briefing/src/briefing`; briefing is 0.1.0 and chronicle 0.6.1 in both manifests | CI and `claude plugin validate .` |
 
-### PR 4 to PR 6
+### PR 4: blueprint, the TAD move and interactive figures
+Design decisions:
+- **The TAD moves.** Its code, stylesheet, example, reference and tests move to blueprint.
+  chronicle keeps the scene and diagram kinds and starts new animations as scenes. The
+  overview's and the RFC map's TADs build with blueprint.
+- **Packet styles move to the engine.** The diagram kind draws packets with the classes the
+  TAD stylesheet styled; those four rules move to the engine's diagram stylesheet, so
+  chronicle's diagrams and briefing's deck animation keep their packets.
+- **Drawn kinds.** `sequence` and `erd` write a drawing from data and play it through the
+  engine's diagram kind: its checks, timing, motion and sanitizer.
+- **The architecture block** wraps a built SVG: parts open their details, numbered pins
+  mark decisions, and a player seeks the clock to each step. Parts resolve under every
+  kind's id prefix; `check` refuses a part or pin the SVG lacks.
+- **The prototype layout** puts screens behind tabs; `cards` and `list` link screens, a
+  device toggle sets the width, and `check` refuses a link to a missing screen.
+- **Shared references and checks.** `animation-format.md` and `formats.md` move into the
+  engine's references; the built-animation check moves to the engine for briefing and
+  blueprint.
+- **Schema reads.** `blueprint schema` turns a column export into an `erd` object; live reads
+  through the script lane arrive in PR 5. Mermaid and C4 import, in the RFC's command table
+  but in no phase, are not built.
+- **Versions.** chronicle 0.7.0 (the TAD leaves), blueprint 0.1.0.
+
+| ID | Criterion | Check |
+| --- | --- | --- |
+| AC-35 | The TAD lives in blueprint; chronicle offers `scene` and `diagram` and defaults to `scene` | `test_blueprint_tad.py`, `test_pack.py`, `test_animate.py` |
+| AC-36 | Each TAD built with blueprint equals its PR 3 build less chronicle's scene stylesheet, and every element's computed style matches | build comparison and M-4 style comparison recorded in the PR |
+| AC-37 | chronicle's diagram and scene animations equal their PR 3 builds less the TAD-only rules, with the same computed style | build comparison and M-4 style comparison recorded in the PR |
+| AC-38 | A sequence draws a lifeline per participant, broken around labels, and an arrow per message (sync, async, reply, self); with no steps each message plays in turn | `test_blueprint_kinds.py` |
+| AC-39 | An ERD draws each table and routes each relation through the gaps with a crow's foot or a bar; `schema` turns the example's export into its `erd` object | `test_blueprint_kinds.py`, `test_blueprint_cli.py` |
+| AC-40 | The architecture block opens part details and pins and seeks each step; `check` refuses a part or pin the SVG lacks | `test_blueprint_cli.py`; browser check M-2 |
+| AC-41 | The prototype's tabs, card and row links and device toggle work; `check` refuses a link to a missing screen | `test_blueprint_cli.py`; browser check M-2 |
+| AC-42 | Every blueprint example checks clean and builds | `test_blueprint_cli.py` |
+| AC-43 | Installing blueprint installs sources | manual check M-7 |
+| AC-44 | The quality gates pass, now with `mypy plugins/blueprint/src/blueprint`; blueprint is 0.1.0 and chronicle 0.7.0 in both manifests | CI and `claude plugin validate .` |
+
+### PR 5 and PR 6
 Criteria for later pull requests are added to this spec in the pull request that builds them.
 
 ## Manual checks
@@ -164,3 +200,5 @@ Criteria for later pull requests are added to this spec in the pull request that
 - **M-6.** Install briefing from a local marketplace into a scratch `CLAUDE_CONFIG_DIR` and
   confirm sources installs with it; print the keystone deck with `slides --png --pdf` and
   look at every page.
+- **M-7.** Install blueprint from a local marketplace into a scratch `CLAUDE_CONFIG_DIR` and
+  confirm sources installs with it and the TAD files land in blueprint's cache.

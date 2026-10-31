@@ -16,7 +16,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-from chronicle.core.motion.tad.spec import Tad
+from blueprint.core.tad.spec import Tad
 
 NODE_W = 188.0
 NODE_H = 64.0

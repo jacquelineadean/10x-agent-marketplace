@@ -29,11 +29,6 @@
 .chr-a .m-planned.m-line { stroke: var(--muted); stroke-dasharray: 4 5; opacity: .8; }
 .chr-a .m-planned.m-head { fill: var(--muted); stroke: var(--muted); opacity: .8; }
 
-.chr-a .m-halo, .chr-a .m-trail, .chr-a .m-dot { fill: none; stroke-linecap: round; }
-.chr-a .m-halo { stroke: var(--paper); stroke-width: 14; }
-.chr-a .m-trail { stroke: var(--tone); stroke-width: 4; opacity: .4; }
-.chr-a .m-dot { stroke: var(--tone); stroke-width: 9; }
-
 .chr-a .m-shadow { fill: var(--rule-2); }
 .chr-a .m-box, .chr-a .m-rep { fill: var(--surface-2); }
 .chr-a .m-rep { stroke: var(--rule); stroke-width: 1.2; }

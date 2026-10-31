@@ -1,3 +1,10 @@
+/* Packets: a paper halo, a fading trail and a dot in the part's tone. Every kind that runs
+   packets draws them with these classes. */
+.chr-a .m-halo, .chr-a .m-trail, .chr-a .m-dot { fill: none; stroke-linecap: round; }
+.chr-a .m-halo { stroke: var(--paper); stroke-width: 14; }
+.chr-a .m-trail { stroke: var(--tone); stroke-width: 4; opacity: .4; }
+.chr-a .m-dot { stroke: var(--tone); stroke-width: 9; }
+
 /* Drawn diagrams: packets that run along Claude's paths take the accent unless a part
    sets its own --tone. */
 .chr-a .dg-svg .m-packet { --tone: var(--accent); }

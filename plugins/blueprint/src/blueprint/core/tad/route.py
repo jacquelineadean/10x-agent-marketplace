@@ -12,8 +12,8 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-from chronicle.core.motion.tad.layout import Layout, Rect
-from chronicle.core.motion.tad.spec import Edge, Tad
+from blueprint.core.tad.layout import Layout, Rect
+from blueprint.core.tad.spec import Edge, Tad
 
 Pt = tuple[float, float]
 RADIUS = 10.0

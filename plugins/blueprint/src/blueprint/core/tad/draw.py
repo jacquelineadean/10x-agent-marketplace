@@ -21,10 +21,10 @@ from chronicle_engine.core.story.html import tag
 from chronicle_engine.core.story.markup import plain
 from chronicle_engine.core.story.model import Report
 
-from chronicle.core.motion.tad import icons
-from chronicle.core.motion.tad.layout import NODE_W, Rect, place
-from chronicle.core.motion.tad.route import Route, arrowhead, bounds, route_all
-from chronicle.core.motion.tad.spec import EDGE_STATES, NODE_STATES, Edge, Node, Tad
+from blueprint.core.tad import icons
+from blueprint.core.tad.layout import NODE_W, Rect, place
+from blueprint.core.tad.route import Route, arrowhead, bounds, route_all
+from blueprint.core.tad.spec import EDGE_STATES, NODE_STATES, Edge, Node, Tad
 
 LABEL_SIZE = 14.0
 TECH_SIZE = 11.0

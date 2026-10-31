@@ -6,7 +6,8 @@ from datetime import date
 from typing import Any
 
 import pytest
-from briefing.core import animation, checks, kpi, slices
+from briefing.core import checks, kpi, slices
+from chronicle_engine.core.motion.embed import check_built
 from chronicle_engine.core.story.model import Report
 
 FACTS: dict[str, Any] = {
@@ -121,8 +122,8 @@ def test_stale_facts_warn_once_per_system() -> None:
 
 def test_an_animation_file_must_be_a_built_animation() -> None:
     ok = '<svg data-steps="0,2" data-end="4"><g/></svg>'
-    assert animation.lint(ok) == []
-    assert animation.lint('<svg data-steps="0"><script>x()</script></svg>') == [
+    assert check_built(ok) == []
+    assert check_built('<svg data-steps="0"><script>x()</script></svg>') == [
         "holds a script, an event handler or foreign markup"
     ]
-    assert animation.lint("<svg/>")[-1].startswith("has no data-steps")
+    assert check_built("<svg/>")[-1].startswith("has no data-steps")

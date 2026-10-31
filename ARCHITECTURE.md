@@ -52,9 +52,10 @@ code computes and paints, Claude writes and draws.
                      private claude.ai Artifact
 ```
 
-chronicle's animation skill (RFC-0005, draft) makes standalone animations the same way:
-Claude writes a TAD as data, a drawing or a painted scene, and the steps; code lays it
-out, times it and exports it.
+chronicle's animation skill (RFC-0005, draft) and blueprint's architecture skill make
+standalone animations the same way: Claude writes a painted scene or a drawing (chronicle),
+or a TAD, sequence or ERD as data (blueprint), and the steps; code lays it out, times it and
+exports it.
 
 ```
  user ──/chronicle:animation──▶ Claude Code (skill)
@@ -97,8 +98,9 @@ writes the post.
 | impact-review collector `plugins/impact-review/src/impact_review/` | Calls GitHub, caches responses, computes metrics, renders dashboard and digest | Python 3.11+, standard library only at runtime | Jacqueline Dean |
 
 | chronicle plugin shell `plugins/chronicle/` (`.claude-plugin/plugin.json`, `skills/story/`, `skills/animation/`, `agents/researcher.md`, `scripts/chronicle`) | The story workflow (brief, gather, write, build, publish) and the animation workflow (write, build, look, deliver) | Markdown, POSIX sh | Jacqueline Dean |
-| chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story and widget checks, themes, diagram sanitizer, HTML renderer, page runtime (CSS and JS), SVG reader and watercolor painter; the animation timeline, TAD layout and routing, GIF encoder and frame capture | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting and raster exports; a local Chromium for frames and ffmpeg for MP4 | Jacqueline Dean |
+| chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story and widget checks, themes, diagram sanitizer, HTML renderer, page runtime (CSS and JS), SVG reader and watercolor painter; the animation timeline, GIF encoder and frame capture (TADs moved to blueprint) | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting and raster exports; a local Chromium for frames and ffmpeg for MP4 | Jacqueline Dean |
 
+| blueprint plugin `plugins/blueprint/` (`.claude-plugin/plugin.json`, `skills/{architecture,prototype}/`, `scripts/blueprint`, `src/blueprint/`, `examples/`) | Architecture, sequence and ERD figures and pages, and prototypes: write, check, build, look, publish | Python 3.11+, standard library; Markdown, POSIX sh; a local Chromium for frames | Jacqueline Dean |
 | briefing plugin `plugins/briefing/` (`.claude-plugin/plugin.json`, `skills/{deck,dashboard}/`, `references/`, `scripts/briefing`, `src/briefing/`, `examples/`) | Decks and dashboards from facts: write, check, build, look, export, publish | Python 3.11+, standard library; Markdown, POSIX sh; a local Chromium for slide images and PDFs | Jacqueline Dean |
 | sources plugin shell `plugins/sources/` (`.claude-plugin/plugin.json`, `agents/gatherer.md`, `skills/connect/`, `recipes/`, `scripts/sources`) | Reads company systems through the session's connectors into facts, queries and a digest; sets up each system | Markdown, POSIX sh | Jacqueline Dean |
 | sources package `packages/sources/src/sources/` | Detection, the source picker, named connections, the facts and queries contract, the digest, the user-level database agent | Python 3.11+, standard library only | Jacqueline Dean |
@@ -130,7 +132,7 @@ chapter marks, ruled and card stats. chronicle links the engine into
 `plugins/chronicle/src/chronicle_engine` (Claude Code copies linked files at install) and
 registers its own parts from `plugins/chronicle/src/chronicle/pack.py`: the watercolor
 painter as art provider, plates, the creative chrome (arches, tracks, routes, hang tags,
-receipts), the scene and TAD kinds, the sameness review and `motifs`.
+receipts), the scene kind, the sameness review, `motifs` and `research`.
 
 briefing (RFC-0007, spec 002) turns facts into decks and dashboards on the same engine.
 Its pack, `plugins/briefing/src/briefing/`, registers two layouts beside the engine's page:
@@ -140,6 +142,13 @@ animation block that plays a built animation one step per click. It links the en
 `packages/sources`, declares `"dependencies": ["sources"]`, and exports Slides and
 Dashboard content, a PDF and a PNG per slide. A brand kit, chosen with `--brand`, lives in
 the engine, so every plugin's pages can share one look.
+
+blueprint (RFC-0007, spec 002) draws systems and data designs on the same engine. Its pack,
+`plugins/blueprint/src/blueprint/`, holds the TAD kind (moved from chronicle) and adds
+sequence and ERD kinds, which write a drawing from data and play it through the engine's
+diagram kind. Its architecture block wraps a built animation with part details, pins and a
+step player; its prototype layout puts clickable screens behind tabs. It links the engine
+and `packages/sources` and declares `"dependencies": ["sources"]`.
 
 sources (RFC-0007, spec 002) gives the data plugins read-only access to company systems.
 Its code, `packages/sources/src/sources/`, uses the same layout and imports neither the
@@ -165,7 +174,7 @@ benchmark commands), `connectors/files/` (every file read and write), `entrypoin
 
 ## Deployment and environments
 - No hosted environment; plugins run on each user's machine.
-- Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace`, `briefing@10x-agent-marketplace` (installs `sources` too), `sources@10x-agent-marketplace` or `speedup@10x-agent-marketplace`.
+- Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace`, `briefing@10x-agent-marketplace` or `blueprint@10x-agent-marketplace` (each installs `sources` too), `sources@10x-agent-marketplace` or `speedup@10x-agent-marketplace`.
 - Releases: each plugin carries a semantic version in `plugin.json`; a git tag `<plugin>-vX.Y.Z` (for example `impact-review-v1.0.0`) marks each release.
 - Rollback: reinstall from the previous tag, or pin the marketplace to it.
 

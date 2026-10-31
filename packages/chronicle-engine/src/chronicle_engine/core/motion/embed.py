@@ -8,9 +8,14 @@ CMS pages, docs sites, wikis that take HTML, and claude.ai Artifacts.
 
 from __future__ import annotations
 
+import re
+
 from chronicle_engine.core.motion.model import Plan
 from chronicle_engine.core.story.html import tag, void
 from chronicle_engine.core.story.markup import plain
+
+# What a built animation never holds; a file with any of these is not one `animate build` wrote.
+REFUSED = re.compile(r"<script|<foreignObject|\son[a-z]+\s*=|javascript:", re.I)
 
 FIGURE_CSS = """
 .chr-anim { position: relative; margin: 0 auto; }
@@ -92,3 +97,15 @@ def page(plan: Plan, fragment: str) -> str:
 def capture(svg: str) -> str:
     """A bare page the browser steps through frame by frame by setting --seek."""
     return f'<!doctype html>\n<meta charset="utf-8">\n<style>{SEEK_CSS}</style>\n{svg}'
+
+
+def check_built(svg: str) -> list[str]:
+    """Problems that keep an SVG file out of a page that plays it step by step."""
+    problems = []
+    if not svg.lstrip().startswith("<svg"):
+        problems.append("must be an animation SVG file built by `animate build`")
+    if REFUSED.search(svg):
+        problems.append("holds a script, an event handler or foreign markup")
+    if "data-steps=" not in svg:
+        problems.append("has no data-steps; rebuild it with a current `animate build`")
+    return problems
