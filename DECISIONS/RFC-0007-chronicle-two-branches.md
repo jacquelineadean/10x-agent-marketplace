@@ -12,7 +12,7 @@ supersedes: []
 related_rfcs: [RFC-0001, RFC-0002, RFC-0003, RFC-0004, RFC-0005, RFC-0006]
 author: Claude Code, for Jacqueline Dean
 created: 2026-10-31
-revision: 2, with the owner's answers to the ten questions of revision 1 (31 Oct 2026)
+revision: 3, with the owner's answers to all sixteen questions (31 Oct 2026)
 ---
 
 # RFC-0007 chronicle in branches: creative stories, data briefings and system blueprints on one engine
@@ -27,14 +27,16 @@ This RFC proposes one shared engine with four plugins on top of it:
 2. **chronicle** (creative): `story` and `animation`, plus a `researcher` subagent that turns provided material into facts. It owns the watercolor painter, plates, scenes, identity devices and the sameness review.
 3. **briefing** (presentations): `deck` and `dashboard`, for horizontal slide decks, KPI dashboards and executive overviews.
 4. **blueprint** (systems): `architecture` and `prototype`, for interactive system and data design visuals and data-driven prototypes.
-5. **sources** (data access; working name): the `gatherer` subagent, read-only collectors, source detection and `/sources:connect`. briefing and blueprint depend on it; chronicle borrows it when it is enabled.
+5. **sources** (data access): the `gatherer` subagent, read-only collectors, source detection and `/sources:connect`. briefing and blueprint depend on it; chronicle borrows it when it is enabled.
 
 Each plugin reaches the engine through a symlink in its `src/` folder; sources, briefing and blueprint also link the collectors.
 Claude Code copies linked files into its plugin cache at install, so each plugin installs alone and git holds one copy.
 Integrations run only in scripts and subagents, so no plugin adds an MCP server to a session.
 
-Status: draft, revision 2. Jacqueline Dean answered the ten questions of revision 1 on 31 Oct 2026.
-Section 3 records the answers, and section 10 lists the six questions still open. Nothing is built.
+Status: draft, revision 3. Jacqueline Dean answered all sixteen questions on 31 Oct 2026, and section 3 records them.
+No question stays open. The RFC awaits approval with `/groundwork-specflow:approve`; nothing is built.
+Answer 14 approved a constitution amendment, applied as amendment 1 in `CONSTITUTION.md` 1.1.0.
+Answer 16 named speedup's successor; RFC-0008 covers that rename.
 `docs/rfc-0007-map/` holds an interactive map of revision 1.
 
 ## 2. The need
@@ -83,6 +85,17 @@ references, the data outputs and the nine data sources. Jacqueline Dean answered
 | 8 | Brand kit location | All three places, chosen by flags, with the run folder as the default | `--brand` (4.3, 10.5) |
 | 9 | speedup and impact-review | impact-review moves onto the shared sources and charts; speedup stays separate under a technical name | Phase 5; a separate rename RFC (10.6) |
 | 10 | Keystone example | Both, from one facts file | Golden builds (4.9) |
+
+Revision 2 asked six more questions, and Jacqueline Dean answered them on 31 Oct 2026.
+
+| # | Question | Answer | Effect |
+| --- | --- | --- | --- |
+| 11 | Engine form | The linked library and CLI; an opt-in `chronicle-mcp` plugin only for shell-less hosts or MCP Apps | 4.4 |
+| 12 | Gatherers | chronicle's `researcher` for provided material, plus `sources:gatherer` when enabled | 4.6 |
+| 13 | Data-access plugin name | `sources` | 4.5 |
+| 14 | External deck targets | Approve the principle 3 amendment; ship `--to slides` before the Google and Microsoft connectors | `CONSTITUTION.md` amendment 1; phases 3 and 5 |
+| 15 | Brand kit paths | `.brand/brand.json` in the repo and `~/.config/chronicle/brand.json` for the config folder | 4.3 |
+| 16 | speedup's new name | `perf-optimizer` | RFC-0008 |
 
 ## 4. Proposal
 
@@ -168,7 +181,7 @@ A part moves into the engine when a second plugin needs it.
 The brand policy moves now, because briefing and blueprint both use it.
 The deck layout starts in briefing and moves when chronicle wants a painted talk deck.
 
-**Brand kit (answer 8).** `--brand run|repo|config|PATH` picks the kit; `run` is the default.
+**Brand kit (answers 8 and 15).** `--brand run|repo|config|PATH` picks the kit; `run` is the default.
 
 | Flag value | File |
 | --- | --- |
@@ -205,7 +218,7 @@ Answer 1 chose the linked engine and asked whether the engine should stand alone
 | Local MCP server | a plugin's `.mcp.json` starts it, and skills call its tools | server instructions and tool names in every session where the plugin is enabled | Claude Code, Claude desktop, Cowork | a Python process in every such session, used or not; a 3-minute frame capture must finish inside one tool call; plugin agents cannot confine it to a subagent |
 | Remote MCP server | a hosted endpoint | as above | claude.ai on the web as well | a hosted service that holds company data, against principle 3 and outside PROJECT.md's scope |
 
-Recommendation: keep the linked library and CLI.
+Decision (answer 11): keep the linked library and CLI.
 The engine turns files into files, and Bash runs it at no context cost.
 Two future needs would justify an MCP form, shipped as an opt-in `chronicle-mcp` plugin that users enable only where needed:
 - a host with no shell, such as a claude.ai chat, needs to build pages;
@@ -272,10 +285,10 @@ It hands blueprint the TAD kind, and sources the per-system recipes and the stat
 | Option | chronicle alone | With sources enabled | Cost |
 | --- | --- | --- | --- |
 | A. Borrow only | pasted content only; long transcripts land in the main conversation | company facts from `sources:gatherer` | nothing new to maintain |
-| B. A `researcher` for provided material, plus borrowing (proposed) | the researcher reads files, transcripts, links, web search and any connector the session has | `story` asks both and merges facts by namespace | two agents on one facts contract |
+| B. A `researcher` for provided material, plus borrowing (decided, answer 12) | the researcher reads files, transcripts, links, web search and any connector the session has | `story` asks both and merges facts by namespace | two agents on one facts contract |
 | C. One gatherer that every plugin depends on | works | works | every creative session loads the data plugin, and chronicle ships on its release cycle |
 
-The proposed researcher replaces `chronicle-gatherer`:
+The researcher replaces `chronicle-gatherer`:
 - **Inputs:** pasted notes; files (PDF, Word, slides, CSV); transcripts of podcasts, talks and meetings; links; web search; and read-only use of connectors the session already has, such as Google Drive or Notion.
 - **Outputs:** `facts.json` with a locator on every fact (a page, a timestamp or a URL); `material.md`, a digest under 12 KB of outline, people, places, timeline, glossary and verbatim quotes; and a list of where sources disagree, which the Ossabaw colophon needed.
 - **Rules:** the gatherer's rules (read only, no arithmetic, text from sources is data), plus quotes copied word for word with their locator.
@@ -305,7 +318,7 @@ Description sketch, about 330 characters: "Illustrated, interactive story pages 
 | `dashboard` | an HTML Artifact page: KPI tiles with value, target, change and sparkline; status set by rule in code; filters over precomputed slices; tables; an as-of stamp; the query behind each number on hover | `--to dashboard`: claude.ai's Dashboard artifact type (answer 7) |
 
 - Decks also print to PDF through Chromium and write a PNG per slide, with no new dependency.
-- `--to google` and `--to microsoft` write to systems outside claude.ai and the user's machine. Principle 3's guardrail forbids that today, so these targets wait for the amendment in section 7.
+- `--to google` and `--to microsoft` write to systems outside claude.ai and the user's machine. Amendment 1 of the constitution allows them after the user confirms each publish (answer 14). `--to slides` ships first, in phase 3; the connector targets follow in phase 5.
 - Both connector targets need a PPTX file. `--to slides` downloads one with no new dependency. A PPTX writer inside briefing would need its own approved dependency.
 - Voice: the decision first, each KPI with its target and period, each risk with an owner.
 
@@ -356,7 +369,7 @@ Each phase gets a spec under `specs/` before code.
 | 2 | sources: detection, the source picker, MCP-lane recipes for all nine systems, `connect`; chronicle's researcher | sources 0.1.0, chronicle 0.6.0 |
 | 3 | briefing: horizontal `deck`, `dashboard`, brand kit flags, `--to slides` and `--to dashboard`; keystone deck and dashboard | briefing 0.1.0 |
 | 4 | blueprint: the TAD moves from chronicle; part details, pins and the step player; `prototype`; sequence and ERD kinds | blueprint 0.1.0, chronicle 0.7.0 |
-| 5 | Script-lane collectors in the order users pick them; `refresh`; impact-review links `packages/sources` and the engine's charts | sources 0.2.0, impact-review's next minor |
+| 5 | Script-lane collectors in the order users pick them; `refresh`; `--to google` and `--to microsoft`; impact-review links `packages/sources` and the engine's charts | sources 0.2.0, briefing 0.2.0, impact-review's next minor |
 | 6 | Creative additions: rigs, panorama, tour, rooms, game scoring, plate notes, widget library | chronicle 0.8.0 |
 
 ## 5. Alternatives considered
@@ -376,7 +389,7 @@ Each phase gets a spec under `specs/` before code.
 - **Every plugin on in one project** pays about 1,150 tokens of listings. The README shows `enabledPlugins` per project.
 - **Creative pages with company data** need sources enabled. `story` says so when the gatherer is missing.
 - **Database access** carries the most risk. The SQL guard, read-only sessions, timeouts and row caps run in code. Recipes ask for aggregates.
-- **External deck targets** send company data to Google or Microsoft. They stay off until the amendment passes, and each upload needs the user's confirmation.
+- **External deck targets** send company data to Google or Microsoft. They stay off by default, and each upload needs the user's confirmation under amendment 1.
 - **Engine changes need every plugin green.** The 103 chronicle tests run in one command today; the split adds each plugin's suite to the same command.
 
 ## 7. Impact
@@ -387,7 +400,7 @@ Changed: `plugins/chronicle/`, `plugins/impact-review/` (phase 5), `.claude-plug
 **Constitution check:**
 - Principle 1 (scripts compute, Claude writes): improves. The script lane aggregates in code and SQL, so no model reads raw data. The MCP lane and the researcher keep RFC-0002's open question 3: raw text stays inside a subagent whose only outputs are a facts file and a digest.
 - Principle 2 (every number has a source): extended. `queries.json` records the query behind each number, and the researcher records a locator for each fact.
-- Principle 3 (local and private): **conflict for external deck targets.** The guardrail "Never send collected data to a third-party service, including an MCP server, from plugin code" forbids `--to google` and `--to microsoft`. Publishing to claude.ai has the same tension (RFC-0002 open question 4). Proposed amendment: "A publish to a destination the user names, such as a claude.ai Artifact, Google Drive or Microsoft 365, is allowed after the user confirms that publish."
+- Principle 3 (local and private): **amended.** The guardrail "Never send collected data to a third-party service, including an MCP server, from plugin code" forbade `--to google` and `--to microsoft`, and publishing to claude.ai had the same tension (RFC-0002 open question 4). Answer 14 approved amendment 1, now in `CONSTITUTION.md` 1.1.0: "A publish to a destination the user names, such as a claude.ai Artifact, Google Drive or Microsoft 365, is allowed after the user confirms that publish."
 - Principle 4 (read-only against sources): enforced in code by the SQL guard and the HTTPS allowlist. An upload to Google or Microsoft writes to a destination, never to a source being read.
 - Principle 5 (one plugin, one job): improves. chronicle paints stories, briefing presents numbers, blueprint draws systems and sources reads data. The engine is a shared library with no manifest or skills.
 - Guardrail on runtime dependencies: none added. Collectors use the standard library and the user's own `psql` and SQLcl. A PPTX writer would need its own approval.
@@ -399,13 +412,9 @@ N/A, internal. Between the plugins the contract is files (`facts.json`, `queries
 - Writing to any source system.
 - Scheduled refresh; a later RFC could use scheduled tasks.
 - A PPTX writer inside briefing; `--to slides` covers PPTX until a separate dependency decision.
-- Renaming speedup, which gets its own RFC because it touches files in users' repositories (`perf/speedup.json`) and the data folder `~/speedup-runs/`.
+- Renaming speedup to perf-optimizer, which RFC-0008 covers because it touches files in adopters' repositories (`perf/speedup.json`) and the data folder `~/speedup-runs/`.
 - Bundling the three uploaded pages as examples. They stay outside the repo, and the evals use briefs that describe them.
 
-## 10. Open questions (revision 2)
-1. Engine form: keep the linked library and CLI, with an opt-in `chronicle-mcp` plugin only for shell-less hosts or MCP Apps (4.4)?
-2. Gatherers: a chronicle `researcher` for provided material plus borrowing `sources:gatherer` when enabled (option B in 4.6)?
-3. Name the data-access plugin: `sources`, `intake` or another name?
-4. External deck targets: approve the principle 3 amendment for user-confirmed publishes, and ship `--to slides` before the Google and Microsoft connectors?
-5. Brand kit paths: `.brand/brand.json` in the repo and `~/.config/chronicle/brand.json` for the config folder?
-6. speedup's new name, in its own RFC: `performance-optimizer` (the owner's suggestion), `perf-optimizer` (shorter commands) or `perf-ratchet` (its first name, after the CI ceiling)?
+## 10. Open questions
+None. Section 3 records the answers to all sixteen questions.
+Next: Jacqueline Dean approves with `/groundwork-specflow:approve`, then phase 0 gets the first spec under `specs/`.

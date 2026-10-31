@@ -5,3 +5,4 @@
 {"ts": "2026-10-15T14:00:00+0000", "event": "created", "ref": "RFC-0003-chronicle-pages-made-for-their-subject", "by": "noreply@anthropic.com"}
 {"ts": "2026-10-20T13:30:00+0000", "event": "created", "ref": "RFC-0005-chronicle-standalone-animations", "by": "noreply@anthropic.com"}
 {"ts": "2026-10-31T15:00:00+0000", "event": "created", "ref": "RFC-0007-chronicle-two-branches", "by": "noreply@anthropic.com"}
+{"ts": "2026-10-31T19:50:00+0000", "event": "created", "ref": "RFC-0008-rename-speedup-to-perf-optimizer", "by": "noreply@anthropic.com"}
