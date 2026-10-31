@@ -1,6 +1,6 @@
 ---
 id: RFC-0007
-title: "chronicle in two branches: creative pages and data briefings on one engine"
+title: "chronicle in branches: creative stories, data briefings and system blueprints on one engine"
 status: draft
 classification: internal
 signoffs_required: 1
@@ -9,29 +9,33 @@ request_source: Claude Code session, 31 Oct 2026
 support: []
 owner: Jacqueline Dean
 supersedes: []
-related_rfcs: [RFC-0002, RFC-0003, RFC-0004, RFC-0005, RFC-0006]
+related_rfcs: [RFC-0001, RFC-0002, RFC-0003, RFC-0004, RFC-0005, RFC-0006]
 author: Claude Code, for Jacqueline Dean
 created: 2026-10-31
+revision: 2, with the owner's answers to the ten questions of revision 1 (31 Oct 2026)
 ---
 
-# RFC-0007 chronicle in two branches: creative pages and data briefings on one engine
+# RFC-0007 chronicle in branches: creative stories, data briefings and system blueprints on one engine
 
 ## 1. Summary
 chronicle 0.4 serves two kinds of work through one `story` skill and one `animation` skill.
 Creative work wants a painted identity that no other page shares.
-Business work wants numbers from company systems, the house brand on every page, and a refresh button.
-This RFC proposes one shared engine with two plugins on top of it:
+Business and technical work wants numbers from company systems, the house brand on every page, and a refresh button.
+This RFC proposes one shared engine with four plugins on top of it:
 
-1. **chronicle-engine** (`packages/chronicle-engine/`): facts, derive, the document model, the block registry, the renderer, theme tokens, the motion clock and every export. It names neither branch.
-2. **chronicle 0.5** (creative): `story` and `animation` for illustrated pages and painted animations. It owns the watercolor painter, plates, scenes, identity devices and the sameness review.
-3. **briefing 0.1** (data; working name): `deck`, `dashboard`, `architecture` and `prototype`. It owns KPI rules, slide and dashboard layouts, TADs, the brand kit, the collectors and the gatherer subagent.
+1. **chronicle-engine** (`packages/chronicle-engine/`): facts, derive, the document model, the block registry, the renderer, theme tokens and the brand policy, the motion clock and every export. It names no plugin.
+2. **chronicle** (creative): `story` and `animation`, plus a `researcher` subagent that turns provided material into facts. It owns the watercolor painter, plates, scenes, identity devices and the sameness review.
+3. **briefing** (presentations): `deck` and `dashboard`, for horizontal slide decks, KPI dashboards and executive overviews.
+4. **blueprint** (systems): `architecture` and `prototype`, for interactive system and data design visuals and data-driven prototypes.
+5. **sources** (data access; working name): the `gatherer` subagent, read-only collectors, source detection and `/sources:connect`. briefing and blueprint depend on it; chronicle borrows it when it is enabled.
 
-Each plugin reaches the engine through a symlink in its `src/` folder.
+Each plugin reaches the engine through a symlink in its `src/` folder; sources, briefing and blueprint also link the collectors.
 Claude Code copies linked files into its plugin cache at install, so each plugin installs alone and git holds one copy.
-Integrations run only in scripts and subagents, so neither plugin adds an MCP server to a session.
+Integrations run only in scripts and subagents, so no plugin adds an MCP server to a session.
 
-Status: proposal for discussion. Nothing is built.
-`docs/rfc-0007-map/` holds an interactive map of this proposal with the open questions pinned to the parts they change.
+Status: draft, revision 2. Jacqueline Dean answered the ten questions of revision 1 on 31 Oct 2026.
+Section 3 records the answers, and section 10 lists the six questions still open. Nothing is built.
+`docs/rfc-0007-map/` holds an interactive map of revision 1.
 
 ## 2. The need
 **User scenario:** Jacqueline Dean asked to "bifurcate the chronicle plugin story and animation skills" into
@@ -56,66 +60,70 @@ Evidence, measured on commit `b356522`:
 - Chart and dashboard code already exists three times: impact-review (`charts.py`, `dashboard.py`), speedup (`charts.py` 202 lines, `dashboard.py` 658) and chronicle (`10-charts.js`, 31 KB). HTTPS transports exist twice: impact-review 180 lines, speedup 161.
 
 **Done means** (for the build that follows approval):
-- A creative-only install carries no data skill, agent, recipe or MCP server.
-- A data-only install carries no painter, identity reference or creative skill.
+- A creative-only install carries no data skill, recipe or MCP server.
+- A briefing or blueprint install carries no painter, identity reference or creative skill.
 - One `facts.json` builds as a painted story in chronicle and as a deck and a dashboard in briefing.
-- Each branch keeps golden examples and trigger evals, and both run on every engine change.
-- No engine file uses a branch's vocabulary.
+- Each plugin keeps golden examples and trigger evals, and all of them run on every engine change.
+- No engine file uses a plugin's vocabulary.
 - The four quality gates pass.
 
 ## 3. Interview record
-No interview was held. The request named the two uses, the creative examples and the data sources.
-The other answers are proposals and stay open in section 10.
+Revision 1 took four answers from the request: what splits (the story and animation skills, by use), the creative
+references, the data outputs and the nine data sources. Jacqueline Dean answered its ten open questions on 31 Oct 2026.
 
 | # | Question | Answer | Effect |
 | --- | --- | --- | --- |
-| 1 | What splits? | The story and animation skills, by use | From request |
-| 2 | Creative references | Ossabaw tour, podcast companion, ROK gamified handbook | From request; the uploaded builds were read for section 2 |
-| 3 | Data outputs | System design visuals, KPI dashboards, executive overviews, slide decks, prototypes | From request |
-| 4 | Data sources | GitHub, Datadog, Jira, Confluence, Databricks, Postgres, Oracle, ServiceNow, PagerDuty | From request |
-| 5 | Packaging | Two plugins over one linked engine | Proposed, open (10.1) |
-| 6 | Data plugin name | `briefing` | Proposed, open (10.2) |
-| 7 | Company data in creative pages | Through briefing's gatherer when installed | Proposed, open (10.3) |
+| 1 | Packaging | Two plugins over one linked engine; asked whether the engine should be an MCP server | Linked engine kept; 4.4 weighs the MCP form (10.1) |
+| 2 | Data plugin name | Both names: `briefing` for decks and dashboards, `blueprint` for architecture visuals and prototypes | Three front-door plugins plus `sources` (4.5 to 4.8) |
+| 3 | Company data in creative pages | Borrow the gatherer when installed; also work alone, perhaps with a new gatherer for provided material and tools | `chronicle:researcher` proposed in 4.6 (10.2) |
+| 4 | First three sources | Dynamic, from the session and the request; with none given, ask the user to pick each source | Detection and a source picker (4.5) |
+| 5 | Database access | An optional user-level gatherer with MCP servers | `/sources:connect --agent` (4.5) |
+| 6 | Deck exports | Horizontal HTML slides, or Google and Microsoft servers that build the deck there | `deck` targets (4.7); external targets need an amendment (7, 10.4) |
+| 7 | Dashboards | Plain pages by default, claude.ai's Dashboard type as an option | `--to dashboard` (4.7) |
+| 8 | Brand kit location | All three places, chosen by flags, with the run folder as the default | `--brand` (4.3, 10.5) |
+| 9 | speedup and impact-review | impact-review moves onto the shared sources and charts; speedup stays separate under a technical name | Phase 5; a separate rename RFC (10.6) |
+| 10 | Keystone example | Both, from one facts file | Golden builds (4.9) |
 
 ## 4. Proposal
 
 ### 4.1 The rule that routes a request
-The requested treatment picks the branch: illustration goes to chronicle, data-first output goes to briefing.
-A status report can land in either one.
+The requested output picks the plugin.
+Illustration goes to chronicle, numbers to present go to briefing, and a system's structure goes to blueprint.
 
-| Request | Branch | Skill |
-| --- | --- | --- |
-| "An illustrated field guide to Ossabaw Island" | creative | `chronicle:story` |
-| "A companion page for this podcast episode" | creative | `chronicle:story` |
-| "A gamified handbook for new staff" | creative | `chronicle:story` |
-| "A painted scene of the outage for the all-hands" | creative | `chronicle:animation` |
-| "A watercolor status story for the steering committee" | creative, with gathered facts | `chronicle:story`, facts from `briefing:gatherer` |
-| "A Q3 KPI dashboard from Datadog and Jira" | data | `briefing:dashboard` |
-| "An executive overview of the migration" | data | `briefing:dashboard` |
-| "Slides for Thursday's architecture review" | data | `briefing:deck` |
-| "Animate how a checkout request crosses our services" | data | `briefing:architecture` |
-| "A clickable on-call prototype with real PagerDuty numbers" | data | `briefing:prototype` |
+| Request | Skill |
+| --- | --- |
+| "An illustrated field guide to Ossabaw Island" | `chronicle:story` |
+| "A companion page for this podcast episode" | `chronicle:story` |
+| "A gamified handbook for new staff" | `chronicle:story` |
+| "A painted scene of the outage for the all-hands" | `chronicle:animation` |
+| "A watercolor status story for the steering committee" | `chronicle:story`, with facts from `sources:gatherer` |
+| "A Q3 KPI dashboard from Datadog and Jira" | `briefing:dashboard` |
+| "An executive overview of the migration" | `briefing:dashboard` |
+| "Slides for Thursday's quarterly review" | `briefing:deck` |
+| "Animate how a checkout request crosses our services" | `blueprint:architecture` |
+| "An ERD of the orders schema" | `blueprint:architecture` |
+| "A clickable on-call prototype with real PagerDuty numbers" | `blueprint:prototype` |
 
 An ambiguous request goes to briefing, which needs no painter and loads fewer tokens.
 chronicle takes it when the request asks for illustration, watercolor, a story, a guide, a tour or a game.
-Each skill description names the requests that belong to the other plugin.
+Each skill description names the requests that belong to the other plugins.
+A deck shows a blueprint animation by file: blueprint writes the SVG, and the deck's animation block plays it.
 
 ### 4.2 Layers
 ```
-                 chronicle (creative)                       briefing (data)
- skills          story · animation                          deck · dashboard · architecture · prototype
- agents          none                                       gatherer (MCP lane)
- plugin code     watercolor painter, plates, scenes,        KPI and target rules, deck, dashboard and
-                 identity devices, sameness review,         prototype layouts, TAD, sequence, ERD,
-                 rigs, panoramas, tours, game scoring       lineage, brand kit, refresh, digest
- references      identity, illustration, editorial voice,   brand, KPIs, deck, one recipe per source,
-                 guide and handbook outlines                status, review and incident outlines
- ──────────────── chronicle-engine: one folder in git, linked into both plugins ─────────────────
-                 facts, derive, tokens · document model, block registry, page renderer
-                 theme tokens, fonts, contrast · motion clock, stage, diagram kind, exports
-                 files, browser and video connectors · shared format references
- ──────────────── sources: one folder in git, linked into briefing only ────────────────────────
-                 HTTPS transport · SQL and HTTP read-only guards · collectors · recorded fixtures
+             chronicle             briefing             blueprint              sources
+ skills      story, animation      deck, dashboard      architecture,          connect (you run it)
+                                                        prototype
+ agents      researcher            none                 none                   gatherer
+ own code    painter, plates,      deck and dashboard   TAD, sequence, ERD,    detection, recipes,
+             scenes, identity,     layouts, KPI rules   lineage, prototype     connections
+             sameness review,                           screens
+             rigs, tours, games
+ ─────────── chronicle-engine: one folder in git, linked into chronicle, briefing and blueprint ───────────
+             facts, derive, tokens · document model, block registry, renderer · theme tokens, brand policy
+             motion clock, stage, diagram kind, exports · files, browser and video connectors
+ ─────────── packages/sources: one folder in git, linked into sources, briefing and blueprint ────────────
+             HTTPS transport · SQL and HTTP read-only guards · collectors · recorded fixtures
 ```
 
 ### 4.3 The engine
@@ -132,81 +140,118 @@ Today's code splits along these lines (lines of Python unless marked):
 | `plate` block and `30-plates.js` | 5 KB of script | chronicle |
 | Motion clock, stage, parts, embed, frames, GIF; `diagram` kind | 1,663 | engine |
 | `scene` kind | 444 | chronicle |
-| `tad` kind | 1,706 | briefing |
+| `tad` kind | 1,706 | blueprint |
 | Files, browser and video connectors; CLI commands | 1,263 | engine |
-| `chronicle-gatherer`, `sources.md` | 4.5 KB of text | briefing |
+| `chronicle-gatherer` | 1.8 KB of text | becomes chronicle's `researcher` (4.6) |
+| `sources.md` | 2.7 KB of text | sources, as one recipe per system |
 | `identity.md`, `illustration.md` | 23.9 KB | chronicle |
 | `story-format.md`, `facts.md`, `widgets.md`, `animation-format.md`, `formats.md` | 27.7 KB | engine references, read through each plugin's link |
 | `outlines.md`, `voice.md` | 6.9 KB | split by chapter plan and voice |
 | Examples keystone, onboarding, quarterly, animation-scene | | chronicle |
-| Examples animation-tad, animation-diagram; `docs/chronicle-overview` | | briefing |
+| Examples animation-tad, animation-diagram; `docs/chronicle-overview` | | blueprint |
 
 The engine ends near 6,400 lines of Python and 150 KB of CSS and script.
-chronicle keeps about 4,000 lines; briefing starts with the 1,706 TAD lines.
+chronicle keeps about 4,000 lines; blueprint starts with the 1,706 TAD lines.
 
 **Registries.** The engine exposes six registries, and each plugin's entry point fills them before a command runs:
 
-| Registry | Engine ships | chronicle adds | briefing adds |
-| --- | --- | --- | --- |
-| Blocks | the 19 neutral blocks | plate, panorama, tour, rooms, game scoring | kpi, filters |
-| Layouts | page | none | deck, dashboard, prototype |
-| Animation kinds | diagram | scene, rig | tad, sequence, erd, lineage |
-| Theme policies | tokens only | distinct (the sameness review) | brand (the brand kit check) |
-| Checks | tokens, unsourced numbers, sanitizer, widget lint | concept present, paintings exist | KPI has target and query, stale facts, slide text fits |
-| Commands | new, check, build, shoot, animate | paint, motifs | gather, refresh, digest, schema |
+| Registry | Engine ships | chronicle adds | briefing adds | blueprint adds |
+| --- | --- | --- | --- | --- |
+| Blocks | the 19 neutral blocks | plate, panorama, tour, rooms, game scoring | kpi, filters | part details, step player |
+| Layouts | page | none | deck, dashboard | prototype |
+| Animation kinds | diagram | scene, rig | none | tad, sequence, erd, lineage |
+| Theme policies | tokens; brand (the brand kit check) | distinct (the sameness review) | none | none |
+| Checks | tokens, unsourced numbers, sanitizer, widget lint, brand kit | concept present, paintings exist | KPI has target and query, stale facts, slide text fits | parts named, layout not shrunk below 62 percent |
+| Commands | new, check, build, shoot, animate | paint, motifs | refresh, digest | schema, import |
 
 A part moves into the engine when a second plugin needs it.
-So the deck layout starts in briefing and moves when chronicle wants a painted talk deck.
+The brand policy moves now, because briefing and blueprint both use it.
+The deck layout starts in briefing and moves when chronicle wants a painted talk deck.
+
+**Brand kit (answer 8).** `--brand run|repo|config|PATH` picks the kit; `run` is the default.
+
+| Flag value | File |
+| --- | --- |
+| `run` (default) | `<run folder>/brand.json` |
+| `repo` | `<git root>/.brand/brand.json` |
+| `config` | `$XDG_CONFIG_HOME/chronicle/brand.json`, else `~/.config/chronicle/brand.json` |
+| a path | that file |
+
+`new --brand repo|config|PATH` copies the kit into the run folder, so each run keeps the kit it was built with.
+`build --brand` overrides the kit for one build. `check` warns when a page departs from the kit.
 
 **Import rule.** The engine imports no plugin code. Each plugin imports the engine.
-Plugins never import each other: an install holds only its own code and the engine, so a cross import fails at once.
+Plugins never import each other: an install holds only its own code and its links, so a cross import fails at once.
 A test walks the imports and fails earlier, in this repo.
 
 **Page weight.** Each block registers its CSS and script parts, and a page ships only the parts its blocks use (RFC-0004 9.1).
 A dashboard then skips 13 KB of identity CSS and 18 KB of progress devices.
 
-### 4.4 Sharing the engine between plugins
+### 4.4 Sharing the engine, and whether it should be an MCP server
 A spike with Claude Code 2.1.316 on 31 Oct 2026 measured three facts:
 - A plugin whose `src/engine` is a symlink to `../../../packages/engine/src/engine` installed from a marketplace folder. The cache held the linked files as real files.
 - `claude plugin validate` passed that plugin with no warning about the link.
 - `"dependencies": ["alpha"]` in beta's `plugin.json` made `claude plugin install beta` install alpha too ("+ 1 dependency: alpha").
 
-| Option | How | Cost |
-| --- | --- | --- |
-| A. Linked engine (proposed) | `plugins/<name>/src/chronicle_engine` links to `packages/chronicle-engine/src/chronicle_engine` | one copy in git; claude.ai, Cowork and Windows checkouts still need a test |
-| B. Generated copies | a script copies the engine into each plugin; a test fails when copies differ | two committed copies of 6,400 lines |
-| C. One plugin, two skill families | both families stay in `plugins/chronicle` | no linking; every user pays for six descriptions; one version for both; strains principle 5 |
-| D. Engine plugin as a dependency | both plugins declare `"dependencies": ["chronicle-engine"]` | install works; no variable points at another plugin's files, and a `bin/` on PATH is refused by claude.ai and Cowork |
+The Claude Code docs add two more: `${CLAUDE_PLUGIN_ROOT}` is always the plugin's own root, and the cache path changes with each version.
+So no plugin can find another plugin's files at run time, and code sharing happens at install through links.
 
-Recommendation: A. Option C is the fallback if claude.ai or Cowork rejects the link.
-The Claude Code docs say `${CLAUDE_PLUGIN_ROOT}` is always the plugin's own root, and the cache path changes with each version.
+Answer 1 chose the linked engine and asked whether the engine should stand alone as an MCP server.
 
-### 4.5 Data access with no context cost in the main conversation
+| Engine form | How a plugin reaches it | Always-on cost | Where it runs | Main cost |
+| --- | --- | --- | --- | --- |
+| Linked library and CLI (decided) | each plugin's launcher runs its linked copy through Bash | 0 tokens | Claude Code, and Cowork with a shell | every installer must keep the link |
+| Versioned package | the launcher runs `uv run --with chronicle-engine==0.5.0` | 0 tokens | anywhere uv runs | a publish step per release; the first run downloads it |
+| Local MCP server | a plugin's `.mcp.json` starts it, and skills call its tools | server instructions and tool names in every session where the plugin is enabled | Claude Code, Claude desktop, Cowork | a Python process in every such session, used or not; a 3-minute frame capture must finish inside one tool call; plugin agents cannot confine it to a subagent |
+| Remote MCP server | a hosted endpoint | as above | claude.ai on the web as well | a hosted service that holds company data, against principle 3 and outside PROJECT.md's scope |
+
+Recommendation: keep the linked library and CLI.
+The engine turns files into files, and Bash runs it at no context cost.
+Two future needs would justify an MCP form, shipped as an opt-in `chronicle-mcp` plugin that users enable only where needed:
+- a host with no shell, such as a claude.ai chat, needs to build pages;
+- pages should render inline in a chat as MCP Apps, the interactive views an MCP tool can return.
+The versioned package is the fallback if links fail on claude.ai, Cowork or Windows.
+
+### 4.5 sources: data access as its own plugin
+- **Why a plugin.** briefing and blueprint both need the gatherer, and an agent lives in exactly one plugin. Putting it in briefing would make blueprint depend on briefing and load briefing's skills in every blueprint session.
+- **Dependencies.** briefing and blueprint declare `"dependencies": ["sources"]`, which installs and enables sources with them. chronicle declares none: a dependency would load the data listing into every creative session.
+- **Always-on cost.** The gatherer's description, about 90 tokens. `connect` sets `disable-model-invocation: true`, which keeps its description out of the listing.
+- **Code.** `packages/sources` is linked into sources, briefing and blueprint, so `briefing refresh` replays queries in-process.
+
 Code costs no context until something reads it. Claude Code charges context at five points:
 
 | Point | When it is paid | Design |
 | --- | --- | --- |
-| Skill and agent descriptions | every session | short descriptions; setup skills set `disable-model-invocation: true`, which drops their description from the listing |
+| Skill and agent descriptions | every session | short descriptions; setup skills are user-invoked only |
 | `SKILL.md` body | each invocation | one workflow per skill, under 5 KB |
-| References | each read | per-branch files; the gatherer reads one recipe per source it queries |
-| MCP servers | every session where the plugin is enabled: server instructions and tool names | no MCP servers in either `plugin.json` |
-| Tool output | each call | raw responses stay in scripts or the gatherer; Claude reads `digest.md` (12 KB cap) |
+| References | each read | per-plugin files; the gatherer reads one recipe per source it queries |
+| MCP servers | every session where the plugin is enabled: server instructions and tool names | no MCP servers in any `plugin.json` |
+| Tool output | each call | raw responses stay in scripts or subagents; Claude reads `digest.md` (12 KB cap) |
 
 Three documented limits shape this design:
 - The skill listing gets 1% of the context window. Past it, Claude Code drops descriptions, and routing gets worse.
 - Plugin agents ignore `mcpServers`. No plugin setting can start a server inside the gatherer only.
-- The saving holds per session. A project that enables both plugins pays both listings. `enabledPlugins` in a project's `.claude/settings.json` turns each plugin on where it is used.
+- The saving holds per session. A project that enables every plugin pays every listing. `enabledPlugins` in a project's `.claude/settings.json` turns each plugin on where it is used.
 
-Two lanes write one contract.
-- **Script lane (collectors).** `briefing gather` runs read-only queries with keys from environment variables and writes facts. Standard-library HTTPS covers GitHub, Datadog, Jira, Confluence, PagerDuty, ServiceNow (Table and Aggregate APIs) and Databricks (SQL Statement Execution and Unity Catalog lineage). Postgres runs through the user's `psql` and Oracle through SQLcl, both as argument lists. No model reads a raw row.
-- **MCP lane (gatherer subagent).** It serves claude.ai, Cowork, and users with connectors and no keys. The subagent queries the session's connectors, writes facts and replies in at most 10 lines, as `chronicle-gatherer` does today. For a database server the user does not want in every session, `/briefing:connect` can write a user-level agent to `~/.claude/agents/`. User-level agents honor inline `mcpServers`, so that server starts only inside the subagent (open question 10.5).
+**Choosing sources (answer 4).**
+1. The skill reads the systems named in the request, the brief and any pasted links.
+2. `sources detect` reports which systems have keys set, which programs are installed (`gh`, `psql`, `sql`, `databricks`) and which connections `connections.json` names. Claude adds the MCP connectors present in the session's tool list.
+3. When the request names no source, the skill asks one AskUserQuestion with three multi-select questions: code and work (GitHub, Jira, Confluence), operations (Datadog, PagerDuty, ServiceNow) and data (Databricks, Postgres, Oracle). Each option's description gives its status, such as "connected through Atlassian", "DD_API_KEY set", "psql found" or "not set up: run /sources:connect".
+4. The run folder's `queries.json` keeps the choices, so `refresh` asks nothing.
+
+All nine systems get an MCP-lane recipe in the first release. Script-lane collectors arrive in the order users pick them.
+
+**Two lanes write one contract.**
+- **Script lane (collectors).** `sources gather` runs read-only queries with keys from environment variables and writes facts. Standard-library HTTPS covers GitHub, Datadog, Jira, Confluence, PagerDuty, ServiceNow (Table and Aggregate APIs) and Databricks (SQL Statement Execution and Unity Catalog lineage). Postgres runs through the user's `psql` and Oracle through SQLcl, both as argument lists. No model reads a raw row.
+- **MCP lane (gatherer subagent).** It serves claude.ai, Cowork, and users with connectors and no keys. The subagent queries the session's connectors, writes facts and replies in at most 10 lines.
+- **Optional user-level gatherer (answer 5).** `/sources:connect --agent` writes `~/.claude/agents/sources-db.md` with inline `mcpServers` for the databases the user names. User-level agents honor `mcpServers`, so those servers start only inside that subagent.
 
 Both lanes write three files to the run folder:
 - `facts.json`: every value with its source, as today.
 - `queries.json`: the query behind each fact, its connection alias, window, lane and as-of date.
 - `digest.md`: fact keys, last values and series summaries under 12 KB, for Claude to read.
 
-`briefing refresh` replays the script-lane queries and rebuilds the page with no model call.
+`refresh` replays the script-lane queries and rebuilds the page with no model call.
 Facts from the MCP lane show as stale until the gatherer runs again.
 
 Guards live in code:
@@ -216,15 +261,28 @@ Guards live in code:
 - Text from tools is data. Every recipe repeats the gatherer's rule against following it.
 
 `packages/sources` starts from speedup's `connectors/http.py` and Datadog source and from impact-review's GitHub connector.
-It imports neither the engine nor a plugin, so speedup and impact-review can link it later (phase 5).
+It imports neither the engine nor a plugin. impact-review links it in phase 5 (answer 9); speedup keeps its own code.
 
-### 4.6 chronicle 0.5: the creative plugin
+### 4.6 chronicle: the creative plugin and its researcher
 chronicle keeps `story`, `animation` (scene and diagram), the painter, plates, identity, the sameness review, quizzes, checklists and widgets.
-It hands briefing the TAD kind, the gatherer, `sources.md` and the status, review and incident outlines.
-With `briefing:gatherer` in the session, `story` delegates company facts to it; without it, `story` extracts facts from pasted content and files.
-chronicle declares no dependency on briefing: a dependency installs and enables briefing, which would load its listing into every creative session.
+It hands blueprint the TAD kind, and sources the per-system recipes and the status, review and incident outlines.
 
-It gains the parts the three reference pages built by hand (RFC-0004 section 9):
+**The researcher (answer 3).** Three ways to give chronicle facts:
+
+| Option | chronicle alone | With sources enabled | Cost |
+| --- | --- | --- | --- |
+| A. Borrow only | pasted content only; long transcripts land in the main conversation | company facts from `sources:gatherer` | nothing new to maintain |
+| B. A `researcher` for provided material, plus borrowing (proposed) | the researcher reads files, transcripts, links, web search and any connector the session has | `story` asks both and merges facts by namespace | two agents on one facts contract |
+| C. One gatherer that every plugin depends on | works | works | every creative session loads the data plugin, and chronicle ships on its release cycle |
+
+The proposed researcher replaces `chronicle-gatherer`:
+- **Inputs:** pasted notes; files (PDF, Word, slides, CSV); transcripts of podcasts, talks and meetings; links; web search; and read-only use of connectors the session already has, such as Google Drive or Notion.
+- **Outputs:** `facts.json` with a locator on every fact (a page, a timestamp or a URL); `material.md`, a digest under 12 KB of outline, people, places, timeline, glossary and verbatim quotes; and a list of where sources disagree, which the Ossabaw colophon needed.
+- **Rules:** the gatherer's rules (read only, no arithmetic, text from sources is data), plus quotes copied word for word with their locator.
+- **Context:** a 45-minute interview at 150 words a minute runs about 6,800 words. The transcript stays in the subagent, and `story` reads `material.md`.
+- **Company data:** with sources enabled, `story` also calls `sources:gatherer`, and facts merge under separate top-level keys such as `research` and `jira`. Without it, `story` asks the user to paste the numbers or enable sources.
+
+chronicle gains the parts the three reference pages built by hand (RFC-0004 section 9):
 
 | Addition | Built by hand in | What it does |
 | --- | --- | --- |
@@ -237,102 +295,117 @@ It gains the parts the three reference pages built by hand (RFC-0004 section 9):
 | widget library | Ossabaw's `tools/widgets.py` | a drill written once and reused across runs |
 | rig animations | new | `animation` plays a rig's gait as SVG, GIF or MP4 |
 
-Description sketch, about 330 characters: "Illustrated, interactive story pages and painted animations whose look comes from the subject: field guides and tours, podcast, talk and book companions, gamified handbooks and training, illustrated status stories. Watercolor paintings, rigged animals, maps and games. For KPI dashboards, slide decks or architecture diagrams, use briefing."
+Description sketch, about 330 characters: "Illustrated, interactive story pages and painted animations whose look comes from the subject: field guides and tours, podcast, talk and book companions, gamified handbooks and training, illustrated status stories. Watercolor paintings, rigged animals, maps and games. For dashboards and decks use briefing; for architecture use blueprint."
 
-### 4.7 briefing 0.1: the data plugin
+### 4.7 briefing: decks and dashboards
 
-| Skill | Makes | Built on |
+| Skill | Default output | Options |
 | --- | --- | --- |
-| `deck` | slide-style HTML presentations: one idea per slide, builds, speaker notes, a presenter view with timer, an overview grid, one URL hash per slide, PDF through Chromium's print, a PNG per slide | engine renderer; an embedded animation advances one step per click by seeking the one clock (RFC-0005 4.3) |
-| `dashboard` | KPI dashboards and executive overviews: tiles with value, target, change and sparkline; status set by rule in code; filters over precomputed slices; tables; an as-of stamp; the query behind each number on hover | derive table, `queries.json`, `refresh` |
-| `architecture` | system and data design visuals, still or animated: TAD (moved from chronicle), sequence diagrams (RFC-0005 9.4), ERDs from schema reads, Unity Catalog lineage, Mermaid and C4 import (RFC-0005 9.5) | engine motion and exports |
-| `prototype` | clickable screens fed by facts: tabs, cards, lists, tables and charts, with widgets for behavior | engine renderer and widget contract |
+| `deck` | an HTML Artifact of fixed 16:9 slides on a horizontal track: arrow buttons, arrow keys and swipe, a slide counter, an overview grid, speaker notes, builds, and animations that advance one step per click by seeking the one clock (RFC-0005 4.3) | `--to slides`: claude.ai's Slides artifact type, which downloads as PPTX or PDF; `--to google` or `--to microsoft`: a PPTX uploaded through the user's Google Drive or Microsoft 365 connector |
+| `dashboard` | an HTML Artifact page: KPI tiles with value, target, change and sparkline; status set by rule in code; filters over precomputed slices; tables; an as-of stamp; the query behind each number on hover | `--to dashboard`: claude.ai's Dashboard artifact type (answer 7) |
 
-- **Agent:** `gatherer`, the MCP lane.
-- **User-invoked skill:** `connect` writes `connections.json` and lists the environment variables to set. It sets `disable-model-invocation: true`, so its description stays out of every session and it never triggers from a request.
-- **Brand kit:** `brand.json` holds the palette, fonts and a logo as SVG path data. It adds chart series checked for color-vision deficiency, a slide master (title, section, closing) and a footer label such as "Internal". `check` warns when a page departs from the kit. The sameness review is off, because a team's decks should look alike.
-- **Voice:** the decision first, each KPI with its target and period, each risk with an owner.
-- **Exports:** pages, decks and dashboards build with the standard library. PNG, GIF and MP4 keep NumPy and OpenCV (pending RFC-0002).
+- Decks also print to PDF through Chromium and write a PNG per slide, with no new dependency.
+- `--to google` and `--to microsoft` write to systems outside claude.ai and the user's machine. Principle 3's guardrail forbids that today, so these targets wait for the amendment in section 7.
+- Both connector targets need a PPTX file. `--to slides` downloads one with no new dependency. A PPTX writer inside briefing would need its own approved dependency.
+- Voice: the decision first, each KPI with its target and period, each risk with an owner.
 
-### 4.8 Keeping each branch intact
-Six gates run on every change, so a change in one branch cannot alter the other unseen:
-1. **Import boundary.** A test fails when the engine imports plugin code or one plugin imports the other.
-2. **Golden builds.** pytest builds chronicle's onboarding, quarterly, keystone and animation-scene. It builds briefing's deck, dashboard and TAD from keystone's `facts.json`.
-3. **Branch checks on those builds.** chronicle examples pass the sameness review and paint. briefing examples pass the brand check, carry a query for every KPI, and build pages with neither NumPy nor OpenCV installed.
-4. **Trigger evals** with `claude plugin eval`: 15 prompts per branch and 10 ambiguous ones. Each must load the expected skill and no skill from the other plugin.
-5. **Vocabulary lint.** Engine files may not contain branch words such as watercolor, plate, sameness, KPI, SQL or Datadog. RFC-0004 found the base stylesheet calling the accent "the new platform"; this lint catches that leak.
-6. **Versions.** An engine change bumps both plugins. A plugin change bumps only that plugin.
+### 4.8 blueprint: system and data design
 
-### 4.9 Context budget
+| Skill | Makes |
+| --- | --- |
+| `architecture` | interactive system and data design visuals, still or animated: TAD (moved from chronicle), sequence diagrams (RFC-0005 9.4), ERDs from schema reads, Unity Catalog lineage, Mermaid and C4 import (RFC-0005 9.5); parts open their details, pins mark decisions, a player steps through flows |
+| `prototype` | clickable data-driven screens: tabs, cards, lists, tables and charts fed by facts, with widgets for behavior |
+
+- Schema and lineage reads use `packages/sources`: `information_schema` through `psql` or SQLcl, and the Databricks lineage API. Both read metadata only.
+- The map in `docs/rfc-0007-map/` is a working prototype of `architecture`'s interactive output: pins, part details and a step player around a chronicle TAD.
+
+### 4.9 Keeping each plugin intact
+Six gates run on every change, so a change in one plugin cannot alter another unseen:
+1. **Import boundary.** A test fails when the engine imports plugin code or one plugin imports another.
+2. **Golden builds.** pytest builds chronicle's onboarding, quarterly, keystone story and animation-scene; briefing's keystone deck and dashboard from keystone's `facts.json` (answer 10); blueprint's checkout TAD and the RFC-0007 map; and each collector against recorded fixtures.
+3. **Plugin checks on those builds.** chronicle examples pass the sameness review and paint. briefing and blueprint examples pass the brand check, carry a query for every KPI, and build pages with neither NumPy nor OpenCV installed.
+4. **Trigger evals** with `claude plugin eval`: 15 prompts per plugin and 10 ambiguous ones. Each must load the expected skill and no skill from another plugin.
+5. **Vocabulary lint.** Engine files may not contain plugin words such as watercolor, plate, sameness, KPI, SQL or Datadog. RFC-0004 found the base stylesheet calling the accent "the new platform"; this lint catches that leak.
+6. **Versions.** An engine change bumps every plugin that links it. A plugin change bumps only that plugin.
+
+### 4.10 Context budget
 Targets are estimates for the spec to confirm with `claude plugin details`.
+That command still counts a `disable-model-invocation` skill (about 80 tokens in the spike), which the docs say stays out of the listing.
 
-| Item | chronicle 0.4 today | chronicle 0.5 target | briefing 0.1 target |
-| --- | --- | --- | --- |
-| Always-on tokens | about 605 | about 400 | about 450 |
-| Skill body per invocation | story 3,800; animation 2,000 | story 3,000; animation 1,800 | about 1,200 per skill |
-| References a typical run reads | up to 52.9 KB (story) | about 40 KB | about 15 KB |
-| MCP servers in the main conversation | 0 | 0 | 0 |
-| Source recipes loaded | `sources.md` on every story run | none | one per queried source, inside the gatherer |
+| Plugins enabled in a project | Always-on tokens today | Target |
+| --- | --- | --- |
+| chronicle alone | about 605 | about 470: two narrower skills and the researcher |
+| briefing with sources | none today | about 390: two skills and the gatherer |
+| blueprint with sources | none today | about 390: two skills and the gatherer |
+| all four | none today | about 1,150 |
 
-### 4.10 Phases
+| Per run | Today | Target |
+| --- | --- | --- |
+| Skill body | story 3,800; animation 2,000 | about 3,000 for `story`; about 1,200 for each data skill |
+| References a typical run reads | up to 52.9 KB for `story` | about 40 KB in chronicle; about 15 KB in briefing or blueprint |
+| MCP servers in the main conversation | 0 | 0 |
+| Source recipes loaded | `sources.md` on every story run | one per queried system, inside the gatherer |
+
+### 4.11 Phases
 Each phase gets a spec under `specs/` before code.
 
 | Phase | Change | Release |
 | --- | --- | --- |
-| 0 | Install a plugin with a linked folder on claude.ai, Cowork and a Windows checkout; run one database through a user-level gatherer with inline `mcpServers` | none |
+| 0 | Install a plugin with a linked folder on claude.ai, Cowork and a Windows checkout; run one database through a user-level gatherer with inline `mcpServers`; check that the Google Drive and Microsoft 365 connectors can create a file | none |
 | 1 | Carve the engine inside chronicle with no behavior change: registries, per-block assets, import test, vocabulary lint; move it to `packages/chronicle-engine` and link it | chronicle 0.5.0 |
-| 2 | Create briefing: move TAD, gatherer and data outlines; add `dashboard` and `deck`; narrow chronicle's descriptions; add trigger evals | briefing 0.1.0, chronicle 0.6.0 |
-| 3 | Script lane: `packages/sources` with GitHub, Datadog and Jira, then PagerDuty, Confluence, ServiceNow, Databricks, Postgres and Oracle; `queries.json`, `refresh`, `digest` | briefing 0.2.0 |
-| 4 | Creative additions: rigs, panorama, tour, rooms, game scoring, plate notes, widget library | chronicle 0.7.0 |
-| 5 | Optional: speedup and impact-review link `packages/sources` and the engine's charts | their next minor versions |
+| 2 | sources: detection, the source picker, MCP-lane recipes for all nine systems, `connect`; chronicle's researcher | sources 0.1.0, chronicle 0.6.0 |
+| 3 | briefing: horizontal `deck`, `dashboard`, brand kit flags, `--to slides` and `--to dashboard`; keystone deck and dashboard | briefing 0.1.0 |
+| 4 | blueprint: the TAD moves from chronicle; part details, pins and the step player; `prototype`; sequence and ERD kinds | blueprint 0.1.0, chronicle 0.7.0 |
+| 5 | Script-lane collectors in the order users pick them; `refresh`; impact-review links `packages/sources` and the engine's charts | sources 0.2.0, impact-review's next minor |
+| 6 | Creative additions: rigs, panorama, tour, rooms, game scoring, plate notes, widget library | chronicle 0.8.0 |
 
 ## 5. Alternatives considered
 - **A `mode` field in one skill.** Rejected: one `SKILL.md` would teach both workflows, so every run pays for both.
-- **Two skill families in one plugin (option C).** Kept as the fallback. It needs no link. It costs every user six descriptions, ties both branches to one version and strains principle 5.
+- **Two skill families in one plugin.** Rejected in answer 1. It needs no link, but every user pays for every description and all branches share one version.
 - **Two plugins with copied engines and no sync.** Rejected: 6,400 lines would drift, and AGENTS.md rule 1 forbids copied blocks.
-- **An engine plugin as a dependency (option D).** Rejected for now: a script cannot find another plugin's files without a documented path.
-- **MCP servers bundled in briefing's `plugin.json`.** Rejected: they start in every session where briefing is enabled, with their instructions and tool names. Plugin agents ignore `mcpServers`, so the plugin cannot confine a server to the gatherer.
-- **Existing skills for dashboards and decks** (`data:build-dashboard`, `anthropic-skills:pptx`). Rejected: neither reads chronicle's facts file, derive table or brand kit, so numbers lose their sources.
+- **The engine as an MCP server.** Rejected for now (4.4): it costs context in every enabled session and gains nothing a CLI lacks in Claude Code. Kept as an opt-in plugin for shell-less hosts or MCP Apps.
+- **The gatherer inside briefing.** Rejected: blueprint would depend on briefing and load its skills in every session.
+- **One gatherer for every plugin (option C in 4.6).** Rejected: creative sessions would load the data plugin.
+- **MCP servers bundled in a `plugin.json`.** Rejected: they start in every session where the plugin is enabled, with their instructions and tool names. Plugin agents ignore `mcpServers`, so a plugin cannot confine a server to its gatherer.
+- **Existing skills for dashboards and decks** (`data:build-dashboard`, `anthropic-skills:pptx`). Rejected as the main path: neither reads chronicle's facts file, derive table or brand kit, so numbers lose their sources.
 
 ## 6. Risks and objections
-- **Links may fail** on claude.ai, Cowork or Windows checkouts with `core.symlinks=false`. Phase 0 tests all three; option C is the fallback.
-- **Mis-routing** between the plugins. Trigger evals gate each release, and each description names the other plugin's requests.
-- **Two installs** for users who want both. The marketplace README gives both commands, and chronicle works alone.
-- **Both plugins on in one project** pay both listings, about 850 tokens. The README shows `enabledPlugins` per project.
-- **Creative pages with company data** need briefing installed. `story` says so when the gatherer is missing.
-- **Database access** carries the most risk. The SQL guard, read-only sessions, timeouts and row caps run in code. Recipes ask for aggregates. Nothing leaves the machine except a publish the user confirms.
-- **Engine changes need both branches green.** The 103 chronicle tests run in one command today; the split adds briefing's suite to the same command.
+- **Links may fail** on claude.ai, Cowork or Windows checkouts with `core.symlinks=false`. Phase 0 tests all three; the versioned package is the fallback.
+- **Mis-routing** among four plugins. Trigger evals gate each release, and each description names the other plugins' requests.
+- **More installs.** Installing briefing or blueprint installs sources through its dependency. chronicle works alone.
+- **Every plugin on in one project** pays about 1,150 tokens of listings. The README shows `enabledPlugins` per project.
+- **Creative pages with company data** need sources enabled. `story` says so when the gatherer is missing.
+- **Database access** carries the most risk. The SQL guard, read-only sessions, timeouts and row caps run in code. Recipes ask for aggregates.
+- **External deck targets** send company data to Google or Microsoft. They stay off until the amendment passes, and each upload needs the user's confirmation.
+- **Engine changes need every plugin green.** The 103 chronicle tests run in one command today; the split adds each plugin's suite to the same command.
 
 ## 7. Impact
 **Repos touched:** 10x-agent-marketplace only.
-New: `packages/chronicle-engine/`, `packages/sources/`, `plugins/briefing/`.
-Changed: `plugins/chronicle/`, `.claude-plugin/marketplace.json`, `pyproject.toml` test and source paths, `CODEMAP.md`, `ARCHITECTURE.md`, and the `PROJECT.md` glossary (engine, branch, layout, brand kit, collector, recipe, queries file).
+New: `packages/chronicle-engine/`, `packages/sources/`, `plugins/briefing/`, `plugins/blueprint/`, `plugins/sources/`.
+Changed: `plugins/chronicle/`, `plugins/impact-review/` (phase 5), `.claude-plugin/marketplace.json`, `pyproject.toml` test and source paths, `CODEMAP.md`, `ARCHITECTURE.md`, and the `PROJECT.md` glossary (engine, branch, layout, brand kit, collector, recipe, queries file, researcher).
 
 **Constitution check:**
-- Principle 1 (scripts compute, Claude writes): improves. The script lane aggregates in code and SQL, so no model reads raw data. The MCP lane keeps RFC-0002's open question 3.
-- Principle 2 (every number has a source): extended. `queries.json` records the query behind each number, and `refresh` replays it.
-- Principle 3 (local and private): kept. Collectors call only the system being read, and publishing stays user-confirmed.
-- Principle 4 (read-only): enforced in code by the SQL guard and the HTTPS allowlist.
-- Principle 5 (one plugin, one job): improves. chronicle paints stories and briefing presents data. The engine is a shared library with no manifest or skills.
-- Guardrail on runtime dependencies: none added. Collectors use the standard library and the user's own `psql` and SQLcl.
+- Principle 1 (scripts compute, Claude writes): improves. The script lane aggregates in code and SQL, so no model reads raw data. The MCP lane and the researcher keep RFC-0002's open question 3: raw text stays inside a subagent whose only outputs are a facts file and a digest.
+- Principle 2 (every number has a source): extended. `queries.json` records the query behind each number, and the researcher records a locator for each fact.
+- Principle 3 (local and private): **conflict for external deck targets.** The guardrail "Never send collected data to a third-party service, including an MCP server, from plugin code" forbids `--to google` and `--to microsoft`. Publishing to claude.ai has the same tension (RFC-0002 open question 4). Proposed amendment: "A publish to a destination the user names, such as a claude.ai Artifact, Google Drive or Microsoft 365, is allowed after the user confirms that publish."
+- Principle 4 (read-only against sources): enforced in code by the SQL guard and the HTTPS allowlist. An upload to Google or Microsoft writes to a destination, never to a source being read.
+- Principle 5 (one plugin, one job): improves. chronicle paints stories, briefing presents numbers, blueprint draws systems and sources reads data. The engine is a shared library with no manifest or skills.
+- Guardrail on runtime dependencies: none added. Collectors use the standard library and the user's own `psql` and SQLcl. A PPTX writer would need its own approval.
 
 ## 8. Cross-repo contract
-N/A, internal. Between the plugins the contract is files (`facts.json`, `queries.json`, `digest.md`) and the gatherer's agent name.
+N/A, internal. Between the plugins the contract is files (`facts.json`, `queries.json`, `digest.md`, `material.md`, animation SVGs) and agent names (`sources:gatherer`, `chronicle:researcher`).
 
 ## 9. Out of scope
 - Writing to any source system.
 - Scheduled refresh; a later RFC could use scheduled tasks.
-- PPTX export; decks print to PDF and PNG per slide.
+- A PPTX writer inside briefing; `--to slides` covers PPTX until a separate dependency decision.
+- Renaming speedup, which gets its own RFC because it touches files in users' repositories (`perf/speedup.json`) and the data folder `~/speedup-runs/`.
 - Bundling the three uploaded pages as examples. They stay outside the repo, and the evals use briefs that describe them.
 
-## 10. Open questions
-1. Approve two plugins over one linked engine (A), or two skill families in one plugin (C)?
-2. Name the data plugin: `briefing`, `blueprint` or another name?
-3. Should chronicle reach company data only through briefing's gatherer, or keep its own?
-4. Which three sources come first? Proposed: GitHub and Datadog, whose code exists, and Jira.
-5. Databases through the script lane only, or also through a user-level gatherer that `/briefing:connect` writes with inline `mcpServers`?
-6. Deck exports: HTML, PDF and PNG, or PPTX as well?
-7. Dashboards: plain pages as today, or claude.ai's Dashboard artifact type where an account offers it?
-8. Where does the brand kit live: the user's repo, the run folder or a config folder?
-9. Phase 5: should speedup and impact-review move onto the shared sources and charts?
-10. Keystone: keep it as chronicle's painted status story, rebuild it as briefing's first deck, or both from one facts file?
+## 10. Open questions (revision 2)
+1. Engine form: keep the linked library and CLI, with an opt-in `chronicle-mcp` plugin only for shell-less hosts or MCP Apps (4.4)?
+2. Gatherers: a chronicle `researcher` for provided material plus borrowing `sources:gatherer` when enabled (option B in 4.6)?
+3. Name the data-access plugin: `sources`, `intake` or another name?
+4. External deck targets: approve the principle 3 amendment for user-confirmed publishes, and ship `--to slides` before the Google and Microsoft connectors?
+5. Brand kit paths: `.brand/brand.json` in the repo and `~/.config/chronicle/brand.json` for the config folder?
+6. speedup's new name, in its own RFC: `performance-optimizer` (the owner's suggestion), `perf-optimizer` (shorter commands) or `perf-ratchet` (its first name, after the CI ceiling)?

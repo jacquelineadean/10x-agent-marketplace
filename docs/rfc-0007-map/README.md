@@ -5,6 +5,9 @@ two plugins, the shared engine, the data lanes and the ten open questions pinned
 parts each one changes. Picks made on the published page save to the page's own store, where
 Claude can read them back.
 
+The map shows revision 1: two plugins over the engine. Revision 2 splits the data branch into
+briefing, blueprint and sources, and records the owner's answers to the ten questions.
+
 | Path | Holds |
 | --- | --- |
 | `animation.json` | the TAD: 12 nodes in 5 groups, 15 edges, 5 flows, 6 steps, top-down layout |
