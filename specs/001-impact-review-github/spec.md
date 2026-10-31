@@ -1,6 +1,6 @@
 # Spec 001: impact-review, GitHub contribution metrics and review synthesis
 
-Source: [RFC-0001](../../DECISIONS/RFC-0001-impact-review-github.md), extended by [RFC-0007](../../DECISIONS/RFC-0007-impact-review-any-scope-any-timeframe.md). Plugin: `plugins/impact-review/`.
+Source: [RFC-0001](../../DECISIONS/RFC-0001-impact-review-github.md). Plugin: `plugins/impact-review/`.
 Each acceptance criterion names the test that checks it (`plugins/impact-review/tests/`) or a manual check in the plugin README.
 
 ## Acceptance criteria
@@ -21,7 +21,7 @@ Each acceptance criterion names the test that checks it (`plugins/impact-review/
 | AC-12 | Secondary rate limits wait `Retry-After`; 5xx backs off 2, 4, 8 s then gives up | `test_transport.py::test_secondary_rate_limit_*`, `test_server_errors_*` |
 | AC-13 | Partial GraphQL answers (old Enterprise Server) become `warnings`, not failures | `test_transport.py::test_partial_data_*`, `test_source.py::test_partial_graphql_errors_*` |
 | AC-14 | The token never appears in logs, output lines or the raw cache | `test_transport.py::test_network_failure_*`, `test_source.py::test_raw_cache_never_contains_the_token`, `test_cli.py::test_collect_writes_*` |
-| AC-15 | Volume, code, flow, collaboration, consistency, themes, repo share, highlights and people match RFC-0001 4.4 and RFC-0007 4.4 on the recorded data; reviews by a PR's own author are excluded | `test_metrics.py`, `test_group.py::test_group_metrics_*` |
+| AC-15 | Volume, code, flow, collaboration, consistency, themes, repo share, highlights and people match RFC-0001 4.4 and the plugin README's `metrics.json` shape on the recorded data; reviews by a PR's own author are excluded | `test_metrics.py`, `test_group.py::test_group_metrics_*` |
 | AC-16 | `metrics.json` carries `schema_version` 2 and every digest number carries its key | `test_cli.py::test_collect_writes_*`, `test_outputs.py::test_digest_labels_every_number_*` |
 | AC-17 | `digest.md` never exceeds 12,000 bytes: top PR rows drop first, then a truncation note | `test_outputs.py::test_digest_drops_*`, `test_digest_truncates_*` |
 | AC-18 | `dashboard.html` is offline: inline CSS and SVG, no script, link, src or href; titles escaped | `test_outputs.py::test_dashboard_html_is_offline_and_escaped` |
@@ -48,4 +48,4 @@ Each acceptance criterion names the test that checks it (`plugins/impact-review/
 - A repository whose contributor statistics stay at 202 is retried on the next run; everything else comes from the cache.
 
 ## Out of scope
-See RFC-0001 section 9 and RFC-0007 section 7.
+See RFC-0001 section 9.
