@@ -11,3 +11,5 @@ ADR (`ADR-NNNN-slug.md`). Numbers never change or get reused.
 | [RFC-0004](RFC-0004-chronicle-no-two-pages-alike.md) | chronicle 0.3: no two pages alike | draft | 2026-10-20 |
 | [RFC-0005](RFC-0005-chronicle-standalone-animations.md) | chronicle 0.4: standalone animations and animated TADs | draft | 2026-10-20 |
 | [RFC-0006](RFC-0006-speedup-continuous-performance.md) | speedup plugin: continuous performance optimization from monitoring data | draft | 2026-10-21 |
+| [RFC-0007](RFC-0007-chronicle-two-branches.md) | chronicle in branches: creative stories, data briefings and system blueprints on one engine | draft | 2026-10-31 |
+| [RFC-0008](RFC-0008-rename-speedup-to-perf-optimizer.md) | Rename speedup to perf-optimizer | draft | 2026-10-31 |

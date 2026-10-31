@@ -1,0 +1,10 @@
+{
+ "rfc": {
+  "id": {
+   "value": "RFC-0007",
+   "source": "rfc",
+   "note": "The decision record this map shows, draft of 31 Oct 2026"
+  }
+ },
+ "derive": {}
+}
