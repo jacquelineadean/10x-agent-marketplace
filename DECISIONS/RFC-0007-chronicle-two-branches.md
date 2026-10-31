@@ -33,16 +33,16 @@ Each plugin reaches the engine through a symlink in its `src/` folder; sources, 
 Claude Code copies linked files into its plugin cache at install, so each plugin installs alone and git holds one copy.
 Integrations run only in scripts and subagents, so no plugin adds an MCP server to a session.
 
-Status: draft, revision 3. Jacqueline Dean answered all sixteen questions on 31 Oct 2026, and section 3 records them.
+Status: draft, revision 3. The owner answered all sixteen questions on 31 Oct 2026, and section 3 records them.
 No question stays open. The RFC awaits approval with `/groundwork-specflow:approve`; nothing is built.
 Answer 14 approved a constitution amendment, applied as amendment 1 in `CONSTITUTION.md` 1.1.0.
 Answer 16 named speedup's successor; RFC-0008 covers that rename.
 `docs/rfc-0007-map/` holds an interactive map of revision 1.
 
 ## 2. The need
-**User scenario:** Jacqueline Dean asked to "bifurcate the chronicle plugin story and animation skills" into
-"creative, illustrative usages and technical/business usages", "without duplicating functionality or bloating
-context window with unrelated integrations/logic", with each branch's functionality kept "without impacting the other".
+**User scenario:** the request asked to split chronicle's story and animation skills into two uses: creative and
+illustrative work, and technical and business work. It asked for no duplicated functionality, no unrelated
+integrations or logic in the context window, and each branch's functions kept without changing the other.
 
 | | Creative and illustrative | Technical and business |
 | --- | --- | --- |
@@ -71,7 +71,7 @@ Evidence, measured on commit `b356522`:
 
 ## 3. Interview record
 Revision 1 took four answers from the request: what splits (the story and animation skills, by use), the creative
-references, the data outputs and the nine data sources. Jacqueline Dean answered its ten open questions on 31 Oct 2026.
+references, the data outputs and the nine data sources. The owner answered its ten open questions on 31 Oct 2026.
 
 | # | Question | Answer | Effect |
 | --- | --- | --- | --- |
@@ -86,7 +86,7 @@ references, the data outputs and the nine data sources. Jacqueline Dean answered
 | 9 | speedup and impact-review | impact-review moves onto the shared sources and charts; speedup stays separate under a technical name | Phase 5; a separate rename RFC (10.6) |
 | 10 | Keystone example | Both, from one facts file | Golden builds (4.9) |
 
-Revision 2 asked six more questions, and Jacqueline Dean answered them on 31 Oct 2026.
+Revision 2 asked six more questions, and the owner answered them on 31 Oct 2026.
 
 | # | Question | Answer | Effect |
 | --- | --- | --- | --- |
@@ -417,4 +417,4 @@ N/A, internal. Between the plugins the contract is files (`facts.json`, `queries
 
 ## 10. Open questions
 None. Section 3 records the answers to all sixteen questions.
-Next: Jacqueline Dean approves with `/groundwork-specflow:approve`, then phase 0 gets the first spec under `specs/`.
+Next: the owner approves with `/groundwork-specflow:approve`, then phase 0 gets the first spec under `specs/`.

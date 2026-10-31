@@ -27,7 +27,7 @@
 - The plugin README states install steps, required token scopes and a manual test.
 
 ## Amendments
-1. **User-confirmed publishing** (2026-10-31, RFC-0007 answer 14, approved by Jacqueline Dean). A publish to a
+1. **User-confirmed publishing** (2026-10-31, RFC-0007 answer 14, approved by the owner). A publish to a
    destination the user names, such as a claude.ai Artifact, Google Drive or Microsoft 365, is allowed after the user
    confirms that publish. It settles RFC-0002 open question 4 for Artifacts and allows RFC-0007's `--to google` and
    `--to microsoft`.

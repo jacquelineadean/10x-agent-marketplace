@@ -18,7 +18,7 @@ created: 2026-10-31
 
 ## 1. Summary
 The speedup plugin (RFC-0006) becomes perf-optimizer 0.2.0.
-Jacqueline Dean asked for a technical name during the RFC-0007 interview and chose `perf-optimizer` from three candidates.
+The owner asked for a technical name during the RFC-0007 interview and chose `perf-optimizer` from three candidates.
 The rename changes the product name and keeps the measure named speedup: the ratio of a baseline time to a current time.
 Four names live in adopters' repositories and machines: the project file, two environment variables and the data folder.
 Each one keeps a fallback until perf-optimizer 1.0.0, and a shim keeps copied CI workflows running for the same period.
@@ -27,7 +27,7 @@ Status: draft. Nothing is built.
 
 ## 2. The need
 - "speedup" names the plugin and also a measure it reports: `geomean_speedup`, "Overall speedup" and the speedup bars chart. A reader cannot tell the product from the number.
-- The owner wants a technical name that says what the plugin does.
+- The request asks for a technical name that says what the plugin does.
 - The word appears 328 times in 59 files outside `uv.lock`, RFC-0006 and RFC-0007. The plugin's own code uses the measure sense 29 times.
 - The CI example clones the marketplace's default branch and runs `plugins/speedup/src`. A bare folder rename breaks every repository that copied it, on its next CI run.
 
