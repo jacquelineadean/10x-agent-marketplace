@@ -82,6 +82,7 @@ class Builder:
             data_src=found.source or None,
             data_note=found.note or None,
             data_loc=found.locator or None,
+            data_query=found.query or None,
         )
 
     def inline(self, text: Any) -> str:
@@ -141,11 +142,10 @@ class Builder:
         return provider.figure(self, key, caption, width, spots) if provider else ""
 
     # ---------------------------------------------------------------------- page
-    def page(self, assets: Assets) -> Page:
-        meta = self.story["meta"]
-        chapters = self.story["chapters"]
+    def chapters(self, title: str) -> str:
+        """The page layout: the span bar, then the hero, the chapters and the sources."""
         body = self._hero()
-        for i, chapter in enumerate(chapters):
+        for i, chapter in enumerate(self.story["chapters"]):
             head = (
                 self._mark(i)
                 + tag("p", self.inline(chapter.get("kicker", "")), class_="kicker")
@@ -158,7 +158,15 @@ class Builder:
                 parts += self.art(str(chapter["art"]), chapter.get("caption", ""))
             parts += "".join(render_block(self, b) for b in chapter.get("blocks", []))
             body += tag("section", parts, class_="chapter", id=str(chapter["id"]), data_ch=i)
-        body += self._sources()
+        body += self.sources_footer()
+        return f"{self._bar(title)}" + tag("main", body, class_="story", id="top")
+
+    def page(self, assets: Assets) -> Page:
+        meta = self.story["meta"]
+        chapters = self.story["chapters"]
+        layout = str(self.story.get("layout") or registry.DEFAULTS.layout)
+        title = plain(str(meta.get("title_tag", meta["title"])))
+        main = registry.LAYOUTS[layout].render(self, title)
         nav = []
         for i, ch in enumerate(chapters):
             item: dict[str, Any] = {
@@ -187,10 +195,10 @@ class Builder:
         payload = json.dumps(data, separators=(",", ":"), ensure_ascii=False)
         for char, code in (("<", "\\u003c"), (">", "\\u003e"), ("&", "\\u0026")):
             payload = payload.replace(char, code)
-        shipped = registry.page_parts(str(spec["type"]) for spec in self.figs.values())
+        types = [str(spec["type"]) for spec in self.figs.values()]
+        shipped = registry.page_parts([*types, f"layout:{layout}"])
         css = "\n".join(assets.parts[name] for name in shipped if name.startswith("css/"))
         js = "\n".join(assets.parts[name] for name in shipped if name.startswith("js/"))
-        title = plain(str(meta.get("title_tag", meta["title"])))
         description = plain(str(meta.get("description", meta.get("dek", ""))))
         head_html = (
             f"<title>{title}</title>\n"
@@ -202,8 +210,7 @@ class Builder:
             f"<style>\n{css}\n{self.theme.css}{self._widget_css()}</style>\n"
         )
         content = (
-            f"{self._bar(title)}"
-            + tag("main", body, class_="story", id="top")
+            main
             + "\n"
             + f'<script type="application/json" id="chronicle-data">{payload}</script>\n'
             + "".join(
@@ -301,7 +308,7 @@ class Builder:
             "nav", tag("div", inner, class_="spanbar-in"), class_="spanbar", aria_label="Chapters"
         )
 
-    def _sources(self) -> str:
+    def sources_footer(self) -> str:
         items = ""
         for sid, src in self.sources.items():
             as_of = src.get("as_of")

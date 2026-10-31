@@ -12,13 +12,19 @@ Decided in [RFC-0007](../../DECISIONS/RFC-0007-chronicle-two-branches.md); built
    one copy.
 2. The plugin's `pack` module fills `chronicle_engine.registry`: block types (`add_block`), an art provider
    (`set_art`), page chrome a theme may pick (`CHROME`, ordered with `insert`), page parts (`add_parts`),
-   animation kinds (`add_kind`), theme policies (`POLICIES`), commands (`COMMANDS`), asset folders
-   (`add_asset_root`) and defaults (`DEFAULTS`).
+   layouts (`LAYOUTS`), checks (`CHECKS`), keys any block may carry (`BLOCK_KEYS`), files a block names
+   (`FILES`), animation kinds (`add_kind`), theme policies (`POLICIES`), commands (`COMMANDS`), asset
+   folders (`add_asset_root`) and defaults (`DEFAULTS`).
 3. The plugin's `__main__` imports the pack, then runs `chronicle_engine.entrypoints.cli.main.main()`.
 
 `python -m chronicle_engine` runs the engine with no plugin: stories without art, neutral chrome (progress `steps`;
 chapter marks `label`, `plain`, `step` and `none`; stats `rule` and `cards`; frame `none`), and the `diagram`
 animation kind.
+
+## Brand kits and references
+`--brand run|repo|config|PATH` on `new`, `check` and `build` picks a brand kit that fills the theme
+where the story is silent; `check` warns where the theme departs from it. `references/` holds the
+facts, blocks and widgets references every plugin's skills read through the link.
 
 ## Page parts
 A page ships `registry.ALWAYS` plus `registry.PARTS[type]` for each figure type on it, joined in file-name order

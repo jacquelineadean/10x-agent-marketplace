@@ -55,14 +55,15 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 
 | Folder | Holds |
 | --- | --- |
-| `registry.py` | extension points plugins fill: block types, the art provider, page chrome (progress devices, chapter marks, stat skins, frames), page parts by figure type, animation kinds, theme policies, commands, asset roots and defaults |
-| `core/story/` | facts and tokens, derive table, story checks, theme tokens, fonts and contrast (`theme.py`), the diagram sanitizer, US tile grid (`geo.py`), HTML renderer and the neutral block renderers (`blocks.py`, `explainers.py`, `lessons.py`, joined in `dispatch.py`) |
+| `registry.py` | extension points plugins fill: block types, the art provider, page chrome (progress devices, chapter marks, stat skins, frames), page parts by figure type, layouts, checks, block keys and files, animation kinds, theme policies, commands, asset roots and defaults |
+| `core/story/` | facts and tokens, derive table, story checks, theme tokens, fonts and contrast (`theme.py`), brand kits (`brand.py`), the diagram sanitizer, US tile grid (`geo.py`), HTML renderer with the page layout and the neutral block renderers (`blocks.py`, `explainers.py`, `lessons.py`, joined in `dispatch.py`) |
 | `core/motion/` | animations: the shared checks and step clock (`model.py`), CSS keyframe timeline, stage (title, captions, step strip, the SVG file), the diagram kind, the packet and visibility parts, render, the HTML figure, frame times and the GIF encoder |
 | `connectors/files/` | every file read and write: JSON, HTML, WebP, bundled assets joined across the engine's and plugins' asset roots |
-| `connectors/browser/` | an installed headless Chromium or Chrome: page screenshots (`shoot.py`) and animation frames over the DevTools pipe (`devtools.py`) |
+| `connectors/browser/` | an installed headless Chromium or Chrome: page screenshots (`shoot.py`), animation frames, slide images and PDFs over the DevTools pipe (`devtools.py`) |
 | `connectors/video/` | MP4 through the installed ffmpeg program, WebM through OpenCV's video writer |
 | `entrypoints/cli/` | the command line a plugin runs after its pack registers: new, check, paint (with an art provider), build, shoot (`main.py`), `animate new/check/build` (`animate.py`), run folders and joined facts files (`runs.py`) |
-| `references/` | `facts.md`, the facts file contract every writer follows; plugins read it through their link |
+| `references/` | what every plugin's skills read through their link: the facts file (`facts.md`), blocks, tokens and formats (`blocks.md`), widgets (`widgets.md`) |
+| `config/` | the only environment reads: the user's brand kit folder |
 | `assets/` | `fonts.json`; `css/` the page stylesheet in numbered parts; `js/` the page runtime in numbered parts, each figure starting through the `INIT` table; a page ships the parts its figures use, joined inside one IIFE; `motion/` the stage and diagram stylesheets |
 | `packages/chronicle-engine/tests/` | engine-only tests run with no plugin: the boundary and vocabulary lint (`test_engine_boundary.py`), the command line (`test_engine_cli.py`), page parts and neutral chrome (`test_engine_pages.py`), joined facts files and locators (`test_engine_facts.py`), shared helpers (`engine_helpers.py`) |
 
@@ -80,6 +81,17 @@ chronicle's own code lives under `plugins/chronicle/src/chronicle/`:
 | `assets/` | chronicle's page and animation parts: `css/11-plates.css`, `css/13-arch-mark.css`, `css/21-identity-devices.css`, `js/30-plates.js`, `js/41-devices.js` (progress devices), `motion/20-tad.css`, `motion/30-scene.css` |
 | `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, and the animations `animation-tad/`, `animation-diagram/`, `animation-scene/` |
 | `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |
+
+briefing's code lives under `plugins/briefing/src/briefing/`, beside links to the engine and to `packages/sources`:
+
+| Folder | Holds |
+| --- | --- |
+| `pack.py` | briefing's registrations: the deck and dashboard layouts, the kpi, filters and animation blocks, their page parts, block keys, checks and the export, slides and sources commands |
+| `core/` | the deck and dashboard layouts (`deck.py`, `dashboard.py`), KPI tiles and status rules (`kpi.py`), filters and slices (`slices.py`), the animation block (`animation.py`), checks (`checks.py`), Slides and Dashboard content (`export.py`) |
+| `entrypoints/cli/` | the check that reads files beside the story, `export`, `slides` (PNG and PDF through Chromium) and the linked `sources` command |
+| `assets/` | the deck, KPI and filter, dashboard and animation stylesheets and scripts |
+| `plugins/briefing/examples/` | `keystone-deck/` and `keystone-dashboard/`, on the Keystone example's facts |
+| `plugins/briefing/tests/` | `test_briefing_*.py` with `briefing_helpers.py`; builds run in their own process |
 
 sources' code follows the same layout under `packages/sources/src/sources/`, linked into `plugins/sources/src/sources`:
 

@@ -24,7 +24,7 @@
       "name": "chronicle",
       "source": "./plugins/chronicle",
       "description": "Illustrated, interactive story pages (Artifacts) designed for their subject, and standalone animations in the same style, including technical architecture diagrams: status reports, launches, onboarding handbooks, guides and system walkthroughs, from a brief, the material a researcher digests, and company facts through the sources plugin.",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "author": {
         "name": "Jacqueline Dean"
       },
@@ -41,6 +41,17 @@
       },
       "category": "productivity",
       "keywords": ["data sources", "mcp", "read-only", "github", "jira", "datadog", "databricks"]
+    },
+    {
+      "name": "briefing",
+      "source": "./plugins/briefing",
+      "description": "Slide decks and KPI dashboards from facts as Artifacts: 16:9 slides with builds, notes and stepped animations, and dashboards with targets, status by rule, filters and the query behind every number; a brand kit, and exports to claude.ai Slides and Dashboard, PDF and PNG.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jacqueline Dean"
+      },
+      "category": "productivity",
+      "keywords": ["slides", "deck", "dashboard", "kpi", "executive overview", "brand kit"]
     },
     {
       "name": "speedup",

@@ -249,6 +249,11 @@ def document(
             role="img",
             aria_labelledby=f"{plan.slug}-title {plan.slug}-desc",
             data_theme=None if plan.theme_mode == "auto" else plan.theme_mode,
+            # Step start times, the end of the last step and the loop length, so a deck can
+            # play one step per click and stop on the finished picture.
+            data_steps=",".join(f"{step.start:g}" for step in plan.steps),
+            data_end=f"{max((s.start + s.duration for s in plan.steps), default=0):g}",
+            data_duration=f"{plan.duration:g}",
         )
         + "\n"
     )

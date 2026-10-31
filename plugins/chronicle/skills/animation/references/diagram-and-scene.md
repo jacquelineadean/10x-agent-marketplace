@@ -9,8 +9,8 @@
 `svg` is a file beside `animation.json` or inline `<svg>` markup. The drawing is the story
 diagram format: the classes `box`, `box accent`, `box legacy`, `box soft`, `line`,
 `line accent`, `line legacy`, `line dashed`, `head`, `title`, `label`, `small`, `hand`,
-and `f-<color>`, `s-<color>` for theme fills and strokes (see the story skill's
-`references/story-format.md`). The same sanitizer runs: plain shapes, text, groups,
+and `f-<color>`, `s-<color>` for theme fills and strokes (see
+`${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/blocks.md`). The same sanitizer runs: plain shapes, text, groups,
 markers and gradients only; no scripts, styles, images or links out. Text may hold fact
 tokens. A diagram from a story page plays as it is.
 

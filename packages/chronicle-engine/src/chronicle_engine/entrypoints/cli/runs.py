@@ -6,9 +6,10 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
+from chronicle_engine.config import settings
 from chronicle_engine.connectors.files import store
-from chronicle_engine.core.story import derive
-from chronicle_engine.core.story.facts import merge
+from chronicle_engine.core.story import brand, derive
+from chronicle_engine.core.story.facts import attach_queries, merge
 
 
 def ignore(folder: Path) -> str:
@@ -53,4 +54,37 @@ def load_facts(
     for _, raw in named:
         if not isinstance(raw, Mapping):
             raise store.StoreError("the facts file must hold a JSON object")
-    return derive.apply(merge(named))
+    facts = merge(named)
+    queries = path.parent / "queries.json"
+    if default_required and queries.is_file():
+        entries = store.read_json(queries).get("queries", {})
+        facts = attach_queries(
+            facts,
+            {str(k): str(v.get("query", "")) for k, v in entries.items() if isinstance(v, Mapping)},
+        )
+    return derive.apply(facts)
+
+
+def brand_kit(choice: str, folder: Path) -> dict[str, Any] | None:
+    """The brand kit `--brand` names: run (the default), repo, config or a path.
+
+    `run` reads `brand.json` in the run folder and is optional; the others must exist.
+    """
+    if choice == "run":
+        path = folder / "brand.json"
+        return brand.check_kit(store.read_json(path)) if path.is_file() else None
+    if choice == "repo":
+        root = next(
+            (p for p in (folder.resolve(), *folder.resolve().parents) if (p / ".git").exists()),
+            None,
+        )
+        if root is None:
+            raise store.StoreError(f"--brand repo: {folder} is not inside a git repository")
+        path = root / ".brand" / "brand.json"
+    elif choice == "config":
+        path = settings.brand_config_path()
+    else:
+        path = Path(choice)
+    if not path.is_file():
+        raise store.StoreError(f"no brand kit at {path}")
+    return brand.check_kit(store.read_json(path))

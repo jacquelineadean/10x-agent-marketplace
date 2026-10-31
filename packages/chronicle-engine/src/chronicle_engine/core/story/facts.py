@@ -50,6 +50,7 @@ class Fact:
     source: str = ""
     note: str = ""
     locator: str = ""
+    query: str = ""
 
 
 def lookup(facts: Mapping[str, Any], path: str) -> Fact:
@@ -76,6 +77,7 @@ def lookup(facts: Mapping[str, Any], path: str) -> Fact:
             source=str(node.get("source", "")),
             note=str(node.get("note", "")),
             locator=str(node.get("locator", "")),
+            query=str(node.get("query", "")),
         )
     return Fact(path=path, value=node)
 
@@ -244,3 +246,21 @@ def unsourced_numbers(text: str) -> list[str]:
             continue
         found.append(raw)
     return found
+
+
+def attach_queries(facts: Mapping[str, Any], queries: Mapping[str, str]) -> dict[str, Any]:
+    """Copy each fact's query onto its record, so the page shows it on hover.
+
+    `queries` maps a fact or group path to its query text; a group's query passes down to
+    every record under it unless a record has its own.
+    """
+
+    def walk(node: Any, path: str, inherited: str) -> Any:
+        here = queries.get(path) or inherited
+        if isinstance(node, Mapping) and "value" in node:
+            return {**node, "query": here} if here and "query" not in node else node
+        if isinstance(node, Mapping):
+            return {key: walk(child, f"{path}.{key}", here) for key, child in node.items()}
+        return node
+
+    return {key: node if key == "derive" else walk(node, key, "") for key, node in facts.items()}

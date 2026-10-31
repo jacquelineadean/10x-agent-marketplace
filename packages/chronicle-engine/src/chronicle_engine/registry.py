@@ -1,10 +1,10 @@
 """Extension points that a plugin fills before a command runs.
 
 The engine names no plugin. A plugin's `pack` module registers its blocks, its art
-provider, its page chrome and page parts, its animation kinds, its theme policies, its
-commands and its asset folders here; the plugin's `__main__` imports the pack and then
-runs the engine's command line. Registration is idempotent by name, so importing a pack
-twice changes nothing.
+provider, its page chrome and page parts, its layouts and checks, its animation kinds, its
+theme policies, its commands and its asset folders here; the plugin's `__main__` imports
+the pack and then runs the engine's command line. Registration is idempotent by name, so
+importing a pack twice changes nothing.
 """
 
 from __future__ import annotations
@@ -119,6 +119,21 @@ class Command:
 
 # Theme policies take the story's theme and the story's path and return warnings.
 Policy = Callable[[Mapping[str, Any] | None, Path], list[str]]
+# Checks take the story, its facts and its path, and add errors or warnings to the report.
+Check = Callable[[Mapping[str, Any], Mapping[str, Any], Path, "Report"], None]
+
+
+@dataclass(frozen=True)
+class Layout:
+    """How a story becomes a document: the content between the page's data and script.
+
+    `render` gets the builder and the page title. A layout's own stylesheet and script are
+    the parts registered for the figure type `layout:<name>`. `skeleton` holds the chapters
+    `new` writes for it.
+    """
+
+    render: Callable[[Builder, str], str]
+    skeleton: tuple[Mapping[str, Any], ...] = ()
 
 
 @dataclass
@@ -128,6 +143,7 @@ class Defaults:
     prog: str = "chronicle-engine"
     policy: str = ""
     kind: str = ""
+    layout: str = "page"
     new_folders: tuple[str, ...] = ("diagrams", "widgets")
     new_next: str = "fill theme.concept, then write the chapters"
 
@@ -170,6 +186,12 @@ class Chrome:
 ART: list[ArtProvider] = []
 KINDS: dict[str, Kind] = {}
 POLICIES: dict[str, Policy] = {}
+CHECKS: dict[str, Check] = {}
+LAYOUTS: dict[str, Layout] = {"page": Layout(lambda b, title: b.chapters(title))}
+# Keys a plugin's layouts read on any block, such as a build step; checks do not flag them.
+BLOCK_KEYS: set[str] = set()
+# Files a block names beside the story, by block type and key; the build reads them for it.
+FILES: dict[str, tuple[str, ...]] = {}
 COMMANDS: dict[str, Command] = {}
 ASSET_ROOTS: list[Traversable] = []
 DEFAULTS = Defaults()

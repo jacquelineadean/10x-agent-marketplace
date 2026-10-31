@@ -1,0 +1,13 @@
+{
+  "name": "briefing",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Turns facts read from company systems into presentation-ready Artifacts: slide decks of fixed 16:9 slides on a horizontal track, with builds, speaker notes and stepped animations, and KPI dashboards with targets, status by rule, sparklines, filters and the query behind every number. Applies a brand kit; exports to claude.ai's Slides and Dashboard types, PDF and PNG.",
+  "author": {
+    "name": "Jacqueline Dean",
+    "url": "https://github.com/jacquelineadean"
+  },
+  "repository": "https://github.com/jacquelineadean/10x-agent-marketplace",
+  "keywords": ["slides", "deck", "dashboard", "kpi", "executive overview", "artifact", "brand kit"],
+  "dependencies": ["sources"]
+}

@@ -125,6 +125,20 @@ class Capture:
         data = self.send("Page.captureScreenshot", {"format": "png", "clip": clip})["data"]
         return base64.b64decode(data)
 
+    def pdf(self, width_in: float, height_in: float) -> bytes:
+        """The page printed to PDF on pages of the given size, backgrounds included."""
+        params = {
+            "paperWidth": width_in,
+            "paperHeight": height_in,
+            "marginTop": 0,
+            "marginBottom": 0,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "printBackground": True,
+            "preferCSSPageSize": True,
+        }
+        return base64.b64decode(self.send("Page.printToPDF", params)["data"])
+
     def send(self, method: str, params: dict[str, Any] | None = None) -> Any:
         self.next_id += 1
         message: dict[str, Any] = {"id": self.next_id, "method": method, "params": params or {}}

@@ -113,15 +113,16 @@ Read `references/illustration.md`. Draw each painting as an SVG file in `art/`: 
 to front, ink outlines, fills in muted pigment colors, `data-shade` for volume, glazed cast
 shadows, `<text>` labels (which may hold fact tokens), `data-anchor` points for hotspots and
 at most one or two moving layers. Draw diagrams as SVG in `diagrams/` with the classes in
-`references/story-format.md`. Write widgets with `references/widgets.md`.
+`${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/blocks.md`. Write widgets with
+`${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/widgets.md`.
 
 Run `chronicle build` early and look at each `build/art/<key>.webp` with the Read tool. Fix
 objects that do not read at a glance, flat clip-art looks and collisions, then build again.
 
 ## 5. Write the story
 
-Read `references/story-format.md` (structure and every block), `references/voice.md`
-(how the page reads) and `references/outlines.md` (chapter plans for status reports,
+Read `references/story-format.md` (structure), `${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/blocks.md`
+(every block), `references/voice.md` (how the page reads) and `references/outlines.md` (chapter plans for status reports,
 launches, onboarding, guides, incidents and reviews).
 
 - Numbers appear only as tokens: `{{migration.share_now}}`, or `{{plan.forecast_finish|date}}`.
@@ -181,12 +182,15 @@ Reply with the link, one line on what the page covers, and any facts that were m
   comes from, palette, fonts, progress devices, chapter marks, stat styles, surface,
   words, the signature figure, the sameness check and worked identities.
 - `references/illustration.md`: drawing SVG for the ink-and-watercolor painter.
-- `references/story-format.md`: the story file, every block type, tokens and formats.
+- `references/story-format.md`: the story file's top level and chapters, and the plate block.
 - `${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/facts.md`: the facts file, provenance,
   locators, joining files and the `derive` functions.
 - `references/outlines.md`: chapter plans for status reports, launches, onboarding,
   guides, incidents and reviews.
-- `references/widgets.md`: writing a custom figure when no block fits.
+- `${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/widgets.md`: writing a custom figure when
+  no block fits.
+- `${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/blocks.md`: text tokens, formats and
+  every block the engine renders.
 - `references/voice.md`: the page's writing rules.
 - `${CLAUDE_PLUGIN_ROOT}/examples/keystone/`: a status page with invented data: an
   order-platform migration with its own theme, seven painted SVG drawings, a flow, a tile

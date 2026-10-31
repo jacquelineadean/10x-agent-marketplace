@@ -99,6 +99,7 @@ writes the post.
 | chronicle plugin shell `plugins/chronicle/` (`.claude-plugin/plugin.json`, `skills/story/`, `skills/animation/`, `agents/researcher.md`, `scripts/chronicle`) | The story workflow (brief, gather, write, build, publish) and the animation workflow (write, build, look, deliver) | Markdown, POSIX sh | Jacqueline Dean |
 | chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story and widget checks, themes, diagram sanitizer, HTML renderer, page runtime (CSS and JS), SVG reader and watercolor painter; the animation timeline, TAD layout and routing, GIF encoder and frame capture | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting and raster exports; a local Chromium for frames and ffmpeg for MP4 | Jacqueline Dean |
 
+| briefing plugin `plugins/briefing/` (`.claude-plugin/plugin.json`, `skills/{deck,dashboard}/`, `references/`, `scripts/briefing`, `src/briefing/`, `examples/`) | Decks and dashboards from facts: write, check, build, look, export, publish | Python 3.11+, standard library; Markdown, POSIX sh; a local Chromium for slide images and PDFs | Jacqueline Dean |
 | sources plugin shell `plugins/sources/` (`.claude-plugin/plugin.json`, `agents/gatherer.md`, `skills/connect/`, `recipes/`, `scripts/sources`) | Reads company systems through the session's connectors into facts, queries and a digest; sets up each system | Markdown, POSIX sh | Jacqueline Dean |
 | sources package `packages/sources/src/sources/` | Detection, the source picker, named connections, the facts and queries contract, the digest, the user-level database agent | Python 3.11+, standard library only | Jacqueline Dean |
 | speedup plugin shell `plugins/speedup/` (`.claude-plugin/plugin.json`, `skills/{setup,measure,optimize,report}/`, `agents/perf-gatherer.md`, `agents/perf-writer.md`, `scripts/speedup`, `examples/`) | The optimization loop: choose journeys, measure, optimize against proxies, report and write up | Markdown, POSIX sh, YAML (CI example) | Jacqueline Dean |
@@ -131,6 +132,15 @@ registers its own parts from `plugins/chronicle/src/chronicle/pack.py`: the wate
 painter as art provider, plates, the creative chrome (arches, tracks, routes, hang tags,
 receipts), the scene and TAD kinds, the sameness review and `motifs`.
 
+briefing (RFC-0007, spec 002) turns facts into decks and dashboards on the same engine.
+Its pack, `plugins/briefing/src/briefing/`, registers two layouts beside the engine's page:
+a deck of 16:9 slides on a horizontal track and a dashboard of sections in a grid. It adds
+KPI tiles whose status code sets by rule, filters over precomputed slices, and an
+animation block that plays a built animation one step per click. It links the engine and
+`packages/sources`, declares `"dependencies": ["sources"]`, and exports Slides and
+Dashboard content, a PDF and a PNG per slide. A brand kit, chosen with `--brand`, lives in
+the engine, so every plugin's pages can share one look.
+
 sources (RFC-0007, spec 002) gives the data plugins read-only access to company systems.
 Its code, `packages/sources/src/sources/`, uses the same layout and imports neither the
 engine nor a plugin: `core/` detects which systems a session can reach, builds the source
@@ -155,7 +165,7 @@ benchmark commands), `connectors/files/` (every file read and write), `entrypoin
 
 ## Deployment and environments
 - No hosted environment; plugins run on each user's machine.
-- Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace`, `sources@10x-agent-marketplace` or `speedup@10x-agent-marketplace`.
+- Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace`, `briefing@10x-agent-marketplace` (installs `sources` too), `sources@10x-agent-marketplace` or `speedup@10x-agent-marketplace`.
 - Releases: each plugin carries a semantic version in `plugin.json`; a git tag `<plugin>-vX.Y.Z` (for example `impact-review-v1.0.0`) marks each release.
 - Rollback: reinstall from the previous tag, or pin the marketplace to it.
 

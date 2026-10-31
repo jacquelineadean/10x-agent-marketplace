@@ -50,8 +50,8 @@ Read `references/animation-format.md` for the shared keys, the steps and timing.
   by trust boundary or deployment (VPC, cluster, vendors), add the links with their
   protocol as labels, and name the flows the viewer should watch. 6 to 14 nodes read
   well in 16:9; split a larger system into two animations.
-- **diagram**: read `references/diagram-and-scene.md` and the diagram classes in the
-  story skill's `references/story-format.md`. Give every part an `id`; give each path a
+- **diagram**: read `references/diagram-and-scene.md` and the diagram classes in
+  `${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/blocks.md`. Give every part an `id`; give each path a
   packet runs along an `id` and draw it in the direction of travel.
 - **scene**: read `references/diagram-and-scene.md` and the story skill's
   `references/illustration.md`. Put a `data-anchor` where each spot goes.

@@ -79,4 +79,7 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Queries file:** `queries.json` in a run folder: the query behind each fact, with its system, lane, connection, window and as-of date.
 - **Lane:** how a fact was read: `mcp` through a connector in the session, or `script` through a collector with keys.
 - **Named connection:** an entry in `connections.json` holding a system's host and the names of the variables with its keys, never a key.
+- **Layout:** how a story file becomes a document: a scrolling `page`, a `deck` of 16:9 slides or a `dashboard`.
+- **Brand kit:** `brand.json`, an organization's colors and fonts applied under every page's theme; `--brand` picks it.
+- **Slice:** one precomputed copy of a dashboard block for one filter option, such as a team or a region.
 - **Researcher:** chronicle's subagent that reads provided material and writes `research/facts.json`, a locator on every fact, and `research/material.md`, a digest under 12 KB.

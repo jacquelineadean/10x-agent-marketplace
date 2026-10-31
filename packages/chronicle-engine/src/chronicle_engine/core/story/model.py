@@ -7,6 +7,7 @@ from collections.abc import Iterator, Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
+from chronicle_engine import registry
 from chronicle_engine.core.story.facts import REF, TOKEN, FactError, lookup, unsourced_numbers
 
 SCHEMA_VERSION = 1
@@ -142,6 +143,9 @@ def check(story: Mapping[str, Any], facts: Mapping[str, Any]) -> Report:
     if not isinstance(meta, Mapping) or not meta.get("title"):
         report.errors.append("meta.title is required")
     sources = {str(s.get("id")) for s in story.get("sources", []) if isinstance(s, Mapping)}
+    layout = story.get("layout")
+    if layout is not None and layout not in registry.LAYOUTS:
+        report.errors.append(f"layout {layout!r} must be one of {', '.join(registry.LAYOUTS)}")
     art = story.get("art", {})
     if not isinstance(art, Mapping):
         report.errors.append("art must be an object of named scenes")
@@ -189,7 +193,7 @@ def _check_block(block: Any, where: str, art: Mapping[str, Any], report: Report)
     for key in required:
         if key not in block:
             report.errors.append(f"{where} ({kind}) is missing {key!r}")
-    extra = set(block) - set(required) - set(optional) - {"type", "id"}
+    extra = set(block) - set(required) - set(optional) - {"type", "id"} - registry.BLOCK_KEYS
     if extra:
         report.warnings.append(f"{where} ({kind}) ignores {', '.join(sorted(extra))}")
     if kind == "chart" and block.get("chart") not in CHARTS:

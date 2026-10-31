@@ -41,7 +41,7 @@ Write only the body of a function. The build wraps it as
 
 ## Rules
 
-`chronicle check` refuses a widget script that uses `innerHTML`, `outerHTML`,
+`check` refuses a widget script that uses `innerHTML`, `outerHTML`,
 `insertAdjacentHTML`, `document.write`, `eval`, `Function(`, `fetch`, `XMLHttpRequest`,
 `WebSocket`, `sendBeacon`, `import(`, `localStorage`, `sessionStorage`, `indexedDB`,
 `document.cookie`, `postMessage` or any `http` URL. A widget draws from its data and

@@ -23,12 +23,16 @@ from chronicle_engine import registry
 from chronicle_engine.connectors.browser import shoot
 from chronicle_engine.connectors.files import store
 from chronicle_engine.connectors.video.encode import VideoError
-from chronicle_engine.core.story import model
+from chronicle_engine.core.story import brand, model
 from chronicle_engine.core.story import theme as theming
 from chronicle_engine.core.story.facts import FactError
 from chronicle_engine.core.story.render import Assets, render
 from chronicle_engine.entrypoints.cli import animate, runs
 
+BRAND_HELP = (
+    "brand kit: run (brand.json in the run folder, the default), repo (.brand/brand.json "
+    "at the git root), config (~/.config/chronicle/brand.json) or a path"
+)
 # What a missing NumPy or OpenCV means when no art provider says more.
 MISSING = (
     "error: this command needs NumPy and OpenCV ({name} is missing). Run through the "
@@ -53,6 +57,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         cmd.add_argument(
             "--out", type=Path, help="output folder (default: build/ beside the story)"
         )
+        cmd.add_argument("--brand", default="run", help=BRAND_HELP)
         if name in ("paint", "build") and provider:
             cmd.add_argument("--scale", type=float, default=1.0, help="render size multiplier")
             cmd.add_argument("--force", action="store_true", help="repaint even if unchanged")
@@ -70,6 +75,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     new = sub.add_parser("new")
     new.add_argument("folder", type=Path, help="run folder to create, e.g. chronicle-runs/q4")
     new.add_argument("--title", default="", help="the page title")
+    new.add_argument("--brand", default="run", help=BRAND_HELP + "; copied into the folder")
+    new.add_argument(
+        "--layout",
+        choices=list(registry.LAYOUTS),
+        default=registry.DEFAULTS.layout,
+        help="how the story becomes a document",
+    )
     shot = sub.add_parser("shoot")
     shot.add_argument("story", type=Path, help="path to story.json (its build/ is shot)")
     shot.add_argument("--out", type=Path, help="build folder (default: build/ beside the story)")
@@ -80,7 +92,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.command in registry.COMMANDS:
             return registry.COMMANDS[args.command].run(args)
         if args.command == "new":
-            return _new(args.folder, args.title)
+            return _new(args.folder, args.title, args.brand, args.layout)
         if args.command == "shoot":
             return _shoot(args.out or args.story.parent / "build", args.browser, args.wait)
         if args.command == "animate":
@@ -88,7 +100,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         story = store.read_json(args.story)
         facts = _facts(args.story, story, args.facts)
         out = args.out or args.story.parent / "build"
+        kit = runs.brand_kit(args.brand, args.story.parent)
+        departures = brand.departures(story.get("theme"), kit) if kit else []
+        if kit:
+            story = {**story, "theme": brand.apply(story.get("theme"), kit)}
         report = model.check(story, facts)
+        report.warnings.extend(departures)
         try:
             report.warnings.extend(theming.build(story.get("theme"), _fonts()).warnings)
         except theming.ThemeError as exc:
@@ -96,6 +113,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         policy = registry.POLICIES.get(registry.DEFAULTS.policy)
         if policy is not None:
             report.warnings.extend(policy(story.get("theme"), args.story))
+        for extra in registry.CHECKS.values():
+            extra(story, facts, args.story, report)
         files = _files(story, args.story.parent, report)
         texts: dict[str, str] = {}
         if provider is not None:
@@ -132,14 +151,18 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 2
 
 
-def _new(folder: Path, title: str) -> int:
+def _new(folder: Path, title: str, brand_choice: str, layout: str) -> int:
     """Start a run folder with a story to fill in, and keep it out of git."""
     story_path = folder / "story.json"
     if story_path.exists():
         print(f"error: {story_path} exists; pick another folder", file=sys.stderr)
         return 1
+    if brand_choice != "run":
+        kit = runs.brand_kit(brand_choice, folder.parent)
+        store.write_json(folder / "brand.json", kit)
+        print(f"copied the brand kit to {folder / 'brand.json'}")
     name = title or folder.name.replace("-", " ").title()
-    store.write_json(story_path, _skeleton(name))
+    store.write_json(story_path, _skeleton(name, layout))
     store.write_json(folder / "facts.json", {"derive": {}})
     for sub in registry.DEFAULTS.new_folders:
         (folder / sub).mkdir(parents=True, exist_ok=True)
@@ -151,9 +174,19 @@ def _new(folder: Path, title: str) -> int:
     return 0
 
 
-def _skeleton(title: str) -> dict[str, Any]:
+def _skeleton(title: str, layout: str) -> dict[str, Any]:
+    chapters = list(registry.LAYOUTS[layout].skeleton) or [
+        {
+            "id": "start",
+            "short": "Start",
+            "kicker": "",
+            "title": "State this chapter's claim",
+            "blocks": [{"type": "prose", "text": "Write the chapter here."}],
+        }
+    ]
     return {
         "schema_version": model.SCHEMA_VERSION,
+        **({"layout": layout} if layout != "page" else {}),
         "meta": {
             "title": title,
             "kicker": "",
@@ -166,15 +199,7 @@ def _skeleton(title: str) -> dict[str, Any]:
         "sources": [],
         **({"art": {}} if registry.art() else {}),
         "hero": {},
-        "chapters": [
-            {
-                "id": "start",
-                "short": "Start",
-                "kicker": "",
-                "title": "State this chapter's claim",
-                "blocks": [{"type": "prose", "text": "Write the chapter here."}],
-            }
-        ],
+        "chapters": chapters,
     }
 
 
@@ -214,6 +239,11 @@ def _files(story: Mapping[str, Any], folder: Path, report: model.Report) -> dict
             for problem in problems:
                 report.errors.append(f"{where} ({path}): {problem}")
             texts[path] = source
+    for kind, keys in registry.FILES.items():
+        for _, block in model.blocks_of(story, kind):
+            for key in keys:
+                if block.get(key):
+                    texts[str(block[key])] = store.read_text(folder / str(block[key]))
     for where, block in model.blocks_of(story, "diagram"):
         path = str(block.get("svg", ""))
         source = path if path.lstrip().startswith("<svg") else store.read_text(folder / path)

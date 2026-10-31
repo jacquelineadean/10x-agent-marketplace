@@ -10,7 +10,7 @@ pull requests, each based on the one before; the first is based on the RFC's own
 | 1a | `claude/rfc7-1-engine` | 1: engine extraction, Python side | chronicle 0.5.0 |
 | 1b | `claude/rfc7-1b-assets` | 1: page parts, chrome registries, vocabulary lint | chronicle 0.5.1 |
 | 2 | `claude/rfc7-2-sources` | 2: sources plugin, chronicle researcher | sources 0.1.0, chronicle 0.6.0 |
-| 3 | `claude/rfc7-3-briefing` | 3: briefing, brand kit | briefing 0.1.0 |
+| 3 | `claude/rfc7-3-briefing` | 3: briefing, brand kit | briefing 0.1.0, chronicle 0.6.1 |
 | 4 | `claude/rfc7-4-blueprint` | 4: blueprint, TAD move, interactive figures | blueprint 0.1.0, chronicle 0.7.0 |
 | 5 | `claude/rfc7-5-collectors` | 5: script-lane collectors, refresh, impact-review on sources | sources 0.2.0, briefing 0.2.0 |
 | 6 | `claude/rfc7-6-creative` | 6: creative additions | chronicle 0.8.0 |
@@ -108,7 +108,40 @@ Design decisions:
 | AC-24 | A local marketplace install caches sources' linked package and linked facts reference as real files | manual check M-5 |
 | AC-25 | The quality gates pass, now with `mypy packages/sources/src/sources`; sources is 0.1.0 and chronicle 0.6.0 in both manifests | CI and `claude plugin validate .` |
 
-### PR 3 to PR 6
+### PR 3: briefing, layouts and the brand kit
+Design decisions:
+- **Layouts.** `registry.LAYOUTS` maps a name to a renderer; the engine ships `page`, its
+  output unchanged. A story's `layout` picks one; `new --layout` writes its skeleton. A
+  layout's stylesheet and script are the parts of the figure type `layout:<name>`.
+- **Plugin checks and keys.** `registry.CHECKS` runs a plugin's checks after the engine's;
+  `BLOCK_KEYS` lists keys a layout reads on any block (`build`, `span`, `slice`); `FILES`
+  names block keys whose files the build reads (the animation block's `svg`).
+- **Queries on hover.** With `queries.json` beside a story, each fact's query, or its
+  group's, shows on hover. Stories without one build as before.
+- **Brand kit in the engine.** `--brand run|repo|config|PATH` on `new`, `check` and `build`;
+  `run` is the default and optional; `new` copies a named kit into the run folder.
+- **Animations step.** An animation's root SVG carries `data-steps`, `data-end` and
+  `data-duration`, so a deck plays one step per click and stops on the finished picture.
+- **References in the engine.** `blocks.md` (tokens, formats, every neutral block) and
+  `widgets.md` move into the engine beside `facts.md`; chronicle's `story-format.md` keeps
+  the top level, chapters and the plate block.
+- **Isolation in tests.** briefing's pack runs only in subprocesses in the test suite, so its
+  registrations never meet chronicle's.
+- **Versions.** chronicle 0.6.1, for the engine changes it links.
+
+| ID | Criterion | Check |
+| --- | --- | --- |
+| AC-26 | A deck renders a cover, a slide per chapter and a sources slide; builds, notes, the overview and one animation step per click work by keys, buttons and swipes | `test_briefing_cli.py`; browser check M-2 |
+| AC-27 | A dashboard sets each KPI's status by rule (on, near, off target), shows the as-of stamp, renders one copy per filter option and the query behind each number on hover | `test_briefing_rules.py`, `test_briefing_cli.py` |
+| AC-28 | `check` errors on a KPI without a target, a direction or a numeric value, and on a sliced block with no filter or a missing fact; warns on a KPI without a query, a slide past 60 words, 4 blocks or 80 title characters, and facts over 7 days old | `test_briefing_rules.py` |
+| AC-29 | `--brand` reads a kit from the run, the repo, the config folder or a path, fills the theme, copies on `new`, and warns on departures; a missing named kit is an error | `test_engine_brand.py`, `test_briefing_cli.py` |
+| AC-30 | `export --to slides` and `--to dashboard` write formatted values, statuses and queries; `slides --png --pdf` writes a PNG per slide and a PDF with one page per slide | `test_briefing_cli.py`; manual check M-6 |
+| AC-31 | The engine alone offers only the page layout; briefing pages ship briefing's parts and none of chronicle's | `test_engine_brand.py`, `test_briefing_cli.py` |
+| AC-32 | chronicle's pages keep their markup and CSS, their runtime adds only the query lines, and each animation file adds only the three step attributes | build comparison recorded in the PR |
+| AC-33 | Installing briefing from the marketplace installs sources too | manual check M-6 |
+| AC-34 | The quality gates pass, now with `mypy plugins/briefing/src/briefing`; briefing is 0.1.0 and chronicle 0.6.1 in both manifests | CI and `claude plugin validate .` |
+
+### PR 4 to PR 6
 Criteria for later pull requests are added to this spec in the pull request that builds them.
 
 ## Manual checks
@@ -128,3 +161,6 @@ Criteria for later pull requests are added to this spec in the pull request that
 - **M-5.** Install sources and chronicle from a local marketplace into a scratch
   `CLAUDE_CONFIG_DIR` and confirm the cache holds `src/sources/` and `references/facts.md` as
   real files, and chronicle's `agents/researcher.md` in place of `chronicle-gatherer.md`.
+- **M-6.** Install briefing from a local marketplace into a scratch `CLAUDE_CONFIG_DIR` and
+  confirm sources installs with it; print the keystone deck with `slides --png --pdf` and
+  look at every page.

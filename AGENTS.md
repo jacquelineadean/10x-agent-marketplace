@@ -22,6 +22,7 @@ uv run mypy packages/chronicle-engine/src/chronicle_engine
 uv run mypy plugins/chronicle/src/chronicle
 uv run mypy plugins/speedup/src/speedup
 uv run mypy packages/sources/src/sources
+uv run mypy plugins/briefing/src/briefing
 claude plugin validate .                   # marketplace and plugin manifests
 claude --plugin-dir plugins/impact-review  # try one plugin in a session
 ```
@@ -40,7 +41,7 @@ Layout is the GroundWork standard `cli` profile, rooted at `plugins/impact-revie
 - No top-level `bin/` folder in a plugin: claude.ai and Cowork refuse to install those. Skills call scripts through `${CLAUDE_PLUGIN_ROOT}`.
 - Skills tell Claude to read the digest only; never point a skill at raw API data or full `metrics.json`.
 - Tests use recorded GitHub, Datadog and Prometheus responses under `tests/fixtures/`; no test calls a live API.
-- Test files outside a package need unique names across plugins (speedup uses `test_speedup_*.py` and `speedup_helpers.py`; the engine `test_engine_*.py`; sources `test_sources_*.py`).
+- Test files outside a package need unique names across plugins (speedup uses `test_speedup_*.py` and `speedup_helpers.py`; the engine `test_engine_*.py`; sources `test_sources_*.py`; briefing `test_briefing_*.py` and `briefing_helpers.py`).
 - Run folders and anything under `impact-review-runs/`, `chronicle-runs/` or `speedup-runs/` are git-ignored; never commit them.
 
 ## Code quality
@@ -49,7 +50,7 @@ add an ignore comment or skip a test to make it pass; an ignore needs a reason o
 
 - format: `uv run ruff format --check .`
 - lint: `uv run ruff check .`
-- types: `uv run mypy plugins/impact-review/src/impact_review`, `uv run mypy packages/chronicle-engine/src/chronicle_engine`, `uv run mypy plugins/chronicle/src/chronicle`, `uv run mypy plugins/speedup/src/speedup` and `uv run mypy packages/sources/src/sources`
+- types: `uv run mypy plugins/impact-review/src/impact_review`, `uv run mypy packages/chronicle-engine/src/chronicle_engine`, `uv run mypy plugins/chronicle/src/chronicle`, `uv run mypy plugins/speedup/src/speedup`, `uv run mypy packages/sources/src/sources` and `uv run mypy plugins/briefing/src/briefing`
 - test: `uv run pytest`
 
 1. Reuse before writing: look in CODEMAP.md and search for an existing function first. Never copy-paste a block.

@@ -1,0 +1,10 @@
+/* -------------------------------------------------------------- animation */
+.anim .anim-svg svg { display: block; width: 100%; height: auto; }
+.slide-body .anim { display: flex; flex-direction: column; min-height: 0; }
+.slide-body .anim-svg { min-height: 0; }
+.slide-body .anim-svg svg { max-height: 30cqw; }
+.anim { position: relative; }
+.anim-pause {
+  position: absolute; top: .6rem; right: .6rem; padding: .3rem .7rem; border-radius: 999px;
+  border: 1px solid var(--rule); background: var(--paper); font: 600 .75rem/1 var(--f-ui); cursor: pointer;
+}
