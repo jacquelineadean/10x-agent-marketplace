@@ -1,6 +1,4 @@
   /* -------------------------------------------------------------- figures */
-  var scrollers = [];
-  var plates = [];
 
   function initStats(node, spec) {
     var sparks = spec.sparks || {};
@@ -392,4 +390,12 @@
       updateS();
     }
   }
-
+  INIT.stats = initStats;
+  INIT.scrolly = initScrolly;
+  INIT.timeline = initTimeline;
+  INIT.stepper = initStepper;
+  INIT.compare = initCompare;
+  INIT.matrix = initMatrix;
+  INIT.roadmap = initRoadmap;
+  INIT.team = initTeam;
+  INIT.model = initModel;

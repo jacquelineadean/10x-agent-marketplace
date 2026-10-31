@@ -1,7 +1,8 @@
 """Turn a checked story into one HTML page.
 
 The page is static HTML for every word (readable without scripts), plus one JSON blob
-that the bundled runtime script reads to draw charts, plates and interactive figures.
+that the bundled runtime script reads to draw charts, art and interactive figures. The
+page ships only the runtime parts its figures use (`registry.page_parts`).
 """
 
 from __future__ import annotations
@@ -22,13 +23,13 @@ from chronicle_engine.core.story.markup import inline, paragraphs, plain
 
 @dataclass
 class Assets:
-    """The runtime stylesheet, script and font list, read from the package by the caller.
+    """The runtime parts and font list, read from the packages by the caller.
 
+    `parts` maps each runtime part (`css/10-page.css`, `js/00-core.js`) to its text.
     `files` maps each file a story names (diagram SVG, widget script or style) to its text.
     """
 
-    css: str
-    js: str
+    parts: Mapping[str, str]
     fonts: Mapping[str, Any] = field(default_factory=dict)
     files: Mapping[str, str] = field(default_factory=dict)
 
@@ -185,6 +186,9 @@ class Builder:
         payload = json.dumps(data, separators=(",", ":"), ensure_ascii=False)
         for char, code in (("<", "\\u003c"), (">", "\\u003e"), ("&", "\\u0026")):
             payload = payload.replace(char, code)
+        shipped = registry.page_parts(str(spec["type"]) for spec in self.figs.values())
+        css = "\n".join(assets.parts[name] for name in shipped if name.startswith("css/"))
+        js = "\n".join(assets.parts[name] for name in shipped if name.startswith("js/"))
         title = plain(str(meta.get("title_tag", meta["title"])))
         description = plain(str(meta.get("description", meta.get("dek", ""))))
         head_html = (
@@ -194,7 +198,7 @@ class Builder:
             '<link rel="preconnect" href="https://fonts.googleapis.com">\n'
             '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
             f'<link rel="stylesheet" href="{plain(self.theme.fonts_url)}">\n'
-            f"<style>\n{assets.css}\n{self.theme.css}{self._widget_css()}</style>\n"
+            f"<style>\n{css}\n{self.theme.css}{self._widget_css()}</style>\n"
         )
         content = (
             f"{self._bar(title)}"
@@ -205,7 +209,8 @@ class Builder:
                 f"<script>\n{_widget_script(name, self.files[path])}\n</script>\n"
                 for name, path in self.widgets.items()
             )
-            + f"<script>\n{assets.js}\n</script>\n"
+            # One function around every part, so parts share helpers.
+            + f"<script>\n(function () {{\n{js}\n}})();\n</script>\n"
         )
         document = (
             '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
@@ -268,7 +273,8 @@ class Builder:
                     "subtitle": hero.get("stats_subtitle", ""),
                 },
             )
-        if figures and style in ("receipt", "ticket"):
+        skin = registry.CHROME.stats.get(style)
+        if figures and skin and skin.paper:
             html = tag("div", tag("div", intro, class_="hero-intro") + figures, class_="hero-grid")
             figures = ""
         else:

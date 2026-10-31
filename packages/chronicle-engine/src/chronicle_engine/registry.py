@@ -1,15 +1,16 @@
 """Extension points that a plugin fills before a command runs.
 
 The engine names no plugin. A plugin's `pack` module registers its blocks, its art
-provider, its animation kinds, its theme policies, its commands and its asset folders
-here; the plugin's `__main__` imports the pack and then runs the engine's command line.
-Registration is idempotent by name, so importing a pack twice changes nothing.
+provider, its page chrome and page parts, its animation kinds, its theme policies, its
+commands and its asset folders here; the plugin's `__main__` imports the pack and then
+runs the engine's command line. Registration is idempotent by name, so importing a pack
+twice changes nothing.
 """
 
 from __future__ import annotations
 
 import argparse
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass, field
 from importlib.resources.abc import Traversable
 from pathlib import Path
@@ -131,12 +132,85 @@ class Defaults:
     new_next: str = "fill theme.concept, then write the chapters"
 
 
+@dataclass(frozen=True)
+class StatSkin:
+    """How a stat panel looks: `paper` prints it on a slip beside the hero's title."""
+
+    paper: bool = False
+    fonts: frozenset[str] = frozenset()
+
+
+@dataclass
+class Chrome:
+    """The page chrome a theme picks from. The engine brings neutral entries; plugins add more.
+
+    `progress` maps a progress device to whether it needs a drawn path; `lines` are the
+    track lines a device may draw; `marks` maps a chapter mark style to its default
+    numbering; `frames` maps a frame to its CSS.
+    """
+
+    progress: dict[str, bool] = field(default_factory=lambda: {"steps": False})
+    lines: list[str] = field(default_factory=lambda: ["solid", "dashed"])
+    marks: dict[str, str] = field(
+        default_factory=lambda: {
+            "label": "decimal",
+            "plain": "decimal",
+            "step": "decimal",
+            "none": "decimal",
+        }
+    )
+    stats: dict[str, StatSkin] = field(
+        default_factory=lambda: {"rule": StatSkin(), "cards": StatSkin()}
+    )
+    frames: dict[str, str] = field(default_factory=lambda: {"none": ""})
+    progress_default: str = "steps"
+    mark_default: str = "label"
+
+
 ART: list[ArtProvider] = []
 KINDS: dict[str, Kind] = {}
 POLICIES: dict[str, Policy] = {}
 COMMANDS: dict[str, Command] = {}
 ASSET_ROOTS: list[Traversable] = []
 DEFAULTS = Defaults()
+CHROME = Chrome()
+# Page parts, as paths under an asset root. Every page ships ALWAYS; a page with a figure
+# of a type also ships PARTS[type]. Parts join in file-name order across roots, so a
+# plugin's part can sit between two of the engine's.
+ALWAYS: list[str] = [
+    "css/00-base.css",
+    "css/10-page.css",
+    "css/12-page.css",
+    "css/14-page.css",
+    "css/20-identity.css",
+    "js/00-core.js",
+    "js/40-progress.js",
+    "js/90-boot.js",
+]
+_CHARTS = ("js/10-charts.js",)
+_FIGURES = (*_CHARTS, "js/20-figures.js")
+_EXPLAINERS = ("js/50-explainers.js", "css/30-explainers.css")
+_LESSONS = (*_CHARTS, "js/60-lessons.js", "css/30-explainers.css")
+# The figures js/20-figures.js starts; it draws them with js/10-charts.js.
+_FIGURE_TYPES = (
+    "stats",
+    "scrolly",
+    "timeline",
+    "stepper",
+    "compare",
+    "matrix",
+    "roadmap",
+    "team",
+    "model",
+)
+PARTS: dict[str, tuple[str, ...]] = {
+    "chart": _CHARTS,
+    **dict.fromkeys(_FIGURE_TYPES, _FIGURES),
+    "tilemap": _EXPLAINERS,
+    "flow": _EXPLAINERS,
+    "diagram": (*_EXPLAINERS, "css/40-drawn.css"),
+    **dict.fromkeys(("quiz", "checklist", "widget"), _LESSONS),
+}
 
 
 def set_art(provider: ArtProvider) -> None:
@@ -183,3 +257,39 @@ def add_block(
     model.BLOCKS.clear()
     model.BLOCKS.update(entries)
     dispatch.RENDERERS[name] = render
+
+
+def insert(table: dict[str, Any], entries: Mapping[str, Any], *, before: str = "") -> None:
+    """Add entries to an ordered table, ahead of `before` when it is there, else at the end.
+
+    Order matters: theme errors list the choices in this order.
+    """
+    rest = [(k, v) for k, v in table.items() if k not in entries]
+    at = next((i for i, (k, _) in enumerate(rest) if k == before), len(rest))
+    rest[at:at] = list(entries.items())
+    table.clear()
+    table.update(rest)
+
+
+def add_parts(
+    always: tuple[str, ...] = (), by_type: Mapping[str, tuple[str, ...]] | None = None
+) -> None:
+    """Register page parts: `always` for every page, `by_type` for pages with that figure."""
+    for part in always:
+        if part not in ALWAYS:
+            ALWAYS.append(part)
+    for fig, parts in (by_type or {}).items():
+        PARTS[fig] = tuple(dict.fromkeys((*PARTS.get(fig, ()), *parts)))
+
+
+def page_parts(types: Iterable[str]) -> list[str]:
+    """The parts a page whose figures have these types ships, in file-name order."""
+    names = dict.fromkeys(ALWAYS)
+    for fig in types:
+        names.update(dict.fromkeys(PARTS.get(fig, ())))
+    return sorted(names)
+
+
+def all_parts() -> list[str]:
+    """Every registered part, so a build can read them once."""
+    return page_parts(PARTS)

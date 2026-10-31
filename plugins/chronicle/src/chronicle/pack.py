@@ -1,6 +1,7 @@
 """chronicle's registrations with the engine.
 
-Plates, the painter, scenes, TADs, the sameness review and the `motifs` command.
+Plates, the painter, the page chrome, scenes, TADs, the sameness review and the `motifs`
+command.
 
 Importing this module registers everything once; `python -m chronicle` imports it before
 running the engine's command line.
@@ -27,7 +28,7 @@ from chronicle.core.motion import scene
 from chronicle.core.motion.tad import draw as tad_draw
 from chronicle.core.motion.tad import spec as tad_spec
 from chronicle.core.motion.tad.spec import Tad
-from chronicle.core.story import plates, review
+from chronicle.core.story import chrome, plates, review
 from chronicle.entrypoints.cli import art, commands
 
 EXAMPLES = Path(__file__).resolve().parents[2] / "examples"
@@ -240,6 +241,9 @@ TAD = Kind(
 # ---------------------------------------------------------------- register
 registry.set_art(Painter())
 registry.add_block("plate", ("art",), ("caption", "spots", "width"), _plate_block, after="table")
+# Chapter and hero art are plates too, so these parts follow every painted image.
+registry.add_parts(by_type={"plate": ("js/30-plates.js", "css/11-plates.css", "css/40-drawn.css")})
+chrome.register()
 registry.add_kind("scene", SCENE, first=True)
 registry.add_kind("tad", TAD)
 registry.POLICIES["distinct"] = distinct

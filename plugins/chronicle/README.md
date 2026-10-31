@@ -140,11 +140,11 @@ scripts/chronicle motifs                                 # landscape presets and
 | `agents/chronicle-gatherer.md` | subagent that gathers facts from connected tools |
 | `scripts/chronicle` | launcher used by the skill through `${CLAUDE_PLUGIN_ROOT}` |
 | `src/chronicle_engine` | a link to `packages/chronicle-engine/src/chronicle_engine`, the shared engine: facts, derive, story checks and renderer, theme tokens, the animation clock and stage, the diagram kind, file, browser and video connectors, and the command line. Claude Code copies the linked files at install |
-| `src/chronicle/pack.py` | chronicle's registrations with the engine: the painter as art provider, the `plate` block, the scene and TAD kinds, the sameness review (`distinct` policy) and the `motifs` command |
-| `src/chronicle/core/story/` | plates on the page (`plates.py`) and the sameness review (`review.py`) |
+| `src/chronicle/pack.py` | chronicle's registrations with the engine: the painter as art provider, the `plate` block, the page chrome, the scene and TAD kinds, the sameness review (`distinct` policy) and the `motifs` command |
+| `src/chronicle/core/story/` | plates on the page (`plates.py`), the progress devices, chapter marks, stat slips and frames a theme picks (`chrome.py`), and the sameness review (`review.py`) |
 | `src/chronicle/core/watercolor/` | the painting engine, the SVG reader and ink-and-wash painter, landscape motifs and presets |
 | `src/chronicle/core/motion/` | the scene kind; `tad/` holds TADs: spec reader, layout, line routing, icons and the drawing |
-| `src/chronicle/assets/` | chronicle's own page and animation parts: the plate runtime, the TAD and scene stylesheets |
+| `src/chronicle/assets/` | chronicle's own page and animation parts: the plate stylesheet and runtime, the identity stylesheets and progress devices, the TAD and scene stylesheets |
 | `src/chronicle/entrypoints/cli/` | painting shared by `build`, `paint` and `animate` (`art.py`), and the `motifs` command |
 | `examples/keystone/` | status page example: story, facts, SVG drawings and a diagram, with invented data |
 | `examples/onboarding/` | handbook example: story, facts, drawings and a custom widget, with invented data |

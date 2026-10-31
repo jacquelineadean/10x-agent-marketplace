@@ -2,8 +2,9 @@
 
 The story's `theme` names a few brand colors and fonts; code derives the rest (text-safe
 accent shades, washes, a sequential ramp, every dark-mode color) and checks contrast,
-so a theme written in a minute still reads well in both light and dark. `review` compares
-a theme with the defaults and with other pages, so two pages do not end up looking alike.
+so a theme written in a minute still reads well in both light and dark. The progress
+devices, chapter marks, stat skins and frames a theme may pick are `registry.CHROME`:
+the engine's neutral entries and those the plugin registered.
 """
 
 from __future__ import annotations
@@ -12,6 +13,8 @@ import re
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
+
+from chronicle_engine import registry
 
 RGB = tuple[float, float, float]
 
@@ -59,7 +62,7 @@ FALLBACKS = {
     "hand": '"Segoe Print", "Bradley Hand", cursive',
     "mono": 'ui-monospace, "SF Mono", Menlo, monospace',
 }
-PROGRESS = ("arches", "track", "route", "tape", "flags", "clock", "steps")
+# Icons the runtime draws on a progress device or a flow token.
 ICONS = (
     "parcel",
     "van",
@@ -76,13 +79,9 @@ ICONS = (
     "book",
     "dot",
 )
-TRACK_LINES = ("solid", "dashed", "belt", "road", "rail")
-MARKS = ("arch", "label", "tag", "sign", "badge", "flag", "plain", "step", "none")
 NUMBERING = ("roman", "decimal", "padded", "alpha")
-STAT_STYLES = ("rule", "receipt", "cards", "ticket")
 TEXTURES = ("plain", "ruled", "grid", "dots")
 CORNERS = {"square": 0.0, "soft": 1.0, "round": 3.0}
-FRAMES = ("none", "mat", "tape")
 # Every word the page's controls and headings show, so a page can speak its world's language:
 # a golf handbook asks "Hole 3 of 9", a field guide ends with "Field notes".
 WORDS = {
@@ -225,11 +224,11 @@ def build(
     dark_spec = dict(spec.get("dark", {}))
     progress = _progress(dict(spec.get("progress", {})))
     mark = _mark(spec.get("chapter_mark", {}))
+    skins = registry.CHROME.stats
     stats = str(spec.get("stats", "rule"))
-    if stats not in STAT_STYLES:
-        raise ThemeError(f"theme.stats {stats!r} must be one of {', '.join(STAT_STYLES)}")
-    if stats in ("receipt", "ticket"):
-        needs = needs | {"mono"}
+    if stats not in skins:
+        raise ThemeError(f"theme.stats {stats!r} must be one of {', '.join(skins)}")
+    needs = needs | skins[stats].fonts
     font_css, url = _fonts(dict(spec.get("fonts", {})), fonts, needs)
     light = _light_tokens(colors)
     dark = _dark_tokens(colors, dark_spec, warnings)
@@ -413,16 +412,19 @@ def _fonts(
 
 
 def _progress(spec: Mapping[str, Any]) -> dict[str, Any]:
-    kind = str(spec.get("kind", "arches"))
-    if kind not in PROGRESS:
-        raise ThemeError(f"theme.progress.kind {kind!r} must be one of {', '.join(PROGRESS)}")
+    chrome = registry.CHROME
+    kind = str(spec.get("kind", chrome.progress_default))
+    if kind not in chrome.progress:
+        raise ThemeError(
+            f"theme.progress.kind {kind!r} must be one of {', '.join(chrome.progress)}"
+        )
     out: dict[str, Any] = {"kind": kind}
     icon = str(spec.get("icon", "dot"))
     if icon not in ICONS:
         raise ThemeError(f"theme.progress.icon {icon!r} must be one of {', '.join(ICONS)}")
     line = str(spec.get("line", "solid"))
-    if line not in TRACK_LINES:
-        raise ThemeError(f"theme.progress.line {line!r} must be one of {', '.join(TRACK_LINES)}")
+    if line not in chrome.lines:
+        raise ThemeError(f"theme.progress.line {line!r} must be one of {', '.join(chrome.lines)}")
     out.update(icon=icon, line=line)
     for key in ("path", "icon_path"):
         if key in spec:
@@ -433,9 +435,9 @@ def _progress(spec: Mapping[str, Any]) -> dict[str, Any]:
                     "(commands and numbers only)"
                 )
             out[key] = value
-    if kind == "route" and "path" not in out:
+    if chrome.progress[kind] and "path" not in out:
         raise ThemeError(
-            "theme.progress.kind route needs a path: SVG path data in a 1000 x 40 box, "
+            f"theme.progress.kind {kind} needs a path: SVG path data in a 1000 x 40 box, "
             "drawn left to right, such as the trail, river or line the page follows"
         )
     if "total" in spec:
@@ -450,27 +452,29 @@ def _mark(spec: Any) -> dict[str, str]:
     if isinstance(spec, str):
         spec = {"style": spec}
     spec = dict(spec or {})
-    style = str(spec.get("style", "arch"))
-    if style not in MARKS:
-        raise ThemeError(f"theme.chapter_mark.style {style!r} must be one of {', '.join(MARKS)}")
-    fmt = str(spec.get("format", "roman" if style == "arch" else "decimal"))
+    marks = registry.CHROME.marks
+    style = str(spec.get("style", registry.CHROME.mark_default))
+    if style not in marks:
+        raise ThemeError(f"theme.chapter_mark.style {style!r} must be one of {', '.join(marks)}")
+    fmt = str(spec.get("format", marks[style]))
     if fmt not in NUMBERING:
         raise ThemeError(f"theme.chapter_mark.format {fmt!r} must be one of {', '.join(NUMBERING)}")
     return {"style": style, "format": fmt, "prefix": str(spec.get("prefix", ""))}
 
 
 def _surface(spec: Any) -> str:
-    """CSS for the page's material: paper texture, corner rounding and how plates are hung."""
+    """CSS for the page's material: paper texture, corner rounding and the frame around art."""
     spec = dict(spec or {})
     for key in sorted(set(spec) - {"texture", "corners", "frame"}):
         raise ThemeError(f"theme.surface.{key} is unknown; use texture, corners, frame")
     texture = str(spec.get("texture", "plain"))
     corners = str(spec.get("corners", "soft"))
     frame = str(spec.get("frame", "none"))
+    frames = registry.CHROME.frames
     for name, value, allowed in (
         ("texture", texture, TEXTURES),
         ("corners", corners, tuple(CORNERS)),
-        ("frame", frame, FRAMES),
+        ("frame", frame, tuple(frames)),
     ):
         if value not in allowed:
             raise ThemeError(f"theme.surface.{name} {value!r} must be one of {', '.join(allowed)}")
@@ -492,21 +496,7 @@ def _surface(spec: Any) -> str:
             f"body {{ background-image: radial-gradient({line} 1.2px, transparent 1.6px); "
             "background-size: 20px 20px; }\n"
         )
-    if frame == "mat":
-        css += (
-            ".plate .frame { --frame-pad: clamp(8px, 1.6vw, 16px); background: var(--surface-2); "
-            "--frame-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 14px 32px -18px rgba(0, 0, 0, .4); }\n"
-        )
-    elif frame == "tape":
-        css += (
-            ".plate .frame { position: relative; }\n"
-            '.plate .frame::before, .plate .frame::after { content: ""; position: absolute; '
-            "z-index: 3; top: 0; width: 5.5rem; height: 1.35rem; pointer-events: none; "
-            "background: color-mix(in srgb, var(--accent) 24%, transparent); }\n"
-            ".plate .frame::before { left: 1.4rem; transform: rotate(-4deg); }\n"
-            ".plate .frame::after { right: 1.4rem; transform: rotate(5deg); }\n"
-        )
-    return css
+    return css + frames[frame]
 
 
 def _words(spec: Any) -> dict[str, str]:

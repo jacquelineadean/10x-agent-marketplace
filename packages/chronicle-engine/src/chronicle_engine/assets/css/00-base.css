@@ -1,8 +1,8 @@
-/* Layout: a 38rem reading column on paper; plates and figures break out to 72rem; a
+/* Layout: a 38rem reading column on paper; art and figures break out to 72rem; a
    sticky bar maps reading progress onto a device the theme picks. These defaults are
    placeholders: every page's theme replaces the colors and fonts below. */
 :root {
-  --paper: #FBFAF6;          /* the page: bright cold-press, so watercolor whites read as paper */
+  --paper: #FBFAF6;          /* the page: bright cold-press, so painted whites read as paper */
   --print: #FCFBF7;          /* paintings always sit on paper, in both themes */
   --surface: #F3F1EA;        /* insets and cards */
   --surface-2: #FFFFFF;

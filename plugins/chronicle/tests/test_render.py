@@ -104,6 +104,6 @@ def test_a_widget_used_twice_ships_its_style_once(
     widget = {"type": "widget", "name": "dial", "script": "w/dial.js", "style": "w/dial.css"}
     story["chapters"][0]["blocks"] += [widget, {**widget, "data": {"n": 2}}]
     files = {**assets.files, "w/dial.js": "root.textContent = 'x';", "w/dial.css": ".w-dial{}"}
-    page = render(story, facts, MANIFEST, Assets(assets.css, assets.js, assets.fonts, files))
+    page = render(story, facts, MANIFEST, Assets(assets.parts, assets.fonts, files))
     assert page.fragment.count(".w-dial{}") == 1
     assert page.fragment.count('["dial"] = function') == 1

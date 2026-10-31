@@ -123,7 +123,7 @@
     icon: drawIcon, word: word, reduceMotion: reduceMotion, store: STORE,
     tip: { show: showTip, hide: hideTip, at: pointerXY },
     onScroll: function (fn) { scrollers.push(fn); },
-    onFrame: function (fn) { plates.push(fn); },
+    onFrame: function (fn) { tickers.push(fn); },
     chart: function (mountNode, chartSpec) { return mountChart(null, chartSpec, mountNode, {}); }
   };
   function initWidget(node, spec) {
@@ -136,3 +136,6 @@
     var fallback = node.querySelector(".widget-fallback");
     if (fallback) fallback.hidden = true;
   }
+  INIT.quiz = initQuiz;
+  INIT.checklist = initChecklist;
+  INIT.widget = initWidget;

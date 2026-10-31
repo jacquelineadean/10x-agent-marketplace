@@ -245,12 +245,7 @@ def _build(
         story,
         facts,
         manifest,
-        Assets(
-            css=store.asset_parts("css", ".css"),
-            js=_runtime(),
-            fonts=_fonts(),
-            files=files,
-        ),
+        Assets(parts=store.asset_files(registry.all_parts()), fonts=_fonts(), files=files),
     )
     store.write_text(out / "artifact.html", page.fragment)
     store.write_text(out / "index.html", page.document)
@@ -265,8 +260,3 @@ def _build(
         store.write_text(out / "single.html", single)
         print(f"wrote {out / 'single.html'} with images embedded")
     return 0
-
-
-def _runtime() -> str:
-    """The page script: every js/ part inside one function, so parts share helpers."""
-    return "(function () {\n" + store.asset_parts("js", ".js") + "\n})();"

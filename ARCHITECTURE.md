@@ -119,10 +119,13 @@ chronicle's code lives in two places (RFC-0007, spec 002). The shared engine,
 kind (no I/O), `connectors/` does every file read and write and drives a local browser,
 ffmpeg and OpenCV's video writer, `entrypoints/cli/` parses arguments, `assets/` holds the
 page's and the animations' stylesheet and script parts and the font list, and `registry.py`
-holds the extension points. It imports no plugin. chronicle links the engine into
+holds the extension points. It imports no plugin. A page ships only the parts its figures
+use, and the engine alone offers neutral chrome: a step progress bar, label and plain
+chapter marks, ruled and card stats. chronicle links the engine into
 `plugins/chronicle/src/chronicle_engine` (Claude Code copies linked files at install) and
 registers its own parts from `plugins/chronicle/src/chronicle/pack.py`: the watercolor
-painter as art provider, plates, the scene and TAD kinds, the sameness review and `motifs`.
+painter as art provider, plates, the creative chrome (arches, tracks, routes, hang tags,
+receipts), the scene and TAD kinds, the sameness review and `motifs`.
 
 speedup uses the same layout under `plugins/speedup/src/speedup/`: `core/`
 (rules, statistics, rendering; no I/O), `connectors/datadog/`, `connectors/prometheus/`

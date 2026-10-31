@@ -508,4 +508,4 @@
     }
     return ctl;
   }
-
+  INIT.chart = function (node, spec) { mountChart(node, spec, node.querySelector(".mount"), {}); };

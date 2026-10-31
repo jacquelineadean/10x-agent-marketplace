@@ -11,11 +11,19 @@ Decided in [RFC-0007](../../DECISIONS/RFC-0007-chronicle-two-branches.md); built
    Claude Code copies linked files into its plugin cache at install, so each plugin installs alone and git holds
    one copy.
 2. The plugin's `pack` module fills `chronicle_engine.registry`: block types (`add_block`), an art provider
-   (`set_art`), animation kinds (`add_kind`), theme policies (`POLICIES`), commands (`COMMANDS`), asset folders
+   (`set_art`), page chrome a theme may pick (`CHROME`, ordered with `insert`), page parts (`add_parts`),
+   animation kinds (`add_kind`), theme policies (`POLICIES`), commands (`COMMANDS`), asset folders
    (`add_asset_root`) and defaults (`DEFAULTS`).
 3. The plugin's `__main__` imports the pack, then runs `chronicle_engine.entrypoints.cli.main.main()`.
 
-`python -m chronicle_engine` runs the engine with no plugin: stories without art, and the `diagram` animation kind.
+`python -m chronicle_engine` runs the engine with no plugin: stories without art, neutral chrome (progress `steps`;
+chapter marks `label`, `plain`, `step` and `none`; stats `rule` and `cards`; frame `none`), and the `diagram`
+animation kind.
+
+## Page parts
+A page ships `registry.ALWAYS` plus `registry.PARTS[type]` for each figure type on it, joined in file-name order
+across asset roots, the scripts inside one function. Every figure starts through the runtime's `INIT` table, so a
+page without a block's part still starts. Progress devices register in the runtime's `DEVICES` table.
 
 ## Layout
 
@@ -26,7 +34,7 @@ Decided in [RFC-0007](../../DECISIONS/RFC-0007-chronicle-two-branches.md); built
 | `core/motion/` | the step clock, CSS keyframe timeline, stage, diagram kind, HTML figure, frame times and GIF encoder |
 | `connectors/` | files (JSON, HTML, images, asset parts across roots), a local Chromium for screenshots and frames, ffmpeg and OpenCV video |
 | `entrypoints/cli/` | `new`, `check`, `build`, `shoot`, `animate new/check/build`, and `paint` when a plugin brings art |
-| `assets/` | the page stylesheet and runtime script in numbered parts, the stage and diagram stylesheets, `fonts.json` |
+| `assets/` | the page stylesheet and runtime script in numbered parts (charts, figures, explainers, lessons), the stage and diagram stylesheets, `fonts.json` |
 
 ## Tests
 `uv run pytest packages/chronicle-engine/tests` from the repository root. The command-line tests run the engine in

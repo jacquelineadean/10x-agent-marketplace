@@ -55,28 +55,28 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 
 | Folder | Holds |
 | --- | --- |
-| `registry.py` | extension points plugins fill: block types, the art provider, animation kinds, theme policies, commands, asset roots and defaults |
+| `registry.py` | extension points plugins fill: block types, the art provider, page chrome (progress devices, chapter marks, stat skins, frames), page parts by figure type, animation kinds, theme policies, commands, asset roots and defaults |
 | `core/story/` | facts and tokens, derive table, story checks, theme tokens, fonts and contrast (`theme.py`), the diagram sanitizer, US tile grid (`geo.py`), HTML renderer and the neutral block renderers (`blocks.py`, `explainers.py`, `lessons.py`, joined in `dispatch.py`) |
 | `core/motion/` | animations: the shared checks and step clock (`model.py`), CSS keyframe timeline, stage (title, captions, step strip, the SVG file), the diagram kind, the packet and visibility parts, render, the HTML figure, frame times and the GIF encoder |
 | `connectors/files/` | every file read and write: JSON, HTML, WebP, bundled assets joined across the engine's and plugins' asset roots |
 | `connectors/browser/` | an installed headless Chromium or Chrome: page screenshots (`shoot.py`) and animation frames over the DevTools pipe (`devtools.py`) |
 | `connectors/video/` | MP4 through the installed ffmpeg program, WebM through OpenCV's video writer |
 | `entrypoints/cli/` | the command line a plugin runs after its pack registers: new, check, paint (with an art provider), build, shoot (`main.py`), `animate new/check/build` (`animate.py`), run folders (`runs.py`) |
-| `assets/` | `fonts.json`; `css/` the page stylesheet in numbered parts; `js/` the page runtime in numbered parts joined inside one IIFE; `motion/` the stage and diagram stylesheets |
-| `packages/chronicle-engine/tests/` | engine-only tests: the boundary (`test_engine_boundary.py`) and the command line with no plugin (`test_engine_cli.py`) |
+| `assets/` | `fonts.json`; `css/` the page stylesheet in numbered parts; `js/` the page runtime in numbered parts, each figure starting through the `INIT` table; a page ships the parts its figures use, joined inside one IIFE; `motion/` the stage and diagram stylesheets |
+| `packages/chronicle-engine/tests/` | engine-only tests run with no plugin: the boundary and vocabulary lint (`test_engine_boundary.py`), the command line (`test_engine_cli.py`), page parts and neutral chrome (`test_engine_pages.py`), shared helpers (`engine_helpers.py`) |
 
 chronicle's own code lives under `plugins/chronicle/src/chronicle/`:
 
 | Folder | Holds |
 | --- | --- |
-| `pack.py` | chronicle's registrations: the painter as art provider, the `plate` block, the scene and TAD kinds, the `distinct` policy, the `motifs` command, defaults |
-| `core/story/` | plates on the page (`plates.py`) and the sameness review (`review.py`) |
+| `pack.py` | chronicle's registrations: the painter as art provider, the `plate` block and its parts, the page chrome, the scene and TAD kinds, the `distinct` policy, the `motifs` command, defaults |
+| `core/story/` | plates on the page (`plates.py`), the creative page chrome and its parts (`chrome.py`) and the sameness review (`review.py`) |
 | `core/watercolor/` | painting engine (paper, washes, ink), motifs, presets and the scene language |
 | `core/watercolor/svg/` | SVG drawings: path and transform math (`pathdata.py`), the reader (`parse.py`) and the ink-and-wash painter (`paint.py`) |
 | `core/motion/` | the scene kind (`scene.py`) |
 | `core/motion/tad/` | technical architecture diagrams: the spec reader, tier and lane layout, line routing, icons, and the drawing with its motion |
 | `entrypoints/cli/` | painting shared by build, paint and animate (`art.py`), the `motifs` command (`commands.py`) |
-| `assets/` | chronicle's page and animation parts: `js/30-plates.js`, `motion/20-tad.css`, `motion/30-scene.css` |
+| `assets/` | chronicle's page and animation parts: `css/11-plates.css`, `css/13-arch-mark.css`, `css/21-identity-devices.css`, `js/30-plates.js`, `js/41-devices.js` (progress devices), `motion/20-tad.css`, `motion/30-scene.css` |
 | `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, and the animations `animation-tad/`, `animation-diagram/`, `animation-scene/` |
 | `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |
 

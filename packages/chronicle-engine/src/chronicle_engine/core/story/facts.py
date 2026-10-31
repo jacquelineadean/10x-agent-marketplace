@@ -6,7 +6,7 @@ file, formatted, and wrapped in a span that names its source. Chart blocks point
 series the same way with `"@delivery.weekly"`.
 
 A fact is either a bare value or a record:
-    {"value": 71, "unit": "%", "source": "datadog", "note": "share of checkout requests"}
+    {"value": 71, "unit": "%", "source": "metrics", "note": "share of checkout requests"}
 """
 
 from __future__ import annotations

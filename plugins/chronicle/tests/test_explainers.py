@@ -93,7 +93,7 @@ def test_new_blocks_render_static_html_and_register_their_data(
     story: dict[str, Any], facts: dict[str, Any], assets: Assets
 ) -> None:
     files = {**assets.files, "w/pack.js": "root.textContent = String(data.n);"}
-    page = render(add_blocks(story), facts, {}, Assets(assets.css, assets.js, assets.fonts, files))
+    page = render(add_blocks(story), facts, {}, Assets(assets.parts, assets.fonts, files))
     html = page.fragment
     raw = re.search(r'id="chronicle-data">(.*?)</script>', html)
     assert raw

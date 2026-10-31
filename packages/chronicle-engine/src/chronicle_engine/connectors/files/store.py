@@ -87,6 +87,11 @@ def asset_parts(folder: str, suffix: str) -> str:
     return "\n".join(found[name].read_text(encoding="utf-8") for name in sorted(found))
 
 
+def asset_files(names: list[str]) -> dict[str, str]:
+    """Read each named bundled file, such as the page parts, by its name."""
+    return {name: asset(name) for name in names}
+
+
 def fonts() -> Any:
     """The font list a theme may pick from."""
     return json.loads(asset("fonts.json"))

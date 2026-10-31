@@ -16,25 +16,9 @@
   doc.querySelectorAll("[data-fig]").forEach(function (node) {
     var spec = FIGS[node.getAttribute("data-fig")];
     if (!spec) return;
-    var type = spec.type;
+    var start = INIT[spec.type];
     try {
-      if (type === "chart") mountChart(node, spec, node.querySelector(".mount"), {});
-      else if (type === "stats") initStats(node, spec);
-      else if (type === "scrolly") initScrolly(node, spec);
-      else if (type === "timeline") initTimeline(node, spec);
-      else if (type === "stepper") initStepper(node, spec);
-      else if (type === "compare") initCompare(node, spec);
-      else if (type === "matrix") initMatrix(node, spec);
-      else if (type === "roadmap") initRoadmap(node, spec);
-      else if (type === "team") initTeam(node, spec);
-      else if (type === "model") initModel(node, spec);
-      else if (type === "plate") initPlate(node, spec);
-      else if (type === "tilemap") initTilemap(node, spec);
-      else if (type === "flow") initFlow(node, spec);
-      else if (type === "diagram") initDiagram(node, spec);
-      else if (type === "quiz") initQuiz(node, spec);
-      else if (type === "checklist") initChecklist(node, spec);
-      else if (type === "widget") initWidget(node, spec);
+      if (start) start(node, spec);
     } catch (err) {
       var note = html("p", "fig-note", "This figure could not start: " + err.message, null);
       node.appendChild(note);
@@ -47,12 +31,12 @@
     var vh = window.innerHeight || 800;
     spanUpdate(vh);
     scrollers.forEach(function (f) { f(vh); });
-    plates.forEach(function (f) { f(vh, now || performance.now()); });
+    tickers.forEach(function (f) { f(vh, now || performance.now()); });
   }
   function request() { if (!ticking) { ticking = true; requestAnimationFrame(frameLoop); } }
   window.addEventListener("scroll", request, { passive: true });
   window.addEventListener("resize", request);
   frameLoop(performance.now());
   if (!reduceMotion) {
-    (function loop(t) { plates.forEach(function (f) { f(window.innerHeight || 800, t); }); requestAnimationFrame(loop); })(performance.now());
+    (function loop(t) { tickers.forEach(function (f) { f(window.innerHeight || 800, t); }); requestAnimationFrame(loop); })(performance.now());
   }

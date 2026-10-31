@@ -13,6 +13,11 @@
   /* The theme's words for the page's controls, so a golf handbook can ask "Hole 3 of 9". */
   var WORDS = DATA.words || {};
   function word(key, fallback) { return WORDS[key] || fallback; }
+  /* Each part registers how its figures start in INIT, by figure type; boot starts every
+     figure through it. Figures that move with scrolling or with time add a callback. */
+  var INIT = {};
+  var scrollers = [];
+  var tickers = [];
   var SVGNS = "http://www.w3.org/2000/svg";
   /* "#still" renders the finished state at once, for `chronicle shoot` screenshots. */
   var reduceMotion = location.hash === "#still" || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);

@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable, Mapping
 from typing import TYPE_CHECKING, Any
 
+from chronicle_engine import registry
 from chronicle_engine.core.story.facts import format_value
 from chronicle_engine.core.story.html import tag, void
 from chronicle_engine.core.story.markup import plain
@@ -46,7 +47,7 @@ def prose(b: Builder, block: Block) -> str:
 
 
 def stats(b: Builder, block: Block) -> str:
-    """Big numbers: ruled columns, cards, or a printed receipt or ticket stub."""
+    """Big numbers: ruled columns, cards, or a skin a plugin registers, such as a printed slip."""
     style = str(block.get("style") or b.theme.stats)
     items = ""
     sparks: dict[str, Any] = {}
@@ -73,7 +74,8 @@ def stats(b: Builder, block: Block) -> str:
     fid = b.register({"type": "stats", "sparks": sparks})
     title = tag("h3", b.inline(block["title"]), class_="stats-title") if block.get("title") else ""
     sub = tag("p", b.inline(block["subtitle"]), class_="stats-sub") if block.get("subtitle") else ""
-    if style in ("receipt", "ticket"):
+    skin = registry.CHROME.stats.get(style)
+    if skin and skin.paper:
         paper = tag(
             "div",
             title + sub + tag("div", items, class_="stats") + tag("p", class_="rc-code"),

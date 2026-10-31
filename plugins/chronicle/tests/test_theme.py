@@ -86,6 +86,23 @@ def test_bad_themes_say_what_to_change(spec: dict[str, Any], message: str) -> No
         theme.build(spec, FONTS)
 
 
+@pytest.mark.parametrize(
+    ("spec", "choices"),
+    [
+        ({"progress": {"kind": "x"}}, "arches, track, route, tape, flags, clock, steps"),
+        ({"progress": {"line": "x"}}, "solid, dashed, belt, road, rail"),
+        ({"chapter_mark": "x"}, "arch, label, tag, sign, badge, flag, plain, step, none"),
+        ({"stats": "x"}, "rule, receipt, cards, ticket"),
+        ({"surface": {"frame": "x"}}, "none, mat, tape"),
+    ],
+)
+def test_errors_list_the_engine_and_chronicle_chrome_in_order(
+    spec: dict[str, Any], choices: str
+) -> None:
+    with pytest.raises(theme.ThemeError, match=f"must be one of {choices}$"):
+        theme.build(spec, FONTS)
+
+
 def test_every_listed_font_names_its_kind_and_roles() -> None:
     kinds = {"serif", "sans", "hand", "mono"}
     roles = {"display", "body", "ui", "hand", "mono"}

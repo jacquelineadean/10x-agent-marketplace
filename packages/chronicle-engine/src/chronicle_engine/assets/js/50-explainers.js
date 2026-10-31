@@ -264,7 +264,7 @@
       var ts = svg("svg", { width: 26, height: 22, viewBox: "-13 -11 26 22" }, token);
       drawIcon(ts, spec.token, 0, 0, 1);
       var t0 = null;
-      plates.push(function (vh, now) {
+      tickers.push(function (vh, now) {
         var r = trackEl.getBoundingClientRect();
         if (r.bottom < 0 || r.top > vh) return;
         if (t0 === null) t0 = now;
@@ -326,3 +326,6 @@
     next.addEventListener("click", function () { go(at + 1); });
     go(0);
   }
+  INIT.tilemap = initTilemap;
+  INIT.flow = initFlow;
+  INIT.diagram = initDiagram;
