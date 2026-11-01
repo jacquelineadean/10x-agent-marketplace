@@ -47,6 +47,11 @@ jobs:
           uv run mypy plugins/chronicle/src/chronicle
           uv run mypy plugins/speedup/src/speedup
 
+      # Ubuntu 24.04 blocks unprivileged user namespaces, so the runner's Chrome cannot start
+      # its sandbox and exits; chronicle's frame-capture test needs that browser running.
+      - name: Allow the Chrome sandbox
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
       - name: Tests
         run: uv run pytest -q
 
