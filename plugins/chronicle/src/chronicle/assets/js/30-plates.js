@@ -33,7 +33,7 @@
         cards.forEach(function (c) { c.hidden = !(on && c.getAttribute("data-spot") === k); });
       });
     });
-    plates.push(function (vh, now) {
+    tickers.push(function (vh, now) {
       var r = stage.getBoundingClientRect();
       if (r.bottom < -50 || r.top > vh + 50) return;
       if (!developed && r.top < vh * 0.82) {
@@ -92,3 +92,4 @@
       });
     });
   }
+  INIT.plate = initPlate;

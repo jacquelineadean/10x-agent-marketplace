@@ -1,0 +1,66 @@
+/* -------------------------------------------------------------- panorama */
+/* A wide painting at a fixed height. The world keeps the painting's own pixels and the
+   script scales and pans it; without scripts the view scrolls sideways. */
+.panorama .pa-frame { position: relative; }
+.pa-view {
+  position: relative; overflow-x: auto; overflow-y: hidden; background: var(--print);
+  border-radius: calc(4px * var(--round, 1)); touch-action: pan-y; cursor: grab;
+}
+.panorama.live .pa-view { overflow: hidden; }
+.pa-view:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pa-world { position: relative; transform-origin: 0 0; will-change: transform; }
+.pa-world img { display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.pa-bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pa-layer { position: absolute; max-width: none; transition: opacity .25s ease, translate .35s ease-out; }
+.pa-layer.mult { mix-blend-mode: multiply; }
+.pa-animal { position: absolute; padding: 0; border: 0; background: none; cursor: pointer; }
+.pa-animal .rig { position: absolute; inset: 0; display: block; }
+.pa-animal .rig .part { position: absolute; display: block; max-width: none; will-change: rotate, translate; }
+.pa-animal:focus-visible { outline: 6px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+.pa-animal.picked .rig { filter: drop-shadow(0 0 10px color-mix(in srgb, var(--paper) 90%, transparent)); }
+.pa-zone-spot { position: absolute; top: 0; bottom: 0; z-index: 100000; opacity: 0; pointer-events: none; background: color-mix(in srgb, var(--paper) 35%, transparent); }
+.pa-zone-spot.flash { animation: pa-flash 1.9s ease; }
+@keyframes pa-flash { 18% { opacity: 1; } to { opacity: 0; } }
+.pa-zones { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 .6rem; }
+.pa-zone {
+  padding: .3rem .7rem; font: 600 .72rem/1.2 var(--f-ui); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-2); background: var(--surface); border: 1px solid var(--rule); border-radius: 999px; cursor: pointer;
+}
+.pa-zone[aria-current="true"] { color: var(--on-accent, var(--paper)); background: var(--accent); border-color: var(--accent); }
+.pa-zone:focus-visible, .pa-nav:focus-visible, .pa-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pa-nav {
+  position: absolute; top: 50%; translate: 0 -50%; width: 2.4rem; height: 2.4rem; border-radius: 50%;
+  font: 400 1.4rem/1 var(--f-ui); color: var(--ink); background: color-mix(in srgb, var(--paper) 88%, transparent);
+  border: 1px solid var(--rule); cursor: pointer; z-index: 2;
+}
+.pa-nav-l { left: .5rem; }
+.pa-nav-r { right: .5rem; }
+.pa-nav:disabled { opacity: .35; cursor: default; }
+.pa-tide-row { display: flex; align-items: center; gap: .6rem; margin-top: .8rem; font: 500 .85rem/1.2 var(--f-ui); color: var(--ink-2); }
+.pa-tide-label { font-weight: 600; color: var(--ink); }
+.pa-tide-range { flex: 1; accent-color: var(--accent); }
+.pa-tide-note { min-height: 1.3em; margin: .4rem 0 0; font: 400 .9rem/1.4 var(--f-body); color: var(--ink-2); }
+.pa-card { margin-top: .8rem; padding: .8rem 1rem; background: var(--surface); border-left: 3px solid var(--accent); }
+.pa-card p, .pa-card h4 { margin: 0; }
+.pa-intro { font: italic 400 .95rem/1.5 var(--f-body); color: var(--ink-2); }
+.pa-kicker { font: 600 .7rem/1.3 var(--f-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.pa-name { margin: .15rem 0 .25rem !important; font: 400 1.25rem/1.2 var(--f-display); }
+.pa-latin { font: italic 400 .95rem/1.2 var(--f-body); color: var(--muted); }
+.pa-fact { font: 400 .95rem/1.5 var(--f-body); }
+.pa-journal { margin-top: .8rem; }
+.pa-journal-head { margin: 0 0 .4rem; font: 500 .85rem/1.4 var(--f-ui); color: var(--ink-2); }
+.pa-journal-list { display: flex; flex-wrap: wrap; gap: .35rem; }
+.pa-chip {
+  padding: .25rem .65rem; font: 500 .8rem/1.3 var(--f-ui); color: var(--muted); background: transparent;
+  border: 1px dashed var(--rule); border-radius: 999px; cursor: pointer;
+}
+.pa-chip.found { color: var(--ink); background: var(--accent-wash); border: 1px solid var(--accent); }
+.pa-chip.found::before { content: "✓ "; color: var(--accent-text); }
+.pa-chip-state { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pa-fallback { margin: .8rem 0 0; padding-left: 1.2rem; font: 400 .95rem/1.5 var(--f-body); }
+.js .panorama .pa-fallback { display: none; }
+:root[data-theme="dark"] .pa-world img { filter: brightness(.92) saturate(.95); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pa-world img { filter: brightness(.92) saturate(.95); } }
+@media (prefers-reduced-motion: reduce) {
+  .pa-zone-spot.flash { animation: none; }
+}

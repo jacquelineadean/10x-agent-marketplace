@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from chronicle.core.story.markup import inline, paragraphs
+from chronicle_engine.core.story.markup import inline, paragraphs
 
 
 def fact(path: str, fmt: str) -> str:

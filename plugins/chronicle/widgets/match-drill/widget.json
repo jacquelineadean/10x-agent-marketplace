@@ -1,0 +1,6 @@
+{
+ "title": "Match the terms",
+ "summary": "The reader matches each term to its meaning; the drill counts the tries.",
+ "data": {"pairs": [{"term": "Ebb", "meaning": "The falling tide, water running out"}, {"term": "Flood", "meaning": "The rising tide, water running in"}, {"term": "Slack", "meaning": "The pause at high or low water"}], "done": "The tide's words, all matched."},
+ "fallback": "Ebb is the falling tide, flood the rising tide, and slack the pause between them."
+}

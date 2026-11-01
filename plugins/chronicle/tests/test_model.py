@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 from typing import Any
 
-from chronicle.core.story import model
+from chronicle_engine.core.story import model
 
 
 def test_keystone_example_is_clean(story: dict[str, Any], facts: dict[str, Any]) -> None:

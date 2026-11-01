@@ -7,7 +7,6 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 
-TOKEN_NAMES = ("GITHUB_TOKEN", "GH_TOKEN")
 HOST_NAME = "IMPACT_REVIEW_HOST"
 RUNS_NAME = "IMPACT_REVIEW_RUNS"
 DEFAULT_HOST = "github.com"

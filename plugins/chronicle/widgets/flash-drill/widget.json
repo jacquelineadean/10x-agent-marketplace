@@ -1,0 +1,6 @@
+{
+ "title": "Learn the cards",
+ "summary": "Flash cards: the reader shows each back and says whether they knew it; missed cards come back.",
+ "data": {"cards": [{"front": "Spartina", "back": "Smooth cordgrass, the grass of the salt marsh."}, {"front": "Hammock", "back": "A raised island of trees inside the marsh."}], "done": "You know every card."},
+ "fallback": "Spartina is smooth cordgrass, the grass of the salt marsh; a hammock is a raised island of trees inside the marsh."
+}

@@ -1,0 +1,16 @@
+{
+ "island": {
+  "name": "Marrow Key",
+  "acres": {"value": 2200, "unit": "acres", "source": "survey", "note": "upland, marsh and beach above mean low water"},
+  "ferry_minutes": {"value": 40, "unit": "min", "source": "ferry", "note": "Breton landing to the north dock"},
+  "ferries_day": {"value": 2, "unit": "ferries", "source": "ferry", "note": "each way, April to October"}
+ },
+ "marsh": {
+  "tide_range": {"value": 7, "unit": "ft", "source": "tides", "note": "mean range at the north dock"},
+  "tides_day": {"value": 2, "unit": "tides", "source": "tides", "note": "high tides a day"}
+ },
+ "house": {
+  "built": {"value": 1891, "source": "log", "note": "the keeper's house, finished the year the light was lit"},
+  "keepers": {"value": 6, "unit": "keepers", "source": "log", "note": "who lived here before the light was automated"}
+ }
+}

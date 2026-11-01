@@ -10,11 +10,11 @@ from typing import Any
 
 import numpy as np
 import pytest
-from chronicle.connectors.browser import shoot
-from chronicle.connectors.files import store
-from chronicle.connectors.video import encode
-from chronicle.core.motion import gif, render
-from chronicle.entrypoints.cli.main import main
+from chronicle_engine.connectors.browser import shoot
+from chronicle_engine.connectors.files import store
+from chronicle_engine.connectors.video import encode
+from chronicle_engine.core.motion import gif, render
+from chronicle_engine.entrypoints.cli.main import main
 
 EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
 CSS = store.asset_parts("motion", ".css") + store.asset("css/40-drawn.css")
@@ -100,7 +100,7 @@ def test_scene_spots_need_anchors_the_drawing_has() -> None:
 
 
 def _keystone_facts() -> dict[str, Any]:
-    from chronicle.core.story import derive
+    from chronicle_engine.core.story import derive
 
     raw = json.loads((EXAMPLES / "keystone" / "facts.json").read_text(encoding="utf-8"))
     facts: dict[str, Any] = derive.apply(raw)
@@ -200,7 +200,7 @@ def test_video_writers_write_files(tmp_path: Path) -> None:
 
 
 # -------------------------------------------------------------------------- CLI
-@pytest.mark.parametrize("name", ["animation-tad", "animation-diagram", "animation-scene"])
+@pytest.mark.parametrize("name", ["animation-diagram", "animation-scene"])
 def test_the_examples_check_clean(name: str, capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["animate", "check", str(EXAMPLES / name / "animation.json")]) == 0
     assert "0 warning(s)" in capsys.readouterr().out
@@ -209,17 +209,16 @@ def test_the_examples_check_clean(name: str, capsys: pytest.CaptureFixture[str])
 def test_new_starts_each_kind_and_check_asks_for_the_description(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    for kind in ("tad", "diagram", "scene"):
+    for kind in ("diagram", "scene"):
         folder = tmp_path / "chronicle-runs" / kind
         assert main(["animate", "new", str(folder), "--kind", kind]) == 0
         anim = json.loads((folder / "animation.json").read_text(encoding="utf-8"))
         assert anim["kind"] == kind and kind in anim
     assert (tmp_path / "chronicle-runs" / "diagram" / "drawing.svg").exists()
-    assert main(["animate", "new", str(tmp_path / "chronicle-runs" / "tad")]) == 1
+    assert main(["animate", "new", str(tmp_path / "chronicle-runs" / "diagram")]) == 1
     capsys.readouterr()
-    assert (
-        main(["animate", "check", str(tmp_path / "chronicle-runs" / "tad" / "animation.json")]) == 1
-    )
+    check = ["animate", "check", str(tmp_path / "chronicle-runs" / "diagram" / "animation.json")]
+    assert main(check) == 1
     assert "meta.description is required" in capsys.readouterr().err
 
 
@@ -239,7 +238,7 @@ def test_build_writes_the_svg_and_the_embed_without_a_browser(tmp_path: Path) ->
 def test_build_refuses_an_unknown_format(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    anim = EXAMPLES / "animation-tad" / "animation.json"
+    anim = EXAMPLES / "animation-diagram" / "animation.json"
     assert main(["animate", "build", str(anim), "--out", str(tmp_path), "--formats", "avi"]) == 1
     assert "unknown format avi" in capsys.readouterr().err
 

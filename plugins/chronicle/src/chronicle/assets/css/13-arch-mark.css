@@ -1,0 +1,10 @@
+.mark-arch {
+  display: inline-grid; place-items: end center; width: 3.6rem; height: 2.1rem; margin: 0 0 1.1rem;
+  border: 1.5px solid var(--ink); border-bottom: 0; border-radius: 999px 999px 0 0;
+  font: 400 1.35rem/1 var(--f-display); color: var(--ink); padding-bottom: .1rem;
+  position: relative;
+}
+.mark-arch::after {
+  content: ""; position: absolute; left: 50%; top: -1px; width: 9px; height: 9px; transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--accent); border-radius: 1px;
+}

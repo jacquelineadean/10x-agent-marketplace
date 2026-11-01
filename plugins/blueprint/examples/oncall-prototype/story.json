@@ -1,0 +1,59 @@
+{
+ "schema_version": 1,
+ "layout": "prototype",
+ "meta": {
+  "title": "On-call console",
+  "kicker": "Prototype · invented data",
+  "dek": "A clickable prototype of the on-call console: open incidents, the pager's week and service health. Cards and rows open the screens they name."
+ },
+ "theme": {"concept": "A plain product screen: white surfaces, one accent for what needs attention."},
+ "sources": [
+  {"id": "pagerduty", "label": "PagerDuty", "detail": "Incidents and pages (invented for this prototype).", "as_of": "2026-10-31"},
+  {"id": "datadog", "label": "Datadog", "detail": "SLO history (invented for this prototype).", "as_of": "2026-10-31"}
+ ],
+ "chapters": [
+  {
+   "id": "now",
+   "title": "Now",
+   "dek": "What needs a responder this hour.",
+   "blocks": [
+    {
+     "type": "cards",
+     "items": [
+      {"title": "Open incidents", "value": "{{oncall.open}}", "text": "{{oncall.acked}} acknowledged", "status": "bad", "link": "incidents"},
+      {"title": "Pages this week", "value": "{{oncall.pages_week}}", "text": "Median acknowledge in {{oncall.mtta_min}}", "status": "warn", "link": "week"},
+      {"title": "Checkout SLO", "value": "{{services.checkout_slo}}", "text": "Availability over the last month", "status": "good", "link": "services"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "incidents",
+   "title": "Incidents",
+   "blocks": [
+    {
+     "type": "list",
+     "items": [
+      {"title": "Card processor timeouts", "meta": "Payments · 08:41", "status": "Triggered", "text": "Payments retries twice, then fails the order. Runbook: switch to the backup processor."},
+      {"title": "Search latency over its target", "meta": "Search · 07:55", "status": "Acknowledged", "text": "A reindex job is running; latency should recover when it ends."},
+      {"title": "Warehouse sync lag", "meta": "Fulfillment · 06:12", "status": "Acknowledged", "text": "Events queue behind a slow consumer; orders still save."}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week",
+   "title": "This week",
+   "blocks": [
+    {"type": "chart", "chart": "bars", "title": "Pages per day", "source": "pagerduty", "data": {"categories": "@oncall.day", "series": [{"name": "Pages", "values": "@oncall.pages"}]}}
+   ]
+  },
+  {
+   "id": "services",
+   "title": "Services",
+   "blocks": [
+    {"type": "table", "title": "Service health", "source": "datadog", "columns": ["Service", "30-day availability", "Owner"], "rows": [["Checkout", "{{services.checkout_slo}}", "Payments squad"], ["Search", "{{services.search_slo}}", "Discovery squad"]]}
+   ]
+  }
+ ]
+}

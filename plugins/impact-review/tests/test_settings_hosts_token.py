@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 from impact_review.config.settings import load_environment, read_dotenv, settings_from
-from impact_review.connectors.github.hosts import endpoints_for
-from impact_review.connectors.github.token import MissingTokenError, resolve_token
+from sources.connectors.github.hosts import endpoints_for
+from sources.connectors.github.token import MissingTokenError, resolve_token
 
 
 def test_dotenv_reader_skips_comments_and_strips_quotes(tmp_path: Path) -> None:

@@ -1,0 +1,74 @@
+{
+ "statement_id": "01ef8b2c",
+ "status": {
+  "state": "SUCCEEDED"
+ },
+ "manifest": {
+  "format": "JSON_ARRAY",
+  "schema": {
+   "column_count": 4,
+   "columns": [
+    {
+     "name": "month",
+     "type_text": "STRING",
+     "type_name": "STRING",
+     "position": 0
+    },
+    {
+     "name": "orders",
+     "type_text": "BIGINT",
+     "type_name": "LONG",
+     "position": 1
+    },
+    {
+     "name": "revenue",
+     "type_text": "DECIMAL(20,2)",
+     "type_name": "DECIMAL",
+     "position": 2
+    },
+    {
+     "name": "first_day",
+     "type_text": "TIMESTAMP",
+     "type_name": "TIMESTAMP",
+     "position": 3
+    }
+   ]
+  },
+  "total_chunk_count": 2,
+  "chunks": [
+   {
+    "chunk_index": 0,
+    "row_offset": 0,
+    "row_count": 2
+   },
+   {
+    "chunk_index": 1,
+    "row_offset": 2,
+    "row_count": 1
+   }
+  ],
+  "total_row_count": 3,
+  "truncated": false
+ },
+ "result": {
+  "chunk_index": 0,
+  "row_offset": 0,
+  "row_count": 2,
+  "data_array": [
+   [
+    "2026-07",
+    "905",
+    "44964.95",
+    "2026-07-01T00:00:00.000Z"
+   ],
+   [
+    "2026-08",
+    "905",
+    "43808.95",
+    "2026-08-01T00:00:00.000Z"
+   ]
+  ],
+  "next_chunk_index": 1,
+  "next_chunk_internal_link": "/api/2.0/sql/statements/01ef8b2c/result/chunks/1"
+ }
+}

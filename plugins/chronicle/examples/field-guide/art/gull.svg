@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 260">
+  <!-- a gull gliding, facing right: far wing, body, near wing -->
+  <g data-rig="gull" data-bob="0" data-foot="250 175">
+    <g data-part="wing-far" data-pivot="250 130" data-amp="6" data-speed="1.4"><path d="M250 130 C 200 60 140 40 90 50 C 150 80 200 110 240 140 Z" fill="#c9cdd0"/></g>
+    <g data-part="body" data-role="static">
+      <path d="M160 150 L118 136 L124 160 Z" fill="#c9cdd0"/>
+      <ellipse cx="250" cy="145" rx="95" ry="28" fill="#f1f0ea"/>
+      <circle cx="335" cy="132" r="22" fill="#f1f0ea"/>
+      <path d="M352 130 L384 136 L352 140 Z" fill="#e2b13c"/>
+      <circle cx="340" cy="128" r="3.5" fill="#1e1a16"/>
+    </g>
+    <g data-part="wing-near" data-pivot="255 135" data-amp="-8" data-speed="1.4"><path d="M255 135 C 230 70 190 30 120 20 C 170 70 210 120 245 150 Z" fill="#b5bbbf"/></g>
+  </g>
+</svg>

@@ -1,0 +1,56 @@
+/* ----------------------------------------------------------------- rooms */
+/* Painted rooms with numbered details and doorways. With scripts one room shows at a time
+   and the next one develops from gray as the view pushes through the door. */
+.rooms .plate { margin: 0; }
+.rooms .plate.inset { max-width: none; }
+.rm-tabs { display: flex; flex-wrap: wrap; gap: .3rem; margin: 0 0 .7rem; }
+.rm-tabs [role="tab"] {
+  padding: .4rem .8rem; font: 600 .82rem/1.2 var(--f-ui); color: var(--ink-2); background: var(--surface);
+  border: 1px solid var(--rule); border-radius: calc(4px * var(--round, 1)); cursor: pointer;
+}
+.rm-tabs [role="tab"][aria-selected="true"] { color: var(--on-accent, var(--paper)); background: var(--accent); border-color: var(--accent); }
+.rm-tabs [role="tab"]:focus-visible, .rm-dot:focus-visible, .rm-exit:focus-visible, .rm-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.rm-room + .rm-room { margin-top: 2rem; }
+.rooms.live .rm-stage { display: grid; }
+.rooms.live .rm-room { grid-area: 1 / 1; margin: 0; transition: transform .9s cubic-bezier(.5, 0, .3, 1), opacity .9s ease, filter .9s ease; }
+.rooms.live .rm-room[hidden] { display: none; }
+.rm-room.rm-leave { transform: scale(1.55); opacity: 0; filter: blur(2px); z-index: 1; pointer-events: none; }
+.rm-room.rm-enter { transform: scale(1.08); opacity: 0; filter: grayscale(1) contrast(1.1); transition: none; }
+.rm-dot {
+  position: absolute; translate: -50% -50%; width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center;
+  font: 700 .8rem/1 var(--f-ui); color: var(--paper); background: var(--legacy, var(--accent)); text-decoration: none;
+  box-shadow: 0 0 0 2px var(--paper); animation: rm-pulse 2.6s ease-out infinite; z-index: 3;
+}
+.rm-dot.on { background: var(--accent); scale: 1.15; animation: none; }
+@keyframes rm-pulse { 0% { box-shadow: 0 0 0 2px var(--paper), 0 0 0 2px color-mix(in srgb, var(--paper) 70%, transparent); } 70%, 100% { box-shadow: 0 0 0 2px var(--paper), 0 0 0 12px transparent; } }
+.rm-exit {
+  position: absolute; translate: -50% -50%; display: inline-flex; gap: .35rem; align-items: center; padding: .35rem .75rem;
+  font: 600 .8rem/1.2 var(--f-ui); color: #FCFBF7; background: rgba(35, 38, 31, .82); border-radius: 999px;
+  text-decoration: none; white-space: nowrap; z-index: 3;
+}
+.rm-exit.edge-l { translate: 0 -50%; }
+.rm-exit.edge-r { translate: -100% -50%; }
+.rm-arrow { font-size: 1rem; }
+.rm-cap { margin: .8rem auto 0; max-width: var(--col); }
+.rm-kicker { margin: 0; font: 600 .72rem/1.3 var(--f-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.rm-title { margin: .15rem 0 .3rem; font: 400 1.35rem/1.2 var(--f-display); }
+.rm-title:focus, .rm-detail-title:focus { outline: none; }
+.rm-text { font: 400 1rem/1.55 var(--f-body); }
+.rm-hint { margin: .4rem 0 0; font: italic 400 .85rem/1.4 var(--f-body); color: var(--muted); }
+.rm-details { margin: .6rem 0 0; padding-left: 1.4rem; }
+.rm-details li + li { margin-top: .5rem; }
+.rm-detail-title { margin: 0 0 .2rem; font: 600 1rem/1.3 var(--f-ui); }
+.rooms.live .rm-details { list-style: none; padding: 0; margin: 0; }
+.rm-back {
+  margin-top: .6rem; padding: .4rem .8rem; font: 600 .82rem/1.2 var(--f-ui); color: var(--ink); background: transparent;
+  border: 1px solid var(--rule); border-radius: calc(4px * var(--round, 1)); cursor: pointer;
+}
+@media (max-width: 640px) {
+  .rooms .frame { overflow-x: auto; scrollbar-width: none; }
+  .rooms .stage { width: 175%; max-width: none; }
+  .rm-exit-label { font-size: .75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rm-dot { animation: none; }
+  .rooms.live .rm-room { transition: none; }
+}
