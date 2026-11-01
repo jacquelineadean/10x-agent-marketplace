@@ -1,0 +1,25 @@
+name: Feature request
+description: A new skill, option or plugin. Large ones become an RFC in DECISIONS/.
+title: "feat(<plugin>): "
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: plugin
+    attributes:
+      label: Plugin
+      options: [impact-review, chronicle, speedup, marketplace, new plugin]
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Who needs this, and what they do today without it.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+    validations:
+      required: true

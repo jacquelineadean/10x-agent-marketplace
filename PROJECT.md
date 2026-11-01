@@ -72,4 +72,6 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Proxy benchmark:** a command that prints a stable number for a hot path, such as an instruction count, used in place of noisy wall-clock time.
 - **Ceiling:** the highest value a proxy may reach before CI fails; `tighten` only lowers it. The rule as a whole is the **ratchet**.
 - **Change log:** `perf/changes.jsonl`, one optimization per line with its flag, rollout stage and proxy numbers.
+- **Conventional Commit:** a PR title of the form `<type>(<scope>): <subject>`, such as `feat(chronicle): add a timeline block`; release-please reads it to pick the version bump.
+- **Release PR:** the pull request release-please keeps open on `main` with the next version bumps and changelog entries; merging it tags and publishes the release.
 - **Data folder:** speedup's local, never-committed folder of history, benchmark runs and outputs for one project.

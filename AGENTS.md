@@ -8,6 +8,7 @@ Instructions for coding agents in this standalone repo. Humans: read PROJECT.md 
 3. `CONSTITUTION.md` — non-negotiable rules (scripts compute, Claude writes; local and read-only).
 4. `DECISIONS/` — RFCs, approved or not.
 5. The spec for the feature you touch: `specs/NNN-slug/`.
+6. `CONTRIBUTING.md` and `RELEASING.md` — branch names, PR titles, checks and the release flow.
 
 ## Commands
 **Python uses `uv`, never `pip`.** `uv add --dev <pkg>` for dev tools, `uv sync` to install, `uv run <cmd>` to run.
@@ -21,9 +22,10 @@ uv run mypy plugins/impact-review/src/impact_review
 uv run mypy plugins/chronicle/src/chronicle
 uv run mypy plugins/speedup/src/speedup
 claude plugin validate .                   # marketplace and plugin manifests
+.github/scripts/check-versions.sh          # plugin.json, marketplace.json and release manifest agree
 claude --plugin-dir plugins/impact-review  # try one plugin in a session
 ```
-All four checks must pass before "done"; `groundwork.py verify` runs them together.
+All four checks must pass before "done"; `groundwork.py verify` runs them together. CI (`.github/workflows/ci.yml`) runs the same checks on every PR.
 
 ## Where code lives
 **Read `CODEMAP.md` before searching the code.** It lists every code folder and what it holds.
@@ -33,7 +35,9 @@ Layout is the GroundWork standard `cli` profile, rooted at `plugins/impact-revie
 
 ## Conventions
 - One plugin per folder: `plugins/<name>/` with `.claude-plugin/plugin.json`, `skills/`, optional `agents/`, `README.md`.
-- Register every plugin in `.claude-plugin/marketplace.json` and bump its `version` in `plugin.json` on each release.
+- Register every plugin in `.claude-plugin/marketplace.json`, `release-please-config.json` and `.release-please-manifest.json`, and add its name to the scopes in `.github/workflows/pr-lint.yml`.
+- Never edit a `version` field or a `CHANGELOG.md` by hand: release-please bumps `plugin.json` and `marketplace.json` together when its release PR merges (RELEASING.md).
+- Branch names and PR titles follow CONTRIBUTING.md: `<type>/<slug>` branches, Conventional Commit titles such as `fix(speedup): ...`. PRs are squash-merged, so the title is the changelog line.
 - No top-level `bin/` folder in a plugin: claude.ai and Cowork refuse to install those. Skills call scripts through `${CLAUDE_PLUGIN_ROOT}`.
 - Skills tell Claude to read the digest only; never point a skill at raw API data or full `metrics.json`.
 - Tests use recorded GitHub, Datadog and Prometheus responses under `tests/fixtures/`; no test calls a live API.

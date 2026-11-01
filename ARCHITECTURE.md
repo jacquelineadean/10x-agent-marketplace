@@ -136,8 +136,9 @@ benchmark commands), `connectors/files/` (every file read and write), `entrypoin
 ## Deployment and environments
 - No hosted environment; plugins run on each user's machine.
 - Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace` or `speedup@10x-agent-marketplace`.
-- Releases: each plugin carries a semantic version in `plugin.json`; a git tag `<plugin>-vX.Y.Z` (for example `impact-review-v1.0.0`) marks each release.
-- Rollback: reinstall from the previous tag, or pin the marketplace to it.
+- Releases (RFC-0008, draft): each plugin carries a semantic version in `plugin.json` and its `marketplace.json` entry. release-please reads Conventional Commit PR titles on `main`, opens one release PR, and on merge tags `<plugin>-vX.Y.Z` (for example `impact-review-v1.0.0`) with a GitHub Release and a `plugins/<name>/CHANGELOG.md` entry. RELEASING.md has the steps and the deployment checklist.
+- CI (GitHub Actions, `.github/workflows/`): `ci.yml` runs the four quality gates, `claude plugin validate .` and the version check on each PR and on `main`; `pr-lint.yml` checks PR titles and branch names; `release.yml` calls the reusable `release-please.yml`, which other repos call through `.github/release-kit/`.
+- Rollback: revert the faulty PR, which cuts a patch release; or pin the marketplace entry to the previous tag.
 
 ## Boundaries and contracts
 - Plugin to GitHub: the public GitHub APIs, versioned by GitHub; every call lives in `connectors/github/`.
