@@ -26,7 +26,7 @@ from chronicle_engine.registry import Kind, Prepared, Sources
 
 from chronicle.core.motion import scene
 from chronicle.core.story import chrome, plates, review
-from chronicle.entrypoints.cli import art, commands
+from chronicle.entrypoints.cli import art, commands, widgets
 
 EXAMPLES = Path(__file__).resolve().parents[2] / "examples"
 # Other pages a new theme is compared with: the bundled examples and up to this many
@@ -194,6 +194,7 @@ registry.add_kind("scene", SCENE, first=True)
 registry.POLICIES["distinct"] = distinct
 registry.COMMANDS["motifs"] = registry.Command(commands.motifs_parser, commands.motifs)
 registry.COMMANDS["research"] = registry.Command(commands.research_parser, commands.research)
+registry.COMMANDS["widgets"] = registry.Command(widgets.parser, widgets.run)
 registry.add_asset_root(resources.files("chronicle.assets"))
 registry.DEFAULTS.prog = "chronicle"
 registry.DEFAULTS.policy = "distinct"

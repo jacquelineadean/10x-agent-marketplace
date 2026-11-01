@@ -1,0 +1,10 @@
+.w-flash-drill .fd-card { margin: .8rem 0; padding: 1rem 1.1rem; background: var(--surface); border-top: 3px solid var(--accent); }
+.w-flash-drill .fd-front { margin: 0; font: 600 1.1rem/1.35 var(--f-ui); }
+.w-flash-drill .fd-back { margin: .6rem 0 0; font: 400 1rem/1.5 var(--f-body); color: var(--ink-2); }
+.w-flash-drill .fd-row { display: flex; gap: .5rem; }
+.w-flash-drill button {
+  font: 600 .9rem/1.2 var(--f-ui); padding: .55rem .9rem; border: 1px solid var(--rule);
+  background: var(--paper); color: var(--ink); border-radius: calc(4px * var(--round, 1)); cursor: pointer;
+}
+.w-flash-drill button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.w-flash-drill .fd-count { margin: .5rem 0; font: 400 .9rem/1.4 var(--f-ui); color: var(--muted); }

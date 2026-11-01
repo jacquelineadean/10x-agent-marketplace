@@ -1,0 +1,6 @@
+{
+ "title": "Put the steps in order",
+ "summary": "The reader taps steps in the order they happen; a wrong tap says it comes later.",
+ "data": {"steps": ["Pick", "Pack", "Label", "Scan", "Ship"], "done": "That is the order every parcel takes."},
+ "fallback": "The steps, in order: pick, pack, label, scan and ship."
+}
