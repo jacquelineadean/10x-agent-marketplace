@@ -46,7 +46,6 @@ jobs:
           subjectPatternError: >-
             The subject "{subject}" in "{title}" must start lower case and not end with a period.
             Example: "feat(chronicle): add a timeline block".
-          wip: true
 
   branch:
     name: Branch name
