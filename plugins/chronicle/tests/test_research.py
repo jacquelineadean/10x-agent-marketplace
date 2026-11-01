@@ -49,3 +49,10 @@ def test_the_research_command_checks_a_run_folder(
     (folder / "material.md").write_text("# Notes\n", encoding="utf-8")
     assert main(["research", str(tmp_path)]) == 1
     assert "lacks sections" in capsys.readouterr().err
+
+
+def test_the_researcher_runs_on_sonnet() -> None:
+    agent = Path(__file__).resolve().parents[1] / "agents" / "researcher.md"
+    meta = agent.read_text(encoding="utf-8").split("---\n")[1].splitlines()
+    # Reading material into facts and a digest needs no larger model; the parent pays less.
+    assert "model: sonnet" in meta

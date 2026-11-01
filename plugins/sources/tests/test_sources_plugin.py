@@ -37,6 +37,11 @@ def test_the_gatherer_description_stays_short() -> None:
     assert len(meta["description"]) <= 450  # about 90 tokens in every session's listing
 
 
+def test_the_gatherer_runs_on_sonnet() -> None:
+    # Querying connectors and running collectors needs no larger model than the writers'.
+    assert _frontmatter(PLUGIN / "agents" / "gatherer.md")["model"] == "sonnet"
+
+
 def test_the_facts_reference_links_the_engines() -> None:
     link = PLUGIN / "references" / "facts.md"
     engine = PLUGINS.parent / "packages" / "chronicle-engine" / "src" / "chronicle_engine"

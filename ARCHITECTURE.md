@@ -204,7 +204,7 @@ benchmark commands), `connectors/files/` (every file read and write), `entrypoin
 ## Cross-cutting concerns
 - **Auth:** token from `GITHUB_TOKEN` or `GH_TOKEN`, else `gh auth token --hostname <host>`. Read-only use only. Enterprise orgs with single sign-on need an SSO-authorized token. speedup reads `DD_API_KEY`, `DD_APP_KEY`, `DD_SITE`, `PROMETHEUS_URL`, `PROMETHEUS_TOKEN`; Datadog keys go only to Datadog API hosts, and a POST goes only to the RUM aggregation query path.
 - **Privacy:** run folders hold corporate data. They live outside the repo by default, and `.gitignore` blocks them inside it. Nothing is sent anywhere except GitHub API requests.
-- **Model tokens:** Claude never reads raw responses or `metrics.json` in full; the digest is capped at 12,000 bytes and `budget.json` checks the run against `--max-tokens` (default 25,000). In chronicle, raw tool output stays inside the gatherer subagent.
+- **Model tokens:** Claude never reads raw responses or `metrics.json` in full; the digest is capped at 12,000 bytes and `budget.json` checks the run against `--max-tokens` (default 25,000). In chronicle, briefing and blueprint, raw tool output and material stay inside the `sources:gatherer` and `researcher` subagents, which run on Sonnet as the impact-review and speedup writers do.
 - **Untrusted text:** chronicle escapes every string from sources in HTML and in the page's JSON blob; links allow only http(s) and page anchors.
 - **Rate limits:** GraphQL allows 5,000 points per hour; the collector caches, paginates in pages of 100 and backs off on secondary limits.
 - **Secrets in logs:** the collector never prints the token or request headers.

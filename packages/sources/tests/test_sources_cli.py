@@ -120,6 +120,7 @@ def test_agent_writes_a_user_level_database_agent(tmp_path: Path) -> None:
     assert agent.systems_in(text) == {"postgres", "databricks"}
     assert '"postgresql://db:5432/analytics"' in text and '"${PGPASSWORD}"' in text
     assert '"--access-mode=restricted"' in text
+    assert "\nmodel: sonnet\n" in text
     assert '"https://acme.cloud.databricks.com/api/2.0/mcp/sql"' in text
     assert "tracker" not in text
     assert main(["agent"]) == 1  # an existing file needs --force

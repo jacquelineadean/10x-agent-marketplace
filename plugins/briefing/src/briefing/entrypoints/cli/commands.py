@@ -34,7 +34,8 @@ def check(story: Any, facts: Any, path: Path, report: Report) -> None:
     checks.slides(story, report)
     queries = path.parent / "queries.json"
     if queries.is_file():
-        entries = store.read_json(queries).get("queries", {})
+        data = store.read_json(queries)
+        entries = data.get("queries", {}) if isinstance(data, dict) else {}
         checks.stale(entries if isinstance(entries, dict) else {}, date.today(), report)
     files = {
         str(block["svg"]): store.read_text(path.parent / str(block["svg"]))
@@ -124,10 +125,10 @@ def slides_run(args: argparse.Namespace) -> int:
     out = args.out or args.story.parent / "build"
     page = out / "index.html"
     if not page.exists():
-        print(f"error: {page} does not exist; run build first")
+        print(f"error: {page} does not exist; run build first", file=sys.stderr)
         return 1
     if not (args.png or args.pdf):
-        print("error: pass --png, --pdf or both")
+        print("error: pass --png, --pdf or both", file=sys.stderr)
         return 1
     width, height = SLIDE
     with devtools.Capture(shoot.find(args.browser)) as capture:

@@ -134,3 +134,12 @@ def test_the_sources_command_is_linked(tmp_path: Path) -> None:
     )
     assert result.returncode == 0, result.stderr
     assert [q["header"] for q in json.loads(result.stdout)] == ["Code & work", "Operations", "Data"]
+
+
+def test_slides_and_check_report_bad_input_as_errors(tmp_path: Path) -> None:
+    story = _copy("keystone-dashboard", tmp_path)
+    unbuilt = run("slides", str(story), "--png")
+    assert unbuilt.returncode == 1 and "run build first" in unbuilt.stderr
+    (story.parent / "queries.json").write_text("[]", encoding="utf-8")
+    checked = run("check", str(story))
+    assert "Traceback" not in checked.stderr, checked.stderr

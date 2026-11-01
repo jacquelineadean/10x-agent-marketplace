@@ -10,6 +10,7 @@ from typing import Any
 
 import numpy as np
 import pytest
+from chronicle_engine import registry
 from chronicle_engine.connectors.browser import shoot
 from chronicle_engine.connectors.files import store
 from chronicle_engine.connectors.video import encode
@@ -220,6 +221,20 @@ def test_new_starts_each_kind_and_check_asks_for_the_description(
     check = ["animate", "check", str(tmp_path / "chronicle-runs" / "diagram" / "animation.json")]
     assert main(check) == 1
     assert "meta.description is required" in capsys.readouterr().err
+
+
+def test_a_tad_from_chronicle_0_4_points_to_blueprint(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    # As in a session with chronicle alone: blueprint's pack registers no tad kind.
+    monkeypatch.delitem(registry.KINDS, "tad", raising=False)
+    anim = {"kind": "tad", "meta": {"title": "Orders", "description": "An order's path."}}
+    path = tmp_path / "animation.json"
+    path.write_text(json.dumps({**anim, "tad": {"nodes": []}}), encoding="utf-8")
+    assert main(["animate", "check", str(path)]) == 1
+    err = capsys.readouterr().err
+    assert "blueprint animate build" in err
+    assert "tad is not used" not in err
 
 
 def test_build_writes_the_svg_and_the_embed_without_a_browser(tmp_path: Path) -> None:

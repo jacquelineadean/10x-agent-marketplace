@@ -15,6 +15,13 @@ Raw tool output stays inside the subagent. Built under
 [RFC-0007](../../DECISIONS/RFC-0007-chronicle-two-branches.md) and
 [spec 002](../../specs/002-chronicle-split/spec.md).
 
+## Install
+
+```text
+/plugin marketplace add jacquelineadean/10x-agent-marketplace
+/plugin install sources@10x-agent-marketplace
+```
+
 ## Use
 - Skills that need company numbers, such as `chronicle:story`, call `sources:gatherer`.
   When a request names no system, they ask its `Mode: status` and show a picker of the nine

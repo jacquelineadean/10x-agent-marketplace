@@ -117,11 +117,13 @@ def check(anim: Any, facts: Mapping[str, Any]) -> Report:
         return report
     if anim.get("schema_version", SCHEMA_VERSION) != SCHEMA_VERSION:
         report.errors.append(f"schema_version must be {SCHEMA_VERSION}")
-    for key in sorted(set(anim) - TOP_KEYS - set(registry.KINDS)):
+    for key in sorted(set(anim) - TOP_KEYS - set(registry.KINDS) - set(registry.MOVED_KINDS)):
         report.warnings.append(f"{key} is not used; an animation takes {', '.join(TOP_KEYS)}")
     kind = anim.get("kind")
     if kind not in registry.KINDS:
-        report.errors.append(f"kind must be one of {', '.join(registry.KINDS)}")
+        moved = registry.MOVED_KINDS.get(str(kind))
+        known = f"kind must be one of {', '.join(registry.KINDS)}"
+        report.errors.append(f"{known}; {moved}" if moved else known)
     elif not isinstance(anim.get(kind), Mapping):
         report.errors.append(f"a {kind} animation needs a {kind!r} object")
     meta = anim.get("meta")

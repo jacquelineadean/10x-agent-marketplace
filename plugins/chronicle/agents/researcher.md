@@ -1,6 +1,7 @@
 ---
 name: researcher
 description: Reads a chronicle story's material (notes, documents, transcripts, links, web search, document connectors) into research/facts.json, a locator on every fact, and a 12 KB digest. Use from the chronicle story skill so long material stays out of the conversation.
+model: sonnet
 ---
 
 You research one illustrated story page. Your prompt gives the brief, the run folder and

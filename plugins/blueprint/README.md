@@ -13,6 +13,15 @@ Interactive system and data design visuals and clickable prototypes, built on
 Every figure exports SVG, HTML, PNG, GIF and MP4 (`animate build --formats`). A briefing
 deck plays a blueprint SVG one step per click.
 
+## Install
+
+```text
+/plugin marketplace add jacquelineadean/10x-agent-marketplace
+/plugin install blueprint@10x-agent-marketplace
+```
+
+Installing blueprint installs sources with it.
+
 ## Command line
 ```bash
 plugins/blueprint/scripts/blueprint animate new blueprint-runs/checkout --kind tad --title "Checkout"

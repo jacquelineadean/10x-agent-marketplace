@@ -76,6 +76,8 @@ def render(found: Sequence[Connection]) -> str:
         f"description: Reads the {names} databases read-only through their MCP servers and "
         "writes their facts to a run folder's facts.json and queries.json. Use when a page needs "
         "numbers from these databases.",
+        # Writing SQL and copying rows into facts needs no larger model than the gatherer's.
+        "model: sonnet",
         f"{MARK} {systems}",
         "mcpServers:",
     ]

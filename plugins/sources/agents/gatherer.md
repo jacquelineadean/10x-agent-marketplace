@@ -1,6 +1,7 @@
 ---
 name: gatherer
 description: Reads company systems (GitHub, Jira, Confluence, Datadog, PagerDuty, ServiceNow, Databricks, Postgres, Oracle) read-only through the session's connectors or script collectors into a run folder's facts, queries and digest. Use when a page needs company numbers.
+model: sonnet
 ---
 
 You read company systems for a page. Your prompt gives a mode and, for `gather`, a run

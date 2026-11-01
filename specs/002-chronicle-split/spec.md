@@ -292,6 +292,23 @@ Design decisions:
 | AC-66 | `examples/field-guide` checks clean, differs from every other example's theme, and loads with no script errors at desktop and phone widths and under reduced motion | `test_theme.py`; manual checks M-2 and M-9 |
 | AC-67 | The quality gates pass; chronicle is 0.8.0 in both manifests | CI and `claude plugin validate .` |
 
+### Review follow-up: subagent models and moved kinds
+Design decisions:
+- **Subagents on Sonnet.** `sources:gatherer`, `chronicle:researcher` and the `sources-db`
+  agent that `sources agent` writes set `model: sonnet`, as impact-writer and perf-writer
+  do. Without it they ran on the session's model. Their output passes through scripts
+  (`sources digest`, `chronicle research`) that check it, and none of them does arithmetic.
+- **Moved kinds name their plugin.** `registry.MOVED_KINDS` maps a kind a plugin no longer
+  draws to the line that says where it went. chronicle registers `tad`, so a TAD written
+  for chronicle 0.4 fails its check with "TADs moved to the blueprint plugin".
+- **Versions.** Unchanged: chronicle 0.8.0, sources 0.2.0, briefing 0.2.0.
+
+| ID | Criterion | Check |
+| --- | --- | --- |
+| AC-68 | The gatherer, the researcher and the written `sources-db` agent run on Sonnet | `test_sources_plugin.py`, `test_research.py`, `test_sources_cli.py` |
+| AC-69 | `chronicle animate check` on a `tad` animation names blueprint and does not call the `tad` object unused | `test_animate.py` |
+| AC-70 | `briefing slides` prints its errors to standard error; `briefing check` reads a `queries.json` that is not an object without a traceback | `test_briefing_cli.py` |
+
 ## Manual checks
 - **M-1.** Install chronicle from a local marketplace into a scratch `CLAUDE_CONFIG_DIR` and confirm the cache holds
   `src/chronicle_engine/` as real files.

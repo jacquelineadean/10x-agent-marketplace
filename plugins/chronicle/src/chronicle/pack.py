@@ -348,6 +348,10 @@ registry.add_parts(
 chrome.register()
 registry.add_kind("scene", SCENE, first=True)
 registry.add_kind("rig", RIG)
+# Animations written for chronicle 0.4 can be TADs; they now build in blueprint.
+registry.MOVED_KINDS["tad"] = (
+    "TADs moved to the blueprint plugin: install it and run blueprint animate build on this file"
+)
 registry.POLICIES["distinct"] = distinct
 registry.CHECKS["chronicle"] = _check
 registry.COMMANDS["motifs"] = registry.Command(commands.motifs_parser, commands.motifs)

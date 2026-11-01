@@ -185,6 +185,9 @@ class Chrome:
 
 ART: list[ArtProvider] = []
 KINDS: dict[str, Kind] = {}
+# Kinds a plugin drew before they moved elsewhere, each with the line that says where to;
+# an animation of such a kind fails its check with that line, not only the kinds known.
+MOVED_KINDS: dict[str, str] = {}
 POLICIES: dict[str, Policy] = {}
 CHECKS: dict[str, Check] = {}
 LAYOUTS: dict[str, Layout] = {"page": Layout(lambda b, title: b.chapters(title))}

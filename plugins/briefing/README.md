@@ -17,6 +17,15 @@ refreshed since" on hover, on KPI tiles and under the dashboard's stamp.
 Every number is a fact token with its source and query; code computes, formats and judges
 it. A brand kit (`--brand run|repo|config|PATH`) gives every page the same colors and type.
 
+## Install
+
+```text
+/plugin marketplace add jacquelineadean/10x-agent-marketplace
+/plugin install briefing@10x-agent-marketplace
+```
+
+Installing briefing installs sources with it.
+
 ## Command line
 ```bash
 plugins/briefing/scripts/briefing new briefing-runs/q4 --layout deck --title "Q4 review"
