@@ -48,7 +48,7 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Plugin:** a folder with `.claude-plugin/plugin.json` plus skills, agents, commands or hooks.
 - **Skill:** a `SKILL.md` file of instructions Claude loads on demand, invoked as `/<plugin>:<skill>`.
 - **Timeframe:** the inclusive start and end dates of one impact-review run; default year to date, any period up to all time.
-- **Collector:** the impact-review Python command that calls GitHub APIs and writes local files.
+- **Collector:** code that reads one system with keys from the environment and writes local files: impact-review's GitHub collector, and the sources package's script-lane collectors (one per system).
 - **Contribution:** a commit, pull request, review or issue GitHub attributes to a person in scope inside the timeframe.
 - **Digest:** the compact Markdown summary the collector writes for Claude to read.
 - **Scope:** whose work a run covers: one person, a list of people, a team, an organization or an enterprise.
@@ -74,10 +74,13 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Change log:** `perf/changes.jsonl`, one optimization per line with its flag, rollout stage and proxy numbers.
 - **Data folder:** speedup's local, never-committed folder of history, benchmark runs and outputs for one project.
 - **Engine:** `packages/chronicle-engine`, the facts, page and animation code the chronicle plugins share; each links it into its own `src/`.
-- **Gatherer:** the sources plugin's subagent that reads company systems through the session's connectors and writes `facts.json`, `queries.json` and `digest.md`.
+- **Gatherer:** the sources plugin's subagent that reads company systems through the session's connectors or the script-lane collectors and writes `facts.json`, `queries.json` and `digest.md`.
 - **Recipe:** one system's page in the sources plugin: how to reach it, what to read and what never to do.
 - **Queries file:** `queries.json` in a run folder: the query behind each fact, with its system, lane, connection, window and as-of date.
 - **Lane:** how a fact was read: `mcp` through a connector in the session, or `script` through a collector with keys.
+- **Request:** a script-lane entry's description of what to read, in the shape its system's recipe gives, such as a JQL count per month or one SQL statement.
+- **SQL guard:** the check every statement passes before a collector connects: one `SELECT` or `WITH`, no write keyword or side-effect function, named parameters only.
+- **Refresh:** `briefing refresh`: the script-lane queries run again over windows moved to the last complete period, and the page rebuilds with no model call; facts read through connectors show as not refreshed.
 - **Named connection:** an entry in `connections.json` holding a system's host and the names of the variables with its keys, never a key.
 - **Architecture block:** blueprint's page figure around a built animation, with part details, pins for decisions and a step player.
 - **Prototype:** blueprint's layout of clickable screens behind tabs, fed by facts.

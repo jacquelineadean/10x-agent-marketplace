@@ -6,14 +6,15 @@ import shutil
 import subprocess
 from collections.abc import Callable, Mapping
 
-from impact_review.config.settings import TOKEN_NAMES
+from sources.connectors.errors import SourceError
 
+TOKEN_NAMES = ("GITHUB_TOKEN", "GH_TOKEN")
 REQUIRED_SCOPES = ("repo", "read:org", "read:user")
 
 TokenRunner = Callable[[str], str | None]
 
 
-class MissingTokenError(RuntimeError):
+class MissingTokenError(SourceError):
     pass
 
 

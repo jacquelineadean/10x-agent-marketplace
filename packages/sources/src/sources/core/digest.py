@@ -40,19 +40,25 @@ def _row(path: str, node: Any) -> str:
     return f"| `{path}` | {_cell(node)} | |"
 
 
-def _header(group: str, entries: Mapping[str, Any], paths: list[str]) -> str:
+def _header(group: str, entries: Mapping[str, Any], paths: list[str], refreshed: str) -> str:
     used = [entries[k] for k in dict.fromkeys(covering(p, entries) for p in paths) if k]
     lanes = sorted({str(e.get("lane", "")) for e in used if isinstance(e, Mapping)})
     via = sorted({str(e.get("connection", "")) for e in used if isinstance(e, Mapping)})
     dates = sorted({str(e.get("as_of", "")) for e in used if isinstance(e, Mapping)})
     when = dates[-1] if len(dates) == 1 else f"{dates[0]} to {dates[-1]}" if dates else "unknown"
     lane = ", ".join(lanes) or "unknown"
-    return f"## {group}\nLane {lane} through {', '.join(via) or 'unknown'}; as of {when}.\n"
+    stale = (
+        f" Not refreshed on {refreshed}: the gatherer must read these again."
+        if refreshed and dates and dates[0] < refreshed
+        else ""
+    )
+    return f"## {group}\nLane {lane} through {', '.join(via) or 'unknown'}; as of {when}.{stale}\n"
 
 
 def render(facts: Mapping[str, Any], queries: Mapping[str, Any], today: date) -> str:
     """The digest; long sections lose rows from the end, with a count of what was cut."""
     entries = queries.get("queries", {}) if isinstance(queries, Mapping) else {}
+    refreshed = str(queries.get("refreshed", "")) if isinstance(queries, Mapping) else ""
     groups: dict[str, list[tuple[str, str]]] = {}
     for path, node in facts_of(facts):
         groups.setdefault(path.split(".")[0], []).append((path, _row(path, node)))
@@ -73,7 +79,7 @@ def render(facts: Mapping[str, Any], queries: Mapping[str, Any], today: date) ->
     def text() -> str:
         out = head
         for group, rows in groups.items():
-            out += "\n" + _header(group, entries, [p for p, _ in rows])
+            out += "\n" + _header(group, entries, [p for p, _ in rows], refreshed)
             out += "| Fact | Value | Note |\n| --- | --- | --- |\n"
             out += "".join(row + "\n" for _, row in rows)
             if cut.get(group):

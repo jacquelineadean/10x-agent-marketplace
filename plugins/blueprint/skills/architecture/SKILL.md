@@ -32,8 +32,11 @@ shared keys, steps and timing, then the kind's reference. 6 to 14 parts read wel
 split a larger system into two figures. Write 3 to 6 steps, one idea each, and let code
 time them. Numbers in labels and captions are fact tokens.
 
-For an ERD from a database, export its columns with the query in `references/erd.md` and
-run `"${CLAUDE_PLUGIN_ROOT}/scripts/blueprint" schema export.csv --out erd.json`.
+For an ERD from a database, read its catalog live with
+`"${CLAUDE_PLUGIN_ROOT}/scripts/blueprint" schema --connection postgres --out erd.json`
+(Postgres or Oracle; see `references/erd.md`), or export it as CSV and pass the file. For a
+Databricks table's lineage, `blueprint lineage <catalog.schema.table> --out <run>/animation.json`
+writes a TAD of the tables it is built from and the tables built from it.
 
 ## 3. Build and look
 ```bash

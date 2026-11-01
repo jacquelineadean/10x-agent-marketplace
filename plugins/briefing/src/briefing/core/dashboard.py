@@ -37,11 +37,22 @@ FULL = ("kpi", "filters", "table", "stats", "timeline", "roadmap")
 
 
 def as_of(story: Mapping[str, Any]) -> str:
-    """The latest ISO date among the sources' `as_of` and `meta.as_of`, or ''."""
+    """The latest ISO date among the sources' `as_of`, `meta.as_of` and the last refresh."""
     dates = [str(s.get("as_of", "")) for s in story.get("sources", []) if isinstance(s, Mapping)]
-    dates.append(str(story.get("meta", {}).get("as_of", "")))
+    meta = story.get("meta", {})
+    dates += [str(meta.get("as_of", "")), str(meta.get("refreshed", ""))]
     found = sorted(d for d in dates if ISO.match(d))
     return found[-1] if found else ""
+
+
+def not_refreshed(b: Builder) -> str:
+    """'Not refreshed: Datadog as of 14 Oct 2026', for systems a refresh could not read."""
+    names = []
+    for item in b.story["meta"].get("stale") or []:
+        source = b.sources.get(str(item.get("system", "")), {})
+        label = str(source.get("label") or item.get("system", ""))
+        names.append(f"{label} as of {format_value(str(item.get('as_of', '')), '', 'date')}")
+    return "Not refreshed: " + "; ".join(names) if names else ""
 
 
 def _cell(b: Builder, block: Mapping[str, Any], found: Mapping[str, Any]) -> str:
@@ -58,6 +69,8 @@ def render(b: Builder, title: str) -> str:
         if stamp
         else ""
     )
+    if stale := not_refreshed(b):
+        when += tag("p", plain(stale), class_="db-stale")
     head = tag(
         "div",
         tag("p", b.inline(meta.get("kicker", "")), class_="kicker")

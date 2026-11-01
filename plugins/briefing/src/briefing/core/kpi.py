@@ -50,7 +50,13 @@ def _shown(b: Builder, ref: Any, fmt: str, unit: str) -> str:
 def _tile(b: Builder, k: int, item: Mapping[str, Any], sparks: dict[str, Any]) -> str:
     fmt = str(item.get("format", "auto"))
     ref = str(item.get("value", ""))
-    unit = lookup(b.facts, ref[1:]).unit if ref.startswith("@") else ""
+    found = lookup(b.facts, ref[1:]) if ref.startswith("@") else None
+    unit = found.unit if found else ""
+    stale = (
+        tag("p", f"Not refreshed since {format_value(found.as_of, '', 'date')}", class_="kpi-stale")
+        if found and found.stale
+        else ""
+    )
     state = status(
         number(b.facts, ref),
         number(b.facts, item["target"]) if "target" in item else None,
@@ -80,7 +86,8 @@ def _tile(b: Builder, k: int, item: Mapping[str, Any], sparks: dict[str, Any]) -
         + tag("p", word, class_="kpi-status")
         + change
         + spark
-        + (tag("p", b.inline(item["note"]), class_="kpi-note") if item.get("note") else ""),
+        + (tag("p", b.inline(item["note"]), class_="kpi-note") if item.get("note") else "")
+        + stale,
         class_=f"stat kpi kpi-{state}",
         data_i=k,
     )

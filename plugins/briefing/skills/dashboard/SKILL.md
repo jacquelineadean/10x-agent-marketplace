@@ -58,3 +58,9 @@ Confirm the destination with the user first.
 - **Dashboard** (`--to dashboard`): run `briefing export <story> --to dashboard`, then start
   from claude.ai's Dashboard type (Artifact quickstart, intent `other`) and fill it from
   `build/dashboard.json`: tiles, statuses, as-of date and sources as written there.
+
+## 6. Refresh
+`briefing refresh <story>` reads the script-lane queries again, each window moved to end
+with the last complete period, and rebuilds with no model call. The stamp shows the new
+date; numbers from connectors show "Not refreshed" until the gatherer runs again. Republish
+`build/artifact.html` to the same Artifact.

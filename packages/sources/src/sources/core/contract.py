@@ -70,11 +70,18 @@ def _entry(key: str, entry: Any, today: date, report: Report) -> None:
     if not isinstance(entry, Mapping):
         report.errors.append(f"{where}: must be an object")
         return
+    if entry.get("lane") == "script" and "as_of" not in entry and "query" not in entry:
+        report.warnings.append(f"{where}: not gathered yet; run sources gather")
+        if not isinstance(entry.get("request"), Mapping):
+            report.errors.append(f"{where}: a script entry needs a request object")
+        return
     system = str(entry.get("system", ""))
     if system != key.split(".")[0]:
         report.errors.append(f"{where}: system must be {key.split('.')[0]!r}, the fact's group")
     if entry.get("lane") not in LANES:
         report.errors.append(f"{where}: lane must be one of {', '.join(LANES)}")
+    if entry.get("lane") == "script" and not isinstance(entry.get("request"), Mapping):
+        report.errors.append(f"{where}: a script entry needs a request object")
     query = entry.get("query")
     if not isinstance(query, str) or not query.strip() or len(query) > MAX_QUERY:
         report.errors.append(f"{where}: query must be the text of the query, 1 to 2000 chars")
@@ -116,6 +123,7 @@ def check(facts: Any, queries: Any, today: date) -> Report:
             report.errors.append(f"{path}: no entry in queries.json names its query")
     for key, entry in entries.items():
         _entry(str(key), entry, today, report)
-        if not any(p == key or p.startswith(f"{key}.") for p in paths):
+        pending = isinstance(entry, Mapping) and "as_of" not in entry
+        if not pending and not any(p == key or p.startswith(f"{key}.") for p in paths):
             report.warnings.append(f"queries.json {key}: names no fact in facts.json")
     return report

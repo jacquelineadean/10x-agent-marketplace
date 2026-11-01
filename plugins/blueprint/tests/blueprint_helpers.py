@@ -11,14 +11,14 @@ PLUGIN = Path(__file__).resolve().parents[1]
 EXAMPLES = PLUGIN / "examples"
 
 
-def run(*args: str) -> subprocess.CompletedProcess[str]:
+def run(*args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
     """`python -m blueprint` with the plugin's own src folder, as its launcher runs it."""
-    env = {**os.environ, "PYTHONPATH": str(PLUGIN / "src")}
+    merged = {**os.environ, "PYTHONPATH": str(PLUGIN / "src"), **(env or {})}
     return subprocess.run(  # noqa: S603 - fixed interpreter and arguments the test builds
         [sys.executable, "-m", "blueprint", *args],
         capture_output=True,
         text=True,
-        env=env,
+        env=merged,
         check=False,
         timeout=180,
     )

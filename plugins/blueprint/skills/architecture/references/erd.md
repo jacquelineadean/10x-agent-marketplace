@@ -19,25 +19,38 @@
   `r1-path` for a packet's path. With no `steps`, the tables show, then the keys draw.
 
 ## From a database
-Export one row per column with its key and reference, then run
-`blueprint schema export.csv --out erd.json` and copy the object into the animation. For
-Postgres, run this read-only query with `psql --csv` (or ask `sources:gatherer`):
+Read the catalog live through the sources package (psql for Postgres, SQLcl for Oracle;
+read-only session, 30-second limit):
+
+```bash
+"${CLAUDE_PLUGIN_ROOT}/scripts/blueprint" schema --connection postgres --schema public --out erd.json
+```
+
+`--connection` is `postgres`, `oracle` or a connection named with `sources connection
+add`. Without keys, export one row per column with its key and reference as CSV and run
+`blueprint schema export.csv --out erd.json`. For Postgres, export this query with
+`psql --csv`; it reads `pg_catalog`, because `information_schema` hides constraints from a
+role that may only SELECT:
 
 ```sql
-SELECT c.table_name AS "table", c.column_name AS "column", c.data_type AS "type",
-       CASE WHEN tc.constraint_type = 'PRIMARY KEY' THEN 'pk'
-            WHEN tc.constraint_type = 'FOREIGN KEY' THEN 'fk' ELSE '' END AS "key",
-       CASE WHEN tc.constraint_type = 'FOREIGN KEY'
-            THEN ccu.table_name || '.' || ccu.column_name ELSE '' END AS "references"
-FROM information_schema.columns c
-LEFT JOIN information_schema.key_column_usage kcu
-  ON kcu.table_schema = c.table_schema AND kcu.table_name = c.table_name
- AND kcu.column_name = c.column_name
-LEFT JOIN information_schema.table_constraints tc
-  ON tc.constraint_name = kcu.constraint_name AND tc.table_schema = kcu.table_schema
-LEFT JOIN information_schema.constraint_column_usage ccu
-  ON ccu.constraint_name = tc.constraint_name AND tc.constraint_type = 'FOREIGN KEY'
-WHERE c.table_schema = 'public'
-ORDER BY c.table_name, c.ordinal_position
-LIMIT 10000;
+SELECT c.relname AS "table", a.attname AS "column",
+       format_type(a.atttypid, a.atttypmod) AS "type",
+       CASE WHEN pk.conname IS NOT NULL THEN 'pk'
+            WHEN fk.conname IS NOT NULL THEN 'fk' ELSE '' END AS "key",
+       CASE WHEN fk.conname IS NOT NULL THEN rt.relname || '.' || ra.attname
+            ELSE '' END AS "references"
+FROM pg_class c
+JOIN pg_namespace n ON n.oid = c.relnamespace
+JOIN pg_attribute a ON a.attrelid = c.oid AND a.attnum > 0 AND NOT a.attisdropped
+LEFT JOIN pg_constraint pk
+  ON pk.conrelid = c.oid AND pk.contype = 'p' AND a.attnum = ANY (pk.conkey)
+LEFT JOIN pg_constraint fk
+  ON fk.conrelid = c.oid AND fk.contype = 'f' AND a.attnum = ANY (fk.conkey)
+LEFT JOIN pg_class rt ON rt.oid = fk.confrelid
+LEFT JOIN pg_attribute ra
+  ON ra.attrelid = fk.confrelid AND ra.attnum = fk.confkey[array_position(fk.conkey, a.attnum)]
+WHERE n.nspname = 'public' AND c.relkind IN ('r', 'p', 'v', 'm')
+ORDER BY c.relname, a.attnum;
 ```
+
+Copy the `erd` object into the animation, then keep the tables the story needs.

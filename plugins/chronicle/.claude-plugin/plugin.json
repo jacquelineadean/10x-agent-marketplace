@@ -1,6 +1,6 @@
 {
   "name": "chronicle",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "license": "MIT",
   "description": "Turns a brief plus the material a researcher subagent digests (notes, files, transcripts, links) or company facts from the sources plugin into an illustrated, interactive story page designed for its subject: a theme, progress bar, paper and words from the subject's world, checked against other pages so no two look alike, ink-and-watercolor drawings painted in code, editorial charts, maps, flows, diagrams, quizzes, and a source behind every number. Also makes standalone painted and drawn animations in the same style, exported as SVG, HTML, PNG, GIF and MP4 for web pages, docs, chat and slides; architecture diagrams moved to the blueprint plugin.",
   "author": {

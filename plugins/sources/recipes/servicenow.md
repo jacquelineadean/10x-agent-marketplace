@@ -2,8 +2,8 @@
 
 ## Reach
 - Connector: a ServiceNow MCP server; its tool names contain `servicenow` or `snow`.
-- Keys for the script collector (sources 0.2.0): `SERVICENOW_INSTANCE` with `SERVICENOW_USER`
-  and `SERVICENOW_PASSWORD`, or with `SERVICENOW_TOKEN`; a read-only role.
+- Script collector: `SERVICENOW_INSTANCE` with `SERVICENOW_USER` and `SERVICENOW_PASSWORD`,
+  or with `SERVICENOW_TOKEN`; a read-only role.
 
 ## Facts
 | Fact | How |
@@ -19,6 +19,11 @@ Ask the Aggregate API for counts and averages. Read single records only for rows
 ## queries.json
 `query` holds the table and encoded query, such as
 `stats incident sysparm_query=opened_at>=2026-07-01^opened_at<2026-10-01 group_by=priority`.
+
+## Script lane
+`request`: `{"table": "incident", "query": "priority=1", "date": "opened_at", "per": "month"}`
+counts records through the Aggregate API; add `"avg": "calendar_stc"` for the mean of a
+field instead. `query` is an encoded query; the window adds the date range.
 
 ## Never
 Create, update, assign, close or comment on any record, or run a flow or script.

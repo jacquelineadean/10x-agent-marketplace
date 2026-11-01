@@ -35,6 +35,7 @@ registry.add_parts(
 registry.CHECKS["briefing"] = commands.check
 registry.COMMANDS["export"] = registry.Command(commands.export_parser, commands.export_run)
 registry.COMMANDS["slides"] = registry.Command(commands.slides_parser, commands.slides_run)
+registry.COMMANDS["refresh"] = registry.Command(commands.refresh_parser, commands.refresh_run)
 registry.COMMANDS["sources"] = registry.Command(commands.sources_parser, commands.sources_run)
 registry.add_asset_root(resources.files("briefing.assets"))
 registry.DEFAULTS.prog = "briefing"

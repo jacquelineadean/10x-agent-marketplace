@@ -62,6 +62,16 @@ Confirm the destination with the user first.
   claude.ai's Slides type (Artifact quickstart, intent `slides`) and fill it from
   `build/slides.json`, one slide per entry, using its images. It downloads as PPTX or PDF.
 - **PDF or PNGs**: `briefing slides <story> --pdf` writes `build/deck.pdf`.
+- **Google Drive or Microsoft 365** (`--to google`, `--to microsoft`): needs the deck as a
+  file, the .pptx the Slides artifact downloads (ask the user for its path) or
+  `build/deck.pdf`. Run `briefing export <story> --to google --file <path>`; it writes
+  `build/upload.json` and prints a question. Ask it with AskUserQuestion (Upload, Don't
+  upload). Only after Upload, send the file through the user's Google Drive or Microsoft 365
+  connector with the manifest's `name` and `mime_type` (and `convert_to` for Google
+  Slides), then give the link. With no such connector in your tool list, say so and stop.
 
 Arrow keys, swipes and the arrow buttons step through the deck; `O` shows the overview,
 `Notes` shows speaker notes.
+
+`briefing refresh <story>` reads the script-lane queries again over windows moved forward
+and rebuilds, with no model call; numbers from connectors show as not refreshed.

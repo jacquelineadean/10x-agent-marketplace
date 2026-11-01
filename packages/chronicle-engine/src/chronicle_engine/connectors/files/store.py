@@ -40,6 +40,14 @@ def read_text(path: Path) -> str:
         raise StoreError(f"cannot read {path}: {exc.strerror}") from exc
 
 
+def read_bytes(path: Path) -> bytes:
+    """Read a binary file such as a deck to upload."""
+    try:
+        return path.read_bytes()
+    except OSError as exc:
+        raise StoreError(f"cannot read {path}: {exc.strerror}") from exc
+
+
 def write_json(path: Path, data: Any) -> None:
     write_text(path, json.dumps(data, indent=1, ensure_ascii=False) + "\n")
 

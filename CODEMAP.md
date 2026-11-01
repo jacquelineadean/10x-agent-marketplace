@@ -14,9 +14,9 @@ New code goes in its role folder; `groundwork.py layout` shows the rules.
 | Folder | Role | Code files | Holds |
 | --- | --- | --- | --- |
 | `plugins/impact-review/src/impact_review/core` | core | 13 | Pure rules: domain records (`models.py`), scope parsing (`scope.py`), timeframe parsing and year chunks, the `ActivitySource` port, metric rules (`metrics.py`, `cadence.py`, `highlights.py`, `themes.py`, `stats.py`), `report.py` (metrics.json shape), `digest.md` renderer with the 12 KB cap, dashboard and SVG charts, token budget |
-| `plugins/impact-review/src/impact_review/connectors/github` | connectors | 7 | Every GitHub call: host endpoints, token lookup (`gh auth token` fallback), the https transport with retries and SSO detection, GraphQL documents, the `raw/` cache, payload parsing, and `GitHubSource` (scope member lookups, per-person collection with year chunking, paging and org filter) |
+| `plugins/impact-review/src/impact_review/connectors/github` | connectors | 4 | Every GitHub query impact-review makes: GraphQL documents, the `raw/` cache, payload parsing, and `GitHubSource` (scope member lookups, per-person collection with year chunking, paging and org filter); the transport, host endpoints, token lookup and errors come from the linked `sources/connectors/github/` |
 | `plugins/impact-review/src/impact_review/entrypoints/cli` | entrypoints | 1 | `collect` command: flags, run folder, writes the seven output files, prints at most 15 lines, exit codes 0/1/2 |
-| `plugins/impact-review/src/impact_review/config` | config | 1 | The only environment reads: token names, `IMPACT_REVIEW_HOST`, `IMPACT_REVIEW_RUNS`, and the standard-library `.env` reader |
+| `plugins/impact-review/src/impact_review/config` | config | 1 | The only environment reads: `IMPACT_REVIEW_HOST`, `IMPACT_REVIEW_RUNS`, and the standard-library `.env` reader; token names live in the linked sources package |
 | `plugins/impact-review/src/impact_review/prompts` | prompts | 0 | `rubric-individual.md` and `rubric-group.md`, the default five-area rubrics; the CLI copies one into each run folder as `rubric.md` |
 | `plugins/impact-review/tests` | tests | 10 | pytest suite with a fake HTTP opener; `fixtures/` holds recorded GitHub responses |
 | `plugins/impact-review/skills/report` | plugin | 0 | `SKILL.md` for `/impact-review:report` |
@@ -85,10 +85,10 @@ blueprint's code lives under `plugins/blueprint/src/blueprint/`, beside links to
 
 | Folder | Holds |
 | --- | --- |
-| `pack.py` | blueprint's registrations: the tad, sequence and erd kinds, the architecture, cards and list blocks, the prototype layout, their page parts, checks and the schema and sources commands |
+| `pack.py` | blueprint's registrations: the tad, sequence and erd kinds, the architecture, cards and list blocks, the prototype layout, their page parts, checks and the schema, lineage and sources commands |
 | `core/tad/` | technical architecture diagrams (moved from chronicle): spec reader, tier and lane layout, line routing, icons, the drawing with its motion, and the kind (`kind.py`) |
-| `core/` | kinds drawn as diagrams (`drawn.py`, `sequence.py`, `erd.py`), the architecture block (`architecture.py`), the prototype layout with cards and lists (`prototype.py`), checks (`checks.py`), schema exports to ERDs (`schema.py`) |
-| `entrypoints/cli/` | the check that reads animation files beside the story, `schema`, and the linked `sources` command |
+| `core/` | kinds drawn as diagrams (`drawn.py`, `sequence.py`, `erd.py`), the architecture block (`architecture.py`), the prototype layout with cards and lists (`prototype.py`), checks (`checks.py`), schema rows and the catalog queries for ERDs (`schema.py`), Unity Catalog lineage as a TAD (`lineage.py`) |
+| `entrypoints/cli/` | the check that reads animation files beside the story, `schema` (CSV or a live read through the sources collectors), `lineage`, and the linked `sources` command |
 | `assets/` | the architecture, cards and lists, and prototype stylesheets and scripts; `motion/20-tad.css` |
 | `plugins/blueprint/examples/` | `animation-tad/`, `checkout-sequence/`, `orders-erd/`, `checkout-architecture/`, `oncall-prototype/` |
 | `plugins/blueprint/tests/` | `test_blueprint_*.py` with `blueprint_helpers.py`; TAD tests register the kind per test, builds run in their own process |
@@ -97,9 +97,9 @@ briefing's code lives under `plugins/briefing/src/briefing/`, beside links to th
 
 | Folder | Holds |
 | --- | --- |
-| `pack.py` | briefing's registrations: the deck and dashboard layouts, the kpi, filters and animation blocks, their page parts, block keys, checks and the export, slides and sources commands |
-| `core/` | the deck and dashboard layouts (`deck.py`, `dashboard.py`), KPI tiles and status rules (`kpi.py`), filters and slices (`slices.py`), the animation block (`animation.py`), checks (`checks.py`), Slides and Dashboard content (`export.py`) |
-| `entrypoints/cli/` | the check that reads files beside the story, `export`, `slides` (PNG and PDF through Chromium) and the linked `sources` command |
+| `pack.py` | briefing's registrations: the deck and dashboard layouts, the kpi, filters and animation blocks, their page parts, block keys, checks and the export, slides, refresh and sources commands |
+| `core/` | the deck and dashboard layouts (`deck.py`, `dashboard.py`), KPI tiles and status rules (`kpi.py`), filters and slices (`slices.py`), the animation block (`animation.py`), checks (`checks.py`), Slides and Dashboard content (`export.py`), the Google and Microsoft upload manifest (`upload.py`) |
+| `entrypoints/cli/` | the check that reads files beside the story, `export`, `slides` (PNG and PDF through Chromium), `refresh` (gather with rolled windows, then build) and the linked `sources` command |
 | `assets/` | the deck, KPI and filter, dashboard and animation stylesheets and scripts |
 | `plugins/briefing/examples/` | `keystone-deck/` and `keystone-dashboard/`, on the Keystone example's facts |
 | `plugins/briefing/tests/` | `test_briefing_*.py` with `briefing_helpers.py`; builds run in their own process |
@@ -108,12 +108,14 @@ sources' code follows the same layout under `packages/sources/src/sources/`, lin
 
 | Folder | Holds |
 | --- | --- |
-| `core/` | the nine systems and picker groups (`systems.py`), detection (`detect.py`), the AskUserQuestion picker (`picker.py`), named connections (`connections.py`), the facts and queries contract (`contract.py`), `digest.md` (`digest.py`), the user-level database agent (`agent.py`) |
+| `core/` | the nine systems and picker groups (`systems.py`), detection (`detect.py`), the AskUserQuestion picker (`picker.py`), named connections (`connections.py`), the facts and queries contract (`contract.py`), `digest.md` (`digest.py`), the user-level database agent (`agent.py`), periods and rolled windows (`periods.py`), the SQL guard (`sql.py`), where a collector reads (`reach.py`), results and request checks (`collect.py`), the gather bookkeeping (`gather.py`) |
+| `connectors/` | the HTTPS transport (`http.py`) and errors, one script-lane collector per system (`atlassian.py`, `datadog.py`, `pagerduty.py`, `servicenow.py`, `databricks.py`, `postgres.py` through psql, `oracle.py` through SQLcl), the collector table (`collectors.py`) and `wire.py`, the network and programs a collector touches |
+| `connectors/github/` | the GitHub transport, host endpoints, token lookup and errors (moved from impact-review, which links them) and the search and workflow-run counts (`counts.py`) |
 | `connectors/files/` | JSON and Markdown reads and writes |
 | `connectors/system/` | which programs are on `PATH` |
-| `entrypoints/cli/` | the `sources` command: detect, check, digest, connection, agent |
-| `config/` | the only environment reads: which key names are set, the connections file, Claude's user folder |
-| `packages/sources/tests/` | `test_sources_*.py` with `sources_helpers.py`; no test calls a system |
+| `entrypoints/cli/` | the `sources` command: detect, gather (`gather.py`), check, digest, connection, agent |
+| `config/` | the only environment reads: the environment for collectors, which key names are set, the connections file, Claude's user folder |
+| `packages/sources/tests/` | `test_sources_*.py` with `sources_helpers.py` (recorded replies, fake psql and SQLcl); `fixtures/` holds a recorded reply per collector; no test calls a system |
 | `plugins/sources/` | the plugin shell: `agents/gatherer.md`, `skills/connect/`, `recipes/` (one per system), `references/facts.md` (a link to the engine's), `scripts/sources`, `tests/` |
 
 speedup follows the same cli layout under `plugins/speedup/src/speedup/`:

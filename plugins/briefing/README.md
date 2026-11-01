@@ -7,8 +7,12 @@ Slide decks and KPI dashboards from facts, as claude.ai Artifacts. Built on
 
 | Skill | Default output | Options |
 | --- | --- | --- |
-| `/briefing:deck` | fixed 16:9 slides on a horizontal track: arrows, keys and swipes, a counter, an overview grid, speaker notes, builds, and animations that step per click | claude.ai Slides (`export --to slides`), a PDF and a PNG per slide (`slides --pdf --png`) |
+| `/briefing:deck` | fixed 16:9 slides on a horizontal track: arrows, keys and swipes, a counter, an overview grid, speaker notes, builds, and animations that step per click | claude.ai Slides (`export --to slides`), a PDF and a PNG per slide (`slides --pdf --png`), an upload to Google Drive or Microsoft 365 after the user confirms (`export --to google`, `--to microsoft`) |
 | `/briefing:dashboard` | KPI tiles with value, target, status by rule, change and sparkline; charts, tables, filters over precomputed slices; an as-of stamp; the query behind each number on hover | claude.ai's Dashboard type (`export --to dashboard`) |
+
+`briefing refresh` reads the script-lane queries again over windows moved forward and
+rebuilds with no model call. Numbers from connectors keep their values and show "Not
+refreshed since" on hover, on KPI tiles and under the dashboard's stamp.
 
 Every number is a fact token with its source and query; code computes, formats and judges
 it. A brand kit (`--brand run|repo|config|PATH`) gives every page the same colors and type.
@@ -20,6 +24,8 @@ plugins/briefing/scripts/briefing check briefing-runs/q4/story.json
 plugins/briefing/scripts/briefing build briefing-runs/q4/story.json
 plugins/briefing/scripts/briefing slides briefing-runs/q4/story.json --png --pdf
 plugins/briefing/scripts/briefing export briefing-runs/q4/story.json --to slides
+plugins/briefing/scripts/briefing export briefing-runs/q4/story.json --to google --file q4.pptx
+plugins/briefing/scripts/briefing refresh briefing-runs/q4/story.json
 plugins/briefing/scripts/briefing sources detect --picker
 ```
 
@@ -38,7 +44,7 @@ brand kit.
 | `skills/deck/`, `skills/dashboard/` | the two skills and their format references |
 | `references/` | how decks and dashboards read (`voice.md`) and brand kits (`brand.md`) |
 | `scripts/briefing` | launcher used through `${CLAUDE_PLUGIN_ROOT}` |
-| `src/briefing/` | the pack: deck and dashboard layouts, the kpi, filters and animation blocks, checks, exports and commands; `assets/` holds their CSS and scripts |
+| `src/briefing/` | the pack: deck and dashboard layouts, the kpi, filters and animation blocks, checks, exports, upload manifests and commands; `assets/` holds their CSS and scripts |
 | `src/chronicle_engine`, `src/sources` | links to the shared engine and sources packages; Claude Code copies linked files at install |
 | `examples/` | the keystone deck and dashboard |
 | `tests/` | `test_briefing_*.py`; builds run in their own process |

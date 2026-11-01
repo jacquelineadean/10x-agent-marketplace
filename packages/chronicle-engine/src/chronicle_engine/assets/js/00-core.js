@@ -179,13 +179,15 @@
     var note = node.getAttribute("data-note");
     var loc = node.getAttribute("data-loc");
     var query = node.getAttribute("data-query");
+    var asOf = node.getAttribute("data-asof") || (src && src.asOf);
+    var stale = node.hasAttribute("data-stale");
     var r = node.getBoundingClientRect();
     showTip(function (t) {
       html("div", "tip-h", src ? src.label : "Fact", t);
       if (note) html("div", null, note, t);
       if (loc) html("div", "tip-src", loc, t);
       if (query) html("div", "tip-src", "Query: " + query, t);
-      if (src && src.asOf) html("div", "tip-src", "As of " + src.asOf, t);
+      if (asOf) html("div", "tip-src", (stale ? "Not refreshed since " : "As of ") + asOf, t);
       if (!src) html("div", "tip-src", "No source recorded", t);
     }, r.left, r.bottom);
   }

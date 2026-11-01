@@ -1,4 +1,4 @@
-"""The `sources` command line: detect, check, digest, connection and agent."""
+"""The `sources` command line: detect, gather, check, digest, connection and agent."""
 
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ from sources.config import settings
 from sources.connectors.files import store
 from sources.connectors.system import probe
 from sources.core import agent, connections, contract, detect, digest, picker, systems
+from sources.entrypoints.cli import gather
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -27,6 +28,13 @@ def _parser() -> argparse.ArgumentParser:
     shape = d.add_mutually_exclusive_group()
     shape.add_argument("--json", action="store_true", help="one object per system")
     shape.add_argument("--picker", action="store_true", help="AskUserQuestion questions")
+    g = sub.add_parser("gather", help="run the script-lane queries, then write digest.md")
+    g.add_argument("run", type=Path, help="the run folder")
+    g.add_argument("--only", action="append", default=[], metavar="PATH", help="one entry")
+    g.add_argument(
+        "--roll", action="store_true", help="move each window to the last complete period"
+    )
+    g.add_argument("--until", type=date.fromisoformat, help="the as-of date (default today)")
     for name, text in (
         ("check", "check facts.json against queries.json"),
         ("digest", "check the run folder, then write digest.md"),
@@ -159,6 +167,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         if args.command == "detect":
             return _detect(args)
+        if args.command == "gather":
+            return gather.run(args.run, args.only, args.roll, args.until)
         if args.command == "check":
             return 1 if _check(args.run).errors else 0
         if args.command == "digest":

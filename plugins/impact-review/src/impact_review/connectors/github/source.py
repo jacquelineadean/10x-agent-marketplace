@@ -13,10 +13,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, TypeVar
 
+from sources.connectors.github.errors import GitHubError
+from sources.connectors.github.http import GitHubTransport
+
 from impact_review.connectors.github import queries
 from impact_review.connectors.github.cache import RawCache
-from impact_review.connectors.github.errors import GitHubError
-from impact_review.connectors.github.http import GitHubTransport
 from impact_review.connectors.github.parse import (
     parse_calendar,
     parse_commit,

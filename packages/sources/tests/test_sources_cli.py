@@ -40,7 +40,7 @@ def test_detect_picker_is_ask_user_question_input(
     datadog = questions[1]["options"][0]
     assert datadog == {
         "label": "Datadog",
-        "description": "DD_API_KEY and DD_APP_KEY set; no connector in this session",
+        "description": "DD_API_KEY and DD_APP_KEY set; script collector ready",
     }
 
 
@@ -125,3 +125,13 @@ def test_agent_writes_a_user_level_database_agent(tmp_path: Path) -> None:
     assert main(["agent"]) == 1  # an existing file needs --force
     assert main(["agent", "--connection", "nope", "--force"]) == 1
     assert main(["detect"]) == 0
+
+
+def test_gather_on_a_folder_with_no_script_entries_only_writes_the_digest(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    (tmp_path / "facts.json").write_text(json.dumps(facts()))
+    (tmp_path / "queries.json").write_text(json.dumps(queries()))
+    assert main(["gather", str(tmp_path), "--until", "2026-10-31"]) == 0
+    assert capsys.readouterr().out.startswith(f"wrote {tmp_path / 'digest.md'}")
+    assert "Lane mcp" in (tmp_path / "digest.md").read_text()

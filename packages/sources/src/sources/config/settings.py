@@ -16,6 +16,11 @@ def _env(environ: Mapping[str, str] | None) -> Mapping[str, str]:
     return os.environ if environ is None else environ
 
 
+def environ() -> Mapping[str, str]:
+    """The process environment, for collectors that read keys and start psql or SQLcl."""
+    return os.environ
+
+
 def present(names: Iterable[str], environ: Mapping[str, str] | None = None) -> set[str]:
     """The names among `names` that are set to something other than blanks."""
     env = _env(environ)

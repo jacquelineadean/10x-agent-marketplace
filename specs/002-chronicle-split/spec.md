@@ -12,7 +12,7 @@ pull requests, each based on the one before; the first is based on the RFC's own
 | 2 | `claude/rfc7-2-sources` | 2: sources plugin, chronicle researcher | sources 0.1.0, chronicle 0.6.0 |
 | 3 | `claude/rfc7-3-briefing` | 3: briefing, brand kit | briefing 0.1.0, chronicle 0.6.1 |
 | 4 | `claude/rfc7-4-blueprint` | 4: blueprint, TAD move, interactive figures | blueprint 0.1.0, chronicle 0.7.0 |
-| 5 | `claude/rfc7-5-collectors` | 5: script-lane collectors, refresh, impact-review on sources | sources 0.2.0, briefing 0.2.0 |
+| 5 | `claude/rfc7-5-collectors` | 5: script-lane collectors, refresh, uploads, impact-review on sources | sources 0.2.0, briefing 0.2.0, impact-review 0.2.0, blueprint 0.2.0, chronicle 0.7.1 |
 | 6 | `claude/rfc7-6-creative` | 6: creative additions | chronicle 0.8.0 |
 
 ## Design decisions that refine the RFC
@@ -177,8 +177,74 @@ Design decisions:
 | AC-43 | Installing blueprint installs sources | manual check M-7 |
 | AC-44 | The quality gates pass, now with `mypy plugins/blueprint/src/blueprint`; blueprint is 0.1.0 and chronicle 0.7.0 in both manifests | CI and `claude plugin validate .` |
 
-### PR 5 and PR 6
-Criteria for later pull requests are added to this spec in the pull request that builds them.
+### PR 5: script-lane collectors, refresh, uploads, impact-review on sources
+Design decisions:
+- **The script lane.** A `queries.json` entry with `"lane": "script"` carries a `request`
+  in its system's recipe shape. `sources gather` runs each one: one value becomes a record
+  (source, unit, and a note that ends with the window), any table one list per column, and
+  the entry gets the query as run, the window read and its as-of date. One entry failing
+  never stops the others; an entry that never ran is a warning, so the digest still lists
+  what was read.
+- **Nine collectors.** Every recipe promised a script collector in sources 0.2.0. Counting
+  collectors count per period (`per`: day, week, month, quarter or year, at most 120) and
+  ask each system for a total only: GitHub search and workflow runs, Jira, Confluence,
+  PagerDuty (six months a call, longer windows month by month), ServiceNow's Aggregate API.
+  Datadog reduces daily rollups per period in code, reads SLO history and computes RUM
+  values per period in Datadog. Databricks runs statements and reads Unity Catalog lineage;
+  Postgres and Oracle run through the user's `psql` and SQLcl.
+- **Read-only POSTs.** The RFC names Datadog's RUM aggregate and Databricks statements. Jira
+  Cloud counts issues only through `search/approximate-count`, so that path joins the list.
+- **SQL guard and sessions.** Before any connection: one `SELECT` or `WITH`, no write
+  keyword outside literals and quoted names, no side-effect function, no backslash, dollar
+  or q-quoting, named parameters only. Postgres runs read-only with a 30-second statement
+  timeout set through `PGOPTIONS` and returns JSON rows; Oracle runs in a `SET TRANSACTION
+  READ ONLY` transaction under a 45-second process limit, its start-up plus the statement,
+  because Oracle has no session statement timeout; Databricks waits 30 seconds, then
+  cancels. Every SQL result stops at 10,000 rows.
+- **Secrets.** Keys come from environment variables through a named connection or the
+  system's defaults. Passwords travel in libpq's variables or on SQLcl's standard input,
+  never in an argument list; messages name variables, never values.
+- **Refresh.** `briefing refresh` runs the script lane again with each window moved to end
+  with the last complete period (whole months stay whole months; other windows keep their
+  days and end yesterday), then builds. `queries.json` records the date as `refreshed`; a
+  fact whose entry is older shows "Not refreshed since" on hover and on its KPI tile, and the
+  dashboard names those systems under its stamp. The engine copies each entry's as-of date
+  onto its facts, so a tooltip shows the date of the read.
+- **Uploads.** `export --to google|microsoft --file` writes `build/upload.json` with the
+  question the user answers. Claude uploads through the user's connector only after a yes
+  (amendment 1); code never uploads. The file is the .pptx the Slides type downloads or the
+  printed PDF.
+- **impact-review on sources.** Its GitHub transport, host endpoints, token lookup and errors
+  move to `packages/sources/src/sources/connectors/github/`; it links the package and keeps
+  its queries, parsing, cache and collection, passing its own User-Agent.
+- **impact-review keeps its charts.** The RFC's phase 5 moves it onto the engine's charts.
+  Those draw in the browser with scripts and web fonts, and impact-review's dashboard
+  promises offline HTML with inline SVG and no scripts (its README and `test_outputs.py`).
+  Moving needs the owner to drop that promise or a static chart renderer in the engine, so
+  it is not built.
+- **blueprint reads live.** `schema --connection` reads a Postgres catalog through
+  `pg_catalog` (`information_schema` hides constraints from a role that may only SELECT) or
+  an Oracle one through the `ALL_` views; `lineage` turns a table's Unity Catalog lineage
+  into a TAD. Long column types shorten (`timestamptz`) or are cut to fit their row.
+- **Versions.** sources 0.2.0, briefing 0.2.0, impact-review 0.2.0, blueprint 0.2.0 (new
+  commands) and chronicle 0.7.1 (engine changes).
+
+| ID | Criterion | Check |
+| --- | --- | --- |
+| AC-45 | The SQL guard passes one read-only statement and refuses writes, data-changing CTEs, `SELECT INTO`, row locks, side-effect functions, several statements, psql commands and unknown parameters | `test_sources_sql.py`; manual check M-8 |
+| AC-46 | Every collector sends GET over HTTPS, or POST only to a named read-only path, and turns recorded replies into the expected values and per-period lists | `test_sources_collectors.py` |
+| AC-47 | psql and SQLcl start from argument lists in read-only sessions with their time limits, and no password reaches an argument list | `test_sources_databases.py`; manual check M-8 |
+| AC-48 | `gather` writes each result at its path, stamps its entry, reports failures apart and rolls windows to the last complete period | `test_sources_gather.py`, `test_sources_periods.py` |
+| AC-49 | `detect` says "script collector ready" for a system with keys or a named connection and its program | `test_sources_detect.py` |
+| AC-50 | `briefing refresh` reads the script lane again, rebuilds, and marks older facts on hover, on KPI tiles and under the dashboard's stamp | `test_briefing_refresh.py`, `test_engine_brand.py` |
+| AC-51 | `export --to google` and `--to microsoft` write the upload manifest and its question, and refuse a file that is not a deck | `test_briefing_refresh.py`; the upload stays in manual check M-3 |
+| AC-52 | impact-review links `packages/sources`, and its outputs and GitHub requests match PR 4's for six scopes | comparison recorded in the PR; `test_sources_boundary.py` |
+| AC-53 | `blueprint schema --connection` reads keys and relations live; `lineage` writes a TAD that checks and builds | `test_blueprint_live.py`; manual check M-8 |
+| AC-54 | chronicle's pages keep their markup and CSS; their runtime changes only by the as-of and stale tooltip lines | build comparison recorded in the PR |
+| AC-55 | The quality gates pass; sources, briefing, impact-review and blueprint are 0.2.0 and chronicle 0.7.1 in both manifests | CI and `claude plugin validate .` |
+
+### PR 6
+Criteria are added to this spec in the pull request that builds it.
 
 ## Manual checks
 - **M-1.** Install chronicle from a local marketplace into a scratch `CLAUDE_CONFIG_DIR` and confirm the cache holds
@@ -202,3 +268,8 @@ Criteria for later pull requests are added to this spec in the pull request that
   look at every page.
 - **M-7.** Install blueprint from a local marketplace into a scratch `CLAUDE_CONFIG_DIR` and
   confirm sources installs with it and the TAD files land in blueprint's cache.
+- **M-8.** Against a local Postgres 16 with a SELECT-only role: `sources gather` writes a
+  table and two values; refuses more than 10,000 rows, a `DELETE` inside `WITH` and a psql
+  backslash; the read-only session stops a function the guard passes that inserts; a
+  35-second query stops at 30 seconds; `--roll` moves a quarter to the last complete month;
+  `blueprint schema --connection` reads every key and relation as that role.

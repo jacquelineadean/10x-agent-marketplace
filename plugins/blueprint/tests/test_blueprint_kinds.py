@@ -90,3 +90,17 @@ def test_architecture_finds_parts_under_each_kind_prefix(tmp_path: Path) -> None
     assert architecture.slug_of(svg) == "a-x"
     assert architecture.has_part(svg, "orders") and architecture.has_part(svg, "p1")
     assert not architecture.has_part(svg, "payments")
+
+
+def test_long_types_shorten_and_never_run_into_the_column_name() -> None:
+    rows = [
+        {"table": "orders", "column": "created_at", "type": "timestamp with time zone"},
+        {"table": "orders", "column": "note", "type": "character varying(255)"},
+        {"table": "orders", "column": "flag", "type": "a very long custom domain type name"},
+    ]
+    data = schema.erd(rows)
+    kinds = [c["type"] for c in data["entities"][0]["columns"]]
+    assert kinds[:2] == ["timestamptz", "varchar(255)"]
+    drawing = erd.draw(data)
+    assert ">a very long custom…<" in drawing
+    assert ">timestamptz<" in drawing

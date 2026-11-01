@@ -1,0 +1,32 @@
+{
+ "statement_id": "01ef8b2d",
+ "status": {
+  "state": "SUCCEEDED"
+ },
+ "manifest": {
+  "format": "JSON_ARRAY",
+  "schema": {
+   "column_count": 1,
+   "columns": [
+    {
+     "name": "paid",
+     "type_name": "LONG",
+     "position": 0
+    }
+   ]
+  },
+  "total_chunk_count": 1,
+  "total_row_count": 1,
+  "truncated": false
+ },
+ "result": {
+  "chunk_index": 0,
+  "row_offset": 0,
+  "row_count": 1,
+  "data_array": [
+   [
+    "2685"
+   ]
+  ]
+ }
+}

@@ -16,13 +16,13 @@ from conftest import (
     team_github,
     transport_for,
 )
-from impact_review.connectors.github.errors import GitHubError
 from impact_review.connectors.github.source import GitHubSource
 from impact_review.core.digest import render_digest
 from impact_review.core.ports import ActivitySource
 from impact_review.core.report import build_metrics
 from impact_review.core.scope import Scope, finish_scope, parse_scope
 from impact_review.entrypoints.cli.main import run
+from sources.connectors.github.errors import GitHubError
 
 GENERATED = datetime(2026, 10, 11, 12, 0, tzinfo=UTC)
 

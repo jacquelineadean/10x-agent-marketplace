@@ -137,6 +137,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         if provider is not None and (args.command == "paint" or not args.no_paint):
             provider.make(story, texts, out, args.scale, args.force)
         if args.command == "build":
+            state = runs.refresh_state(args.story)
+            if state:
+                story = {**story, "meta": {**story["meta"], **state}}
             return _build(story, facts, files, out, args.inline)
         return 0
     except ModuleNotFoundError as exc:

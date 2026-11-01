@@ -1,12 +1,12 @@
 """One HTTP transport for GraphQL queries and REST GETs: timeouts, retries, backoff.
 
-Never logs the token, the Authorization header or a URL with a query string.
+Moved from impact-review, which passes its own `user_agent`. Never logs the token, the
+Authorization header or a URL with a query string.
 """
 
 from __future__ import annotations
 
 import json
-import logging
 import re
 import time
 import urllib.error
@@ -16,14 +16,18 @@ from dataclasses import dataclass, field
 from email.message import Message
 from typing import Any
 
-from impact_review import __version__
-from impact_review.connectors.github.errors import AuthError, GitHubError, NetworkError, SsoError
-from impact_review.connectors.github.hosts import Endpoints
+from sources import __version__
+from sources.connectors.github.errors import AuthError, GitHubError, NetworkError, SsoError
+from sources.connectors.github.hosts import Endpoints
+from sources.connectors.http import (
+    MAX_ATTEMPTS,
+    TIMEOUT_SECONDS,
+    RetryError,
+    decode,
+    path_of,
+    retrying,
+)
 
-log = logging.getLogger(__name__)
-
-TIMEOUT_SECONDS = 30
-MAX_ATTEMPTS = 4
 _SAML = re.compile(r"saml|single sign-on|sso", re.IGNORECASE)
 _SSO_ORG = re.compile(r"organization named ['\"]?([\w.-]+)|organizations?/([\w.-]+)", re.IGNORECASE)
 
@@ -45,6 +49,7 @@ class GitHubTransport:
     opener: Opener = urllib.request.urlopen
     sleeper: Sleeper = time.sleep
     max_attempts: int = MAX_ATTEMPTS
+    user_agent: str = f"sources/{__version__}"
     calls: int = field(default=0, init=False)
 
     def graphql(self, query: str, variables: dict[str, Any]) -> tuple[Any, list[str]]:
@@ -67,52 +72,35 @@ class GitHubTransport:
         return self._send("GET", f"{self.endpoints.rest_url}/{path.lstrip('/')}", None)
 
     def _send(self, method: str, url: str, payload: bytes | None) -> Response:
-        delay = 2.0
-        for attempt in range(1, self.max_attempts + 1):
-            try:
-                return self._once(method, url, payload)
-            except _RetryError as retry:
-                if attempt == self.max_attempts:
-                    raise retry.error from None
-                wait = retry.after if retry.after is not None else delay
-                log.warning(
-                    "%s %s: %s; retry %d/%d in %.0fs",
-                    method,
-                    _path(url),
-                    retry.why,
-                    attempt,
-                    self.max_attempts - 1,
-                    wait,
-                )
-                self.sleeper(wait)
-                delay *= 2
-        raise NetworkError(f"gave up on {method} {_path(url)}")
+        return retrying(
+            lambda: self._once(method, url, payload), method, url, self.max_attempts, self.sleeper
+        )
 
     def _once(self, method: str, url: str, payload: bytes | None) -> Response:
         if not url.startswith("https://"):
-            raise GitHubError(f"refusing non-https URL {_path(url)}")
+            raise GitHubError(f"refusing non-https URL {path_of(url)}")
         request = urllib.request.Request(  # noqa: S310  scheme checked above: https only
             url, data=payload, method=method, headers=self._headers()
         )
         self.calls += 1
         try:
             with self.opener(request, timeout=TIMEOUT_SECONDS) as raw:
-                return Response(raw.status, raw.headers, _decode(raw.read()))
+                return Response(raw.status, raw.headers, decode(raw.read()))
         except urllib.error.HTTPError as error:
             return self._handle_http_error(error, method, url)
         except urllib.error.URLError as error:
-            raise _RetryError(
+            raise RetryError(
                 f"network error: {error.reason}",
                 NetworkError(f"cannot reach {self.endpoints.host}: {error.reason}"),
             ) from None
         except TimeoutError:
-            raise _RetryError(
+            raise RetryError(
                 "timeout", NetworkError(f"timeout talking to {self.endpoints.host}")
             ) from None
 
     def _handle_http_error(self, error: urllib.error.HTTPError, method: str, url: str) -> Response:
         status, headers = error.code, error.headers
-        body = _decode(error.read())
+        body = decode(error.read())
         if status == 401:
             raise AuthError("GitHub rejected the token (HTTP 401); check it has not expired")
         sso = headers.get("X-GitHub-SSO", "")
@@ -120,43 +108,24 @@ class GitHubTransport:
             match = re.search(r"url=(\S+)", sso)
             raise SsoError(None, match.group(1) if match else None)
         if status in (403, 429) and _is_rate_limited(headers):
-            raise _RetryError(
+            raise RetryError(
                 "rate limited",
                 GitHubError("GitHub rate limit reached; try again later"),
                 _retry_after(headers),
             )
         if status >= 500:
-            raise _RetryError(f"HTTP {status}", GitHubError(f"GitHub answered HTTP {status}"))
+            raise RetryError(f"HTTP {status}", GitHubError(f"GitHub answered HTTP {status}"))
         message = body.get("message", "") if isinstance(body, dict) else ""
-        raise GitHubError(f"{method} {_path(url)} failed with HTTP {status}: {message}")
+        raise GitHubError(f"{method} {path_of(url)} failed with HTTP {status}: {message}")
 
     def _headers(self) -> dict[str, str]:
         return {
             "Authorization": f"Bearer {self.token}",
             "Accept": "application/vnd.github+json",
             "Content-Type": "application/json",
-            "User-Agent": f"impact-review/{__version__}",
+            "User-Agent": self.user_agent,
             "X-GitHub-Api-Version": "2022-11-28",
         }
-
-
-class _RetryError(Exception):
-    def __init__(self, why: str, error: GitHubError, after: float | None = None) -> None:
-        super().__init__(why)
-        self.why, self.error, self.after = why, error, after
-
-
-def _decode(raw: bytes) -> Any:
-    if not raw:
-        return {}
-    try:
-        return json.loads(raw.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError):
-        return {"message": raw[:200].decode("utf-8", errors="replace")}
-
-
-def _path(url: str) -> str:
-    return url.split("?", 1)[0]
 
 
 def _is_rate_limited(headers: Message) -> bool:

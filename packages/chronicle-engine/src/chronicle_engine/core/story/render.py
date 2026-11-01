@@ -83,6 +83,8 @@ class Builder:
             data_note=found.note or None,
             data_loc=found.locator or None,
             data_query=found.query or None,
+            data_asof=found.as_of or None,
+            data_stale="1" if found.stale else None,
         )
 
     def inline(self, text: Any) -> str:

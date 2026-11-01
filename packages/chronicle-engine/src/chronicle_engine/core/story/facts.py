@@ -51,6 +51,8 @@ class Fact:
     note: str = ""
     locator: str = ""
     query: str = ""
+    as_of: str = ""
+    stale: bool = False
 
 
 def lookup(facts: Mapping[str, Any], path: str) -> Fact:
@@ -78,6 +80,8 @@ def lookup(facts: Mapping[str, Any], path: str) -> Fact:
             note=str(node.get("note", "")),
             locator=str(node.get("locator", "")),
             query=str(node.get("query", "")),
+            as_of=str(node.get("as_of", "")),
+            stale=node.get("stale") is True,
         )
     return Fact(path=path, value=node)
 
@@ -248,19 +252,31 @@ def unsourced_numbers(text: str) -> list[str]:
     return found
 
 
-def attach_queries(facts: Mapping[str, Any], queries: Mapping[str, str]) -> dict[str, Any]:
-    """Copy each fact's query onto its record, so the page shows it on hover.
+def attach_queries(
+    facts: Mapping[str, Any], entries: Mapping[str, Any], refreshed: str = ""
+) -> dict[str, Any]:
+    """Copy each fact's query and as-of date onto its record, so the page shows them on hover.
 
-    `queries` maps a fact or group path to its query text; a group's query passes down to
-    every record under it unless a record has its own.
+    `entries` maps a fact or group path to its `queries.json` entry; a group's entry passes
+    down to every record under it unless a record has its own. After a refresh
+    (`refreshed`, an ISO date), a record whose entry is older is marked stale.
     """
 
-    def walk(node: Any, path: str, inherited: str) -> Any:
-        here = queries.get(path) or inherited
+    def walk(node: Any, path: str, inherited: Mapping[str, Any]) -> Any:
+        found = entries.get(path)
+        here = found if isinstance(found, Mapping) else inherited
         if isinstance(node, Mapping) and "value" in node:
-            return {**node, "query": here} if here and "query" not in node else node
+            query, as_of = str(here.get("query", "")), str(here.get("as_of", ""))
+            extra: dict[str, Any] = {}
+            if query and "query" not in node:
+                extra["query"] = query
+            if as_of and "as_of" not in node:
+                extra["as_of"] = as_of
+            if refreshed and as_of and as_of < refreshed:
+                extra["stale"] = True
+            return {**node, **extra} if extra else node
         if isinstance(node, Mapping):
             return {key: walk(child, f"{path}.{key}", here) for key, child in node.items()}
         return node
 
-    return {key: node if key == "derive" else walk(node, key, "") for key, node in facts.items()}
+    return {key: node if key == "derive" else walk(node, key, {}) for key, node in facts.items()}

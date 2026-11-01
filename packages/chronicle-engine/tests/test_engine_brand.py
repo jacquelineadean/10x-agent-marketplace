@@ -62,11 +62,18 @@ def test_a_group_query_passes_down_and_a_record_keeps_its_own() -> None:
         "github": {"a": {"value": 1}, "b": {"value": 2, "query": "own"}, "s": [1, 2]},
         "derive": {"github.c": {"fn": "last", "of": "github.s"}},
     }
-    out = attach_queries(facts, {"github": "group", "github.a": "mine"})
-    assert out["github"]["a"]["query"] == "mine"
-    assert out["github"]["b"]["query"] == "own"
+    entries = {
+        "github": {"query": "group", "as_of": "2026-10-14", "lane": "mcp"},
+        "github.a": {"query": "mine", "as_of": "2026-11-01", "lane": "script"},
+    }
+    out = attach_queries(facts, entries)
+    assert out["github"]["a"] == {"value": 1, "query": "mine", "as_of": "2026-11-01"}
+    assert out["github"]["b"] == {"value": 2, "query": "own", "as_of": "2026-10-14"}
     assert out["github"]["s"] == [1, 2]
     assert out["derive"] == facts["derive"]
+    refreshed = attach_queries(facts, entries, "2026-11-01")
+    assert refreshed["github"]["b"]["stale"] is True
+    assert "stale" not in refreshed["github"]["a"]
 
 
 def test_a_page_shows_each_query_on_hover(tmp_path: Path) -> None:
@@ -74,6 +81,18 @@ def test_a_page_shows_each_query_on_hover(tmp_path: Path) -> None:
     (tmp_path / "queries.json").write_text(json.dumps(queries), encoding="utf-8")
     page = build(tmp_path)
     assert 'data-query="count of people"' in page
+    assert "data-asof=" not in page and "data-stale=" not in page
+
+
+def test_after_a_refresh_older_facts_show_as_not_refreshed(tmp_path: Path) -> None:
+    queries = {
+        "refreshed": "2026-11-01",
+        "queries": {"team": {"query": "count of people", "as_of": "2026-10-14"}},
+    }
+    (tmp_path / "queries.json").write_text(json.dumps(queries), encoding="utf-8")
+    page = build(tmp_path)
+    assert 'data-asof="2026-10-14" data-stale="1"' in page
+    assert '"Not refreshed since "' in page
 
 
 def test_the_engine_offers_only_the_page_layout(tmp_path: Path) -> None:

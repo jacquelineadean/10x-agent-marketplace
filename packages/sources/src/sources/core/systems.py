@@ -18,6 +18,7 @@ class System:
 
     `keys` lists alternative sets of environment variable names; any complete set counts.
     `connectors` are words that name the system's MCP server in a session's tool names.
+    `runs` names the program the script collector starts, if any.
     """
 
     id: str
@@ -26,6 +27,7 @@ class System:
     keys: tuple[tuple[str, ...], ...]
     programs: tuple[str, ...]
     connectors: tuple[str, ...]
+    runs: str = ""
 
 
 SYSTEMS = (
@@ -81,6 +83,7 @@ SYSTEMS = (
         (("DATABASE_URL",), ("PGHOST", "PGDATABASE")),
         ("psql",),
         ("postgres", "postgresql", "pg"),
+        "psql",
     ),
     System(
         "oracle",
@@ -89,6 +92,7 @@ SYSTEMS = (
         (("ORACLE_USER", "ORACLE_PASSWORD", "ORACLE_DSN"),),
         ("sql",),
         ("oracle", "sqlcl"),
+        "sql",
     ),
 )
 BY_ID = {s.id: s for s in SYSTEMS}

@@ -33,19 +33,29 @@ def test_connectors_match_by_whole_word() -> None:
     assert found["postgres"] == NOT_SET_UP  # "pgadmin" is not the word "pg"
 
 
-def test_keys_need_a_whole_set_and_never_count_as_a_connector() -> None:
+def test_a_whole_set_of_keys_makes_the_script_collector_ready() -> None:
     found = _by_id(present=frozenset({"DD_API_KEY", "DD_APPLICATION_KEY", "JIRA_URL"}))
-    assert found["datadog"] == (
-        "DD_API_KEY and DD_APPLICATION_KEY set; no connector in this session"
-    )
+    assert found["datadog"] == "DD_API_KEY and DD_APPLICATION_KEY set; script collector ready"
     assert found["jira"] == NOT_SET_UP  # two of the three Jira names are missing
 
 
 def test_programs_connections_and_the_agent_show_together() -> None:
     named = {"warehouse": connections.connection("warehouse", {"system": "postgres", "host": "db"})}
     found = _by_id(frozenset(), frozenset({"psql", "gh"}), (), named, frozenset({"postgres"}))
-    assert found["postgres"] == "sources-db agent; connection warehouse; psql found"
-    assert found["github"] == "gh found; no connector in this session"
+    assert found["postgres"] == (
+        "sources-db agent; connection warehouse; psql found; script collector ready"
+    )
+    assert found["github"] == "gh found; script collector ready"
+
+
+def test_a_database_collector_needs_its_program() -> None:
+    named = {"ledger": connections.connection("ledger", {"system": "oracle", "host": "db"})}
+    found = _by_id(frozenset({"DATABASE_URL"}), frozenset(), (), named, frozenset())
+    assert found["postgres"] == "DATABASE_URL set; no connector in this session"
+    assert found["oracle"] == "connection ledger; no connector in this session"
+    ready = _by_id(frozenset({"DATABASE_URL"}), frozenset({"psql", "sql"}), (), named)
+    assert ready["postgres"].endswith("script collector ready")
+    assert ready["oracle"].endswith("script collector ready")
 
 
 def test_picker_asks_three_multi_select_questions_of_three_systems() -> None:

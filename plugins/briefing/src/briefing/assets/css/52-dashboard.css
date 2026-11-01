@@ -8,6 +8,7 @@
 .db-title h1 { margin: 0; font: 400 clamp(1.9rem, 3.2vw, 2.8rem)/1.08 var(--f-display); letter-spacing: -.01em; }
 .db-title .dek { margin: .6rem 0 0; color: var(--ink-2); max-width: 46rem; }
 .db-asof { margin: .7rem 0 0; font: 600 .78rem/1.2 var(--f-ui); color: var(--muted); letter-spacing: .04em; }
+.db-stale { margin: .3rem 0 0; font: 600 .78rem/1.3 var(--f-ui); color: var(--warn); }
 .dashboard { padding: 0 max(16px, env(safe-area-inset-left, 0px)) 4rem; max-width: calc(var(--wide) + 2rem); margin: 0 auto; }
 .db-section { padding: 1.4rem 0 1.6rem; border-top: 1px solid var(--rule); }
 .db-h { margin: 0 0 .3rem; font: 600 1.05rem/1.3 var(--f-ui); }

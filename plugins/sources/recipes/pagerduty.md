@@ -2,7 +2,7 @@
 
 ## Reach
 - Connector: a PagerDuty MCP server; its tool names contain `pagerduty`.
-- Key for the script collector (sources 0.2.0): `PAGERDUTY_TOKEN`, a read-only REST key.
+- Script collector: `PAGERDUTY_TOKEN`, a read-only REST key.
 
 ## Facts
 | Fact | How |
@@ -15,6 +15,11 @@
 ## queries.json
 `query` holds the call and filters, such as
 `list_incidents since=2026-07-01 until=2026-09-30 service_ids=[PX1] urgency=high`.
+
+## Script lane
+`request`: `{"incidents": {"urgencies": ["high"], "service_ids": ["P1ABC"], "statuses":
+["resolved"]}, "per": "month"}` counts incidents created in each period; `{}` filters
+nothing. Without `per` the entry writes one count for the window; with it, a list per period beside the period labels.
 
 ## Never
 Acknowledge, resolve, reassign, snooze, merge or annotate an incident, or change a schedule.

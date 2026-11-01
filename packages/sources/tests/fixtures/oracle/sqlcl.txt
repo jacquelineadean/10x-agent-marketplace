@@ -1,0 +1,7 @@
+
+{"results":[{"columns":[{"name":"MONTH","type":"VARCHAR2"},{"name":"ORDERS","type":"NUMBER"},{"name":"FIRST_DAY","type":"DATE"}],"items":
+[
+{"month":"2026-07","orders":905,"first_day":"2026-07-01T00:00:00Z"}
+,{"month":"2026-08","orders":905,"first_day":"2026-08-01T00:00:00Z"}
+]}]}
+

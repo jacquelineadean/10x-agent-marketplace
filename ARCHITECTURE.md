@@ -95,15 +95,15 @@ writes the post.
 | --- | --- | --- | --- |
 | Marketplace manifest `.claude-plugin/marketplace.json` | Lists every plugin and where it lives | JSON | Jacqueline Dean |
 | impact-review plugin shell `plugins/impact-review/` (`.claude-plugin/plugin.json`, `skills/report/`, `agents/impact-writer.md`) | User-facing command; the skill runs the collector and hands the run folder to the `impact-writer` subagent (Sonnet, Read and Write only), which writes the synthesis | Markdown | Jacqueline Dean |
-| impact-review collector `plugins/impact-review/src/impact_review/` | Calls GitHub, caches responses, computes metrics, renders dashboard and digest | Python 3.11+, standard library only at runtime | Jacqueline Dean |
+| impact-review collector `plugins/impact-review/src/impact_review/` | Calls GitHub through the linked sources package's transport, caches responses, computes metrics, renders dashboard and digest | Python 3.11+, standard library only at runtime | Jacqueline Dean |
 
 | chronicle plugin shell `plugins/chronicle/` (`.claude-plugin/plugin.json`, `skills/story/`, `skills/animation/`, `agents/researcher.md`, `scripts/chronicle`) | The story workflow (brief, gather, write, build, publish) and the animation workflow (write, build, look, deliver) | Markdown, POSIX sh | Jacqueline Dean |
 | chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story and widget checks, themes, diagram sanitizer, HTML renderer, page runtime (CSS and JS), SVG reader and watercolor painter; the animation timeline, GIF encoder and frame capture (TADs moved to blueprint) | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting and raster exports; a local Chromium for frames and ffmpeg for MP4 | Jacqueline Dean |
 
 | blueprint plugin `plugins/blueprint/` (`.claude-plugin/plugin.json`, `skills/{architecture,prototype}/`, `scripts/blueprint`, `src/blueprint/`, `examples/`) | Architecture, sequence and ERD figures and pages, and prototypes: write, check, build, look, publish | Python 3.11+, standard library; Markdown, POSIX sh; a local Chromium for frames | Jacqueline Dean |
 | briefing plugin `plugins/briefing/` (`.claude-plugin/plugin.json`, `skills/{deck,dashboard}/`, `references/`, `scripts/briefing`, `src/briefing/`, `examples/`) | Decks and dashboards from facts: write, check, build, look, export, publish | Python 3.11+, standard library; Markdown, POSIX sh; a local Chromium for slide images and PDFs | Jacqueline Dean |
-| sources plugin shell `plugins/sources/` (`.claude-plugin/plugin.json`, `agents/gatherer.md`, `skills/connect/`, `recipes/`, `scripts/sources`) | Reads company systems through the session's connectors into facts, queries and a digest; sets up each system | Markdown, POSIX sh | Jacqueline Dean |
-| sources package `packages/sources/src/sources/` | Detection, the source picker, named connections, the facts and queries contract, the digest, the user-level database agent | Python 3.11+, standard library only | Jacqueline Dean |
+| sources plugin shell `plugins/sources/` (`.claude-plugin/plugin.json`, `agents/gatherer.md`, `skills/connect/`, `recipes/`, `scripts/sources`) | Reads company systems through the session's connectors or the script collectors into facts, queries and a digest; sets up each system | Markdown, POSIX sh | Jacqueline Dean |
+| sources package `packages/sources/src/sources/` | Detection, the source picker, named connections, the facts and queries contract, the digest, the user-level database agent, the SQL guard, the HTTPS transport and the nine script-lane collectors (the GitHub one shared with impact-review) | Python 3.11+, standard library only; the user's `psql` and SQLcl | Jacqueline Dean |
 | speedup plugin shell `plugins/speedup/` (`.claude-plugin/plugin.json`, `skills/{setup,measure,optimize,report}/`, `agents/perf-gatherer.md`, `agents/perf-writer.md`, `scripts/speedup`, `examples/`) | The optimization loop: choose journeys, measure, optimize against proxies, report and write up | Markdown, POSIX sh, YAML (CI example) | Jacqueline Dean |
 | speedup engine `plugins/speedup/src/speedup/` | Project file checks, Datadog and Prometheus reads, imports, benchmark runner, statistics, ratchet, metrics, digest, dashboard, write-up tokens | Python 3.11+, standard library only | Jacqueline Dean |
 
@@ -140,24 +140,34 @@ a deck of 16:9 slides on a horizontal track and a dashboard of sections in a gri
 KPI tiles whose status code sets by rule, filters over precomputed slices, and an
 animation block that plays a built animation one step per click. It links the engine and
 `packages/sources`, declares `"dependencies": ["sources"]`, and exports Slides and
-Dashboard content, a PDF and a PNG per slide. A brand kit, chosen with `--brand`, lives in
-the engine, so every plugin's pages can share one look.
+Dashboard content, a PDF and a PNG per slide, and an upload manifest for Google Drive or
+Microsoft 365 that Claude acts on only after the user confirms (constitution amendment 1).
+`refresh` runs the script-lane queries again in-process over windows moved forward, then
+rebuilds; facts read through connectors show as not refreshed. A brand kit, chosen with
+`--brand`, lives in the engine, so every plugin's pages can share one look.
 
 blueprint (RFC-0007, spec 002) draws systems and data designs on the same engine. Its pack,
 `plugins/blueprint/src/blueprint/`, holds the TAD kind (moved from chronicle) and adds
 sequence and ERD kinds, which write a drawing from data and play it through the engine's
 diagram kind. Its architecture block wraps a built animation with part details, pins and a
-step player; its prototype layout puts clickable screens behind tabs. It links the engine
-and `packages/sources` and declares `"dependencies": ["sources"]`.
+step player; its prototype layout puts clickable screens behind tabs. `schema` reads a
+Postgres or Oracle catalog live through the sources collectors, and `lineage` turns a
+Databricks table's Unity Catalog lineage into a TAD. It links the engine and
+`packages/sources` and declares `"dependencies": ["sources"]`.
 
 sources (RFC-0007, spec 002) gives the data plugins read-only access to company systems.
 Its code, `packages/sources/src/sources/`, uses the same layout and imports neither the
 engine nor a plugin: `core/` detects which systems a session can reach, builds the source
-picker, checks `facts.json` against `queries.json` and writes `digest.md`; `config/` reads
-only which key names are set. The plugin `plugins/sources/` links that package and adds the
-`gatherer` subagent, one recipe per system and the user-run `/sources:connect`. It bundles
-no MCP server: the gatherer reads the connectors the session already has, and databases
-with none can go through a user-level `sources-db` agent whose servers start only inside it.
+picker, checks `facts.json` against `queries.json`, writes `digest.md` and holds the SQL
+guard; `connectors/` holds the script-lane collector for each of the nine systems, one
+HTTPS transport (GET, plus POST to named read-only paths) and the runners for the user's
+`psql` and SQLcl, started with argument lists in read-only sessions; `config/` is the only
+environment read. The plugin `plugins/sources/` links that package and adds the `gatherer`
+subagent, one recipe per system and the user-run `/sources:connect`. It bundles no MCP
+server: the gatherer reads the connectors the session already has or runs `sources
+gather`, and databases with neither can go through a user-level `sources-db` agent whose
+servers start only inside it. impact-review links the package too: its GitHub transport,
+host endpoints and token lookup moved there, and its queries and parsing stayed.
 
 speedup uses the same layout under `plugins/speedup/src/speedup/`: `core/`
 (rules, statistics, rendering; no I/O), `connectors/datadog/`, `connectors/prometheus/`

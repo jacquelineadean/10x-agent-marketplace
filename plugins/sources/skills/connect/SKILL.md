@@ -20,12 +20,13 @@ with one AskUserQuestion.
 ## 2. Pick a lane
 Read `${CLAUDE_PLUGIN_ROOT}/recipes/<system>.md`. Its "Reach" section names both lanes.
 
-- **Connector.** The gatherer reads through it today, on claude.ai, in Cowork and in Claude
-  Code. Add the system's connector in claude.ai (Settings, Connectors) or with
+- **Connector.** The gatherer reads through it on claude.ai, in Cowork and in Claude Code.
+  Add the system's connector in claude.ai (Settings, Connectors) or with
   `claude mcp add --scope user`, following the vendor's instructions. Prefer a read-only
   token or role. A plugin never bundles the server, so it starts only where the user adds it.
-- **Keys.** The script collectors of sources 0.2.0 read the variables the recipe names. Tell
-  the user to export them in their shell profile or secret manager.
+- **Keys.** The script collectors read the variables the recipe names, in Claude Code on the
+  user's machine. Tell the user to export them in their shell profile or secret manager.
+  Postgres needs `psql` installed and Oracle needs SQLcl (`sql`).
 - **Named connection.** For a database or a self-hosted system, record its host and the
   names of the variables that hold its keys:
   `"${CLAUDE_PLUGIN_ROOT}/scripts/sources" connection add warehouse --system postgres --host db.internal:5432 --database analytics --env user=PGUSER --env password=PGPASSWORD`.
@@ -48,7 +49,8 @@ inside it. For Postgres, Oracle and Databricks connections with no connector in 
    `Mode: digest` after it.
 
 ## 4. Confirm
-Run `detect` again and show the system's line.
+Run `detect` again and show the system's line: `script collector ready` means
+`sources gather` can read it.
 
 ## Rules
 - Read only: suggest read-only tokens, roles and database users.

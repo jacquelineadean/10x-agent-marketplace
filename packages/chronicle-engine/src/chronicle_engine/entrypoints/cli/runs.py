@@ -57,12 +57,36 @@ def load_facts(
     facts = merge(named)
     queries = path.parent / "queries.json"
     if default_required and queries.is_file():
-        entries = store.read_json(queries).get("queries", {})
+        data = store.read_json(queries)
+        entries = data.get("queries", {}) if isinstance(data, Mapping) else {}
+        refreshed = str(data.get("refreshed", "")) if isinstance(data, Mapping) else ""
         facts = attach_queries(
             facts,
-            {str(k): str(v.get("query", "")) for k, v in entries.items() if isinstance(v, Mapping)},
+            {str(k): v for k, v in entries.items() if isinstance(v, Mapping)},
+            refreshed,
         )
     return derive.apply(facts)
+
+
+def refresh_state(story_path: Path) -> dict[str, Any]:
+    """After a refresh, its date and each system still as of an earlier day, oldest first.
+
+    Reads `queries.json` beside the story; empty when there is none or it was never
+    refreshed. A layout shows it beside its as-of date.
+    """
+    path = story_path.parent / "queries.json"
+    data = store.read_json(path) if path.is_file() else {}
+    refreshed = str(data.get("refreshed", "")) if isinstance(data, Mapping) else ""
+    if not refreshed:
+        return {}
+    oldest: dict[str, str] = {}
+    for entry in (data.get("queries") or {}).values():
+        if isinstance(entry, Mapping) and str(entry.get("as_of", "")) < refreshed:
+            system, when = str(entry.get("system", "")), str(entry.get("as_of", ""))
+            if system and when:
+                oldest[system] = min(when, oldest.get(system, when))
+    stale = [{"system": s, "as_of": d} for s, d in sorted(oldest.items(), key=lambda i: i[1])]
+    return {"refreshed": refreshed, "stale": stale}
 
 
 def brand_kit(choice: str, folder: Path) -> dict[str, Any] | None:

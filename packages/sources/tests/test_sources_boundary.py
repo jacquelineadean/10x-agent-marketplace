@@ -22,7 +22,8 @@ def test_sources_imports_no_engine_or_plugin() -> None:
     assert offenders == []
 
 
-def test_the_sources_plugin_links_the_package() -> None:
-    link = PACKAGE.parents[3] / "plugins" / "sources" / "src" / "sources"
-    assert link.is_symlink()
-    assert link.resolve() == PACKAGE.resolve()
+def test_every_plugin_that_reads_systems_links_the_package() -> None:
+    for plugin in ("sources", "briefing", "blueprint", "impact-review"):
+        link = PACKAGE.parents[3] / "plugins" / plugin / "src" / "sources"
+        assert link.is_symlink(), plugin
+        assert link.resolve() == PACKAGE.resolve(), plugin

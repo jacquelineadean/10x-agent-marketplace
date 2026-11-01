@@ -1,8 +1,9 @@
 """Which systems this machine and session can reach, and by which lane.
 
-A system is readable by the gatherer now when the session has its MCP connector or the
-user-level database agent serves it. Keys, programs and named connections feed the script
-collectors, which arrive in sources 0.2.0; the status says what is set either way.
+A system is readable when the session has its MCP connector, the user-level database
+agent serves it, or its script collector is ready: a full set of keys or a named
+connection, plus the program it runs (psql for Postgres, SQLcl for Oracle). A signed-in
+`gh` stands in for GitHub's keys.
 """
 
 from __future__ import annotations
@@ -29,9 +30,15 @@ class Status:
     programs: tuple[str, ...] = ()
 
     @property
+    def collector(self) -> bool:
+        """`sources gather` can read it with what this machine has."""
+        reach = bool(self.keys or self.connections) or "gh" in self.programs
+        return reach and (not self.system.runs or self.system.runs in self.programs)
+
+    @property
     def readable(self) -> bool:
-        """The gatherer can read it in this session."""
-        return bool(self.connector) or self.agent
+        """The gatherer can read it in this session, through a connector or a collector."""
+        return bool(self.connector) or self.agent or self.collector
 
     @property
     def text(self) -> str:
@@ -49,7 +56,9 @@ class Status:
             parts.append(f"{', '.join(self.programs)} found")
         if not parts:
             return NOT_SET_UP
-        if not self.readable:
+        if self.collector:
+            parts.append("script collector ready")
+        elif not self.readable:
             parts.append("no connector in this session")
         return "; ".join(parts)
 
@@ -59,6 +68,7 @@ class Status:
             "label": self.system.label,
             "group": self.system.group,
             "readable": self.readable,
+            "collector": self.collector,
             "connector": self.connector,
             "agent": self.agent,
             "keys": list(self.keys),

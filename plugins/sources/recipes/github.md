@@ -2,7 +2,7 @@
 
 ## Reach
 - Connector: the GitHub connector or GitHub MCP server; its tool names contain `github`.
-- Keys for the script collector (sources 0.2.0): `GITHUB_TOKEN` or `GH_TOKEN`, or a signed-in `gh`.
+- Script collector: `GITHUB_TOKEN` or `GH_TOKEN`, or a signed-in `gh`.
 
 ## Facts
 | Fact | How |
@@ -20,6 +20,15 @@ Medians and averages over a sample go in the `derive` table or a short script, n
 `query` holds the search string or API path with its parameters, such as
 `search_issues q="is:pr is:merged merged:2026-07-01..2026-09-30 org:acme"`; `connection`
 holds the server name.
+
+## Script lane
+`request` is one of:
+- `{"search": "is:pr is:merged org:acme", "date": "merged", "per": "week"}`: the search
+  total; `date` is `created`, `merged`, `closed` or `updated`, and the window fills it in.
+- `{"runs": "acme/shop", "workflow": "deploy.yml", "status": "success", "branch": "main"}`:
+  workflow runs created in the window.
+
+Without `per` the entry writes one count for the window; with it, a list per period beside the period labels.
 
 ## Never
 Comment, review, label, merge, close, push, or open an issue or pull request.

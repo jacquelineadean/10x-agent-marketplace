@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+from sources.connectors.errors import SourceError
 
-class GitHubError(RuntimeError):
+
+class GitHubError(SourceError):
     """A request GitHub refused or answered with errors."""
 
 

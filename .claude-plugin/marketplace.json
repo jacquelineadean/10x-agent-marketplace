@@ -13,7 +13,7 @@
       "name": "impact-review",
       "source": "./plugins/impact-review",
       "description": "Turn GitHub activity for one person, a team, an organization or an enterprise, over any timeframe, into metrics, a dashboard, a rubric-based review, highlight bullets and STAR stories.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "Jacqueline Dean"
       },
@@ -24,7 +24,7 @@
       "name": "chronicle",
       "source": "./plugins/chronicle",
       "description": "Illustrated, interactive story pages (Artifacts) designed for their subject, and painted or drawn animations in the same style: status stories, launches, onboarding handbooks, field guides and podcast companions, from a brief, the material a researcher digests, and company facts through the sources plugin.",
-      "version": "0.7.0",
+      "version": "0.7.1",
       "author": {
         "name": "Jacqueline Dean"
       },
@@ -34,8 +34,8 @@
     {
       "name": "sources",
       "source": "./plugins/sources",
-      "description": "Read-only access to GitHub, Jira, Confluence, Datadog, PagerDuty, ServiceNow, Databricks, Postgres and Oracle for pages that present data: a gatherer subagent writes facts with the query behind each number, and /sources:connect sets up each system.",
-      "version": "0.1.0",
+      "description": "Read-only access to GitHub, Jira, Confluence, Datadog, PagerDuty, ServiceNow, Databricks, Postgres and Oracle for pages that present data: a gatherer subagent and script collectors write facts with the query behind each number, behind a SQL guard and read-only sessions, and /sources:connect sets up each system.",
+      "version": "0.2.0",
       "author": {
         "name": "Jacqueline Dean"
       },
@@ -45,8 +45,8 @@
     {
       "name": "briefing",
       "source": "./plugins/briefing",
-      "description": "Slide decks and KPI dashboards from facts as Artifacts: 16:9 slides with builds, notes and stepped animations, and dashboards with targets, status by rule, filters and the query behind every number; a brand kit, and exports to claude.ai Slides and Dashboard, PDF and PNG.",
-      "version": "0.1.0",
+      "description": "Slide decks and KPI dashboards from facts as Artifacts: 16:9 slides with builds, notes and stepped animations, and dashboards with targets, status by rule, filters and the query behind every number; a brand kit, refresh with no model call, and exports to claude.ai Slides and Dashboard, Google Drive, Microsoft 365, PDF and PNG.",
+      "version": "0.2.0",
       "author": {
         "name": "Jacqueline Dean"
       },
@@ -56,8 +56,8 @@
     {
       "name": "blueprint",
       "source": "./plugins/blueprint",
-      "description": "Interactive system and data design visuals and prototypes: technical architecture diagrams laid out in code, sequence diagrams and ERDs played step by step, pages with part details, pins and a step player, and clickable prototype screens fed by facts.",
-      "version": "0.1.0",
+      "description": "Interactive system and data design visuals and prototypes: technical architecture diagrams laid out in code, sequence diagrams and ERDs played step by step, pages with part details, pins and a step player, ERDs read live from Postgres or Oracle, Unity Catalog lineage, and clickable prototype screens fed by facts.",
+      "version": "0.2.0",
       "author": {
         "name": "Jacqueline Dean"
       },

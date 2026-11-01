@@ -18,6 +18,8 @@ deck plays a blueprint SVG one step per click.
 plugins/blueprint/scripts/blueprint animate new blueprint-runs/checkout --kind tad --title "Checkout"
 plugins/blueprint/scripts/blueprint animate build examples/animation-tad/animation.json --formats svg,html,png
 plugins/blueprint/scripts/blueprint schema examples/orders-erd/schema.csv --out erd.json
+plugins/blueprint/scripts/blueprint schema --connection postgres --schema public --out erd.json
+plugins/blueprint/scripts/blueprint lineage main.sales.orders --out lineage/animation.json
 plugins/blueprint/scripts/blueprint new blueprint-runs/console --layout prototype --title "Console"
 plugins/blueprint/scripts/blueprint build blueprint-runs/console/story.json
 ```
@@ -36,6 +38,6 @@ plugins/blueprint/scripts/blueprint build blueprint-runs/console/story.json
 | --- | --- |
 | `skills/architecture/`, `skills/prototype/` | the two skills and their references (`tad.md`, `sequence.md`, `erd.md`, `architecture-format.md`, `prototype-format.md`) |
 | `scripts/blueprint` | launcher used through `${CLAUDE_PLUGIN_ROOT}` |
-| `src/blueprint/` | the pack: the TAD (`core/tad/`), sequence and ERD kinds, the architecture, cards and list blocks, the prototype layout, checks, `schema`; `assets/` holds their CSS and scripts and the TAD stylesheet |
+| `src/blueprint/` | the pack: the TAD (`core/tad/`), sequence and ERD kinds, the architecture, cards and list blocks, the prototype layout, checks, `schema` (CSV or a live Postgres or Oracle read through the sources package) and `lineage` (a TAD from Unity Catalog lineage); `assets/` holds their CSS and scripts and the TAD stylesheet |
 | `src/chronicle_engine`, `src/sources` | links to the shared engine and sources packages |
 | `examples/`, `tests/` | the examples above; `test_blueprint_*.py`, with builds in their own process |

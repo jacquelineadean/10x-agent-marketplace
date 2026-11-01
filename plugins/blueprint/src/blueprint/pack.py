@@ -41,6 +41,7 @@ registry.add_parts(
 )
 registry.CHECKS["blueprint"] = commands.check
 registry.COMMANDS["schema"] = registry.Command(commands.schema_parser, commands.schema_run)
+registry.COMMANDS["lineage"] = registry.Command(commands.lineage_parser, commands.lineage_run)
 registry.COMMANDS["sources"] = registry.Command(commands.sources_parser, commands.sources_run)
 registry.add_asset_root(resources.files("blueprint.assets"))
 # Engineering pages number their chapters with a step pill.

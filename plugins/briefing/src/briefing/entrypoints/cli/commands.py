@@ -1,11 +1,13 @@
-"""briefing's commands and its check: `export` writes Slides or Dashboard content,
-`slides` prints a built deck to a PNG per slide and a PDF.
+"""briefing's commands and its check: `export` writes Slides or Dashboard content or an
+upload manifest for Google or Microsoft, `slides` prints a built deck to a PNG per slide
+and a PDF, `refresh` reads the script-lane queries again and rebuilds.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -13,10 +15,12 @@ from typing import Any
 from chronicle_engine.connectors.browser import devtools, shoot
 from chronicle_engine.connectors.files import store
 from chronicle_engine.core.story.model import Report
+from chronicle_engine.entrypoints.cli import main as engine
 from chronicle_engine.entrypoints.cli import runs
+from sources.entrypoints.cli import gather
 from sources.entrypoints.cli.main import main as sources_main
 
-from briefing.core import checks, export
+from briefing.core import checks, export, upload
 
 # The deck's logical slide size; 13.333 x 7.5 inches is PowerPoint's 16:9 page.
 SLIDE = (1600, 900)
@@ -45,14 +49,17 @@ def check(story: Any, facts: Any, path: Path, report: Report) -> None:
 
 
 def export_parser(sub: Any) -> None:
-    p = sub.add_parser("export", help="write a deck or dashboard as Slides or Dashboard content")
+    p = sub.add_parser("export", help="write Slides or Dashboard content, or an upload manifest")
     p.add_argument("story", type=Path, help="path to story.json")
-    p.add_argument("--to", choices=("slides", "dashboard"), required=True)
+    p.add_argument("--to", choices=("slides", "dashboard", *upload.SERVICES), required=True)
     p.add_argument("--out", type=Path, help="build folder (default: build/ beside the story)")
+    p.add_argument("--file", type=Path, help="for google or microsoft: the deck's .pptx or .pdf")
 
 
 def export_run(args: argparse.Namespace) -> int:
     story = store.read_json(args.story)
+    if args.to in upload.SERVICES:
+        return _upload(args, story)
     facts = runs.load_facts(args.story, story, None, default_required=True)
     data = export.slides(story, facts) if args.to == "slides" else export.dashboard(story, facts)
     out = (args.out or args.story.parent / "build") / f"{args.to}.json"
@@ -61,6 +68,47 @@ def export_run(args: argparse.Namespace) -> int:
     if args.to == "slides":
         print(f"next: briefing slides {args.story} --png, for the slide images it names")
     return 0
+
+
+def _upload(args: argparse.Namespace, story: Any) -> int:
+    """Write build/upload.json: what Claude uploads, and the question the user answers first."""
+    if args.file is None:
+        print(
+            f"error: --to {args.to} needs --file: the .pptx from claude.ai's Slides "
+            "(export --to slides) or build/deck.pdf (slides --pdf)",
+            file=sys.stderr,
+        )
+        return 1
+    try:
+        data = upload.manifest(args.to, args.file.resolve(), store.read_bytes(args.file), story)
+    except upload.UploadError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    out = (args.out or args.story.parent / "build") / "upload.json"
+    store.write_text(out, json.dumps(data, indent=1, ensure_ascii=False) + "\n")
+    print(f"wrote {out}")
+    print(f"ask first: {data['confirm']}")
+    return 0
+
+
+def refresh_parser(sub: Any) -> None:
+    p = sub.add_parser("refresh", help="read the script-lane queries again, then rebuild")
+    p.add_argument("story", type=Path, help="path to story.json")
+    p.add_argument("--until", type=date.fromisoformat, help="the as-of date (default today)")
+    p.add_argument("--brand", default="run", help=engine.BRAND_HELP)
+
+
+def refresh_run(args: argparse.Namespace) -> int:
+    """Gather with each window rolled forward, then build; no model reads anything."""
+    folder = args.story.parent
+    if not (folder / "queries.json").is_file():
+        print(
+            f"error: {folder / 'queries.json'} does not exist; gather facts first", file=sys.stderr
+        )
+        return 1
+    gathered = gather.run(folder, roll=True, until=args.until, strict=False)
+    built = engine.main(["build", str(args.story), "--brand", args.brand])
+    return gathered or built
 
 
 def slides_parser(sub: Any) -> None:

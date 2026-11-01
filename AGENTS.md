@@ -41,7 +41,7 @@ Layout is the GroundWork standard `cli` profile, rooted at `plugins/impact-revie
 - Register every plugin in `.claude-plugin/marketplace.json` and bump its `version` in `plugin.json` on each release.
 - No top-level `bin/` folder in a plugin: claude.ai and Cowork refuse to install those. Skills call scripts through `${CLAUDE_PLUGIN_ROOT}`.
 - Skills tell Claude to read the digest only; never point a skill at raw API data or full `metrics.json`.
-- Tests use recorded GitHub, Datadog and Prometheus responses under `tests/fixtures/`; no test calls a live API.
+- Tests use recorded responses under `tests/fixtures/` (GitHub, Datadog, Prometheus and each sources collector) and stand-in psql and SQLcl programs; no test calls a live API or database.
 - Test files outside a package need unique names across plugins (speedup uses `test_speedup_*.py` and `speedup_helpers.py`; the engine `test_engine_*.py`; sources `test_sources_*.py`; briefing `test_briefing_*.py` and `briefing_helpers.py`; blueprint `test_blueprint_*.py` and `blueprint_helpers.py`).
 - Run folders and anything under `impact-review-runs/`, `chronicle-runs/` or `speedup-runs/` are git-ignored; never commit them.
 

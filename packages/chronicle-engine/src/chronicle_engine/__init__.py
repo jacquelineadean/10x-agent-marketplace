@@ -5,4 +5,4 @@ registers its blocks, art, chrome, page parts, kinds, policies and commands in
 `registry`, and runs the engine's command line.
 """
 
-__version__ = "0.7.0"
+__version__ = "0.7.1"

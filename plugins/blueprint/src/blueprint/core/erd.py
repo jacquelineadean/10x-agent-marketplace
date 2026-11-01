@@ -22,6 +22,8 @@ HEAD = 30
 ROW = 20
 GAP_X = 60
 GAP_Y = 40
+# About the width of one 12 px character; a type that would reach its column's name is cut.
+CHAR_W = 7.0
 CARDINALITY = ("one-to-one", "one-to-many", "many-to-one", "many-to-many")
 SKELETON = {
     "entities": [
@@ -147,6 +149,14 @@ def _end(x: float, y: float, side: float, many: bool) -> str:
     return f'<path class="line" d="M{x + 8 * side:g} {y - 6:g} L{x + 8 * side:g} {y + 6:g}"/>'
 
 
+def _fit(kind: str, name: str) -> str:
+    """The type, cut with an ellipsis where it would run into the column's name."""
+    room = int((BOX_W - 32 - len(name) * CHAR_W) // CHAR_W)
+    if len(kind) <= room:
+        return kind
+    return kind[: room - 1].rstrip() + "…" if room >= 4 else ""
+
+
 def draw(spec: Mapping[str, Any]) -> str:
     grid = _place(spec)
     known = _columns(spec)
@@ -158,8 +168,11 @@ def draw(spec: Mapping[str, Any]) -> str:
         for i, c in enumerate(e.get("columns", [])):
             key = {"pk": "PK ", "fk": "FK "}.get(str(c.get("key", "")), "")
             line_y = y + HEAD + 15 + ROW * i
-            rows += drawn.text("small", x + 10, line_y, key + str(c.get("name", "")))
-            rows += drawn.text("small", x + BOX_W - 10, line_y, c.get("type", ""), "end")
+            name = key + str(c.get("name", ""))
+            rows += drawn.text("small", x + 10, line_y, name)
+            rows += drawn.text(
+                "small", x + BOX_W - 10, line_y, _fit(str(c.get("type", "")), name), "end"
+            )
         parts += (
             f'<g id="e-{eid}">'
             f'<rect class="box" x="{x:g}" y="{y:g}" width="{BOX_W}" height="{h:g}" rx="6"/>'
