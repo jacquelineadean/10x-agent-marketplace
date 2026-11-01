@@ -29,6 +29,7 @@ def test_block_types_keep_their_order() -> None:
         "flow",
         "diagram",
         "quiz",
+        "scorecard",
         "checklist",
         "widget",
     ]

@@ -20,12 +20,13 @@ from chronicle_engine.core.motion import diagram as diagram_kind
 from chronicle_engine.core.motion import stage
 from chronicle_engine.core.motion.model import Plan
 from chronicle_engine.core.motion.timeline import Timeline
+from chronicle_engine.core.story import model
 from chronicle_engine.core.story.model import Report
 from chronicle_engine.core.story.render import Builder
 from chronicle_engine.registry import Kind, Prepared, Sources
 
 from chronicle.core.motion import scene
-from chronicle.core.story import checks, chrome, plates, review
+from chronicle.core.story import checks, chrome, game, plates, review
 from chronicle.entrypoints.cli import art, commands, widgets
 
 EXAMPLES = Path(__file__).resolve().parents[2] / "examples"
@@ -109,6 +110,7 @@ def _anchors(story: Mapping[str, Any], path: Path, facts: Any) -> dict[str, set[
 def _check(story: Mapping[str, Any], facts: Any, path: Path, report: Report) -> None:
     """chronicle's block checks, with the anchors its drawings define."""
     checks.notes(story, _anchors(story, path, facts), report)
+    game.check(story, report)
 
 
 # -------------------------------------------------------------------- policy
@@ -211,6 +213,20 @@ registry.add_block(
 )
 # Chapter and hero art are plates too, so these parts follow every painted image.
 registry.add_parts(by_type={"plate": ("js/30-plates.js", "css/11-plates.css", "css/40-drawn.css")})
+# A story with a `game` plays its quizzes as holes; the scorecard totals the round.
+_QUIZ_REQUIRED, _QUIZ_OPTIONAL = model.BLOCKS["quiz"]
+registry.add_block(
+    "quiz", _QUIZ_REQUIRED, (*_QUIZ_OPTIONAL, "par", "id"), game.quiz, after="diagram"
+)
+registry.add_block(
+    "scorecard", (), ("title", "subtitle", "id", "source"), game.scorecard, after="quiz"
+)
+registry.add_parts(
+    by_type={
+        "hole": ("js/32-game.js", "css/12-game.css"),
+        "scorecard": ("js/32-game.js", "css/12-game.css"),
+    }
+)
 chrome.register()
 registry.add_kind("scene", SCENE, first=True)
 registry.POLICIES["distinct"] = distinct
