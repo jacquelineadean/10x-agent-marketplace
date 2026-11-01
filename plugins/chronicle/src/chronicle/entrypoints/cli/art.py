@@ -103,16 +103,22 @@ def paint(
         for layer in painting.layers:
             rel = f"{ART_DIR}/{key}--{layer.name}.webp"
             size += store.write_webp(out / rel, layer.image)
-            entry["layers"].append(
-                {
-                    "name": layer.name,
-                    "file": rel,
-                    "box": list(layer.box),
-                    "motion": layer.motion,
-                    "travel": layer.travel,
-                    "blend": layer.blend,
-                }
-            )
+            found: dict[str, Any] = {
+                "name": layer.name,
+                "file": rel,
+                "box": list(layer.box),
+                "motion": layer.motion,
+                "travel": layer.travel,
+                "blend": layer.blend,
+            }
+            if layer.rig:
+                found["rig"] = layer.rig
+                found["part"] = layer.part
+                if layer.pivot:
+                    found["pivot"] = [round(layer.pivot[0], 1), round(layer.pivot[1], 1)]
+            entry["layers"].append(found)
+        if painting.rigs:
+            entry["rigs"] = painting.rigs
         manifest[key] = entry
         print(f"art: {key} painted, {size // 1024} KB")
     store.write_json(manifest_path, manifest)

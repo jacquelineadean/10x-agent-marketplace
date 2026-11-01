@@ -45,13 +45,6 @@ figure { margin: 0; }
 }
 .spot-card h4 { margin: 0 0 .3rem; font: 600 .95rem/1.3 var(--f-ui); }
 .spot-card p { margin: 0; }
-/* plate notes: pen marks over the painting that write themselves once it has developed */
-.stage .overlay .pen { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.stage .overlay .pen-text { font-family: var(--f-hand); font-weight: 600; }
-.js .stage .pen { stroke-dasharray: 1; stroke-dashoffset: 1; }
-.js .stage .pen-text { opacity: 0; }
-.js .stage.noted .pen { stroke-dashoffset: 0; transition: stroke-dashoffset .9s cubic-bezier(.5, .1, .3, 1) var(--d, 0s); }
-.js .stage.noted .pen-text { opacity: 1; transition: opacity .6s ease calc(var(--d, 0s) + .55s); }
 @media (max-width: 640px) {
   .plate.wide { margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); }
   .plate.wide figcaption { padding-inline: 16px; }
@@ -60,8 +53,6 @@ figure { margin: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .stage.develop.pre { filter: none; }
-  .js .stage .pen { stroke-dashoffset: 0; transition: none; }
-  .js .stage .pen-text { opacity: 1; transition: none; }
 }
 @media (forced-colors: active) {
   .stage img.base, .stage img.layer { mix-blend-mode: normal; }

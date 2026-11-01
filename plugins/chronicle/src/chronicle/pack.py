@@ -213,6 +213,13 @@ registry.add_block(
 )
 # Chapter and hero art are plates too, so these parts follow every painted image.
 registry.add_parts(by_type={"plate": ("js/30-plates.js", "css/11-plates.css", "css/40-drawn.css")})
+# Pen notes and figures in parts ship only on pages whose plates have them.
+registry.add_parts(
+    by_type={
+        "notes": ("js/31-notes.js", "css/16-notes.css"),
+        "rig": ("js/33-rigs.js", "css/15-rigs.css"),
+    }
+)
 # A story with a `game` plays its quizzes as holes; the scorecard totals the round.
 _QUIZ_REQUIRED, _QUIZ_OPTIONAL = model.BLOCKS["quiz"]
 registry.add_block(

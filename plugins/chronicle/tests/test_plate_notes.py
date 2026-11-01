@@ -53,11 +53,15 @@ def test_notes_draw_in_the_overlay_with_staggered_delays(
     assert 'text-anchor="end"' in page  # the blue note sits to the left of its point
 
 
-def test_a_plate_without_notes_draws_no_pen(
+def test_a_plate_without_notes_draws_no_pen_and_ships_no_pen_parts(
     story: dict[str, Any], facts: dict[str, Any], assets: Assets
 ) -> None:
     page = render(_with_plate(story, []), facts, MANIFEST, assets).fragment
     assert 'class="pen"' not in page
+    assert "js/31-notes.js" not in page and "css/16-notes.css" not in page
+    noted = render(_with_plate(story, NOTES), facts, MANIFEST, assets).fragment
+    assert 'class="notes" data-fig="' in noted
+    assert "js/31-notes.js" in noted and "css/16-notes.css" in noted
 
 
 def test_the_check_names_missing_anchors_and_bad_marks(story: dict[str, Any]) -> None:

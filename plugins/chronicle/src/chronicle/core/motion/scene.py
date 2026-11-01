@@ -154,14 +154,18 @@ def figure(
         copies += tag("use", href=f"#{p}-l{i}-img", class_=f"{p}-color" if develop else None)
         blend = None if layer.get("blend") == "normal" else "mix-blend-mode: multiply"
         moving = tag("g", copies, id=f"{p}-l{i}", style=blend)
-        _motion(
-            f"#{p}-l{i}",
-            str(layer.get("motion", "none")),
-            float(layer.get("travel", 0)),
-            i,
-            plan,
-            timeline,
-        )
+        if layer.get("rig"):
+            rig = dict(entry.get("rigs", {})).get(str(layer["rig"]), {})
+            _gait(f"#{p}-l{i}", layer, rig, plan, timeline)
+        else:
+            _motion(
+                f"#{p}-l{i}",
+                str(layer.get("motion", "none")),
+                float(layer.get("travel", 0)),
+                i,
+                plan,
+                timeline,
+            )
         paint += tag("g", moving, id=f"{p}-l{i}-v")
     labels = "".join(_label(lab, fill_text) for lab in entry.get("labels", []))
     shades, masks = _focus(plan, p, w, h, anchors, spots, layers, index, timeline)
@@ -261,6 +265,69 @@ def _motion(
         timeline.add(selector, "opacity", [(0.0, 0.0), (at, 0.0), (at + 0.5, 1.0)], rest=1.0)
         grow = [(0.0, 0.6), (at, 0.6), (at + 0.35, 1.06), (at + 0.7, 1.0)]
         timeline.add(selector, "scale", grow, rest=1.0, origin="center bottom")
+
+
+def _periodic(d: float, period: float, fn: Callable[[float], float]) -> list[tuple[float, float]]:
+    """fn of the cycle (0 to 1) over a whole number of cycles that fills the loop."""
+    loops = max(1, round(d / period))
+    n = loops * 24
+    return [(d * i / n, fn((loops * i / n) % 1.0)) for i in range(n + 1)]
+
+
+def _gait(
+    selector: str, layer: Mapping[str, Any], rig: Mapping[str, Any], plan: Plan, timeline: Timeline
+) -> None:
+    """A rig part's motion on the loop, by its role and the rig's gait, about its pivot.
+
+    The page computes the same rules each frame; here each becomes one track whose
+    cycles divide the loop evenly. A still copy shows the part at rest.
+    """
+    d = plan.duration
+    part = dict(layer.get("part", {}))
+    role = str(part.get("role", "static"))
+    gait = str(rig.get("gait", "still"))
+    box = [float(v) for v in layer["box"]]
+    pivot = layer.get("pivot") or [box[0] + box[2] / 2, box[1] + box[3] / 2]
+    # The timeline sets transform-box: fill-box, so the origin counts from the part's box.
+    origin = f"{float(pivot[0]) - box[0]:.1f}px {float(pivot[1]) - box[1]:.1f}px"
+    moving = gait in ("walk", "swim", "crawl")
+    stride = (
+        0.45
+        if gait == "crawl"
+        else float(rig.get("stride", 60)) / max(1.0, float(rig.get("speed", 30)))
+    )
+    phase = float(part.get("phase", 0))
+    amp = float(part.get("amp", 0))
+    speed = max(0.1, float(part.get("speed", 3)))
+    track: list[tuple[float, float]] = []
+    if role in ("leg", "flipper") and moving:
+        track = _periodic(d, stride, lambda u: amp * math.sin(2 * math.pi * (u + phase)))
+    elif role == "head":
+        down, nod = float(part.get("down", 0)), float(part.get("nod", 0))
+        if moving:
+            track = _periodic(d, stride, lambda u: nod * math.sin(4 * math.pi * u))
+        elif down:
+            track = _periodic(d, 4.8, lambda u: down * (0.875 + 0.125 * math.sin(2 * math.pi * u)))
+    elif role in ("tail", "wing"):
+        track = _periodic(
+            d, 2 * math.pi / speed, lambda u: amp * math.sin(2 * math.pi * (u + phase))
+        )
+    elif role == "ear":
+        track = _periodic(
+            d,
+            2 * math.pi / speed,
+            lambda u: max(0.0, math.sin(2 * math.pi * (u + phase))) ** 30 * amp,
+        )
+    elif role == "claw" and not moving:
+        track = _periodic(
+            d, 2 * math.pi / speed, lambda u: amp * max(0.0, math.sin(2 * math.pi * u))
+        )
+    if track:
+        timeline.add(selector, "rotate", track, rest=track[0][1], origin=origin)
+    bob = float(rig.get("bob", 0))
+    if moving and bob:
+        lift = _periodic(d, stride, lambda u: -abs(math.sin(2 * math.pi * u)) * bob)
+        timeline.add(selector, "translate", [(t, (0.0, v)) for t, v in lift], rest=(0.0, 0.0))
 
 
 def _wave(

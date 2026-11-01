@@ -35,7 +35,7 @@ def plate(
     scene = b.story.get("art", {}).get(key, {})
     w, h = int(entry["width"]), int(entry["height"])
     b.art_files.append(str(entry["file"]))
-    layers = "".join(_layer(b, layer, w, h) for layer in entry.get("layers", []))
+    layers = _layers(b, entry, w, h)
     anchors = entry.get("anchors", {})
     fid = b.register(
         {
@@ -92,6 +92,79 @@ def _label(b: Builder, lab: Mapping[str, Any]) -> str:
         fill=str(lab.get("color") or "") or None,
         font_weight=str(lab.get("weight") or "") or None,
         transform=f"rotate({angle:.1f} {x:.1f} {y:.1f})" if abs(angle) > 0.05 else None,
+    )
+
+
+def _layers(b: Builder, entry: Mapping[str, Any], w: int, h: int) -> str:
+    """Moving layers in paint order; a rig's parts gather into one figure where it first paints."""
+    out = ""
+    done: set[str] = set()
+    found = entry.get("layers", [])
+    for layer in found:
+        rig = str(layer.get("rig", ""))
+        if not rig:
+            out += _layer(b, layer, w, h)
+        elif rig not in done:
+            done.add(rig)
+            parts = [x for x in found if x.get("rig") == rig]
+            out += rig_html(b, rig, entry.get("rigs", {}).get(rig, {}), parts, w, h)
+    return out
+
+
+def rig_html(
+    b: Builder, name: str, rig: Mapping[str, Any], parts: list[Mapping[str, Any]], w: int, h: int
+) -> str:
+    """One rig: its parts inside a box that spans them all, each turning about its pivot."""
+    x0 = min(float(p["box"][0]) for p in parts)
+    y0 = min(float(p["box"][1]) for p in parts)
+    x1 = max(float(p["box"][0]) + float(p["box"][2]) for p in parts)
+    y1 = max(float(p["box"][1]) + float(p["box"][3]) for p in parts)
+    rw, rh = max(1.0, x1 - x0), max(1.0, y1 - y0)
+    imgs = ""
+    for p in parts:
+        b.art_files.append(str(p["file"]))
+        px, py, pw, ph = (float(v) for v in p["box"])
+        pivot = p.get("pivot") or [px + pw / 2, py + ph / 2]
+        values = dict(p.get("part", {}))
+        imgs += void(
+            "img",
+            class_="part",
+            src=str(p["file"]),
+            alt="",
+            aria_hidden="true",
+            data_role=str(values.get("role", "static")),
+            **{
+                f"data_{k}": f"{float(v):g}" for k, v in values.items() if k not in ("role", "name")
+            },
+            style=(
+                f"left:{100 * (px - x0) / rw:.3f}%;top:{100 * (py - y0) / rh:.3f}%;"
+                f"width:{100 * pw / rw:.3f}%;height:{100 * ph / rh:.3f}%;"
+                f"transform-origin:{100 * (float(pivot[0]) - px) / pw:.1f}% "
+                f"{100 * (float(pivot[1]) - py) / ph:.1f}%"
+            ),
+        )
+    foot = rig.get("foot") or [x0 + rw / 2, y1]
+    roam = rig.get("roam")
+    return tag(
+        "span",
+        imgs,
+        class_="rig",
+        data_fig=b.register({"type": "rig", "name": name}),
+        data_rig=name,
+        data_gait=str(rig.get("gait", "still")),
+        data_bob=f"{float(rig.get('bob', 2)):g}",
+        data_h=f"{rh:g}",
+        data_w=f"{rw:g}",
+        data_foot=f"{100 * (float(foot[0]) - x0) / rw:.1f}",
+        data_speed=f"{float(rig.get('speed', 30)):g}",
+        data_stride=f"{float(rig.get('stride', 60)):g}",
+        data_roam=f"{100 * float(roam[0]) / w:.2f} {100 * float(roam[1]) / w:.2f}"
+        if roam
+        else None,
+        style=(
+            f"left:{100 * x0 / w:.3f}%;top:{100 * y0 / h:.3f}%;"
+            f"width:{100 * rw / w:.3f}%;height:{100 * rh / h:.3f}%"
+        ),
     )
 
 
@@ -273,4 +346,5 @@ def _notes(b: Builder, notes: list[Mapping[str, Any]], anchors: Mapping[str, Any
             else ""
         )
         out += tag("g", path + text, class_="note")
-    return out
+    # The notes are a figure of their own, so only pages with notes ship the pen parts.
+    return tag("g", out, class_="notes", data_fig=b.register({"type": "notes"})) if out else ""

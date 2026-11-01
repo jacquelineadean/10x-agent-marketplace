@@ -10,9 +10,6 @@
       cable = svg("line", { "class": "cable", x1: anchors.hook[0], y1: anchors.hook[1], x2: anchors.load[0], y2: anchors.load[1] }, overlay);
     }
     if (!reduceMotion) stage.classList.add("pre");
-    // Pen notes write themselves a beat after the painting has developed.
-    var noted = !!node.querySelector(".overlay .pen");
-    if (noted && reduceMotion) stage.classList.add("noted");
     // On a phone a wide painting fills a taller frame and pans as the reader scrolls, so
     // its labels and hotspots stay big enough to read and tap.
     var phone = window.matchMedia ? window.matchMedia("(max-width: 700px)") : null;
@@ -43,7 +40,6 @@
         developed = true;
         stage.classList.add("go");
         requestAnimationFrame(function () { stage.classList.remove("pre"); });
-        if (noted) setTimeout(function () { stage.classList.add("noted"); }, 1500);
       }
       var p = clamp((vh - r.top) / (vh + r.height), 0, 1);
       if (pan) {
