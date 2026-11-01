@@ -49,6 +49,7 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 
 ## Notes
 
+- `.github/workflows/chronicle-evals.yml` runs the chronicle evals in CI; `.github/scripts/eval_summary.py` turns their result document into the job summary table.
 - Import rules: `core` imports nothing outside itself; `connectors` and `entrypoints` import `core` and `config`; only `__main__.py` imports both `connectors` and `entrypoints`.
 - `groundwork.py` is not vendored in this repo; this map was updated by hand on 2026-10-20 and the facts hash is stale until the next `groundwork.py codemap` run.
 - The facts above describe `plugins/impact-review` only. chronicle follows the same cli layout under `plugins/chronicle/src/chronicle/`:
@@ -70,6 +71,7 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 | `assets/js/` | the page runtime in numbered parts, joined inside one IIFE: core, charts, figures, plates, progress, explainers, lessons, boot |
 | `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, and the animations `animation-tad/`, `animation-diagram/`, `animation-scene/` |
 | `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |
+| `plugins/chronicle/evals/` | `claude plugin eval` cases: one folder per case with `prompt.md`, `graders/` and, for the safety case, `case.yaml` and `setup.sh` |
 
 speedup follows the same cli layout under `plugins/speedup/src/speedup/`:
 

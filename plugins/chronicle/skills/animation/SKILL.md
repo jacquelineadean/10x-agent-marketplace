@@ -27,7 +27,7 @@ Pick `scene` when a picture carries the point better than a chart.
 Ask only what the request leaves open (one AskUserQuestion, at most 3 questions):
 
 - **Where it goes**: a web page, docs, a README, Confluence or Notion, Slack, email, a
-  slide. This picks the formats (`references/formats.md`) and the frame size.
+  slide. This picks the formats (`${CLAUDE_PLUGIN_ROOT}/skills/animation/references/formats.md`) and the frame size.
 - **The point**: the one thing the viewer should understand. Steps build toward it.
 - **Sources**: the design doc, repo, diagrams, runbook or notes the parts come from.
 
@@ -44,21 +44,21 @@ the runs folder to `.gitignore` in a git working directory.
 
 ## 3. Write the figure
 
-Read `references/animation-format.md` for the shared keys, the steps and timing. Then:
+Read `${CLAUDE_PLUGIN_ROOT}/skills/animation/references/animation-format.md` for the shared keys, the steps and timing. Then:
 
-- **tad**: read `references/tad.md`. List the components from the sources, group them
+- **tad**: read `${CLAUDE_PLUGIN_ROOT}/skills/animation/references/tad.md`. List the components from the sources, group them
   by trust boundary or deployment (VPC, cluster, vendors), add the links with their
   protocol as labels, and name the flows the viewer should watch. 6 to 14 nodes read
   well in 16:9; split a larger system into two animations.
-- **diagram**: read `references/diagram-and-scene.md` and the diagram classes in the
-  story skill's `references/story-format.md`. Give every part an `id`; give each path a
+- **diagram**: read `${CLAUDE_PLUGIN_ROOT}/skills/animation/references/diagram-and-scene.md` and the diagram classes in the
+  story skill's `${CLAUDE_PLUGIN_ROOT}/skills/story/references/story-format.md`. Give every part an `id`; give each path a
   packet runs along an `id` and draw it in the direction of travel.
-- **scene**: read `references/diagram-and-scene.md` and the story skill's
-  `references/illustration.md`. Put a `data-anchor` where each spot goes.
+- **scene**: read `${CLAUDE_PLUGIN_ROOT}/skills/animation/references/diagram-and-scene.md` and the story skill's
+  `${CLAUDE_PLUGIN_ROOT}/skills/story/references/illustration.md`. Put a `data-anchor` where each spot goes.
 
 Numbers in captions, labels and drawings are fact tokens (`{{ci.median_minutes}}`), as
 in a story. Write `theme.concept` first, then the palette and fonts, as in the story
-skill's `references/identity.md`.
+skill's `${CLAUDE_PLUGIN_ROOT}/skills/story/references/identity.md`.
 
 ## 4. Write the steps
 
@@ -85,17 +85,17 @@ that the TAD is shrunk means the frame is too small for it: use `"size": "wide"`
 
 ## 6. Deliver
 
-- Give the files that fit where it goes (`references/formats.md`), with one line each.
+- Give the files that fit where it goes (`${CLAUDE_PLUGIN_ROOT}/skills/animation/references/formats.md`), with one line each.
 - To share a link, publish `build/index.html` with the Artifact tool (`icon: "chart"`,
   a one-sentence `description`). Ask once first when the figure holds company data.
 - To change it, edit `animation.json`, rebuild and republish the same path.
 
 ## Files
 
-- `references/animation-format.md`: the animation file, frames, timing, steps per kind.
-- `references/tad.md`: the `tad` object: nodes, kinds, groups, edges, flows, states, layout.
-- `references/diagram-and-scene.md`: drawn diagrams and painted scenes.
-- `references/formats.md`: each export and where to use it, with embed snippets.
+- `${CLAUDE_PLUGIN_ROOT}/skills/animation/references/animation-format.md`: the animation file, frames, timing, steps per kind.
+- `${CLAUDE_PLUGIN_ROOT}/skills/animation/references/tad.md`: the `tad` object: nodes, kinds, groups, edges, flows, states, layout.
+- `${CLAUDE_PLUGIN_ROOT}/skills/animation/references/diagram-and-scene.md`: drawn diagrams and painted scenes.
+- `${CLAUDE_PLUGIN_ROOT}/skills/animation/references/formats.md`: each export and where to use it, with embed snippets.
 - `${CLAUDE_PLUGIN_ROOT}/examples/animation-tad/`: an order's path through a checkout
   system, with a failure step and a planned component (invented data).
 - `${CLAUDE_PLUGIN_ROOT}/examples/animation-diagram/`: a pull request's path to production.

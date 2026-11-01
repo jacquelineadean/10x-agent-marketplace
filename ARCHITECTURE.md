@@ -131,7 +131,7 @@ benchmark commands), `connectors/files/` (every file read and write), `entrypoin
 - `uv` manages the dev environment: `ruff` (format and lint), `mypy` strict, `pytest`.
 - GitHub GraphQL API v4 (contribution collection, search) and REST API v3 (repository contributor statistics).
 - Claude Code plugin system: marketplace, plugins, skills, agents.
-- chronicle: NumPy and OpenCV (painting and raster exports, fetched by `uv run --with`), vanilla JavaScript and SVG in the page, CSS keyframes in animations, Google Fonts chosen per page by the theme from `assets/fonts.json`; an installed Chromium or Chrome for screenshots and frames, and an installed ffmpeg for MP4.
+- chronicle: NumPy and OpenCV (painting and raster exports, from a `python3` that has them or fetched by `uv run --with`), vanilla JavaScript and SVG in the page, CSS keyframes in animations, Google Fonts chosen per page by the theme from `assets/fonts.json`; an installed Chromium or Chrome for screenshots and frames, and an installed ffmpeg for MP4.
 
 ## Deployment and environments
 - No hosted environment; plugins run on each user's machine.

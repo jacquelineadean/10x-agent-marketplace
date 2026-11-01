@@ -71,7 +71,7 @@ Answers below are taken from the request or assumed, and assumed ones are open d
 | --- | --- |
 | `skills/story/SKILL.md` + `references/` | The workflow: brief, gather, write, build, publish; story format, facts, sources, outlines, scenes, voice |
 | `agents/chronicle-gatherer.md` | Subagent that queries connected tools and writes `facts.json`; raw tool output never enters the main conversation |
-| `scripts/chronicle` | Launcher: `uv run` with NumPy and OpenCV when uv exists, else `python3` |
+| `scripts/chronicle` | Launcher: a `python3` that already has NumPy and OpenCV, else `uv run` with both (its cache moves to `$TMPDIR` when the home folder is read-only), else `python3` |
 | `src/chronicle/` | `core/story` (facts, derive, checks, renderer; standard library), `core/watercolor` (painting), `assets` (CSS and JS), `connectors/files`, `entrypoints/cli` |
 | `examples/keystone/` | Worked example with invented data |
 
