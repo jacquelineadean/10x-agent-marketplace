@@ -243,8 +243,54 @@ Design decisions:
 | AC-54 | chronicle's pages keep their markup and CSS; their runtime changes only by the as-of and stale tooltip lines | build comparison recorded in the PR |
 | AC-55 | The quality gates pass; sources, briefing, impact-review and blueprint are 0.2.0 and chronicle 0.7.1 in both manifests | CI and `claude plugin validate .` |
 
-### PR 6
-Criteria are added to this spec in the pull request that builds it.
+### PR 6: creative additions
+Design decisions:
+- **Built from the reference pages.** Ossabaw (rigs, habitat, tour, house), ROK (game
+  scoring) and Four Mental Models (pen notes) were read and their defects listed first;
+  the blocks keep their mechanics and fix those defects: journals merge on every write and
+  follow other tabs; the tide updates under reduced motion; a mirror turns about the foot
+  point; actor depth stays above the painting; focus moves to the opened stop, room or
+  result and pans to a tabbed animal; rooms are tabs with arrow keys; exits and stops are
+  links without scripts; `phase` is in cycles for every role; full screen is the
+  browser's own.
+- **Rigs in drawings.** A `data-rig` group of `data-part` groups paints each part opaque on
+  its own sheet; the manifest keeps each part's box, pivot and role numbers and the rig's
+  gait, bob, foot, speed and stride. The page turns parts with the CSS `rotate` and
+  `translate` properties; animations turn them with keyframes about the same pivot, with
+  whole cycles in the loop. A `rig` animation kind plays a drawing's rigs with an
+  optional gait; a scene's rigs play the same way.
+- **One figure each, parts only where used.** Rigs, pen notes, holes, panoramas, rooms and
+  tours are figures with their own script and style parts, so a page ships them only when
+  it has them, and every page without them builds byte for byte as before. A painter
+  change repaints each painting once (the manifest records a fingerprint of the painting
+  code); the images come out the same.
+- **Places reuse plates.** Each room, a tour's map and a tour's plate stops are plates, so
+  layers, labels and the develop effect stay one implementation. A tour stop's scene is a
+  `plate`, `rooms` or `panorama` block rendered by the same code as in a chapter.
+- **Device records.** Holes, journals and tour visits live in the browser's storage under
+  `chronicle-game:`, `chronicle-journal:` and `chronicle-tour:` keys, from the block's key
+  or the page title. Blocked storage keeps them for the visit.
+- **Game scoring** replaces the engine's quiz renderer only when the story has `game`;
+  otherwise quizzes render as before.
+- **Widget library.** `chronicle widgets list|add|save` keeps drills under the repository's
+  `.chronicle/widgets/`, the user's config folder or the plugin's bundled `widgets/`, in
+  that order; `save` runs the widget checks first.
+- **Versions.** chronicle 0.8.0. The engine is unchanged.
+
+| ID | Criterion | Check |
+| --- | --- | --- |
+| AC-56 | `widgets list`, `add` and `save` find drills in the repository, config and bundled roots in that order, copy them into a run with the block to paste, and refuse a script the widget checks fail | `test_widget_library.py` |
+| AC-57 | Plate `notes` draw circle, underline, arrow, cross, tick and box marks in three pens, repeat for the same seed, write themselves after the plate develops, and the check names missing anchors, bad marks, bad pens and long words | `test_plate_notes.py`; manual check M-9 |
+| AC-58 | With `game`, quizzes play as holes against par with strokes, names, a tally in the bar and a scorecard; without it a quiz renders as the engine's quiz | `test_game.py`; manual check M-9 |
+| AC-59 | The SVG reader reads rigs, parts, roles, defaults, pivots and gaits, and refuses parts outside a rig, layers inside one, nested rigs, unknown gaits and roles, duplicates and malformed pivots | `test_rigs.py` |
+| AC-60 | Rig parts paint opaque on their own sheets and the manifest keeps their pivots and the rig's settings; a plate shows a rig as one figure with each part about its pivot | `test_rigs.py`; manual check M-9 |
+| AC-61 | Animations turn rig parts about their pivots on whole cycles; `kind: rig` plays a drawing's rigs with an optional gait and checks its art, gait and steps | `test_rigs.py`; manual check M-9 |
+| AC-62 | `panorama` places animals by their foot point and scale, layers by role, zones, the tide slider and the fallback list, and its check names rigs, layers, behaviors, tides and journal keys | `test_places.py`; manual check M-9 |
+| AC-63 | `rooms` renders tab panels with numbered details and doorways that link to their rooms, and its check names ids, art, anchors, targets and arrows | `test_places.py`; manual check M-9 |
+| AC-64 | `tour` routes its stops on the map, opens their plate, rooms or panorama scenes, links back, onward and to the stop's chapter, and its check names stops, chapters, scenes and pins, including rooms inside stops | `test_places.py`; manual check M-9 |
+| AC-65 | Pages without notes, rigs, holes, panoramas, rooms or tours ship none of their parts, and every example and variant builds byte for byte as in PR 5 except the art manifests' painter fingerprint | `test_rigs.py`, `test_plate_notes.py`, `test_places.py`; build comparison recorded in the PR |
+| AC-66 | `examples/field-guide` checks clean, differs from every other example's theme, and loads with no script errors at desktop and phone widths and under reduced motion | `test_theme.py`; manual checks M-2 and M-9 |
+| AC-67 | The quality gates pass; chronicle is 0.8.0 in both manifests | CI and `claude plugin validate .` |
 
 ## Manual checks
 - **M-1.** Install chronicle from a local marketplace into a scratch `CLAUDE_CONFIG_DIR` and confirm the cache holds
@@ -273,3 +319,9 @@ Criteria are added to this spec in the pull request that builds it.
   backslash; the read-only session stops a function the guard passes that inserts; a
   35-second query stops at 30 seconds; `--roll` moves a quarter to the last complete month;
   `blueprint schema --connection` reads every key and relation as that role.
+- **M-9.** Build `examples/field-guide` and drive it in Chromium at 1280 and 390 pixels and
+  under reduced motion: open a tour stop (focus on its title), walk through a doorway
+  (focus on the new room), go back to the map (focus on the stop left), pick a zone, move
+  the tide (shore animals hide and show in both motion modes), pick an animal (journal
+  count rises and survives a reload), press End on the view, play both holes and read the
+  scorecard. Seek a `rig` animation to two times and compare the legs.

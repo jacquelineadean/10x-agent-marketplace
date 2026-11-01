@@ -63,7 +63,7 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Widget:** a script Claude writes for one page when no block fits; `chronicle check` lints it.
 - **Preset:** a named, composed painting such as `bridge-hero`; **motif:** a paintable element such as `sky` or `arch_bridge`.
 - **Artifact:** a web page hosted privately on claude.ai, where a story page is published.
-- **Animation:** an `animation.json` and the one self-contained SVG built from it, with its HTML, PNG, GIF and video exports; its kind is `diagram` (engine), `scene` (chronicle), or `tad`, `sequence` or `erd` (blueprint).
+- **Animation:** an `animation.json` and the one self-contained SVG built from it, with its HTML, PNG, GIF and video exports; its kind is `diagram` (engine), `scene` or `rig` (chronicle), or `tad`, `sequence` or `erd` (blueprint).
 - **TAD:** a technical architecture diagram: components (nodes), groups such as a VPC or vendors, links (edges) and flows, written as data; code places and routes it.
 - **Step:** one beat of an animation with one caption; it shows, draws, focuses, pulses or sets states on parts, and runs flows.
 - **Flow:** a path through a TAD's nodes, along its edges, that a packet runs during a step.
@@ -88,3 +88,12 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Brand kit:** `brand.json`, an organization's colors and fonts applied under every page's theme; `--brand` picks it.
 - **Slice:** one precomputed copy of a dashboard block for one filter option, such as a team or a region.
 - **Researcher:** chronicle's subagent that reads provided material and writes `research/facts.json`, a locator on every fact, and `research/material.md`, a digest under 12 KB.
+- **Rig:** a figure drawn in parts (`data-rig`, `data-part`) that each turn about a pivot by a rule for their role: legs, flippers, head, tail, ear, wing, claw.
+- **Gait:** what a rig does where it stands: `still`, `walk`, `swim`, `crawl`, or `graze` and `root` (head down at rest).
+- **Panorama:** chronicle's block for a wide painting to drag along, with animals placed by their foot point, zones, a tide slider and a journal.
+- **Journal:** the species a reader has found across a page's panoramas, kept in the browser's storage under one key.
+- **Rooms:** chronicle's block of paintings joined by doorways, each with numbered details.
+- **Tour:** chronicle's block for a painted map whose stops open a plate, rooms or a panorama, walked by a route in the page's bar.
+- **Hole:** a quiz played as golf in a story with `game`: each pick is a stroke, scored against par; a **scorecard** totals the round.
+- **Plate note:** a pen mark (circle, underline, arrow, cross, tick, box) with words, drawn over a plate after it develops.
+- **Widget library:** drills written once and copied into runs by `chronicle widgets`: bundled with the plugin, in a repository's `.chronicle/widgets/` or in the user's config folder.

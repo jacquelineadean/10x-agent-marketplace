@@ -10,12 +10,13 @@ and the steps it plays; code lays it out, times it, draws it and exports it. The
 is a single SVG whose motion is CSS keyframes on one clock, so the same file plays in a
 browser, inside an HTML page, as an `<img>`, and frame by frame for GIF and video.
 
-Two kinds share the timeline, the stage (title, captions, step bar) and the theme:
+Three kinds share the timeline, the stage (title, captions, step bar) and the theme:
 
 | Kind | Claude writes | Use for |
 | --- | --- | --- |
 | `scene` | a watercolor drawing (as for a story plate) and numbered spots | a story moment: an incident, a launch, a place |
 | `diagram` | an SVG drawing with ids, in the story diagram format | a mechanism, a pipeline, any drawn figure, a story page's diagram as it is |
+| `rig` | a drawing with a rig (parts that turn about pivots) and a gait | an animal or machine moving: a trot, a grazing head, a claw, wings |
 
 Pick `scene` when a picture carries the point better than a chart, and `diagram` when the
 user has a drawing or the figure is not boxes and links. Software made of parts that talk
@@ -50,6 +51,9 @@ Read `${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/animation-format.md`
   packet runs along an `id` and draw it in the direction of travel.
 - **scene**: read `references/diagram-and-scene.md` and the story skill's
   `references/illustration.md`. Put a `data-anchor` where each spot goes.
+- **rig**: read the Rigs section of the story skill's `references/illustration.md` and
+  `references/diagram-and-scene.md`. A scene's drawing may hold rigs too; their gaits play
+  on the loop.
 
 Numbers in captions, labels and drawings are fact tokens (`{{ci.median_minutes}}`), as
 in a story. Write `theme.concept` first, then the palette and fonts, as in the story
@@ -86,7 +90,7 @@ that appear in the wrong step and text that is too small, then build again.
 ## Files
 
 - `${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/animation-format.md`: the animation file, frames, timing, steps per kind.
-- `references/diagram-and-scene.md`: drawn diagrams and painted scenes.
+- `references/diagram-and-scene.md`: drawn diagrams, painted scenes and rigs.
 - `${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/formats.md`: each export and where to use it, with embed snippets.
 - `${CLAUDE_PLUGIN_ROOT}/examples/animation-diagram/`: a pull request's path to production.
 - `${CLAUDE_PLUGIN_ROOT}/examples/animation-scene/`: the Keystone story's jammed conveyor,

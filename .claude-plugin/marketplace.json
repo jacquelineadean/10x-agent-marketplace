@@ -23,8 +23,8 @@
     {
       "name": "chronicle",
       "source": "./plugins/chronicle",
-      "description": "Illustrated, interactive story pages (Artifacts) designed for their subject, and painted or drawn animations in the same style: status stories, launches, onboarding handbooks, field guides and podcast companions, from a brief, the material a researcher digests, and company facts through the sources plugin.",
-      "version": "0.7.1",
+      "description": "Illustrated, interactive story pages (Artifacts) designed for their subject, and painted or drawn animations in the same style: status stories, launches, onboarding handbooks, field guides with rigged animals, map tours and rooms, gamified training and podcast companions, from a brief, the material a researcher digests, and company facts through the sources plugin.",
+      "version": "0.8.0",
       "author": {
         "name": "Jacqueline Dean"
       },

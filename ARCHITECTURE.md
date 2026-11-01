@@ -131,8 +131,16 @@ use, and the engine alone offers neutral chrome: a step progress bar, label and 
 chapter marks, ruled and card stats. chronicle links the engine into
 `plugins/chronicle/src/chronicle_engine` (Claude Code copies linked files at install) and
 registers its own parts from `plugins/chronicle/src/chronicle/pack.py`: the watercolor
-painter as art provider, plates, the creative chrome (arches, tracks, routes, hang tags,
-receipts), the scene kind, the sameness review, `motifs` and `research`.
+painter as art provider, plates with pen notes, the creative chrome (arches, tracks,
+routes, hang tags, receipts), the scene and rig kinds, the sameness review, `motifs`,
+`research` and the widget library (`widgets`). Drawings may split a figure into a rig of
+parts that turn about pivots by a gait; the page and the animations play the same rules.
+The places blocks reuse plates and rigs: `panorama` (a wide painting to drag along, with
+animals, zones, a tide and a journal), `rooms` (paintings joined by doorways) and `tour`
+(a map whose stops open those scenes, walked by a route in the page's bar). With a
+top-level `game`, quizzes play as holes against par, with a tally in the bar and a
+`scorecard`. Records the reader makes (a round, a journal, the stops visited) stay in the
+browser's storage on the reader's device; every write merges with what is stored.
 
 briefing (RFC-0007, spec 002) turns facts into decks and dashboards on the same engine.
 Its pack, `plugins/briefing/src/briefing/`, registers two layouts beside the engine's page:

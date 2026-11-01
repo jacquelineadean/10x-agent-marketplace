@@ -1,6 +1,6 @@
 ---
 name: story
-description: Build an illustrated, interactive story page (a claude.ai Artifact) whose look is made for its subject, from a brief plus pasted notes, files, transcripts, links and documents, or company facts read through the sources plugin. Use for project status and history, migrations, portfolio or quarterly reviews, product and feature launches, incident reviews, onboarding handbooks and training, guides to a podcast, talk or book, team updates and research briefs, or any request to turn content into a beautiful, interactive, illustrated page with charts. The page gets watercolor illustrations drawn for its subject and painted in code, a theme and progress bar from the subject's world, editorial charts, maps, flows, diagrams, quizzes, and a source behind every number.
+description: Build an illustrated, interactive story page (a claude.ai Artifact) whose look is made for its subject, from a brief plus pasted notes, files, transcripts, links and documents, or company facts read through the sources plugin. Use for project status and history, migrations, portfolio or quarterly reviews, product and feature launches, incident reviews, onboarding handbooks and gamified training, field guides and map tours of a place, guides to a podcast, talk or book, team updates and research briefs, or any request to turn content into a beautiful, interactive, illustrated page with charts. The page gets watercolor illustrations drawn for its subject and painted in code, a theme and progress bar from the subject's world, editorial charts, maps, flows, diagrams, quizzes, and a source behind every number.
 ---
 
 # chronicle: illustrated story pages made for their subject
@@ -106,15 +106,28 @@ Read `references/identity.md` and do its design pass before writing anything els
 - Pick the figures the material calls for: `flow` for a process, `tilemap` for places,
   `diagram` for a mechanism, `quiz` and `checklist` for teaching, `model` for a what-if,
   a `widget` only when nothing else fits.
+- For a place the reader explores: `panorama` for a habitat or street to look along, with
+  animals that move; `rooms` for a building walked through doorways; `tour` for a map
+  whose stops open those scenes. A handbook that teaches can play its quizzes as golf
+  holes with a top-level `game` and a `scorecard`. Pen `notes` on a plate point at what
+  the reader should see.
 
 ## 4. Draw
 
 Read `references/illustration.md`. Draw each painting as an SVG file in `art/`: shapes back
 to front, ink outlines, fills in muted pigment colors, `data-shade` for volume, glazed cast
 shadows, `<text>` labels (which may hold fact tokens), `data-anchor` points for hotspots and
-at most one or two moving layers. Draw diagrams as SVG in `diagrams/` with the classes in
-`${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/blocks.md`. Write widgets with
-`${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/widgets.md`.
+at most one or two moving layers. Draw animals and machines that move as rigs: parts
+that turn about pivots, with a gait (`illustration.md`, Rigs). Draw diagrams as SVG in
+`diagrams/` with the classes in
+`${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/blocks.md`.
+
+Before writing a widget, look in the widget library: `chronicle widgets list` prints the
+bundled drills (order, match, sort, flash) and any kept in the repository's
+`.chronicle/widgets/` or the user's config folder; `chronicle widgets add NAME <run folder>`
+copies one into the run. Write a new one with
+`${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/widgets.md`, and offer
+`chronicle widgets save <run folder> NAME` so the next page can reuse it.
 
 Run `chronicle build` early and look at each `build/art/<key>.webp` with the Read tool. Fix
 objects that do not read at a glance, flat clip-art looks and collisions, then build again.
@@ -182,7 +195,8 @@ Reply with the link, one line on what the page covers, and any facts that were m
   comes from, palette, fonts, progress devices, chapter marks, stat styles, surface,
   words, the signature figure, the sameness check and worked identities.
 - `references/illustration.md`: drawing SVG for the ink-and-watercolor painter.
-- `references/story-format.md`: the story file's top level and chapters, and the plate block.
+- `references/story-format.md`: the story file's top level and chapters, and chronicle's
+  blocks: plate and its pen notes, games, panorama, rooms and tour.
 - `${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/facts.md`: the facts file, provenance,
   locators, joining files and the `derive` functions.
 - `references/outlines.md`: chapter plans for status reports, launches, onboarding,
@@ -201,6 +215,9 @@ Reply with the link, one line on what the page covers, and any facts that were m
 - `${CLAUDE_PLUGIN_ROOT}/examples/quarterly/`: a support-desk review told as a lighthouse
   keeper's log: a route along a coastline with a drawn lighthouse icon, ruled paper and a
   ticket stub.
+- `${CLAUDE_PLUGIN_ROOT}/examples/field-guide/`: a field guide to an invented barrier
+  island: a map tour, a house walked room to room, a marsh panorama with rigged animals, a
+  tide and a journal, pen notes on plates, and a quiz played as two holes.
 
 Read an example to learn the format. Never copy its theme: `chronicle check` flags a page
 that looks like one.

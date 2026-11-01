@@ -71,14 +71,15 @@ chronicle's own code lives under `plugins/chronicle/src/chronicle/`:
 
 | Folder | Holds |
 | --- | --- |
-| `pack.py` | chronicle's registrations: the painter as art provider, the `plate` block and its parts, the page chrome, the scene kind, the `distinct` policy, the `motifs` and `research` commands, defaults |
-| `core/story/` | plates on the page (`plates.py`), the creative page chrome and its parts (`chrome.py`), the sameness review (`review.py`) and the checks on the researcher's files (`research.py`) |
+| `pack.py` | chronicle's registrations: the painter as art provider, the `plate`, `panorama`, `rooms`, `tour` and `scorecard` blocks and their parts, quizzes as holes, the page chrome, the scene and rig kinds, the `distinct` policy, the `motifs`, `research` and `widgets` commands, defaults |
+| `core/story/` | plates on the page with pen notes and rigs (`plates.py`), the panorama, rooms and tour blocks (`panorama.py`, `rooms.py`, `tour.py`), game scoring (`game.py`), ids and device storage keys (`keys.py`), the notes check (`checks.py`), the widget library's format (`library.py`), the creative page chrome and its parts (`chrome.py`), the sameness review (`review.py`) and the checks on the researcher's files (`research.py`) |
 | `core/watercolor/` | painting engine (paper, washes, ink), motifs, presets and the scene language |
-| `core/watercolor/svg/` | SVG drawings: path and transform math (`pathdata.py`), the reader (`parse.py`) and the ink-and-wash painter (`paint.py`) |
-| `core/motion/` | the scene kind (`scene.py`) |
-| `entrypoints/cli/` | painting shared by build, paint and animate (`art.py`), the `motifs` and `research` commands (`commands.py`) |
-| `assets/` | chronicle's page and animation parts: `css/11-plates.css`, `css/13-arch-mark.css`, `css/21-identity-devices.css`, `js/30-plates.js`, `js/41-devices.js` (progress devices), `motion/30-scene.css` |
-| `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, and the animations `animation-diagram/` and `animation-scene/` |
+| `core/watercolor/svg/` | SVG drawings: path and transform math (`pathdata.py`), the reader with layers, anchors and rigs (`parse.py`) and the ink-and-wash painter (`paint.py`) |
+| `core/motion/` | the scene kind and the rig gaits it and the rig kind play (`scene.py`) |
+| `entrypoints/cli/` | painting shared by build, paint and animate (`art.py`), the `motifs` and `research` commands (`commands.py`), the widget library command (`widgets.py`) |
+| `assets/` | chronicle's page and animation parts: `css/11-plates.css`, `css/12-game.css`, `css/13-arch-mark.css`, `css/15-rigs.css`, `css/16-notes.css`, `css/17-panorama.css`, `css/18-rooms.css`, `css/19-tour.css`, `css/21-identity-devices.css`, `js/30-plates.js`, `js/31-notes.js`, `js/32-game.js`, `js/33-rigs.js`, `js/34-panorama.js`, `js/35-rooms.js`, `js/36-tour.js`, `js/41-devices.js` (progress devices), `motion/30-scene.css` |
+| `plugins/chronicle/examples/` | worked examples with invented data: `keystone/` (status page), `onboarding/` (handbook with a widget), `quarterly/`, `field-guide/` (tour, rooms, panorama with rigs, notes, holes), and the animations `animation-diagram/` and `animation-scene/` |
+| `plugins/chronicle/widgets/` | the bundled widget library: `order-drill/`, `match-drill/`, `sort-drill/`, `flash-drill/`, each a `widget.js`, `widget.css` and `widget.json` |
 | `plugins/chronicle/tests/` | pytest suite, run from the repo root with `uv run pytest` |
 
 blueprint's code lives under `plugins/blueprint/src/blueprint/`, beside links to the engine and to `packages/sources`:

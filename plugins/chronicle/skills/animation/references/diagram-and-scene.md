@@ -55,3 +55,20 @@ times for a small drawing.
 
 A story's plate becomes a scene by pointing `art.svg` at the story's drawing and
 `facts_file` at its facts, as `examples/animation-scene/` does with Keystone.
+
+## Rigs (`kind: "rig"`)
+
+```json
+"rig": {"art": {"svg": "hog.svg", "width": 600, "seed": 11, "alt": "A hog trotting."},
+        "gait": "walk"}
+```
+
+The drawing holds one or more `data-rig` groups of `data-part` groups (the story skill's
+`references/illustration.md`, Rigs). The animation paints it once and turns each part
+about its pivot on the loop: legs and flippers swing on the stride, the head nods or
+drops to graze, tails, wings and ears keep their own time, and walking figures bob.
+`gait` replaces the gait the drawing names; leave it out to play the drawing's own.
+Strides and swings repeat a whole number of times in the loop, so it restarts without a
+jump. Steps carry captions only. A `scene` whose drawing holds rigs plays them the same
+way, under its spots.
+
