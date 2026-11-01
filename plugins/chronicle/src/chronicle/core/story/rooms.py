@@ -164,6 +164,9 @@ def check_block(
             report.errors.append(f"{at}.art {key!r} is not defined in art")
         if not room.get("title"):
             report.errors.append(f"{at}.title is required")
+        focus = room.get("focus", 0.5)
+        if not isinstance(focus, int | float) or isinstance(focus, bool) or not 0 <= focus <= 1:
+            report.errors.append(f"{at}.focus must be between 0 and 1")
         known = anchors.get(key, set())
         for k, detail in enumerate(room.get("details", [])):
             _check_point(detail, f"{at}.details[{k}]", known, report)

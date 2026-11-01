@@ -294,8 +294,8 @@ def check_block(
     for k, zone in enumerate(block.get("zones", [])):
         if not isinstance(zone, Mapping) or not zone.get("label"):
             report.errors.append(f"{where}.zones[{k}] needs a label, from and to")
-        elif float(zone.get("to", 0)) <= float(zone.get("from", 0)):
-            report.errors.append(f"{where}.zones[{k}].to must be past its from")
+        elif not _pair([zone.get("from"), zone.get("to")]) or zone["to"] <= zone["from"]:
+            report.errors.append(f"{where}.zones[{k}]: from and to are pixels, to past from")
     tide = block.get("tide")
     if tide is not None:
         if not isinstance(tide, Mapping):
@@ -304,8 +304,23 @@ def check_block(
             for name in (tide.get("layer"), tide.get("surf")):
                 if name is not None and drawing and name not in layers:
                     report.errors.append(f"{where}.tide names layer {name!r}; draw a data-layer")
-            if not 0 <= float(tide.get("start", 0.5)) <= 1:
+            start = tide.get("start", 0.5)
+            if not _number(start) or not 0 <= start <= 1:
                 report.errors.append(f"{where}.tide.start must be between 0 and 1")
+            if not _pair(tide.get("shift", [0, 0])):
+                report.errors.append(f"{where}.tide.shift must be [x, y] in painting pixels")
+            if not all(_pair(r) for r in tide.get("watch", [])):
+                report.errors.append(f"{where}.tide.watch must be [from, to] stretches")
+            notes = tide.get("notes", [])
+            if not all(isinstance(n, Mapping) and _number(n.get("from", 0)) for n in notes):
+                report.errors.append(f"{where}.tide.notes are {{from: 0 to 1, text}} objects")
+    view = block.get("view")
+    if view is not None and (
+        not isinstance(view, Mapping)
+        or set(view) - {"desktop", "phone", "start"}
+        or not all(_number(v) for v in view.values())
+    ):
+        report.errors.append(f"{where}.view takes desktop and phone heights and a start, numbers")
     for name in block.get("front", []):
         if drawing and name not in layers:
             report.errors.append(f"{where}.front names layer {name!r}; draw a data-layer")
@@ -325,6 +340,11 @@ def _check_animal(
             report.errors.append(f"{where}.{field} is required")
     if animal.get("id") and not keys.ID.match(str(animal["id"])):
         report.errors.append(f"{where}.id must be lowercase letters, digits and -")
+    if animal.get("at") and not _pair(animal["at"]):
+        report.errors.append(f"{where}.at must be [x, y] in painting pixels")
+    scale = animal.get("scale", 1)
+    if not _number(scale) or scale <= 0:
+        report.errors.append(f"{where}.scale must be a number above 0")
     key = str(animal.get("art", ""))
     if key and key not in art:
         report.errors.append(f"{where}.art {key!r} is not defined in art")
@@ -341,10 +361,16 @@ def _check_animal(
     if animal.get("tide") is not None and animal["tide"] not in TIDES:
         report.errors.append(f"{where}.tide must be low or high")
     span = animal.get("range")
-    if span is not None and not (
-        isinstance(span, list)
-        and len(span) == 2
-        and all(isinstance(v, int | float) for v in span)
-        and span[0] <= span[1]
-    ):
+    if span is not None and not (_pair(span) and span[0] <= span[1]):
         report.errors.append(f"{where}.range must be [from, to] in painting pixels")
+    for field in ("speed", "stride", "height", "period", "offset"):
+        if field in animal and not _number(animal[field]):
+            report.errors.append(f"{where}.{field} must be a number")
+
+
+def _number(value: Any) -> bool:
+    return isinstance(value, int | float) and not isinstance(value, bool)
+
+
+def _pair(value: Any) -> bool:
+    return isinstance(value, list) and len(value) == 2 and all(_number(v) for v in value)

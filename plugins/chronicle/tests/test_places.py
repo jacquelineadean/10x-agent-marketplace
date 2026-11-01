@@ -157,6 +157,7 @@ def test_rooms_check_names_bad_rooms_details_and_doorways(story: dict[str, Any])
     bad["rooms"][0]["exits"].append({"at": [1, 2], "to": "hall", "label": "Over", "arrow": "x"})
     bad["rooms"][0]["details"].append({"at": "chimney", "text": "no title"})
     bad["rooms"].append(copy.deepcopy(ROOMS["rooms"][1]))
+    bad["rooms"][1]["focus"] = "left"
     report = Report()
     rooms.check(_with(story, bad), {"front": {"door", "lamp"}, "hall": {"out"}}, report)
     where = "chapters[0].blocks[0].rooms"
@@ -166,6 +167,7 @@ def test_rooms_check_names_bad_rooms_details_and_doorways(story: dict[str, Any])
         f"{where}[0].exits[1].to must name another room of this block",
         f"{where}[0].exits[2].arrow must be one of up, down, left, right",
         f"{where}[1].id 'hall' must be unique, lowercase letters and -",
+        f"{where}[1].focus must be between 0 and 1",
         f"{where}[2].id 'hall' must be unique, lowercase letters and -",
     ]
 
@@ -202,6 +204,12 @@ def test_panorama_check_names_rigs_layers_and_behaviors(story: dict[str, Any]) -
     bad["journal"] = "Field Journal"
     bad["animals"][0].update({"behavior": "gallop", "rig": "boar", "tide": "spring"})
     bad["animals"].append({"id": "gull", "art": "map", "name": "Gull", "at": [1, 1]})
+    bad["animals"].append(
+        {"id": "eel", "art": "hog", "name": "Eel", "at": "creek", "scale": 0, "speed": "fast"}
+    )
+    bad["zones"].append({"label": "Beach", "from": "dunes", "to": 3200})
+    bad["tide"].update({"start": "low", "shift": [1], "watch": [[0]], "notes": ["Low."]})
+    bad["view"] = {"desktop": "tall"}
     hog = parse(
         '<svg viewBox="0 0 600 400"><g data-rig="hog"><g data-part="body">'
         '<rect width="90" height="40"/></g></g></svg>'
@@ -220,7 +228,16 @@ def test_panorama_check_names_rigs_layers_and_behaviors(story: dict[str, Any]) -
         "wander, scuttle, swim, crawl, glide, arc, hop, stay",
         f"{where}.animals[0].tide must be low or high",
         f"{where}.animals[1]: art 'map' has 0 rigs; name one in rig",
+        f"{where}.animals[2].at must be [x, y] in painting pixels",
+        f"{where}.animals[2].scale must be a number above 0",
+        f"{where}.animals[2].speed must be a number",
+        f"{where}.zones[1]: from and to are pixels, to past from",
         f"{where}.tide names layer 'flood'; draw a data-layer",
+        f"{where}.tide.start must be between 0 and 1",
+        f"{where}.tide.shift must be [x, y] in painting pixels",
+        f"{where}.tide.watch must be [from, to] stretches",
+        f"{where}.tide.notes are {{from: 0 to 1, text}} objects",
+        f"{where}.view takes desktop and phone heights and a start, numbers",
         f"{where}.front names layer 'reeds'; draw a data-layer",
         f"{where}.journal must be true or a key of lowercase letters and -",
     ]
