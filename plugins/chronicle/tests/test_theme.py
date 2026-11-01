@@ -187,7 +187,7 @@ def test_review_flags_a_page_that_copies_another() -> None:
 def test_the_bundled_examples_do_not_look_alike() -> None:
     root = Path(__file__).resolve().parents[1] / "examples"
     themes = {p.parent.name: store.read_json(p)["theme"] for p in root.glob("*/story.json")}
-    assert len(themes) == 3
+    assert len(themes) == 4
     for name, spec in themes.items():
         others = {k: v for k, v in themes.items() if k != name}
         assert review.review(spec, others) == [], name

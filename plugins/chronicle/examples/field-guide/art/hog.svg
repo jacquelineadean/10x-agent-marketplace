@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <!-- a marsh hog in parts, facing right: far legs, near legs, tail, head, then the body -->
+  <g data-rig="hog" data-gait="root" data-bob="3" data-foot="260 350" data-stride="60" data-speed="30">
+    <g data-part="leg-hind-far" data-pivot="150 220" data-amp="20" data-phase="0.5"><rect x="132" y="208" width="34" height="140" rx="12" fill="#4a3828"/></g>
+    <g data-part="leg-fore-far" data-pivot="360 220" data-amp="20" data-phase="0"><rect x="342" y="208" width="34" height="140" rx="12" fill="#4a3828"/></g>
+    <g data-part="leg-hind-near" data-pivot="200 230" data-amp="20" data-phase="0"><rect x="182" y="216" width="36" height="136" rx="12" fill="#5c4633"/></g>
+    <g data-part="leg-fore-near" data-pivot="410 230" data-amp="20" data-phase="0.5"><rect x="392" y="216" width="36" height="136" rx="12" fill="#5c4633"/></g>
+    <g data-part="tail" data-pivot="70 140" data-amp="14" data-speed="5"><path d="M74 140 C 30 120 20 180 48 190" stroke="#4a3828" stroke-width="10" fill="none"/></g>
+    <g data-part="head" data-pivot="430 140" data-down="40" data-nod="4" data-look="3"><path d="M410 80 L570 140 L560 210 L410 220 Z" fill="#6a5039"/><circle cx="500" cy="140" r="7" fill="#1e1a16"/><path d="M440 80 L460 50 L475 90 Z" fill="#5c4633"/></g>
+    <g data-part="body" data-role="static"><ellipse cx="250" cy="155" rx="200" ry="100" fill="#7a5e46"/></g>
+  </g>
+</svg>

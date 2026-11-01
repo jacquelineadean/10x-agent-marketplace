@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 import re
 from pathlib import Path
@@ -15,6 +16,7 @@ from chronicle_engine import registry
 from chronicle_engine.connectors.files import store
 from chronicle_engine.core.motion import render
 from chronicle_engine.core.story import derive
+from chronicle_engine.core.story.model import Report
 from chronicle_engine.core.story.render import Builder
 
 EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
@@ -200,3 +202,48 @@ def test_a_walking_rig_swings_its_legs_about_the_pivot_and_bobs() -> None:
 def test_a_still_rig_keeps_its_legs_planted() -> None:
     svg = _scene_animation("still")
     assert "rotate:" not in svg and "translate: 0px -" not in svg
+
+
+RIG_ANIMATION: dict[str, Any] = {
+    "schema_version": 1,
+    "kind": "rig",
+    "meta": {"title": "A hog trots", "description": "A hog in parts trots in place."},
+    "rig": {"art": {"svg": "hog.svg", "seed": 1}, "gait": "walk"},
+    "steps": [{"caption": "A trot."}],
+}
+
+
+def test_a_rig_animation_plays_the_gait_it_names() -> None:
+    painting = {**ENTRY, "rigs": {"hog": {**ENTRY["rigs"]["hog"], "gait": "still"}}}
+    hrefs = {"art/woods.webp": "data:,"} | {layer["file"]: "data:," for layer in ENTRY["layers"]}
+    css = store.asset_parts("motion", ".css") + store.asset("css/40-drawn.css")
+    sources = render.Sources(painting=painting, images=hrefs)
+    walked = render.render(RIG_ANIMATION, {}, store.fonts(), css, sources).svg
+    # The drawing says still; the animation's walk swings the leg about its pivot.
+    assert "transform-origin: 20.0px 10.0px;" in walked and "rotate:" in walked
+    still = copy.deepcopy(RIG_ANIMATION)
+    del still["rig"]["gait"]
+    assert "rotate:" not in render.render(still, {}, store.fonts(), css, sources).svg
+
+
+@pytest.mark.parametrize(
+    ("change", "message"),
+    [
+        ({"rig": {"art": {"svg": "hog.svg"}, "gait": "gallop"}}, "rig.gait must be one of"),
+        ({"rig": {"art": {"svg": "hog.svg"}, "spots": []}}, "rig.spots is unknown"),
+        ({"rig": {"art": {"preset": "harbor"}}}, "rig.art needs an svg"),
+        ({"steps": [{"caption": "x", "focus": ["hog"]}]}, "steps take captions, not focus"),
+    ],
+)
+def test_a_rig_animation_check_names_the_problem(change: dict[str, Any], message: str) -> None:
+    anim = {**copy.deepcopy(RIG_ANIMATION), **change}
+    report = Report()
+    registry.KINDS["rig"].check(anim, {}, render.Sources(drawing=HOG), report)
+    assert any(message in error for error in report.errors), report.errors
+
+
+def test_a_rig_animation_needs_a_drawing_with_a_rig() -> None:
+    report = Report()
+    flat = '<svg viewBox="0 0 400 300"><rect width="40" height="30"/></svg>'
+    registry.KINDS["rig"].check(RIG_ANIMATION, {}, render.Sources(drawing=flat), report)
+    assert report.errors == ["rig.art draws no data-rig group to move"]

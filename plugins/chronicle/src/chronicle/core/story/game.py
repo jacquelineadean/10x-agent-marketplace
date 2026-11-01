@@ -17,6 +17,8 @@ from chronicle_engine.core.story import lessons
 from chronicle_engine.core.story.html import tag
 from chronicle_engine.core.story.render import Builder
 
+from chronicle.core.story import keys
+
 NAMES = {
     "-3": "Albatross",
     "-2": "Eagle",
@@ -26,7 +28,6 @@ NAMES = {
     "2": "Double bogey",
     "3": "Triple bogey",
 }
-ID = re.compile(r"^[a-z][a-z0-9-]{0,40}$")
 
 Block = Mapping[str, Any]
 
@@ -53,11 +54,9 @@ def hole_id(n: int, block: Block) -> str:
 
 def _settings(b: Builder) -> dict[str, Any]:
     game = b.story.get("game") or {}
-    title = str(b.story.get("meta", {}).get("title", "page"))
-    slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:40] or "page"
     return {
         "names": {**NAMES, **{str(k): str(v) for k, v in dict(game.get("names") or {}).items()}},
-        "key": f"chronicle-game:{game.get('key') or slug}",
+        "key": keys.stored(b.story, "game", game.get("key")),
     }
 
 
@@ -208,7 +207,7 @@ def check(story: Mapping[str, Any], report: Any) -> None:
     for n, _, block in holes(story):
         where = f"hole {n}"
         hid = hole_id(n, block)
-        if not ID.match(hid) or hid in seen:
+        if not keys.ID.match(hid) or hid in seen:
             report.errors.append(f"{where}: id {hid!r} must be unique, lowercase letters and -")
         seen.add(hid)
         given = block.get("par")

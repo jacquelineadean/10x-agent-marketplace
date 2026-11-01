@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <!-- the hall inside: paneled walls, the fireplace, the keeper's chart over the mantel, the stair -->
+  <rect x="-20" y="-20" width="1640" height="700" fill="#c9a77d" data-shade="0.3" stroke="none"/>
+  <path d="M-20 660 L1620 660 L1620 920 L-20 920 Z" fill="#8a6440" stroke="#2b231d" stroke-width="2" data-shade="0.3"/>
+  <g stroke="#2b231d" stroke-width="2" fill="none">
+    <path d="M60 120 L60 640 M320 120 L320 640 M580 120 L580 640 M1020 120 L1020 640 M1280 120 L1280 640"/>
+    <path d="M-20 120 L1620 120"/>
+  </g>
+  <!-- the window to the marsh -->
+  <g stroke="#2b231d" stroke-width="2.6">
+    <rect x="120" y="200" width="160" height="300" fill="#b9cbbf" data-shade="0.2" data-anchor="window"/>
+    <path d="M200 200 L200 500 M120 350 L280 350" fill="none" stroke-width="3"/>
+  </g>
+  <!-- the fireplace and the chart above it -->
+  <g stroke="#2b231d" stroke-width="2.8">
+    <rect x="640" y="420" width="320" height="240" fill="#8a7a6a" data-shade="0.4"/>
+    <rect x="700" y="480" width="200" height="180" fill="#2d2622" data-anchor="fire"/>
+    <rect x="610" y="400" width="380" height="26" fill="#6b4a30"/>
+    <rect x="680" y="170" width="240" height="180" fill="#efe6cf" data-shade="0.2" data-anchor="chart"/>
+    <path d="M710 300 C 760 220 820 260 880 200" fill="none" stroke="#5f7f8a" stroke-width="4"/>
+  </g>
+  <path d="M740 640 C 770 590 800 620 820 570 C 840 610 860 600 870 640 Z" fill="#e0893c" stroke="none" data-paint="wet"/>
+  <!-- the stair -->
+  <g stroke="#2b231d" stroke-width="2.4" fill="#a37b52" data-shade="0.3">
+    <path d="M1100 660 L1560 300 L1600 300 L1600 660 Z" data-anchor="stair"/>
+    <path d="M1150 620 L1180 620 M1210 572 L1240 572 M1270 525 L1300 525 M1330 478 L1360 478 M1390 431 L1420 431 M1450 384 L1480 384" fill="none" stroke-width="3"/>
+  </g>
+  <circle cx="800" cy="820" r="5" data-anchor="out" data-paint="none" data-line="none"/>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <!-- a hog rooting under the live oaks: head down, tail going -->
+  <rect x="0" y="0" width="1600" height="900" fill="#e6e2cf"/>
+  <path d="M0 650 C 400 610 1200 670 1600 640 L1600 900 L0 900 Z" fill="#9fae6e"/>
+  <g stroke="#2b231d" stroke-width="2.2">
+    <rect x="150" y="200" width="60" height="460" fill="#5b4532"/>
+    <circle cx="180" cy="180" r="170" fill="#4e6b3a" data-shade="0.5"/>
+    <rect x="1400" y="220" width="56" height="430" fill="#5b4532"/>
+    <circle cx="1430" cy="200" r="160" fill="#4e6b3a" data-shade="0.5"/>
+  </g>
+  <g data-rig="hog" data-gait="root" data-bob="4" data-foot="880 770">
+    <g data-part="leg-hind-far" data-pivot="770 640" data-amp="20" data-phase="0.5"><rect x="752" y="628" width="34" height="140" rx="12" fill="#4a3828"/></g>
+    <g data-part="leg-fore-far" data-pivot="980 640" data-amp="20" data-phase="0"><rect x="962" y="628" width="34" height="140" rx="12" fill="#4a3828"/></g>
+    <g data-part="leg-hind-near" data-pivot="820 650" data-amp="20" data-phase="0"><rect x="802" y="636" width="36" height="136" rx="12" fill="#5c4633"/></g>
+    <g data-part="leg-fore-near" data-pivot="1030 650" data-amp="20" data-phase="0.5"><rect x="1012" y="636" width="36" height="136" rx="12" fill="#5c4633"/></g>
+    <g data-part="tail" data-pivot="690 560" data-amp="14" data-speed="5"><path d="M694 560 C 650 540 640 600 668 610" stroke="#4a3828" stroke-width="10" fill="none"/></g>
+    <g data-part="head" data-pivot="1050 560" data-down="40" data-nod="4" data-look="3"><path d="M1030 500 L1190 560 L1180 630 L1030 640 Z" fill="#6a5039"/><circle cx="1120" cy="560" r="7" fill="#1e1a16"/><path d="M1060 500 L1080 470 L1095 510 Z" fill="#5c4633"/></g>
+    <g data-part="body" data-role="static"><ellipse cx="870" cy="575" rx="200" ry="100" fill="#7a5e46"/></g>
+  </g>
+  <circle cx="1170" cy="600" r="5" data-anchor="snout" data-paint="none" data-line="none"/>
+  <circle cx="660" cy="580" r="5" data-anchor="tail" data-paint="none" data-line="none"/>
+</svg>

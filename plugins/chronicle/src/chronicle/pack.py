@@ -18,7 +18,7 @@ from chronicle_engine import registry
 from chronicle_engine.connectors.files import store
 from chronicle_engine.core.motion import diagram as diagram_kind
 from chronicle_engine.core.motion import stage
-from chronicle_engine.core.motion.model import Plan
+from chronicle_engine.core.motion.model import ACTIONS, Plan
 from chronicle_engine.core.motion.timeline import Timeline
 from chronicle_engine.core.story import model
 from chronicle_engine.core.story.model import Report
@@ -26,7 +26,8 @@ from chronicle_engine.core.story.render import Builder
 from chronicle_engine.registry import Kind, Prepared, Sources
 
 from chronicle.core.motion import scene
-from chronicle.core.story import checks, chrome, game, plates, review
+from chronicle.core.story import checks, chrome, game, panorama, plates, review, rooms, tour
+from chronicle.core.watercolor.svg.parse import GAITS, Drawing, SvgError, parse
 from chronicle.entrypoints.cli import art, commands, widgets
 
 EXAMPLES = Path(__file__).resolve().parents[2] / "examples"
@@ -94,23 +95,26 @@ def _plate_block(b: Builder, block: Mapping[str, Any]) -> str:
     )
 
 
-def _anchors(story: Mapping[str, Any], path: Path, facts: Any) -> dict[str, set[str]]:
-    """Each drawn painting's anchor names; drawings that fail to read report elsewhere."""
-    from chronicle.core.watercolor.svg.parse import SvgError, parse
-
-    found: dict[str, set[str]] = {}
+def _drawings(story: Mapping[str, Any], path: Path, facts: Any) -> dict[str, Drawing]:
+    """Each painting's drawing, read; drawings that fail to read report elsewhere."""
+    found: dict[str, Drawing] = {}
     for key, text in art.drawings(story, path.parent, facts, Report()).items():
         try:
-            found[key] = set(parse(text).anchors)
+            found[key] = parse(text)
         except SvgError:
             continue
     return found
 
 
 def _check(story: Mapping[str, Any], facts: Any, path: Path, report: Report) -> None:
-    """chronicle's block checks, with the anchors its drawings define."""
-    checks.notes(story, _anchors(story, path, facts), report)
+    """chronicle's block checks, with the anchors, layers and rigs its drawings define."""
+    drawn = _drawings(story, path, facts)
+    anchors = {key: set(drawing.anchors) for key, drawing in drawn.items()}
+    checks.notes(story, anchors, report)
     game.check(story, report)
+    rooms.check(story, anchors, report)
+    panorama.check(story, drawn, report)
+    tour.check(story, anchors, report)
 
 
 # -------------------------------------------------------------------- policy
@@ -142,8 +146,6 @@ def other_themes(story_path: Path) -> dict[str, Any]:
 def _scene_check(
     anim: Mapping[str, Any], facts: Mapping[str, Any], sources: Sources, report: Report
 ) -> None:
-    from chronicle.core.watercolor.svg.parse import SvgError, parse
-
     anchors: set[str] | None = None
     layers: set[str] | None = None
     if sources.drawing:
@@ -182,8 +184,14 @@ def _scene_drawing(body: Mapping[str, Any]) -> str:
 def _scene_sources(
     anim: Mapping[str, Any], folder: Path, facts: Mapping[str, Any], out: Path, force: bool
 ) -> Sources:
-    """Paint the scene's art (once; unchanged art is kept) and embed its images."""
-    story = {"art": {"scene": anim["scene"]["art"]}}
+    return _painted(anim["scene"]["art"], folder, facts, out, force)
+
+
+def _painted(
+    spec: Mapping[str, Any], folder: Path, facts: Mapping[str, Any], out: Path, force: bool
+) -> Sources:
+    """Paint an animation's art (once; unchanged art is kept) and embed its images."""
+    story = {"art": {"scene": spec}}
     report = Report()
     texts = art.drawings(story, folder, facts, report)
     if not report.ok:
@@ -206,6 +214,72 @@ SCENE = Kind(
 )
 
 
+# ----------------------------------------------------------------------- rig
+def _rig_check(
+    anim: Mapping[str, Any], facts: Mapping[str, Any], sources: Sources, report: Report
+) -> None:
+    """A rig animation plays a drawing's rigs; its gait may replace the drawing's own."""
+    body = anim["rig"]
+    for key in sorted(set(body) - {"art", "gait"}):
+        report.errors.append(f"rig.{key} is unknown; a rig takes art and gait")
+    if not isinstance(body.get("art"), Mapping) or not body["art"].get("svg"):
+        report.errors.append("rig.art needs an svg: a drawing with a data-rig group of parts")
+    if body.get("gait") is not None and body["gait"] not in GAITS:
+        report.errors.append(f"rig.gait must be one of {', '.join(GAITS)}")
+    if sources.drawing:
+        try:
+            if not parse(sources.drawing).rigs:
+                report.errors.append("rig.art draws no data-rig group to move")
+        except SvgError as exc:
+            report.errors.append(f"rig.art: {exc}")
+    for i, step in enumerate(anim.get("steps", [])):
+        acts = sorted(set(step) & set(ACTIONS)) if isinstance(step, Mapping) else []
+        if acts:
+            report.errors.append(
+                f"steps[{i}]: a rig animation's steps take captions, not {acts[0]}"
+            )
+
+
+def _rig_figure(
+    anim: Mapping[str, Any],
+    prepared: Prepared,
+    plan: Plan,
+    box: stage.Box,
+    timeline: Timeline,
+    sources: Sources,
+    words: Callable[[str], str],
+) -> tuple[str, list[str]]:
+    if sources.painting is None:
+        raise ValueError("a rig animation needs its painting; paint it first")
+    body = anim["rig"]
+    painting = dict(sources.painting)
+    if body.get("gait"):
+        rigs = dict(painting.get("rigs", {}))
+        painting["rigs"] = {name: {**rig, "gait": body["gait"]} for name, rig in rigs.items()}
+    still = {"art": body["art"], "develop": False, "spots": []}
+    return scene.figure(still, painting, sources.images, plan, box, timeline, words)
+
+
+def _rig_sources(
+    anim: Mapping[str, Any], folder: Path, facts: Mapping[str, Any], out: Path, force: bool
+) -> Sources:
+    return _painted(anim["rig"]["art"], folder, facts, out, force)
+
+
+RIG = Kind(
+    skeleton={"art": {"svg": "drawing.svg", "seed": 1, "alt": ""}, "gait": "walk"},
+    next_step=(
+        "draw drawing.svg with a data-rig group whose data-part groups each turn about a "
+        "data-pivot (references/illustration.md, Rigs)"
+    ),
+    check=_rig_check,
+    prepare=_scene_prepare,
+    figure=_rig_figure,
+    drawing=_scene_drawing,
+    build_sources=_rig_sources,
+)
+
+
 # ---------------------------------------------------------------- register
 registry.set_art(Painter())
 registry.add_block(
@@ -218,6 +292,43 @@ registry.add_parts(
     by_type={
         "notes": ("js/31-notes.js", "css/16-notes.css"),
         "rig": ("js/33-rigs.js", "css/15-rigs.css"),
+    }
+)
+# Places to explore: a wide habitat with animals, rooms through doorways, a map tour.
+registry.add_block(
+    "panorama",
+    ("art",),
+    (
+        "title",
+        "subtitle",
+        "label",
+        "intro",
+        "view",
+        "animals",
+        "zones",
+        "tide",
+        "front",
+        "journal",
+        "source",
+    ),
+    panorama.panorama,
+    after="plate",
+)
+registry.add_block(
+    "rooms", ("rooms",), ("title", "subtitle", "source"), rooms.rooms, after="panorama"
+)
+registry.add_block(
+    "tour",
+    ("art", "stops"),
+    ("title", "subtitle", "hint", "pins", "key", "source"),
+    tour.tour,
+    after="rooms",
+)
+registry.add_parts(
+    by_type={
+        "panorama": ("js/33-rigs.js", "js/34-panorama.js", "css/17-panorama.css"),
+        "rooms": ("js/35-rooms.js", "css/18-rooms.css"),
+        "tour": ("js/36-tour.js", "css/19-tour.css"),
     }
 )
 # A story with a `game` plays its quizzes as holes; the scorecard totals the round.
@@ -236,6 +347,7 @@ registry.add_parts(
 )
 chrome.register()
 registry.add_kind("scene", SCENE, first=True)
+registry.add_kind("rig", RIG)
 registry.POLICIES["distinct"] = distinct
 registry.CHECKS["chronicle"] = _check
 registry.COMMANDS["motifs"] = registry.Command(commands.motifs_parser, commands.motifs)

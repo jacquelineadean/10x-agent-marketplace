@@ -25,6 +25,9 @@ def test_block_types_keep_their_order() -> None:
         "model",
         "table",
         "plate",
+        "panorama",
+        "rooms",
+        "tour",
         "tilemap",
         "flow",
         "diagram",
@@ -36,7 +39,7 @@ def test_block_types_keep_their_order() -> None:
 
 
 def test_kinds_commands_and_defaults() -> None:
-    assert list(registry.KINDS) == ["scene", "diagram"]
+    assert list(registry.KINDS) == ["scene", "diagram", "rig"]
     assert list(registry.COMMANDS) == ["motifs", "research", "widgets"]
     assert registry.art() is not None
     assert registry.DEFAULTS.prog == "chronicle"

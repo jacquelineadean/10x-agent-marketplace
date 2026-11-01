@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260">
+  <!-- a fiddler crab, facing right, waving its big claw while it rests -->
+  <g data-rig="crab" data-bob="3" data-foot="190 240" data-stride="40" data-speed="24">
+    <g data-part="body" data-role="static">
+      <path d="M110 180 L60 232 M132 194 L92 246 M152 204 L132 250 M248 200 L282 246 M228 206 L240 250" stroke="#7a4426" stroke-width="7" fill="none"/>
+      <ellipse cx="190" cy="160" rx="100" ry="50" fill="#b0643a"/>
+      <path d="M170 112 L164 80 M210 112 L216 80" stroke="#7a4426" stroke-width="6" fill="none"/>
+      <circle cx="164" cy="76" r="8" fill="#1e1a16"/>
+      <circle cx="216" cy="76" r="8" fill="#1e1a16"/>
+    </g>
+    <g data-part="claw" data-pivot="276 150" data-amp="-26" data-speed="5">
+      <path d="M276 150 L318 124" stroke="#b0643a" stroke-width="16" fill="none"/>
+      <ellipse cx="340" cy="108" rx="48" ry="28" fill="#e8b45a"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,192 @@
+{
+ "schema_version": 1,
+ "meta": {
+  "title": "Marrow Key",
+  "kicker": "A field guide",
+  "dek": "Land at the north dock, walk through the keeper's house, wade into the salt marsh and find the hogs under the live oaks. Every animal you pick goes in your field journal.",
+  "byline": ["For visitors on the day ferry", "Demonstration: Marrow Key, its keepers and every figure here are invented"],
+  "description": "An illustrated field guide to an invented barrier island, with a map tour, a walk through a house, a marsh panorama with rigged animals and a tide, pen notes and a quiz played as golf.",
+  "colophon": "Built by the chronicle plugin from a facts file and a story file. The drawings were made as SVG for this page and painted in ink and watercolor in code; the animals were drawn in parts and move about their joints.\n\nDemonstration data. Marrow Key and everything on this page are invented for this example."
+ },
+ "theme": {
+  "concept": "A naturalist's field notebook for a barrier island: ink sketches washed in marsh greens and sea blues, specimen labels, a tide table, a trail map with numbered stops.",
+  "palette": {
+   "paper": "#F2EEDF",
+   "ink": "#1F2B26",
+   "accent": "#2B5F73",
+   "legacy": "#B4562B",
+   "series": ["#2B5F73", "#B4562B", "#6B7D2E", "#8A5A8C", "#94741A", "#3E8A7A"]
+  },
+  "fonts": {"display": "Gloock", "body": "Spectral", "ui": "Archivo Narrow", "hand": "Gochi Hand", "mono": "JetBrains Mono"},
+  "progress": {"kind": "tape", "start_label": "On the ferry"},
+  "chapter_mark": {"style": "sign", "prefix": "Stop", "format": "decimal"},
+  "stats": "rule",
+  "surface": {"texture": "ruled", "corners": "round", "frame": "tape"}
+ },
+ "sources": [
+  {"id": "survey", "label": "Island survey", "detail": "Acreage by habitat, invented for this example.", "as_of": "1 Oct 2026"},
+  {"id": "ferry", "label": "Ferry timetable", "detail": "Summer schedule, Breton to Marrow Key.", "as_of": "1 Apr 2026"},
+  {"id": "tides", "label": "Tide table", "detail": "Predicted tides at the north dock.", "as_of": "1 Oct 2026"},
+  {"id": "log", "label": "Keepers' log", "detail": "The light station's logbook, transcribed.", "as_of": "1 Oct 2026"}
+ ],
+ "art": {
+  "map": {"svg": "art/map.svg", "seed": 5, "alt": "Watercolor map of Marrow Key: the salt marsh on the west side, live oak woods in the middle, the keeper's house on the rise and the north dock where the ferry lands."},
+  "dock": {"svg": "art/dock.svg", "seed": 7, "alt": "The north dock at low water: the pier, the ferry tied up, a sign that reads No wake, and the high-water line on the pilings."},
+  "house-front": {"svg": "art/house-front.svg", "seed": 3, "alt": "The keeper's house from the lawn: pink stucco, a green door with a lamp beside it, oaks on either side."},
+  "house-hall": {"svg": "art/house-hall.svg", "seed": 4, "alt": "The hall inside the keeper's house: paneled walls, a fireplace with a chart above it, a window to the marsh and the stair."},
+  "marsh": {"svg": "art/marsh.svg", "seed": 9, "alt": "A wide watercolor of Marrow Key from the salt marsh to the surf: cordgrass and a creek, the mudflat, the dunes and the beach."},
+  "woods": {"svg": "art/woods.svg", "seed": 3, "alt": "A hog rooting under the live oaks, head down and tail going."},
+  "hog": {"svg": "art/hog.svg", "width": 600, "seed": 11, "alt": ""},
+  "crab": {"svg": "art/crab.svg", "width": 400, "seed": 12, "alt": ""},
+  "heron": {"svg": "art/heron.svg", "width": 400, "seed": 13, "alt": ""},
+  "gull": {"svg": "art/gull.svg", "width": 500, "seed": 14, "alt": ""},
+  "dolphin": {"svg": "art/dolphin.svg", "width": 600, "seed": 15, "alt": ""}
+ },
+ "hero": {
+  "art": "dock",
+  "caption": "The north dock at low water. The ferry from Breton ties up here {{island.ferries_day}} a day.",
+  "stats": [
+   {"label": "Island", "value": "{{island.acres}}", "delta": "marsh, woods and beach"},
+   {"label": "Ferry", "value": "{{island.ferry_minutes}}", "delta": "from Breton landing"},
+   {"label": "Tide range", "value": "{{marsh.tide_range}}", "delta": "at the north dock"}
+  ]
+ },
+ "game": {"key": "marrow-key"},
+ "chapters": [
+  {
+   "id": "arrive",
+   "short": "Map",
+   "kicker": "Start here",
+   "title": "The island on one page",
+   "blocks": [
+    {"type": "prose", "dropcap": true, "text": "Marrow Key is {{island.acres}} of marsh, woods and beach. The tour below walks the four places most visitors see in a day. Pick a stop on the map to open it, or read the chapters in order; the route in the bar at the top follows you either way."},
+    {
+     "type": "tour",
+     "id": "island-tour",
+     "art": "map",
+     "title": "Marrow Key",
+     "hint": "Pick a stop to go there. Blue dots hold notes about the places in between.",
+     "key": "marrow-key",
+     "stops": [
+      {"id": "dock", "title": "The north dock", "short": "North dock", "at": "dock", "chapter": "dock", "intro": "Where the ferry lands. Look for the high-water line on the pilings.", "scene": {"type": "plate", "art": "dock", "caption": "The north dock at low water."}},
+      {"id": "house", "title": "The keeper's house", "short": "Keeper's house", "at": "house", "chapter": "house", "intro": "Walk through the door and into the hall.",
+       "scene": {"type": "rooms", "id": "tour-house", "rooms": [
+        {"id": "front", "art": "house-front", "short": "Front", "kicker": "Outside", "title": "The front of the house", "text": "The keepers painted it pink so the ferry could find it in fog.",
+         "details": [{"at": "lamp", "title": "The door lamp", "text": "Lit every night the light was lit."}, {"at": "roof", "title": "The roof", "text": "Cypress shingles, replaced twice."}],
+         "exits": [{"at": "door", "to": "hall", "label": "Step inside", "arrow": "up"}]},
+        {"id": "hall", "art": "house-hall", "short": "Hall", "kicker": "Inside", "title": "The hall", "text": "Every keeper's family ate, read and waited out storms in this room.",
+         "details": [{"at": "chart", "title": "The keeper's chart", "text": "Soundings of the channel, drawn by the first keeper."}, {"at": "fire", "title": "The fireplace", "text": "The only heat in the house."}],
+         "exits": [{"at": "out", "to": "front", "label": "Back outside", "arrow": "down"}]}
+       ]}},
+      {"id": "marsh", "title": "The salt marsh", "short": "Salt marsh", "at": "marsh", "chapter": "marsh", "intro": "Drag the painting to walk from the marsh to the surf.",
+       "scene": {"type": "panorama", "id": "tour-marsh", "art": "marsh", "journal": "marrow-key", "front": ["grass"], "view": {"desktop": 420, "phone": 300},
+        "intro": "Pick an animal in the painting to open its field card.",
+        "animals": [
+         {"id": "heron", "art": "heron", "name": "Great blue heron", "latin": "Ardea herodias", "where": "Salt marsh", "fact": "Stands still in the creek until a fish comes close.", "at": [980, 880], "scale": 0.42, "behavior": "wander", "range": [760, 1240], "speed": 26},
+         {"id": "hog", "art": "hog", "name": "Marsh hog", "latin": "Sus scrofa", "where": "Hammock edge", "fact": "Roots for crab and cordgrass where the marsh meets the oaks.", "at": [420, 960], "scale": 0.36, "behavior": "wander", "range": [180, 700], "speed": 22}
+        ]}},
+      {"id": "woods", "title": "Under the live oaks", "short": "Live oaks", "at": "woods", "chapter": "woods", "intro": "The hogs root here all afternoon.", "scene": {"type": "plate", "art": "woods", "caption": "A hog rooting under the oaks."}}
+     ],
+     "pins": [
+      {"title": "The old well", "at": "well", "text": "Dug by the first keeper; the water is brackish now."},
+      {"title": "South beach", "at": "beach", "text": "Loggerheads nest here from May to August."}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "dock",
+   "short": "Dock",
+   "kicker": "Stop one",
+   "title": "The north dock",
+   "blocks": [
+    {"type": "prose", "text": "The ferry takes {{island.ferry_minutes}} from Breton landing and ties up at the north dock. At low water the pilings show how high the tide came: the line is the mean high water, about {{marsh.tide_range}} above where you can see the mud now."},
+    {"type": "plate", "art": "dock", "width": "inset", "caption": "Read the dock before you step off.", "notes": [
+     {"at": "sign", "mark": "circle", "text": "slow down here", "dx": 80, "dy": -40},
+     {"at": "tideline", "mark": "underline", "text": "high water", "pen": "blue"}
+    ]}
+   ]
+  },
+  {
+   "id": "house",
+   "short": "House",
+   "kicker": "Stop two",
+   "title": "The keeper's house",
+   "blocks": [
+    {"type": "prose", "text": "The house was finished in {{house.built|year}}, the year the light was lit, and {{house.keepers}} lived in it before the light ran itself. Walk in through the front door."},
+    {"type": "rooms", "id": "house-rooms", "title": "Through the front door", "rooms": [
+     {"id": "front", "art": "house-front", "short": "Front", "kicker": "Outside", "title": "The front of the house", "text": "The keepers painted it pink so the ferry could find it in fog.",
+      "details": [{"at": "lamp", "title": "The door lamp", "text": "Lit every night the light was lit."}, {"at": "roof", "title": "The roof", "text": "Cypress shingles, replaced twice."}, {"at": "steps", "title": "The steps", "text": "Tabby: oyster shell, lime and sand."}],
+      "exits": [{"at": "door", "to": "hall", "label": "Step inside", "arrow": "up"}]},
+     {"id": "hall", "art": "house-hall", "short": "Hall", "kicker": "Inside", "title": "The hall", "text": "Every keeper's family ate, read and waited out storms in this room.",
+      "details": [{"at": "chart", "title": "The keeper's chart", "text": "Soundings of the channel, drawn by the first keeper."}, {"at": "fire", "title": "The fireplace", "text": "The only heat in the house."}, {"at": "window", "title": "The marsh window", "text": "From here the keepers watched the tide cover the flats."}],
+      "exits": [{"at": "out", "to": "front", "label": "Back outside", "arrow": "down"}]}
+    ]}
+   ]
+  },
+  {
+   "id": "marsh",
+   "short": "Marsh",
+   "kicker": "Stop three",
+   "title": "From the marsh to the surf",
+   "blocks": [
+    {"type": "prose", "text": "The tide comes in {{marsh.tides_day}} a day and covers the mudflat. Fiddler crabs feed on the flat at low water; dolphins come up the beach at high water. Drag the painting, pick the places along the top, and move the tide."},
+    {
+     "type": "panorama",
+     "id": "marsh-panorama",
+     "art": "marsh",
+     "title": "Walk across the island",
+     "label": "Painted cross-section of Marrow Key from the salt marsh to the surf; drag it or use the arrow keys to look along it",
+     "intro": "Pick an animal in the painting to open its field card. Each one you find goes in the field journal.",
+     "journal": "marrow-key",
+     "front": ["grass"],
+     "view": {"desktop": 520, "phone": 360},
+     "zones": [
+      {"label": "Salt marsh", "from": 0, "to": 1360, "text": "Smooth cordgrass, flooded twice a day."},
+      {"label": "Mudflat", "from": 1360, "to": 2360, "text": "Bare at low water, fed on by crabs and birds."},
+      {"label": "Dunes", "from": 2360, "to": 2840, "text": "Sea oats hold the sand in place."},
+      {"label": "Beach", "from": 2840, "to": 3200, "text": "The surf line moves with the tide."}
+     ],
+     "tide": {"layer": "tide", "surf": "surf", "shift": [86, -60], "start": 0.15, "watch": [[1360, 2360], [2840, 3200]],
+      "notes": [{"from": 0, "text": "Low tide: the flat is bare and the crabs are out."}, {"from": 0.35, "text": "The tide is coming in over the flat."}, {"from": 0.7, "text": "High tide: the flat is under water and dolphins work the beach."}]},
+     "animals": [
+      {"id": "heron", "art": "heron", "name": "Great blue heron", "latin": "Ardea herodias", "where": "Salt marsh", "fact": "Stands still in the creek until a fish comes close, then strikes.", "at": [980, 880], "scale": 0.42, "behavior": "wander", "range": [760, 1240], "speed": 26, "rest": [3, 8]},
+      {"id": "hog", "art": "hog", "name": "Marsh hog", "latin": "Sus scrofa", "where": "Hammock edge", "fact": "Roots for crab and cordgrass where the marsh meets the oaks.", "at": [420, 960], "scale": 0.36, "behavior": "wander", "range": [180, 700], "speed": 22},
+      {"id": "crab", "art": "crab", "name": "Fiddler crab", "latin": "Uca pugnax", "where": "Mudflat", "fact": "The males wave one big claw to court and to warn.", "at": [1560, 900], "scale": 0.28, "behavior": "scuttle", "range": [1460, 1760], "tide": "low"},
+      {"id": "crab", "art": "crab", "name": "Fiddler crab", "latin": "Uca pugnax", "where": "Mudflat", "fact": "The males wave one big claw to court and to warn.", "at": [1880, 940], "scale": 0.3, "behavior": "scuttle", "range": [1780, 2100], "tide": "low", "face": -1},
+      {"id": "gull", "art": "gull", "name": "Laughing gull", "latin": "Leucophaeus atricilla", "where": "Over the whole island", "fact": "Follows the ferry in for scraps.", "at": [0, 240], "scale": 0.4, "behavior": "glide", "range": [-200, 3400], "speed": 46},
+      {"id": "dolphin", "art": "dolphin", "name": "Bottlenose dolphin", "latin": "Tursiops truncatus", "where": "Beach", "fact": "Drives fish onto the beach at high water and slides up after them.", "at": [2900, 650], "scale": 0.34, "behavior": "arc", "range": [2880, 3120], "height": 70, "tide": "high"}
+     ],
+     "source": "survey"
+    }
+   ]
+  },
+  {
+   "id": "woods",
+   "short": "Oaks",
+   "kicker": "Stop four",
+   "title": "Under the live oaks",
+   "blocks": [
+    {"type": "prose", "text": "The hogs came with the first settlers and never left. They root under the oaks with their heads down and their tails going."},
+    {"type": "plate", "art": "woods", "caption": "Watch the snout and the tail.", "notes": [{"at": "snout", "mark": "circle", "text": "rooting"}, {"at": "tail", "mark": "arrow", "text": "always moving", "dx": -150, "dy": -60}]}
+   ]
+  },
+  {
+   "id": "quiz",
+   "short": "Quiz",
+   "kicker": "Before the ferry home",
+   "title": "Play the island",
+   "blocks": [
+    {"type": "prose", "text": "Two holes. Each pick is a stroke; a wrong pick drops out and you pick again."},
+    {"type": "quiz", "id": "hole-tide", "title": "The tide", "questions": [
+     {"q": "When are the fiddler crabs out on the flat?", "options": ["At low water", "At high water", "Only at night"], "answer": 0, "explain": "They feed on the bare mud and go down their burrows when the tide covers it."},
+     {"q": "What does the line on the pilings mark?", "options": ["The depth of the channel", "Mean high water", "The ferry's draft"], "answer": 1, "explain": "The line is where the tide reaches on an average day."}
+    ]},
+    {"type": "quiz", "id": "hole-house", "title": "The house", "questions": [
+     {"q": "Why is the keeper's house pink?", "options": ["The stucco came that way", "So the ferry could find it in fog", "To match the light"], "answer": 1, "explain": "The keepers painted it so the ferry could pick it out from the channel."}
+    ]},
+    {"type": "scorecard", "title": "Your card"}
+   ]
+  }
+ ]
+}

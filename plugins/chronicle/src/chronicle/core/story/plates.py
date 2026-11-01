@@ -27,8 +27,12 @@ def plate(
     width: str = "wide",
     spots: Any = None,
     notes: Any = None,
+    extra: str = "",
 ) -> str:
-    """A painting: base image, moving layers, an overlay for lines, optional hotspots."""
+    """A painting: base image, moving layers, an overlay for lines, optional hotspots.
+
+    `extra` is markup placed on the stage over the painting, such as a room's doorways.
+    """
     entry = b.manifest.get(key)
     if not entry:
         return ""
@@ -68,7 +72,7 @@ def plate(
     )
     stage = tag(
         "div",
-        base + layers + overlay + spot_html,
+        base + layers + overlay + spot_html + extra,
         class_="stage develop",
         style=f"aspect-ratio:{w}/{h}",
     )
@@ -111,15 +115,18 @@ def _layers(b: Builder, entry: Mapping[str, Any], w: int, h: int) -> str:
     return out
 
 
-def rig_html(
-    b: Builder, name: str, rig: Mapping[str, Any], parts: list[Mapping[str, Any]], w: int, h: int
-) -> str:
-    """One rig: its parts inside a box that spans them all, each turning about its pivot."""
+def rig_box(parts: list[Mapping[str, Any]]) -> tuple[float, float, float, float]:
+    """The box that spans a rig's parts: x, y, width and height in painting pixels."""
     x0 = min(float(p["box"][0]) for p in parts)
     y0 = min(float(p["box"][1]) for p in parts)
     x1 = max(float(p["box"][0]) + float(p["box"][2]) for p in parts)
     y1 = max(float(p["box"][1]) + float(p["box"][3]) for p in parts)
-    rw, rh = max(1.0, x1 - x0), max(1.0, y1 - y0)
+    return x0, y0, max(1.0, x1 - x0), max(1.0, y1 - y0)
+
+
+def rig_parts(b: Builder, parts: list[Mapping[str, Any]]) -> str:
+    """A rig's parts in paint order, placed in percent of the rig box, each about its pivot."""
+    x0, y0, rw, rh = rig_box(parts)
     imgs = ""
     for p in parts:
         b.art_files.append(str(p["file"]))
@@ -143,11 +150,19 @@ def rig_html(
                 f"{100 * (float(pivot[1]) - py) / ph:.1f}%"
             ),
         )
-    foot = rig.get("foot") or [x0 + rw / 2, y1]
+    return imgs
+
+
+def rig_html(
+    b: Builder, name: str, rig: Mapping[str, Any], parts: list[Mapping[str, Any]], w: int, h: int
+) -> str:
+    """One rig on a plate: its parts inside a box that spans them all, playing its gait."""
+    x0, y0, rw, rh = rig_box(parts)
+    foot = rig.get("foot") or [x0 + rw / 2, y0 + rh]
     roam = rig.get("roam")
     return tag(
         "span",
-        imgs,
+        rig_parts(b, parts),
         class_="rig",
         data_fig=b.register({"type": "rig", "name": name}),
         data_rig=name,
@@ -229,7 +244,7 @@ def _spots(
 
 
 # ------------------------------------------------------------------- notes
-def _point(at: Any, anchors: Mapping[str, Any]) -> tuple[float, float] | None:
+def point(at: Any, anchors: Mapping[str, Any]) -> tuple[float, float] | None:
     """An anchor's point, or an [x, y] pair in painting pixels."""
     if isinstance(at, str):
         found = anchors.get(at)
@@ -237,6 +252,17 @@ def _point(at: Any, anchors: Mapping[str, Any]) -> tuple[float, float] | None:
     if isinstance(at, list | tuple) and len(at) == 2:
         return (float(at[0]), float(at[1]))
     return None
+
+
+def check_at(at: Any, where: str, known: set[str], report: Any) -> None:
+    """An `at` must name an anchor the drawing has, or be [x, y] in painting pixels."""
+    if isinstance(at, str):
+        if known and at not in known:
+            report.errors.append(f"{where} {at!r} is no data-anchor in the drawing")
+    elif not (
+        isinstance(at, list) and len(at) == 2 and all(isinstance(v, int | float) for v in at)
+    ):
+        report.errors.append(f"{where} must name an anchor or be [x, y] in painting pixels")
 
 
 def _wobble(rng: random.Random, size: float) -> float:
@@ -308,10 +334,10 @@ def _notes(b: Builder, notes: list[Mapping[str, Any]], anchors: Mapping[str, Any
     """Red-pen marks and words over the painting, each drawn a beat after the last."""
     out = ""
     for k, note in enumerate(notes):
-        point = _point(note.get("at"), anchors)
-        if point is None:
+        found = point(note.get("at"), anchors)
+        if found is None:
             continue
-        x, y = point
+        x, y = found
         size = float(note.get("size", w * 0.045))
         mark = str(note.get("mark", "circle"))
         color = PENS.get(str(note.get("pen", "red")), PENS["red"])
