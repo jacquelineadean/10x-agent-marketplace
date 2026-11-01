@@ -1,10 +1,14 @@
 """Plates: the painter's images on a story page, with moving layers, labels and hotspots.
 
 chronicle's art provider draws these for `hero.art`, `chapters[].art` and the `plate` block.
+A plate block may also carry notes: red-pen marks drawn over the painting that write
+themselves once it has developed.
 """
 
 from __future__ import annotations
 
+import math
+import random
 from collections.abc import Mapping
 from typing import Any
 
@@ -12,8 +16,18 @@ from chronicle_engine.core.story.html import tag, void
 from chronicle_engine.core.story.markup import plain
 from chronicle_engine.core.story.render import Builder
 
+MARKS = ("circle", "underline", "arrow", "cross", "tick", "box")
+PENS = {"red": "#B8322A", "blue": "#2E58A6", "ink": "#2B231D"}
 
-def plate(b: Builder, key: str, caption: Any = "", width: str = "wide", spots: Any = None) -> str:
+
+def plate(
+    b: Builder,
+    key: str,
+    caption: Any = "",
+    width: str = "wide",
+    spots: Any = None,
+    notes: Any = None,
+) -> str:
     """A painting: base image, moving layers, an overlay for lines, optional hotspots."""
     entry = b.manifest.get(key)
     if not entry:
@@ -45,7 +59,8 @@ def plate(b: Builder, key: str, caption: Any = "", width: str = "wide", spots: A
     )
     overlay = tag(
         "svg",
-        "".join(_label(b, lab) for lab in entry.get("labels", [])),
+        "".join(_label(b, lab) for lab in entry.get("labels", []))
+        + _notes(b, notes or [], anchors, w),
         class_="overlay",
         viewBox=f"0 0 {w} {h}",
         preserveAspectRatio="none",
@@ -138,3 +153,124 @@ def _spots(
             hidden=True,
         )
     return buttons, tag("div", cards, class_="spot-cards", aria_live="polite")
+
+
+# ------------------------------------------------------------------- notes
+def _point(at: Any, anchors: Mapping[str, Any]) -> tuple[float, float] | None:
+    """An anchor's point, or an [x, y] pair in painting pixels."""
+    if isinstance(at, str):
+        found = anchors.get(at)
+        return (float(found[0]), float(found[1])) if found else None
+    if isinstance(at, list | tuple) and len(at) == 2:
+        return (float(at[0]), float(at[1]))
+    return None
+
+
+def _wobble(rng: random.Random, size: float) -> float:
+    return rng.uniform(-1.0, 1.0) * size
+
+
+def _loop(rng: random.Random, x: float, y: float, r: float) -> str:
+    """A pen circle: a little over one turn, wider than tall, never quite closing."""
+    start = rng.uniform(0, 2 * math.pi)
+    points = []
+    for i in range(27):
+        a = start + 2.15 * math.pi * i / 26
+        rr = r * (1 + 0.07 * math.sin(3 * a + start)) + _wobble(rng, r * 0.03)
+        points.append((x + 1.3 * rr * math.cos(a), y + rr * math.sin(a)))
+    d = f"M{points[0][0]:.1f} {points[0][1]:.1f}"
+    for (ax, ay), (bx, by) in zip(points[1:-1], points[2:], strict=True):
+        d += f" Q{ax:.1f} {ay:.1f} {(ax + bx) / 2:.1f} {(ay + by) / 2:.1f}"
+    return d
+
+
+def _stroke(rng: random.Random, a: tuple[float, float], b: tuple[float, float]) -> str:
+    """One hand-drawn line: a slight bow, so it never looks ruled."""
+    mx, my = (a[0] + b[0]) / 2, (a[1] + b[1]) / 2
+    length = math.hypot(b[0] - a[0], b[1] - a[1]) or 1.0
+    nx, ny = -(b[1] - a[1]) / length, (b[0] - a[0]) / length
+    bow = _wobble(rng, length * 0.06)
+    return f"M{a[0]:.1f} {a[1]:.1f} Q{mx + nx * bow:.1f} {my + ny * bow:.1f} {b[0]:.1f} {b[1]:.1f}"
+
+
+def mark_path(mark: str, x: float, y: float, size: float, seed: int, tail: Any = None) -> str:
+    """Path data for one pen mark around (x, y); `tail` is where an arrow starts."""
+    rng = random.Random(f"pen-{seed}")  # noqa: S311  seeded jitter for a hand-drawn look, not security
+    s = size
+    if mark == "underline":
+        return _stroke(rng, (x - s, y + s * 0.45), (x + s, y + s * 0.38))
+    if mark == "cross":
+        return (
+            _stroke(rng, (x - s * 0.5, y - s * 0.5), (x + s * 0.5, y + s * 0.5))
+            + " "
+            + (_stroke(rng, (x + s * 0.5, y - s * 0.5), (x - s * 0.5, y + s * 0.5)))
+        )
+    if mark == "tick":
+        return (
+            f"M{x - s * 0.5:.1f} {y:.1f} L{x - s * 0.12:.1f} {y + s * 0.42:.1f} "
+            f"L{x + s * 0.62:.1f} {y - s * 0.55:.1f}"
+        )
+    if mark == "box":
+        corners = [
+            (x - s, y - s * 0.7),
+            (x + s, y - s * 0.7),
+            (x + s, y + s * 0.7),
+            (x - s, y + s * 0.7),
+        ]
+        return " ".join(_stroke(rng, corners[i], corners[(i + 1) % 4]) for i in range(4))
+    if mark == "arrow":
+        tx, ty = tail if tail else (x + s * 2, y - s * 1.5)
+        angle = math.atan2(y - ty, x - tx)
+        tip = (x - math.cos(angle) * s * 0.35, y - math.sin(angle) * s * 0.35)
+        head = ""
+        for turn in (2.6, -2.6):
+            hx = tip[0] + math.cos(angle + turn) * s * 0.42
+            hy = tip[1] + math.sin(angle + turn) * s * 0.42
+            head += f" M{tip[0]:.1f} {tip[1]:.1f} L{hx:.1f} {hy:.1f}"
+        return _stroke(rng, (tx, ty), tip) + head
+    return _loop(rng, x, y, s)
+
+
+def _notes(b: Builder, notes: list[Mapping[str, Any]], anchors: Mapping[str, Any], w: int) -> str:
+    """Red-pen marks and words over the painting, each drawn a beat after the last."""
+    out = ""
+    for k, note in enumerate(notes):
+        point = _point(note.get("at"), anchors)
+        if point is None:
+            continue
+        x, y = point
+        size = float(note.get("size", w * 0.045))
+        mark = str(note.get("mark", "circle"))
+        color = PENS.get(str(note.get("pen", "red")), PENS["red"])
+        words = str(b.plain_text(str(note.get("text", "")))) if note.get("text") else ""
+        dx = float(note.get("dx", size * 1.6))
+        dy = float(note.get("dy", -size * 1.2))
+        text_at = (x + dx, y + dy)
+        stroke = f"{max(2.0, w / 420):.1f}"
+        delay = f"--d:{0.45 * k:.2f}s"
+        path = tag(
+            "path",
+            class_="pen",
+            d=mark_path(mark, x, y, size, k + 1, text_at if mark == "arrow" else None),
+            pathLength="1",
+            stroke=color,
+            stroke_width=stroke,
+            style=delay,
+        )
+        text = (
+            tag(
+                "text",
+                plain(words),
+                class_="pen-text",
+                x=f"{text_at[0]:.1f}",
+                y=f"{text_at[1]:.1f}",
+                fill=color,
+                font_size=f"{float(note.get('font', w / 46)):.1f}",
+                text_anchor="start" if dx >= 0 else "end",
+                style=delay,
+            )
+            if words
+            else ""
+        )
+        out += tag("g", path + text, class_="note")
+    return out

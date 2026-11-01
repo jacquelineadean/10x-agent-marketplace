@@ -25,7 +25,7 @@ from chronicle_engine.core.story.render import Builder
 from chronicle_engine.registry import Kind, Prepared, Sources
 
 from chronicle.core.motion import scene
-from chronicle.core.story import chrome, plates, review
+from chronicle.core.story import checks, chrome, plates, review
 from chronicle.entrypoints.cli import art, commands, widgets
 
 EXAMPLES = Path(__file__).resolve().parents[2] / "examples"
@@ -83,12 +83,32 @@ class Painter:
 
 
 def _plate_block(b: Builder, block: Mapping[str, Any]) -> str:
-    return b.art(
+    return plates.plate(
+        b,
         str(block["art"]),
         block.get("caption", ""),
         str(block.get("width", "wide")),
         block.get("spots"),
+        block.get("notes"),
     )
+
+
+def _anchors(story: Mapping[str, Any], path: Path, facts: Any) -> dict[str, set[str]]:
+    """Each drawn painting's anchor names; drawings that fail to read report elsewhere."""
+    from chronicle.core.watercolor.svg.parse import SvgError, parse
+
+    found: dict[str, set[str]] = {}
+    for key, text in art.drawings(story, path.parent, facts, Report()).items():
+        try:
+            found[key] = set(parse(text).anchors)
+        except SvgError:
+            continue
+    return found
+
+
+def _check(story: Mapping[str, Any], facts: Any, path: Path, report: Report) -> None:
+    """chronicle's block checks, with the anchors its drawings define."""
+    checks.notes(story, _anchors(story, path, facts), report)
 
 
 # -------------------------------------------------------------------- policy
@@ -186,12 +206,15 @@ SCENE = Kind(
 
 # ---------------------------------------------------------------- register
 registry.set_art(Painter())
-registry.add_block("plate", ("art",), ("caption", "spots", "width"), _plate_block, after="table")
+registry.add_block(
+    "plate", ("art",), ("caption", "spots", "width", "notes"), _plate_block, after="table"
+)
 # Chapter and hero art are plates too, so these parts follow every painted image.
 registry.add_parts(by_type={"plate": ("js/30-plates.js", "css/11-plates.css", "css/40-drawn.css")})
 chrome.register()
 registry.add_kind("scene", SCENE, first=True)
 registry.POLICIES["distinct"] = distinct
+registry.CHECKS["chronicle"] = _check
 registry.COMMANDS["motifs"] = registry.Command(commands.motifs_parser, commands.motifs)
 registry.COMMANDS["research"] = registry.Command(commands.research_parser, commands.research)
 registry.COMMANDS["widgets"] = registry.Command(widgets.parser, widgets.run)
