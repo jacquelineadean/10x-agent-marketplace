@@ -1,4 +1,4 @@
-# GroundWork standard Python lint and format rules (STANDARD.md §5i). Change a rule only on purpose, with a reason.
+# Python lint and format rules. Change a rule only on purpose, with a reason.
 line-length = 100
 
 [lint]

@@ -1,4 +1,4 @@
-# Local secrets (GroundWork): never commit them; list the names in .env.example
+# Local secrets: never commit them; list the names in .env.example
 .env
 .env.*
 !.env.example

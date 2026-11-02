@@ -23,12 +23,12 @@ uv run mypy plugins/speedup/src/speedup
 claude plugin validate .                   # marketplace and plugin manifests
 claude --plugin-dir plugins/impact-review  # try one plugin in a session
 ```
-All four checks must pass before "done"; `groundwork.py verify` runs them together.
+All four checks must pass before "done".
 
 ## Where code lives
 **Read `CODEMAP.md` before searching the code.** It lists every code folder and what it holds.
-After adding, moving or removing a folder, run `groundwork.py codemap` and describe the new folder in its Holds column.
-Layout is the GroundWork standard `cli` profile, rooted at `plugins/impact-review/src/impact_review`:
+After adding, moving or removing a folder, update `CODEMAP.md` by hand and describe the folder in its Holds column.
+Each plugin uses the same `cli` layout under `plugins/<name>/src/<package>/`:
 `core/` (no I/O), `connectors/github/` (all GitHub calls), `entrypoints/cli/`, `config/` (only env reads), `__main__.py` (wiring).
 
 ## Conventions
@@ -41,7 +41,7 @@ Layout is the GroundWork standard `cli` profile, rooted at `plugins/impact-revie
 - Run folders and anything under `impact-review-runs/`, `chronicle-runs/` or `speedup-runs/` are git-ignored; never commit them.
 
 ## Code quality
-Run `groundwork.py verify` after every change (it runs the commands below) and fix what fails. Never weaken a rule,
+Run the commands below after every change and fix what fails. Never weaken a rule,
 add an ignore comment or skip a test to make it pass; an ignore needs a reason on the same line.
 
 - format: `uv run ruff format --check .`
@@ -60,9 +60,8 @@ add an ignore comment or skip a test to make it pass; an ignore needs a reason o
 9. Log through the project's logger, never print in core code, and never log secrets or personal data.
 10. Keep files under the size limit and functions short; split by responsibility.
 
-## Process (enforced by the groundwork plugin)
-Interview → RFC → human approval → spec → plan → tasks → evals → implement → handover.
-Change behaviour ⇒ change the spec in the same change. Only Jacqueline Dean approves, with `/groundwork-specflow:approve`.
+## Process
+Change behaviour ⇒ update the plugin README in the same change. Jacqueline Dean reviews and merges every pull request.
 
 ## Repositories
 - 10x-agent-marketplace — this repo — Claude Code marketplace holding every plugin.

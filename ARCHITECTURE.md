@@ -161,7 +161,6 @@ uv run ruff format --check . && uv run ruff check .
 uv run mypy plugins/impact-review/src/impact_review   # strict type check
 uv run mypy plugins/chronicle/src/chronicle
 claude plugin validate .                  # marketplace and plugin manifests
-python3 <groundwork>/engine/groundwork.py verify   # all of the above
 claude --plugin-dir plugins/impact-review # try the plugin in Claude Code
 plugins/chronicle/scripts/chronicle build plugins/chronicle/examples/keystone/story.json --out /tmp/keystone
 ```
