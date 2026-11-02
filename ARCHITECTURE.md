@@ -87,6 +87,21 @@ writes the post.
                      private claude.ai Artifact (after the user confirms)
 ```
 
+The fourth plugin, tokenwise, audits Claude Code's own session transcripts. Code parses
+and judges every session; Claude reads only the digest and writes recommendations.
+
+```
+ Claude Code hooks ──Stop | PostToolUse(Bash) | PostToolUseFailure(Bash) | PreCompact──▶ scripts/tokenwise hook
+ user ──/tokenwise:audit | handoff──▶ Claude Code (skills) ──▶ scripts/tokenwise audit | apply | undo | handoff
+                              ▼
+  ~/.claude/projects/<project>/<session>.jsonl and <session>/subagents/  (read-only)
+                              ▼
+  data folder ~/tokenwise-runs/<project>/ (local, never committed)
+    findings.json, metrics.json, applied.json, state/   ← Claude never reads
+    digest.md (12 KB), handoffs/*.md
+                              │ low-risk fixes only → <project>/.claude/settings.local.json (logged, undoable)
+```
+
 ## Components and repositories
 | Component | Responsibility | Tech | Owner |
 | --- | --- | --- | --- |
@@ -98,6 +113,8 @@ writes the post.
 | chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story and widget checks, themes, diagram sanitizer, HTML renderer, page runtime (CSS and JS), SVG reader and watercolor painter; the animation timeline, TAD layout and routing, GIF encoder and frame capture | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting and raster exports; a local Chromium for frames and ffmpeg for MP4 | Jacqueline Dean |
 
 | speedup plugin shell `plugins/speedup/` (`.claude-plugin/plugin.json`, `skills/{setup,measure,optimize,report}/`, `agents/perf-gatherer.md`, `agents/perf-writer.md`, `scripts/speedup`, `examples/`) | The optimization loop: choose journeys, measure, optimize against proxies, report and write up | Markdown, POSIX sh, YAML (CI example) | Jacqueline Dean |
+| tokenwise plugin shell `plugins/tokenwise/` (`.claude-plugin/plugin.json`, `hooks/hooks.json`, `skills/{audit,handoff}/`, `scripts/tokenwise`) | Hooks after each turn and on Bash results and compaction; the audit and handoff skills | Markdown, JSON, POSIX sh | Jacqueline Dean |
+| tokenwise engine `plugins/tokenwise/src/tokenwise/` | Transcript parsing, weighted token usage, 14 audit rules, settings fixes and undo, loop guard, handoff facts, digest | Python 3.11+, standard library only | Jacqueline Dean |
 | speedup engine `plugins/speedup/src/speedup/` | Project file checks, Datadog and Prometheus reads, imports, benchmark runner, statistics, ratchet, metrics, digest, dashboard, write-up tokens | Python 3.11+, standard library only | Jacqueline Dean |
 
 The collector follows the standard `cli` layout (see CODEMAP.md):
@@ -126,6 +143,11 @@ and the shared `connectors/http.py` (every network call), `connectors/bench/` (r
 benchmark commands), `connectors/files/` (every file read and write), `entrypoints/cli/`,
 `config/` (only env reads), `prompts/` (the write-up outline).
 
+tokenwise uses the same layout under `plugins/tokenwise/src/tokenwise/`: `core/`
+(transcript parsing, usage, rules, fixes, guard, handoff, digest; no I/O),
+`connectors/files/` (every file read and write), `entrypoints/cli/` (commands and hooks),
+`config/` (only env reads).
+
 ## Tech stack and tools
 - Python 3.11+; runtime uses the standard library only (`urllib`, `json`), so installs need no package downloads.
 - `uv` manages the dev environment: `ruff` (format and lint), `mypy` strict, `pytest`.
@@ -135,7 +157,7 @@ benchmark commands), `connectors/files/` (every file read and write), `entrypoin
 
 ## Deployment and environments
 - No hosted environment; plugins run on each user's machine.
-- Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace` or `speedup@10x-agent-marketplace`.
+- Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace`, `speedup@10x-agent-marketplace` or `tokenwise@10x-agent-marketplace`.
 - Releases: each plugin carries a semantic version in `plugin.json`; a git tag `<plugin>-vX.Y.Z` (for example `impact-review-v1.0.0`) marks each release.
 - Rollback: reinstall from the previous tag, or pin the marketplace to it.
 
@@ -160,6 +182,8 @@ uv run pytest                             # tests
 uv run ruff format --check . && uv run ruff check .
 uv run mypy plugins/impact-review/src/impact_review   # strict type check
 uv run mypy plugins/chronicle/src/chronicle
+uv run mypy plugins/speedup/src/speedup
+uv run mypy plugins/tokenwise/src/tokenwise
 claude plugin validate .                  # marketplace and plugin manifests
 claude --plugin-dir plugins/impact-review # try the plugin in Claude Code
 plugins/chronicle/scripts/chronicle build plugins/chronicle/examples/keystone/story.json --out /tmp/keystone

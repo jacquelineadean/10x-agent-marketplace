@@ -84,3 +84,14 @@ speedup follows the same cli layout under `plugins/speedup/src/speedup/`:
 | `prompts/` | `writeup-outline.md`, the write-up's sections and voice |
 | `plugins/speedup/examples/` | `demo/` (invented Lumen project, imports and a sample write-up), `github-actions/` (guard and tighten workflow) |
 | `plugins/speedup/tests/` | pytest suite with recorded Datadog and Prometheus responses in `fixtures/` |
+
+tokenwise follows the same cli layout under `plugins/tokenwise/src/tokenwise/`:
+
+| Folder | Holds |
+| --- | --- |
+| `core/` | domain records (`model.py`), transcript parsing (`transcript.py`), weighted usage (`usage.py`), per-session rules (`session_rules.py`), cross-session and project rules with merge and rank (`project_rules.py`), settings fixes and undo (`fixes.py`), the loop guard (`guard.py`), handoff facts (`handoff.py`), `metrics.json` and the 12 KB digest (`report.py`) |
+| `connectors/files/` | every file read and write: transcripts and subagent transcripts (read-only), instruction file sizes, `.mcp.json`, JSON writes, the data folder |
+| `entrypoints/cli/` | the `tokenwise` command: audit, apply, undo, handoff (`main.py`), shared audit and apply steps (`actions.py`), the Claude Code hooks (`hooks.py`) |
+| `config/` | the only environment reads: runs folder, auto-apply switch, Claude config folder |
+| `plugins/tokenwise/hooks/` | `hooks.json`: Stop, PostToolUse and PostToolUseFailure on Bash, PreCompact |
+| `plugins/tokenwise/tests/` | pytest suite; `fixtures/` holds transcript lines in the shape Claude Code writes |
