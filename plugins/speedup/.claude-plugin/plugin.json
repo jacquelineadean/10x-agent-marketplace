@@ -8,5 +8,12 @@
     "url": "https://github.com/jacquelineadean"
   },
   "repository": "https://github.com/jacquelineadean/10x-agent-marketplace",
-  "keywords": ["performance", "observability", "datadog", "web vitals", "benchmarks", "dashboard"]
+  "keywords": [
+    "performance",
+    "observability",
+    "datadog",
+    "web vitals",
+    "benchmarks",
+    "dashboard"
+  ]
 }

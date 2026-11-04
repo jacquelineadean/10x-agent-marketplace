@@ -79,4 +79,6 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Tier:** a finding's risk: low (applied by code, undoable), medium (the user decides), high (changes what every session loads).
 - **Weighted tokens:** tokens priced in input-token equivalents with Anthropic's cache and output multiples.
 - **Handoff:** a Markdown file of facts and next steps that lets a fresh session continue a task.
+- **Conventional Commit:** a PR title of the form `<type>(<scope>): <subject>`, such as `feat(chronicle): add a timeline block`; release-please reads it to pick the version bump.
+- **Release PR:** the pull request release-please keeps open on `main` with the next version bumps and changelog entries; merging it tags and publishes the release.
 - **Data folder:** speedup's local, never-committed folder of history, benchmark runs and outputs for one project.

@@ -1,0 +1,32 @@
+# Opens one release PR for every plugin with releasable commits (feat, fix, perf, revert).
+# Merging it bumps plugin.json and marketplace.json, writes each plugin's CHANGELOG.md,
+# and tags <plugin>-v<version> with a GitHub Release. The marketplace installs from main, so
+# the tag is the release; ci.yml runs on the merged commit like any other push. See RELEASING.md.
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - "release/**" # hotfix lines, e.g. release/impact-review-0.2.x
+
+permissions: {}
+
+concurrency:
+  # Two pushes in a row must not race on the same release PR; never cancel a tagging run.
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    uses: ./.github/workflows/release-please.yml
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    with:
+      app-client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+    secrets:
+      app-private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+      token: ${{ secrets.RELEASE_TOKEN }}
+

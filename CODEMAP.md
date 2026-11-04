@@ -48,6 +48,7 @@ Secrets: read from environment variables; locally from `.env` (git-ignored); nam
 
 ## Notes
 
+- `.github/` holds CI and release automation, outside the plugin code: `workflows/` (`ci.yml`, `pr-lint.yml`, `release.yml`, the reusable `release-please.yml`), `scripts/check-versions.sh`, `release-kit/` (files other repos copy), the PR template, issue forms, CODEOWNERS and `dependabot.yml`. RELEASING.md describes them.
 - Import rules: `core` imports nothing outside itself; `connectors` and `entrypoints` import `core` and `config`; only `__main__.py` imports both `connectors` and `entrypoints`.
 - The facts above describe `plugins/impact-review` only. chronicle follows the same cli layout under `plugins/chronicle/src/chronicle/`:
 

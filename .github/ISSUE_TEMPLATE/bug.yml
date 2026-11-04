@@ -1,0 +1,37 @@
+name: Bug report
+description: A plugin does something wrong or fails.
+title: "fix(<plugin>): "
+labels: [bug]
+body:
+  - type: dropdown
+    id: plugin
+    attributes:
+      label: Plugin
+      options: [impact-review, chronicle, speedup, tokenwise, marketplace]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Plugin version
+      description: The `version` in the plugin's `.claude-plugin/plugin.json`, or `/plugin` in Claude Code.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The skill you ran and its arguments. Leave out tokens, run folders and company data.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual result
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Claude Code version, OS, Python version, and the GitHub host for impact-review.

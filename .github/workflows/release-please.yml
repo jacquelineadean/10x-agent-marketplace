@@ -1,0 +1,108 @@
+# Reusable release workflow. This repo calls it from release.yml; other repos call it as
+#   uses: jacquelineadean/10x-agent-marketplace/.github/workflows/release-please.yml@<commit-sha>
+# See .github/release-kit/README.md for the files a calling repo needs.
+name: Release (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      config-file:
+        type: string
+        default: release-please-config.json
+      manifest-file:
+        type: string
+        default: .release-please-manifest.json
+      target-branch:
+        description: >-
+          Branch the release PR targets. Empty means the branch that triggered the caller,
+          so a push to release/1.4.x opens a patch release PR against release/1.4.x.
+          release-please itself would target the default branch.
+        type: string
+        default: ""
+      app-client-id:
+        description: >-
+          Client ID of a GitHub App that opens the release PR. With app-private-key, the
+          release PR and tag trigger CI and on-release workflows, which GITHUB_TOKEN cannot.
+        type: string
+        default: ""
+    secrets:
+      app-private-key:
+        required: false
+      token:
+        description: Fallback PAT when no GitHub App is configured.
+        required: false
+    outputs:
+      release_created:
+        description: "'true' when the root package (path '.') was released"
+        value: ${{ jobs.release.outputs.release_created }}
+      releases_created:
+        description: "'true' when any package was released"
+        value: ${{ jobs.release.outputs.releases_created }}
+      paths_released:
+        description: JSON array of the package paths released, '[]' when none
+        value: ${{ jobs.release.outputs.paths_released }}
+      tag_name:
+        description: Tag of the root package release
+        value: ${{ jobs.release.outputs.tag_name }}
+      version:
+        description: Version of the root package release
+        value: ${{ jobs.release.outputs.version }}
+      prs_created:
+        description: "'true' when a release PR was opened or updated"
+        value: ${{ jobs.release.outputs.prs_created }}
+      all:
+        description: >-
+          Every release-please output as JSON. Packages outside the root use
+          '<path>--tag_name' keys, e.g. fromJSON(all)['plugins/chronicle--tag_name'].
+        value: ${{ jobs.release.outputs.all }}
+
+permissions: {}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.rp.outputs.release_created }}
+      releases_created: ${{ steps.rp.outputs.releases_created }}
+      paths_released: ${{ steps.rp.outputs.paths_released }}
+      tag_name: ${{ steps.rp.outputs.tag_name }}
+      version: ${{ steps.rp.outputs.version }}
+      prs_created: ${{ steps.rp.outputs.prs_created }}
+      all: ${{ toJSON(steps.rp.outputs) }}
+    steps:
+      - name: Mint a GitHub App token
+        id: app
+        if: inputs.app-client-id != ''
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ inputs.app-client-id }}
+          private-key: ${{ secrets.app-private-key }}
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+
+      - name: Open or update the release PR, or tag a merged one
+        id: rp
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          token: ${{ steps.app.outputs.token || secrets.token || github.token }}
+          config-file: ${{ inputs.config-file }}
+          manifest-file: ${{ inputs.manifest-file }}
+          target-branch: ${{ inputs.target-branch || github.ref_name }}
+
+      - name: Summarise the run
+        env:
+          RELEASED: ${{ steps.rp.outputs.paths_released }}
+          PR: ${{ steps.rp.outputs.prs_created }}
+          BRANCH: ${{ inputs.target-branch || github.ref_name }}
+        run: |
+          {
+            echo "### release-please on \`$BRANCH\`"
+            echo "- Packages released: \`${RELEASED:-[]}\`"
+            echo "- Release PR opened or updated: \`${PR:-false}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

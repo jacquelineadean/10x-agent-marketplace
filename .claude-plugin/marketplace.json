@@ -18,7 +18,12 @@
         "name": "Jacqueline Dean"
       },
       "category": "productivity",
-      "keywords": ["github", "performance-review", "resume", "metrics"]
+      "keywords": [
+        "github",
+        "performance-review",
+        "resume",
+        "metrics"
+      ]
     },
     {
       "name": "chronicle",
@@ -29,7 +34,15 @@
         "name": "Jacqueline Dean"
       },
       "category": "productivity",
-      "keywords": ["artifact", "storytelling", "status report", "onboarding", "data visualization", "animation", "architecture diagram"]
+      "keywords": [
+        "artifact",
+        "storytelling",
+        "status report",
+        "onboarding",
+        "data visualization",
+        "animation",
+        "architecture diagram"
+      ]
     },
     {
       "name": "speedup",
@@ -40,7 +53,13 @@
         "name": "Jacqueline Dean"
       },
       "category": "development",
-      "keywords": ["performance", "observability", "datadog", "benchmarks", "dashboard"]
+      "keywords": [
+        "performance",
+        "observability",
+        "datadog",
+        "benchmarks",
+        "dashboard"
+      ]
     },
     {
       "name": "tokenwise",
@@ -51,7 +70,13 @@
         "name": "Jacqueline Dean"
       },
       "category": "development",
-      "keywords": ["tokens", "cost", "context", "hooks", "audit"]
+      "keywords": [
+        "tokens",
+        "cost",
+        "context",
+        "hooks",
+        "audit"
+      ]
     }
   ]
 }
