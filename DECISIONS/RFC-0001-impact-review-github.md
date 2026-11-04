@@ -53,7 +53,7 @@ Each run is capped at 25,000 model tokens; Claude never sees raw API data, and a
 
 ### Read-back
 - **Confirmed:** one plugin, impact-review, in a Claude Code marketplace. A standard-library Python collector does all GitHub calls and math for any GitHub host. Claude reads only a 12 KB digest through a subagent. Outputs: dashboard (Markdown and HTML), self-evaluation on a swappable generic rubric, resume bullets, interview stories, with lines of code allowed everywhere. Default timeframe year to date; scope every repo the token sees; run folders in `~/impact-review-runs/`, never committed. Jacqueline Dean owns, approves and supports it. Each run is capped at 25,000 model tokens; over the cap it stops and asks. A Sonnet subagent with 6 turns and two tools writes the synthesis.
-- **Tensions:** the groundwork rule names python-dotenv for `.env`; the Constitution bans runtime dependencies without an RFC. This RFC resolves it with a standard-library reader in `config/` (4.7).
+- **Tensions:** the original layout rule named python-dotenv for `.env`; the Constitution bans runtime dependencies without an RFC. This RFC resolves it with a standard-library reader in `config/` (4.7).
 - **Open decisions:** None. The user confirmed this read-back on 2026-10-07.
 - **Docs to update after approval:** ARCHITECTURE.md gains the run folder path and the writer subagent; `.gitignore` gains Python caches; `mypy.ini` and `pyproject.toml` gain the plugin source path.
 
@@ -138,7 +138,7 @@ Run folder: `~/impact-review-runs/<host>/<login>/<since>_<until>/`, overridable 
 - **Contributor statistics return HTTP 202 while GitHub computes them.** The collector retries 3 times, then skips repo share for that repo with a warning.
 - **Vanity metrics:** lines of code can mislead reviewers. The user chose to show them everywhere; the writer always pairs a line count with PR or review counts.
 - **Python on corporate laptops:** the skill runs the collector with `uv run --no-project`, else `python3` 3.11+. If neither exists it stops with install steps.
-- **Groundwork rule tension:** the standard says load `.env` with python-dotenv; the Constitution bans runtime dependencies without an RFC. This RFC chooses the standard-library reader (4.7).
+- **Layout rule tension:** the original layout rule said load `.env` with python-dotenv; the Constitution bans runtime dependencies without an RFC. This RFC chooses the standard-library reader (4.7).
 
 ## 7. Impact
 **Repos touched:** 10x-agent-marketplace only. Relationship: independent, the first feature.

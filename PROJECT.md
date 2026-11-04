@@ -12,6 +12,8 @@ The second, **chronicle** (RFC-0002 and RFC-0003, drafts), turns a brief plus fa
 
 The third, **speedup** (RFC-0006, draft), runs continuous performance optimization from monitoring data such as Datadog: it measures user journeys at p75 against targets, guards each win with a benchmark ceiling that only moves down, quantifies every change, and publishes a dashboard plus an optional blog-style write-up.
 
+The fourth, **tokenwise**, cuts Claude Code token use: it audits session transcripts with deterministic rules, applies low-risk reversible settings fixes, recommends model, workflow and instruction changes with evidence, warns on retry loops and writes handoff files for fresh sessions.
+
 ## Who it is for
 - Jacqueline Dean, owner and maintainer.
 - Teammates who install the marketplace in Claude Code.
@@ -28,7 +30,7 @@ Success for impact-review, phase 1:
 
 ## Scope
 **In scope:** the marketplace scaffold; the impact-review plugin with GitHub data collection, computed metrics, a local dashboard and written synthesis; the chronicle plugin with story pages published as private Artifacts after the user confirms (pending RFC-0002), and standalone animations exported as files (pending RFC-0005).
-The speedup plugin reads Datadog and Prometheus performance data read-only (pending RFC-0006).
+The speedup plugin reads Datadog and Prometheus performance data read-only (pending RFC-0006). The tokenwise plugin reads local Claude Code transcripts read-only and writes only the project's `.claude/settings.local.json`.
 **Explicitly out of scope:** other data sources for impact-review (Claude, Cursor, Datadog, ServiceNow, PagerDuty, Jira, Confluence) and cross-source correlation, planned for phase 2; any hosted dashboard or server; storing or sending collected corporate data anywhere outside the user's machine.
 
 ## Who works on what
@@ -72,4 +74,9 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Proxy benchmark:** a command that prints a stable number for a hot path, such as an instruction count, used in place of noisy wall-clock time.
 - **Ceiling:** the highest value a proxy may reach before CI fails; `tighten` only lowers it. The rule as a whole is the **ratchet**.
 - **Change log:** `perf/changes.jsonl`, one optimization per line with its flag, rollout stage and proxy numbers.
+- **Transcript:** a Claude Code session log under `~/.claude/projects/`, one JSON line per message block.
+- **Finding:** one tokenwise audit result with a tier, evidence, advice and tokens at stake.
+- **Tier:** a finding's risk: low (applied by code, undoable), medium (the user decides), high (changes what every session loads).
+- **Weighted tokens:** tokens priced in input-token equivalents with Anthropic's cache and output multiples.
+- **Handoff:** a Markdown file of facts and next steps that lets a fresh session continue a task.
 - **Data folder:** speedup's local, never-committed folder of history, benchmark runs and outputs for one project.
