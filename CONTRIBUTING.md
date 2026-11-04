@@ -8,7 +8,7 @@ This file covers branches, commits, pull requests and checks.
 1. Open an issue with the bug or feature template, or start from an approved RFC in `DECISIONS/`.
 2. Branch from `main` with a name from the table below.
 3. Change the code, and the spec in `specs/` when behaviour changes (AGENTS.md, Process).
-4. Run `groundwork.py verify` and `claude plugin validate .`; both must pass.
+4. Run the checks in AGENTS.md (ruff, mypy, pytest) and `claude plugin validate .`; all must pass.
 5. Open a pull request with a Conventional Commit title. The template lists the checks.
 6. Jacqueline Dean reviews (CODEOWNERS). CI and PR lint must be green.
 7. Squash-merge. The PR title becomes the one commit on `main` and the CHANGELOG line.
@@ -39,7 +39,7 @@ Format: `<type>(<scope>)!: <subject>`. The scope and `!` are optional.
 | `revert` | Reverts an earlier commit | patch |
 | `docs`, `refactor`, `test`, `build`, `ci`, `chore` | No user-visible change | none |
 
-- Scopes: `impact-review`, `chronicle`, `speedup`, `marketplace`, `groundwork`, `deps`, `release`, `security`.
+- Scopes: `impact-review`, `chronicle`, `speedup`, `tokenwise`, `marketplace`, `deps`, `release`, `security`.
   A new plugin adds its name to `pr-lint.yml` in the PR that adds the plugin.
 - The subject starts lower case, uses the imperative ("add", "fix") and has no trailing period.
 - `!` marks a breaking change. Below 1.0.0 it bumps the minor version, from 1.0.0 the major.
@@ -68,7 +68,7 @@ docs: describe the release flow in RELEASING.md
 
 | Workflow | Job | What it checks |
 | --- | --- | --- |
-| `CI` | format, lint, types, tests | `uv sync --locked`, `ruff format --check`, `ruff check`, mypy on the 3 plugin packages, `pytest` |
+| `CI` | format, lint, types, tests | `uv sync --locked`, `ruff format --check`, `ruff check`, mypy on the 4 plugin packages, `pytest` |
 | `CI` | plugin and release manifests | `.github/scripts/check-versions.sh` and `claude plugin validate .` |
 | `PR lint` | Conventional Commit title | Type, scope and subject rules above |
 | `PR lint` | Branch name | The branch patterns above |

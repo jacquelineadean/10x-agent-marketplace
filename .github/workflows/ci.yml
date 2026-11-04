@@ -1,4 +1,4 @@
-# The four quality gates from AGENTS.md and CONSTITUTION.md, plus manifest checks.
+# The four quality gates from AGENTS.md and CONSTITUTION.md (4 plugins), plus manifest checks.
 # Runs on every pull request and every push to main and release/**.
 name: CI
 
@@ -46,6 +46,7 @@ jobs:
           uv run mypy plugins/impact-review/src/impact_review
           uv run mypy plugins/chronicle/src/chronicle
           uv run mypy plugins/speedup/src/speedup
+          uv run mypy plugins/tokenwise/src/tokenwise
 
       # Ubuntu 24.04 blocks unprivileged user namespaces, so the runner's Chrome cannot start
       # its sandbox and exits; chronicle's frame-capture test needs that browser running.

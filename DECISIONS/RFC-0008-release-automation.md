@@ -19,7 +19,7 @@ created: 2026-11-01
 The repo has no CI, and each plugin version is bumped by hand in two files.
 This RFC adds:
 
-1. **CI** (`.github/workflows/ci.yml`): the four quality gates from CONSTITUTION.md, `claude plugin validate .`, and a check that `plugin.json`, `marketplace.json` and the release manifest agree.
+1. **CI** (`.github/workflows/ci.yml`): the four quality gates from AGENTS.md, `claude plugin validate .`, and a check that `plugin.json`, `marketplace.json` and the release manifest agree.
 2. **PR lint** (`pr-lint.yml`): Conventional Commit titles with one scope per plugin, and branch name patterns.
 3. **Releases** (`release.yml` calling `release-please.yml`): one release PR on `main`; merging it bumps each changed plugin, writes `plugins/<name>/CHANGELOG.md`, and tags `<name>-v<version>`.
 4. **Repo hygiene**: a PR template, issue forms, CODEOWNERS, grouped weekly Dependabot PRs.
@@ -66,7 +66,7 @@ No plugin code or runtime behaviour changes.
 ## 5. Risks and objections
 | Risk | Mitigation |
 | --- | --- |
-| Release PRs opened with `GITHUB_TOKEN` start no CI, so required checks never report | `RELEASING.md` setup: a GitHub App or PAT; the checklist says to run `groundwork.py verify` otherwise |
+| Release PRs opened with `GITHUB_TOKEN` start no CI, so required checks never report | `RELEASING.md` setup: a GitHub App or PAT; the checklist says to run the AGENTS.md checks locally otherwise |
 | A PR touching two plugins appears in both changelogs | CONTRIBUTING.md asks for one plugin per PR |
 | release-please rewrites `marketplace.json` and `plugin.json` with `JSON.stringify` | both were reformatted to that layout in this change, so release diffs hold only the version |
 | `claude plugin validate` runs a pinned npm package in CI | version pinned; the job has read-only permissions and no secrets |
@@ -78,5 +78,5 @@ No plugin code or runtime behaviour changes.
 
 ## 7. Open questions
 1. GitHub App or fine-grained PAT for the release token?
-2. Create the baseline tags `impact-review-v0.1.0`, `chronicle-v0.4.0` and `speedup-v0.1.0` on the current `main`?
+2. Create the baseline tags `impact-review-v0.1.0`, `chronicle-v0.4.0`, `speedup-v0.1.0` and `tokenwise-v0.1.0` on the current `main`?
 3. Should a plugin reaching 1.0.0 drop `bump-minor-pre-major` for that package only?

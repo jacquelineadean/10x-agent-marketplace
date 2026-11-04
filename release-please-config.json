@@ -8,7 +8,7 @@
   "group-pull-request-title-pattern": "chore(release): release ${branch}",
   "pull-request-title-pattern": "chore(release): release${component} ${version}",
   "pull-request-header": "Release PR opened by release-please. Work through the deployment checklist in RELEASING.md before you merge.",
-  "bootstrap-sha": "1d9038d0e5ca163677e16dda2d00be46e55c7240",
+  "bootstrap-sha": "a05f18f567ef9a93b49bcca0cca16619479821ae",
   "changelog-sections": [
     {
       "type": "feat",
@@ -100,6 +100,21 @@
           "type": "json",
           "path": "/.claude-plugin/marketplace.json",
           "jsonpath": "$.plugins[?(@.name=='speedup')].version"
+        }
+      ]
+    },
+    "plugins/tokenwise": {
+      "component": "tokenwise",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": ".claude-plugin/plugin.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "/.claude-plugin/marketplace.json",
+          "jsonpath": "$.plugins[?(@.name=='tokenwise')].version"
         }
       ]
     }

@@ -22,7 +22,7 @@ The title becomes the squash commit and the CHANGELOG line. Add "!" after the ty
 
 ## Checklist
 
-- [ ] `groundwork.py verify` passes (ruff format, ruff check, mypy, pytest)
+- [ ] ruff format, ruff check, mypy and pytest pass (AGENTS.md, Commands)
 - [ ] `claude plugin validate .` passes
 - [ ] Each acceptance criterion has a test or a written manual check
 - [ ] Tests use recorded responses under `tests/fixtures/`; none calls a live API

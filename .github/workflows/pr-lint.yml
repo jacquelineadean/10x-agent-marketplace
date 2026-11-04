@@ -36,8 +36,8 @@ jobs:
             impact-review
             chronicle
             speedup
+            tokenwise
             marketplace
-            groundwork
             deps
             release
             security

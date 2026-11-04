@@ -7,7 +7,7 @@ body:
     id: plugin
     attributes:
       label: Plugin
-      options: [impact-review, chronicle, speedup, marketplace]
+      options: [impact-review, chronicle, speedup, tokenwise, marketplace]
     validations:
       required: true
   - type: input

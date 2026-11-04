@@ -7,7 +7,7 @@ body:
     id: plugin
     attributes:
       label: Plugin
-      options: [impact-review, chronicle, speedup, marketplace, new plugin]
+      options: [impact-review, chronicle, speedup, tokenwise, marketplace, new plugin]
     validations:
       required: true
   - type: textarea

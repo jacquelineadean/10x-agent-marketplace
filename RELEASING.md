@@ -27,7 +27,7 @@ Work through this on the release PR before merging it.
 
 Before merge:
 
-- [ ] CI is green on the release PR. With the `GITHUB_TOKEN` fallback, CI does not run on it; run `groundwork.py verify` on its branch locally.
+- [ ] CI is green on the release PR. With the `GITHUB_TOKEN` fallback, CI does not run on it; run the AGENTS.md checks on its branch locally.
 - [ ] Each version bump matches the commits: a `feat` gives a minor bump, only `fix` or `perf` a patch.
 - [ ] Each breaking change has a `BREAKING CHANGE:` note saying what users must do.
 - [ ] Each changelog line reads as a user-facing change. To fix one, add a `BEGIN_COMMIT_OVERRIDE` ... `END_COMMIT_OVERRIDE` block with the corrected title to the merged PR's body; the next Release run rewrites the release PR.
@@ -73,7 +73,7 @@ Repository settings, all by an admin:
 - [ ] Rules: protect `main` and `release/**` with a required review from code owners, the `CI` and `PR lint` checks, linear history and no force pushes.
 - [ ] Actions, General: allow GitHub Actions to create pull requests (needed for the `GITHUB_TOKEN` fallback).
 - [ ] Release token: a GitHub App with Contents, Issues and Pull requests write, saved as the variable `RELEASE_APP_CLIENT_ID` and the secret `RELEASE_APP_PRIVATE_KEY`; or a fine-grained PAT as the secret `RELEASE_TOKEN`. With either, CI runs on release PRs.
-- [ ] Baseline tags on the commit that shipped today's versions: `impact-review-v0.1.0`, `chronicle-v0.4.0`, `speedup-v0.1.0`. Without them, `bootstrap-sha` in `release-please-config.json` limits the first release to commits after that SHA.
+- [ ] Baseline tags on the commit that shipped today's versions: `impact-review-v0.1.0`, `chronicle-v0.4.0`, `speedup-v0.1.0`, `tokenwise-v0.1.0`. Without them, `bootstrap-sha` in `release-please-config.json` limits the first release to commits after that SHA.
 - [ ] Code security: turn on Dependabot alerts, secret scanning and push protection.
 
 ## Files
