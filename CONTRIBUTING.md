@@ -39,7 +39,7 @@ Format: `<type>(<scope>)!: <subject>`. The scope and `!` are optional.
 | `revert` | Reverts an earlier commit | patch |
 | `docs`, `refactor`, `test`, `build`, `ci`, `chore` | No user-visible change | none |
 
-- Scopes: `impact-review`, `chronicle`, `speedup`, `tokenwise`, `marketplace`, `deps`, `release`, `security`.
+- Scopes: `impact-review`, `chronicle`, `speedup`, `tokenwise`, `contributing`, `marketplace`, `deps`, `release`, `security`.
   A new plugin adds its name to `pr-lint.yml` in the PR that adds the plugin.
 - The subject starts lower case, uses the imperative ("add", "fix") and has no trailing period.
 - `!` marks a breaking change. Below 1.0.0 it bumps the minor version, from 1.0.0 the major.

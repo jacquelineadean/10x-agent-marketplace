@@ -37,6 +37,7 @@ jobs:
             chronicle
             speedup
             tokenwise
+            contributing
             marketplace
             deps
             release

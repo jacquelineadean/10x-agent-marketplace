@@ -117,6 +117,21 @@
           "jsonpath": "$.plugins[?(@.name=='tokenwise')].version"
         }
       ]
+    },
+    "plugins/contributing": {
+      "component": "contributing",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": ".claude-plugin/plugin.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "/.claude-plugin/marketplace.json",
+          "jsonpath": "$.plugins[?(@.name=='contributing')].version"
+        }
+      ]
     }
   }
 }
