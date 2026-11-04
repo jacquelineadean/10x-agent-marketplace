@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: ui-change-pr-description
+expected_outcome: |
+  A Conventional Commit title for the settings save button and a PR body that links issue 57
+  with a closing keyword, lists the changed files, gives exact test steps, and has a
+  screenshots section with before and after images or named placeholders and a recording of
+  the save flow. No claim that tests passed unless they were run.
+context:
+  scaffold_script: place-files.sh

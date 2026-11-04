@@ -14,6 +14,8 @@ The third, **speedup** (RFC-0006, draft), runs continuous performance optimizati
 
 The fourth, **tokenwise**, cuts Claude Code token use: it audits session transcripts with deterministic rules, applies low-risk reversible settings fixes, recommends model, workflow and instruction changes with evidence, warns on retry loops and writes handoff files for fresh sessions.
 
+The fifth, **contributing**, is skills only: it writes pull request descriptions a reviewer can approve on the first pass (template, screenshots and recordings, GitHub formatting), and branch names and commit messages that follow each repo's own rules.
+
 ## Who it is for
 - Jacqueline Dean, owner and maintainer.
 - Teammates who install the marketplace in Claude Code.
@@ -30,7 +32,7 @@ Success for impact-review, phase 1:
 
 ## Scope
 **In scope:** the marketplace scaffold; the impact-review plugin with GitHub data collection, computed metrics, a local dashboard and written synthesis; the chronicle plugin with story pages published as private Artifacts after the user confirms (pending RFC-0002), and standalone animations exported as files (pending RFC-0005).
-The speedup plugin reads Datadog and Prometheus performance data read-only (pending RFC-0006). The tokenwise plugin reads local Claude Code transcripts read-only and writes only the project's `.claude/settings.local.json`.
+The speedup plugin reads Datadog and Prometheus performance data read-only (pending RFC-0006). The tokenwise plugin reads local Claude Code transcripts read-only and writes only the project's `.claude/settings.local.json`. The contributing plugin has no code; its pull-request skill pushes a branch and opens a draft PR only when the user asks for one.
 **Explicitly out of scope:** other data sources for impact-review (Claude, Cursor, Datadog, ServiceNow, PagerDuty, Jira, Confluence) and cross-source correlation, planned for phase 2; any hosted dashboard or server; storing or sending collected corporate data anywhere outside the user's machine.
 
 ## Who works on what
