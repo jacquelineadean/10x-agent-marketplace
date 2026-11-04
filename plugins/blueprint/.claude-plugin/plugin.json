@@ -1,6 +1,6 @@
 {
   "name": "blueprint",
-  "version": "0.2.0",
+  "version": "0.0.0",
   "license": "MIT",
   "description": "Interactive system and data design visuals and clickable prototypes from facts: technical architecture diagrams written as data and laid out in code, sequence diagrams, ERDs read live from Postgres or Oracle and Unity Catalog lineage, each animated step by step, with part details, pins for decisions and a step player; and prototype screens with tabs, cards, lists, tables and charts. Exports SVG, HTML, PNG, GIF and MP4.",
   "author": {
@@ -8,6 +8,15 @@
     "url": "https://github.com/jacquelineadean"
   },
   "repository": "https://github.com/jacquelineadean/10x-agent-marketplace",
-  "keywords": ["architecture diagram", "system design", "sequence diagram", "erd", "prototype", "animation"],
-  "dependencies": ["sources"]
+  "keywords": [
+    "architecture diagram",
+    "system design",
+    "sequence diagram",
+    "erd",
+    "prototype",
+    "animation"
+  ],
+  "dependencies": [
+    "sources"
+  ]
 }

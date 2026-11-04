@@ -197,7 +197,7 @@ def _runs(
         corners = corners + 1
     if len(corners) == 0 or (closed and len(corners) < 2):
         return [(pts, closed)]
-    cuts = list(corners)
+    cuts = [int(c) for c in corners]
     if not closed:
         cuts = [0, *cuts, n - 1]
     runs: list[tuple[np.ndarray, bool]] = []

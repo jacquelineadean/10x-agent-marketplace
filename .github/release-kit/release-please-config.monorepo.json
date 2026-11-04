@@ -1,0 +1,68 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/v17.11.2/schemas/config.json",
+  "include-v-in-tag": true,
+  "bump-minor-pre-major": true,
+  "pull-request-title-pattern": "chore(release): release${component} ${version}",
+  "pull-request-header": "Release PR opened by release-please. Work through the deployment checklist before you merge.",
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "Features"
+    },
+    {
+      "type": "fix",
+      "section": "Bug Fixes"
+    },
+    {
+      "type": "perf",
+      "section": "Performance"
+    },
+    {
+      "type": "revert",
+      "section": "Reverts"
+    },
+    {
+      "type": "docs",
+      "section": "Documentation",
+      "hidden": true
+    },
+    {
+      "type": "refactor",
+      "section": "Refactoring",
+      "hidden": true
+    },
+    {
+      "type": "test",
+      "section": "Tests",
+      "hidden": true
+    },
+    {
+      "type": "build",
+      "section": "Build",
+      "hidden": true
+    },
+    {
+      "type": "ci",
+      "section": "CI",
+      "hidden": true
+    },
+    {
+      "type": "chore",
+      "section": "Chores",
+      "hidden": true
+    }
+  ],
+  "include-component-in-tag": true,
+  "separate-pull-requests": false,
+  "group-pull-request-title-pattern": "chore(release): release ${branch}",
+  "packages": {
+    "backend": {
+      "release-type": "maven",
+      "component": "backend"
+    },
+    "frontend": {
+      "release-type": "node",
+      "component": "frontend"
+    }
+  }
+}

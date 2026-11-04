@@ -1,5 +1,5 @@
 ---
-id: RFC-0008
+id: RFC-0009
 title: "Rename speedup to perf-optimizer"
 status: draft
 classification: internal
@@ -9,12 +9,12 @@ request_source: Claude Code session, 31 Oct 2026 (RFC-0007 interview, answers 9 
 support: []
 owner: Jacqueline Dean
 supersedes: []
-related_rfcs: [RFC-0006, RFC-0007]
+related_rfcs: [RFC-0006, RFC-0007, RFC-0008]
 author: Claude Code, for Jacqueline Dean
 created: 2026-10-31
 ---
 
-# RFC-0008 Rename speedup to perf-optimizer
+# RFC-0009 Rename speedup to perf-optimizer
 
 ## 1. Summary
 The speedup plugin (RFC-0006) becomes perf-optimizer 0.2.0.

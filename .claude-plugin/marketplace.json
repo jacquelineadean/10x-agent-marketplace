@@ -13,56 +13,89 @@
       "name": "impact-review",
       "source": "./plugins/impact-review",
       "description": "Turn GitHub activity for one person, a team, an organization or an enterprise, over any timeframe, into metrics, a dashboard, a rubric-based review, highlight bullets and STAR stories.",
-      "version": "0.2.0",
+      "version": "0.1.0",
       "author": {
         "name": "Jacqueline Dean"
       },
       "category": "productivity",
-      "keywords": ["github", "performance-review", "resume", "metrics"]
+      "keywords": [
+        "github",
+        "performance-review",
+        "resume",
+        "metrics"
+      ]
     },
     {
       "name": "chronicle",
       "source": "./plugins/chronicle",
       "description": "Illustrated, interactive story pages (Artifacts) designed for their subject, and painted or drawn animations in the same style: status stories, launches, onboarding handbooks, field guides with rigged animals, map tours and rooms, gamified training and podcast companions, from a brief, the material a researcher digests, and company facts through the sources plugin.",
-      "version": "0.8.0",
+      "version": "0.4.0",
       "author": {
         "name": "Jacqueline Dean"
       },
       "category": "productivity",
-      "keywords": ["artifact", "storytelling", "status report", "onboarding", "data visualization", "animation"]
+      "keywords": [
+        "artifact",
+        "storytelling",
+        "status report",
+        "onboarding",
+        "data visualization",
+        "animation"
+      ]
     },
     {
       "name": "sources",
       "source": "./plugins/sources",
       "description": "Read-only access to GitHub, Jira, Confluence, Datadog, PagerDuty, ServiceNow, Databricks, Postgres and Oracle for pages that present data: a gatherer subagent and script collectors write facts with the query behind each number, behind a SQL guard and read-only sessions, and /sources:connect sets up each system.",
-      "version": "0.2.0",
+      "version": "0.0.0",
       "author": {
         "name": "Jacqueline Dean"
       },
       "category": "productivity",
-      "keywords": ["data sources", "mcp", "read-only", "github", "jira", "datadog", "databricks"]
+      "keywords": [
+        "data sources",
+        "mcp",
+        "read-only",
+        "github",
+        "jira",
+        "datadog",
+        "databricks"
+      ]
     },
     {
       "name": "briefing",
       "source": "./plugins/briefing",
       "description": "Slide decks and KPI dashboards from facts as Artifacts: 16:9 slides with builds, notes and stepped animations, and dashboards with targets, status by rule, filters and the query behind every number; a brand kit, refresh with no model call, and exports to claude.ai Slides and Dashboard, Google Drive, Microsoft 365, PDF and PNG.",
-      "version": "0.2.0",
+      "version": "0.0.0",
       "author": {
         "name": "Jacqueline Dean"
       },
       "category": "productivity",
-      "keywords": ["slides", "deck", "dashboard", "kpi", "executive overview", "brand kit"]
+      "keywords": [
+        "slides",
+        "deck",
+        "dashboard",
+        "kpi",
+        "executive overview",
+        "brand kit"
+      ]
     },
     {
       "name": "blueprint",
       "source": "./plugins/blueprint",
       "description": "Interactive system and data design visuals and prototypes: technical architecture diagrams laid out in code, sequence diagrams and ERDs played step by step, pages with part details, pins and a step player, ERDs read live from Postgres or Oracle, Unity Catalog lineage, and clickable prototype screens fed by facts.",
-      "version": "0.2.0",
+      "version": "0.0.0",
       "author": {
         "name": "Jacqueline Dean"
       },
       "category": "development",
-      "keywords": ["architecture diagram", "system design", "sequence diagram", "erd", "prototype"]
+      "keywords": [
+        "architecture diagram",
+        "system design",
+        "sequence diagram",
+        "erd",
+        "prototype"
+      ]
     },
     {
       "name": "speedup",
@@ -73,7 +106,30 @@
         "name": "Jacqueline Dean"
       },
       "category": "development",
-      "keywords": ["performance", "observability", "datadog", "benchmarks", "dashboard"]
+      "keywords": [
+        "performance",
+        "observability",
+        "datadog",
+        "benchmarks",
+        "dashboard"
+      ]
+    },
+    {
+      "name": "tokenwise",
+      "source": "./plugins/tokenwise",
+      "description": "Token optimization for Claude Code: audits session transcripts, applies low-risk reversible fixes, recommends model, workflow and instruction changes with evidence, guards against retry loops and writes handoff files.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jacqueline Dean"
+      },
+      "category": "development",
+      "keywords": [
+        "tokens",
+        "cost",
+        "context",
+        "hooks",
+        "audit"
+      ]
     }
   ]
 }

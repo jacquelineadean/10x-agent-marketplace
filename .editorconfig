@@ -1,4 +1,4 @@
-# GroundWork standard editor settings (STANDARD.md §5i).
+# Editor settings shared by every plugin.
 root = true
 
 [*]

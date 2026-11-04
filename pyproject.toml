@@ -23,6 +23,7 @@ testpaths = [
     "plugins/briefing/tests",
     "plugins/blueprint/tests",
     "plugins/speedup/tests",
+    "plugins/tokenwise/tests",
 ]
 pythonpath = [
     "plugins/impact-review/src",
@@ -32,4 +33,5 @@ pythonpath = [
     "plugins/briefing/src",
     "plugins/blueprint/src",
     "plugins/speedup/src",
+    "plugins/tokenwise/src",
 ]

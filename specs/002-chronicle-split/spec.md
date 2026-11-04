@@ -301,7 +301,15 @@ Design decisions:
 - **Moved kinds name their plugin.** `registry.MOVED_KINDS` maps a kind a plugin no longer
   draws to the line that says where it went. chronicle registers `tad`, so a TAD written
   for chronicle 0.4 fails its check with "TADs moved to the blueprint plugin".
-- **Versions.** Unchanged: chronicle 0.8.0, sources 0.2.0, briefing 0.2.0.
+- **Versions.** release-please owns every `version` field since RFC-0008 (release automation)
+  reached `main`. The merge of `main` sets chronicle back to its released 0.4.0 and
+  impact-review to 0.1.0, and starts sources, briefing and blueprint at 0.0.0 with entries
+  in `release-please-config.json`, `.release-please-manifest.json` and the PR-lint scopes.
+  The release PR after this change merges cuts chronicle 0.5.0, impact-review 0.2.0 and
+  0.1.0 of each new plugin. The version numbers in AC-14 to AC-67 describe the stacked PRs
+  only.
+- **RFC number.** `main`'s release-automation RFC took 0008, so the speedup rename is
+  RFC-0009.
 
 | ID | Criterion | Check |
 | --- | --- | --- |

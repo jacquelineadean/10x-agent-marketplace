@@ -1,0 +1,17 @@
+{
+  "description": "tokenwise: loop guard on Bash failures, handoff facts before compaction, a session audit after each turn.",
+  "hooks": {
+    "PostToolUse": [
+      {"matcher": "Bash", "hooks": [{"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/tokenwise\" hook bash-result", "timeout": 10}]}
+    ],
+    "PostToolUseFailure": [
+      {"matcher": "Bash", "hooks": [{"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/tokenwise\" hook bash-result", "timeout": 10}]}
+    ],
+    "PreCompact": [
+      {"hooks": [{"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/tokenwise\" hook pre-compact", "timeout": 30}]}
+    ],
+    "Stop": [
+      {"hooks": [{"type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/tokenwise\" hook stop", "timeout": 30}]}
+    ]
+  }
+}

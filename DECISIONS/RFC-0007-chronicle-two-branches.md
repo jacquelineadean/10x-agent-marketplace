@@ -34,9 +34,9 @@ Claude Code copies linked files into its plugin cache at install, so each plugin
 Integrations run only in scripts and subagents, so no plugin adds an MCP server to a session.
 
 Status: draft, revision 3. The owner answered all sixteen questions on 31 Oct 2026, and section 3 records them.
-No question stays open. The RFC awaits approval with `/groundwork-specflow:approve`; nothing is built.
+No question stays open. The RFC awaits Jacqueline Dean's approval; nothing is built.
 Answer 14 approved a constitution amendment, applied as amendment 1 in `CONSTITUTION.md` 1.1.0.
-Answer 16 named speedup's successor; RFC-0008 covers that rename.
+Answer 16 named speedup's successor; RFC-0009 covers that rename.
 `docs/rfc-0007-map/` holds an interactive map of revision 1.
 
 ## 2. The need
@@ -95,7 +95,7 @@ Revision 2 asked six more questions, and the owner answered them on 31 Oct 2026.
 | 13 | Data-access plugin name | `sources` | 4.5 |
 | 14 | External deck targets | Approve the principle 3 amendment; ship `--to slides` before the Google and Microsoft connectors | `CONSTITUTION.md` amendment 1; phases 3 and 5 |
 | 15 | Brand kit paths | `.brand/brand.json` in the repo and `~/.config/chronicle/brand.json` for the config folder | 4.3 |
-| 16 | speedup's new name | `perf-optimizer` | RFC-0008 |
+| 16 | speedup's new name | `perf-optimizer` | RFC-0009 |
 
 ## 4. Proposal
 
@@ -412,9 +412,9 @@ N/A, internal. Between the plugins the contract is files (`facts.json`, `queries
 - Writing to any source system.
 - Scheduled refresh; a later RFC could use scheduled tasks.
 - A PPTX writer inside briefing; `--to slides` covers PPTX until a separate dependency decision.
-- Renaming speedup to perf-optimizer, which RFC-0008 covers because it touches files in adopters' repositories (`perf/speedup.json`) and the data folder `~/speedup-runs/`.
+- Renaming speedup to perf-optimizer, which RFC-0009 covers because it touches files in adopters' repositories (`perf/speedup.json`) and the data folder `~/speedup-runs/`.
 - Bundling the three uploaded pages as examples. They stay outside the repo, and the evals use briefs that describe them.
 
 ## 10. Open questions
 None. Section 3 records the answers to all sixteen questions.
-Next: the owner approves with `/groundwork-specflow:approve`, then phase 0 gets the first spec under `specs/`.
+Next: the owner approves, then phase 0 gets the first spec under `specs/`.

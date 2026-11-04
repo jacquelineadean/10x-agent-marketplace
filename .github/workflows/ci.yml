@@ -1,0 +1,76 @@
+# The four quality gates from AGENTS.md and CONSTITUTION.md (7 plugins, 2 shared packages), plus manifest checks.
+# Runs on every pull request and every push to main and release/**.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "release/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  # A new push to a PR cancels its older run; every run on main and release/** finishes.
+  group: ci-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  quality:
+    name: format, lint, types, tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: "0.11.32"
+          python-version: "3.11"
+
+      - name: Install dev tools from uv.lock
+        run: uv sync --locked
+
+      - name: Format
+        run: uv run ruff format --check .
+
+      - name: Lint
+        run: uv run ruff check --output-format=github .
+
+      - name: Types
+        run: |
+          uv run mypy plugins/impact-review/src/impact_review
+          uv run mypy plugins/chronicle/src/chronicle
+          uv run mypy plugins/speedup/src/speedup
+          uv run mypy plugins/tokenwise/src/tokenwise
+          uv run mypy packages/chronicle-engine/src/chronicle_engine
+          uv run mypy packages/sources/src/sources
+          uv run mypy plugins/briefing/src/briefing
+          uv run mypy plugins/blueprint/src/blueprint
+
+      # Ubuntu 24.04 blocks unprivileged user namespaces, so the runner's Chrome cannot start
+      # its sandbox and exits; chronicle's frame-capture test needs that browser running.
+      - name: Allow the Chrome sandbox
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
+      - name: Tests
+        run: uv run pytest -q
+
+  manifests:
+    name: plugin and release manifests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Versions agree across plugin.json, marketplace.json and the release manifest
+        run: .github/scripts/check-versions.sh
+
+      - name: claude plugin validate
+        run: npx --yes @anthropic-ai/claude-code@2.1.300 plugin validate .

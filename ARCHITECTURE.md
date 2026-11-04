@@ -90,6 +90,21 @@ writes the post.
                      private claude.ai Artifact (after the user confirms)
 ```
 
+The fourth plugin, tokenwise, audits Claude Code's own session transcripts. Code parses
+and judges every session; Claude reads only the digest and writes recommendations.
+
+```
+ Claude Code hooks ──Stop | PostToolUse(Bash) | PostToolUseFailure(Bash) | PreCompact──▶ scripts/tokenwise hook
+ user ──/tokenwise:audit | handoff──▶ Claude Code (skills) ──▶ scripts/tokenwise audit | apply | undo | handoff
+                              ▼
+  ~/.claude/projects/<project>/<session>.jsonl and <session>/subagents/  (read-only)
+                              ▼
+  data folder ~/tokenwise-runs/<project>/ (local, never committed)
+    findings.json, metrics.json, applied.json, state/   ← Claude never reads
+    digest.md (12 KB), handoffs/*.md
+                              │ low-risk fixes only → <project>/.claude/settings.local.json (logged, undoable)
+```
+
 ## Components and repositories
 | Component | Responsibility | Tech | Owner |
 | --- | --- | --- | --- |
@@ -105,6 +120,8 @@ writes the post.
 | sources plugin shell `plugins/sources/` (`.claude-plugin/plugin.json`, `agents/gatherer.md`, `skills/connect/`, `recipes/`, `scripts/sources`) | Reads company systems through the session's connectors or the script collectors into facts, queries and a digest; sets up each system | Markdown, POSIX sh | Jacqueline Dean |
 | sources package `packages/sources/src/sources/` | Detection, the source picker, named connections, the facts and queries contract, the digest, the user-level database agent, the SQL guard, the HTTPS transport and the nine script-lane collectors (the GitHub one shared with impact-review) | Python 3.11+, standard library only; the user's `psql` and SQLcl | Jacqueline Dean |
 | speedup plugin shell `plugins/speedup/` (`.claude-plugin/plugin.json`, `skills/{setup,measure,optimize,report}/`, `agents/perf-gatherer.md`, `agents/perf-writer.md`, `scripts/speedup`, `examples/`) | The optimization loop: choose journeys, measure, optimize against proxies, report and write up | Markdown, POSIX sh, YAML (CI example) | Jacqueline Dean |
+| tokenwise plugin shell `plugins/tokenwise/` (`.claude-plugin/plugin.json`, `hooks/hooks.json`, `skills/{audit,handoff}/`, `scripts/tokenwise`) | Hooks after each turn and on Bash results and compaction; the audit and handoff skills | Markdown, JSON, POSIX sh | Jacqueline Dean |
+| tokenwise engine `plugins/tokenwise/src/tokenwise/` | Transcript parsing, weighted token usage, 14 audit rules, settings fixes and undo, loop guard, handoff facts, digest | Python 3.11+, standard library only | Jacqueline Dean |
 | speedup engine `plugins/speedup/src/speedup/` | Project file checks, Datadog and Prometheus reads, imports, benchmark runner, statistics, ratchet, metrics, digest, dashboard, write-up tokens | Python 3.11+, standard library only | Jacqueline Dean |
 
 The collector follows the standard `cli` layout (see CODEMAP.md):
@@ -183,6 +200,11 @@ and the shared `connectors/http.py` (every network call), `connectors/bench/` (r
 benchmark commands), `connectors/files/` (every file read and write), `entrypoints/cli/`,
 `config/` (only env reads), `prompts/` (the write-up outline).
 
+tokenwise uses the same layout under `plugins/tokenwise/src/tokenwise/`: `core/`
+(transcript parsing, usage, rules, fixes, guard, handoff, digest; no I/O),
+`connectors/files/` (every file read and write), `entrypoints/cli/` (commands and hooks),
+`config/` (only env reads).
+
 ## Tech stack and tools
 - Python 3.11+; runtime uses the standard library only (`urllib`, `json`), so installs need no package downloads.
 - `uv` manages the dev environment: `ruff` (format and lint), `mypy` strict, `pytest`.
@@ -192,9 +214,10 @@ benchmark commands), `connectors/files/` (every file read and write), `entrypoin
 
 ## Deployment and environments
 - No hosted environment; plugins run on each user's machine.
-- Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace`, `briefing@10x-agent-marketplace` or `blueprint@10x-agent-marketplace` (each installs `sources` too), `sources@10x-agent-marketplace` or `speedup@10x-agent-marketplace`.
-- Releases: each plugin carries a semantic version in `plugin.json`; a git tag `<plugin>-vX.Y.Z` (for example `impact-review-v1.0.0`) marks each release.
-- Rollback: reinstall from the previous tag, or pin the marketplace to it.
+- Distribution: `/plugin marketplace add jacquelineadean/10x-agent-marketplace`, then `/plugin install impact-review@10x-agent-marketplace`, `chronicle@10x-agent-marketplace`, `briefing@10x-agent-marketplace` or `blueprint@10x-agent-marketplace` (each installs `sources` too), `sources@10x-agent-marketplace`, `speedup@10x-agent-marketplace` or `tokenwise@10x-agent-marketplace`.
+- Releases (RFC-0008, draft): each plugin carries a semantic version in `plugin.json` and its `marketplace.json` entry. release-please reads Conventional Commit PR titles on `main`, opens one release PR, and on merge tags `<plugin>-vX.Y.Z` (for example `impact-review-v1.0.0`) with a GitHub Release and a `plugins/<name>/CHANGELOG.md` entry. RELEASING.md has the steps and the deployment checklist.
+- CI (GitHub Actions, `.github/workflows/`): `ci.yml` runs the four quality gates, `claude plugin validate .` and the version check on each PR and on `main`; `pr-lint.yml` checks PR titles and branch names; `release.yml` calls the reusable `release-please.yml`, which other repos call through `.github/release-kit/`.
+- Rollback: revert the faulty PR, which cuts a patch release; or pin the marketplace entry to the previous tag.
 
 ## Boundaries and contracts
 - Plugin to GitHub: the public GitHub APIs, versioned by GitHub; every call lives in `connectors/github/`.
@@ -218,8 +241,12 @@ uv run ruff format --check . && uv run ruff check .
 uv run mypy plugins/impact-review/src/impact_review   # strict type check
 uv run mypy packages/chronicle-engine/src/chronicle_engine
 uv run mypy plugins/chronicle/src/chronicle
+uv run mypy plugins/speedup/src/speedup
+uv run mypy plugins/tokenwise/src/tokenwise
+uv run mypy packages/sources/src/sources
+uv run mypy plugins/briefing/src/briefing
+uv run mypy plugins/blueprint/src/blueprint
 claude plugin validate .                  # marketplace and plugin manifests
-python3 <groundwork>/engine/groundwork.py verify   # all of the above
 claude --plugin-dir plugins/impact-review # try the plugin in Claude Code
 plugins/chronicle/scripts/chronicle build plugins/chronicle/examples/keystone/story.json --out /tmp/keystone
 ```

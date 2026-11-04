@@ -21,7 +21,7 @@
 - Never add a runtime dependency to a plugin without an approved RFC.
 
 ## Quality gates (what "done" means)
-- `groundwork.py verify` passes: ruff format, ruff lint, mypy strict, pytest.
+- ruff format, ruff lint, mypy strict and pytest all pass (commands in AGENTS.md).
 - Each acceptance criterion in the spec has a test or a written manual check.
 - Tests use recorded GitHub responses; no test calls a live API.
 - The plugin README states install steps, required token scopes and a manual test.
