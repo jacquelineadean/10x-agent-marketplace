@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import pytest
-from chronicle.core.story.facts import (
+from chronicle_engine.core.story.facts import (
     FactError,
     format_value,
     lookup,

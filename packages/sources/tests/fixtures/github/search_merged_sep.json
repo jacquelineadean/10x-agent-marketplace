@@ -1,0 +1,14 @@
+{
+ "total_count": 455,
+ "incomplete_results": false,
+ "items": [
+  {
+   "number": 4812,
+   "title": "Move checkout to the new tax service",
+   "state": "closed",
+   "pull_request": {
+    "merged_at": "2026-07-02T10:11:12Z"
+   }
+  }
+ ]
+}

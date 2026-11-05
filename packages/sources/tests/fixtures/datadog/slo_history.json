@@ -1,0 +1,16 @@
+{
+ "data": {
+  "from_ts": 1782864000,
+  "to_ts": 1785542400,
+  "type": "metric",
+  "overall": {
+   "sli_value": 99.93,
+   "span_precision": 2,
+   "precision": {
+    "30d": 2
+   }
+  },
+  "series": {}
+ },
+ "errors": null
+}

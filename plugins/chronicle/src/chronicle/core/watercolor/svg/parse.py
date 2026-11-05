@@ -9,6 +9,8 @@ attributes, so the same file still opens in any SVG viewer:
     data-shade   0 to 1: how much darker a wash gets on the side away from the light
     data-wet, data-edge, data-blooms, data-loose, data-grain: wash texture
     data-layer   paint this group on its own sheet; data-motion and data-travel move it
+    data-rig     an animal or machine in parts: each data-part group inside paints on its
+                 own sheet and turns about its data-pivot; data-gait sets how it moves
     data-anchor  name a point (the element's center) for hotspots and overlay marks
     <text>       becomes live overlay text in the page's fonts, never painted
 
@@ -29,6 +31,31 @@ from chronicle.core.watercolor.svg.pathdata import IDENTITY, Matrix, PathError, 
 
 RGB = tuple[float, float, float]
 MOTIONS = ("none", "descend", "drift", "fall", "cross", "rise", "sway", "bob", "pop", "spin")
+GAITS = ("still", "walk", "graze", "root", "swim", "crawl")
+ROLES = ("static", "leg", "flipper", "head", "tail", "ear", "wing", "claw")
+# A part's role from the start of its name when data-role is absent.
+ROLE_PREFIXES = (
+    ("leg", "leg"),
+    ("fl", "flipper"),
+    ("rl", "flipper"),
+    ("flipper", "flipper"),
+    ("head", "head"),
+    ("tail", "tail"),
+    ("ear", "ear"),
+    ("wing", "wing"),
+    ("claw", "claw"),
+)
+# Degrees, cycles and radians per second a role moves by when the drawing does not say.
+PART_DEFAULTS: dict[str, dict[str, float]] = {
+    "leg": {"amp": 18.0},
+    "flipper": {"amp": 22.0},
+    "head": {"down": 0.0, "nod": 3.0, "look": 2.0},
+    "tail": {"amp": 10.0, "speed": 3.0},
+    "ear": {"amp": -30.0, "speed": 0.9},
+    "wing": {"amp": 6.0, "speed": 1.4},
+    "claw": {"amp": -24.0, "speed": 5.0},
+    "static": {},
+}
 PAINTS = ("wash", "glaze", "wet", "dry", "reserve", "none")
 LINES = ("ink", "pencil", "lift", "none")
 LABEL_STYLES = ("hand", "label", "caption", "display", "mono", "number")
@@ -137,6 +164,22 @@ class LayerSpec:
     motion: str
     travel: float
     items: list[Item] = field(default_factory=list)
+    rig: str = ""
+    part: dict[str, float | str] = field(default_factory=dict)
+    pivot: Point | None = None
+
+
+@dataclass
+class RigSpec:
+    """A figure in parts: how it moves, where its foot is, and any stretch it roams."""
+
+    name: str
+    gait: str = "still"
+    bob: float = 2.0
+    foot: Point | None = None
+    roam: tuple[float, float] | None = None
+    speed: float = 30.0
+    stride: float = 60.0
 
 
 @dataclass
@@ -147,6 +190,7 @@ class Drawing:
     height: int
     items: list[Item] = field(default_factory=list)
     layers: list[LayerSpec] = field(default_factory=list)
+    rigs: dict[str, RigSpec] = field(default_factory=dict)
     anchors: dict[str, Point] = field(default_factory=dict)
     labels: list[Label] = field(default_factory=list)
 
@@ -216,6 +260,7 @@ class _Reader:
         self.drawing = Drawing(round(width), round(height))
         self.base = base
         self.depth = 0
+        self.rig: RigSpec | None = None
 
     def walk(
         self,
@@ -242,25 +287,44 @@ class _Reader:
         opacity *= _float(props, "opacity", 1.0)
         if props.get("data-anchor"):
             self._anchor(el, name, props, m)
-        if props.get("data-layer"):
+        opens_rig = bool(props.get("data-rig"))
+        if opens_rig:
+            if layer is not None or self.rig is not None:
+                raise SvgError(f"rig {props['data-rig']!r} is inside a layer or another rig")
+            self.rig = self._rig(props, m)
+        if props.get("data-part"):
+            if self.rig is None:
+                raise SvgError(f"part {props['data-part']!r} needs a data-rig group around it")
+            if layer is not None:
+                raise SvgError(f"part {props['data-part']!r} is inside another part")
+            layer = self._part(props, m, self.rig)
+        elif props.get("data-layer"):
             if layer is not None:
                 raise SvgError(f"layer {props['data-layer']!r} is inside another layer")
+            if self.rig is not None:
+                raise SvgError(
+                    f"inside rig {self.rig.name!r}, groups paint as parts: use data-part"
+                )
             layer = self._layer(props)
-        if name in CONTAINERS:
-            for child in el:
-                self.walk(child, m, style, opacity, layer)
-        elif name == "use":
-            self._use(el, props, m, style, opacity, layer)
-        elif name == "text":
-            self._text(el, props, m, style)
-        elif name in SHAPES:
-            item = self._item(name, props, m, style, opacity)
-            if item is not None:
-                (layer.items if layer else self.drawing.items).append(item)
-        else:
-            raise SvgError(
-                f"<{name}> is not supported; draw with {', '.join(SHAPES)}, g, use and text"
-            )
+        try:
+            if name in CONTAINERS:
+                for child in el:
+                    self.walk(child, m, style, opacity, layer)
+            elif name == "use":
+                self._use(el, props, m, style, opacity, layer)
+            elif name == "text":
+                self._text(el, props, m, style)
+            elif name in SHAPES:
+                item = self._item(name, props, m, style, opacity)
+                if item is not None:
+                    (layer.items if layer else self.drawing.items).append(item)
+            else:
+                raise SvgError(
+                    f"<{name}> is not supported; draw with {', '.join(SHAPES)}, g, use and text"
+                )
+        finally:
+            if opens_rig:
+                self.rig = None
 
     def _layer(self, props: Mapping[str, str]) -> LayerSpec:
         name = props["data-layer"]
@@ -273,6 +337,68 @@ class _Reader:
             raise SvgError(f"data-motion {motion!r} must be one of {', '.join(MOTIONS)}")
         travel = _float(props, "data-travel", 0.0) * pd.scale_of(self.base)
         spec = LayerSpec(name, motion, travel)
+        self.drawing.layers.append(spec)
+        return spec
+
+    def _pair(self, props: Mapping[str, str], key: str) -> tuple[float, float] | None:
+        raw = props.get(key)
+        if raw is None:
+            return None
+        found = pd.numbers(raw)
+        if len(found) != 2:
+            raise SvgError(f'{key}={raw!r} must be two numbers, such as {key}="120 300"')
+        return (found[0], found[1])
+
+    def _rig(self, props: Mapping[str, str], m: Matrix) -> RigSpec:
+        name = props["data-rig"]
+        if not _NAME.match(name):
+            raise SvgError(f"rig name {name!r} must be letters, digits, - or _")
+        if name in self.drawing.rigs:
+            raise SvgError(f"rig {name!r} is used twice")
+        gait = props.get("data-gait", "still")
+        if gait not in GAITS:
+            raise SvgError(f"data-gait {gait!r} must be one of {', '.join(GAITS)}")
+        scale = pd.scale_of(self.base)
+        foot = self._pair(props, "data-foot")
+        roam = self._pair(props, "data-roam")
+        spec = RigSpec(
+            name,
+            gait,
+            bob=_float(props, "data-bob", 2.0) * scale,
+            foot=pd.apply(m, foot) if foot else None,
+            roam=(pd.apply(m, (roam[0], 0.0))[0], pd.apply(m, (roam[1], 0.0))[0]) if roam else None,
+            speed=_float(props, "data-speed", 30.0) * scale,
+            stride=_float(props, "data-stride", 60.0) * scale,
+        )
+        self.drawing.rigs[name] = spec
+        return spec
+
+    def _part(self, props: Mapping[str, str], m: Matrix, rig: RigSpec) -> LayerSpec:
+        part = props["data-part"]
+        if not _NAME.match(part):
+            raise SvgError(f"part name {part!r} must be letters, digits, - or _")
+        name = f"{rig.name}--{part}"
+        if any(existing.name == name for existing in self.drawing.layers):
+            raise SvgError(f"part {part!r} is used twice in rig {rig.name!r}")
+        role = props.get("data-role") or next(
+            (r for prefix, r in ROLE_PREFIXES if part == prefix or part.startswith(prefix + "-")),
+            "static",
+        )
+        if role not in ROLES:
+            raise SvgError(f"data-role {role!r} must be one of {', '.join(ROLES)}")
+        values: dict[str, float | str] = {"role": role, "name": part}
+        for key, default in PART_DEFAULTS[role].items():
+            values[key] = _float(props, f"data-{key}", default)
+        values["phase"] = _float(props, "data-phase", 0.0)
+        pivot = self._pair(props, "data-pivot")
+        spec = LayerSpec(
+            name,
+            "none",
+            0.0,
+            rig=rig.name,
+            part=values,
+            pivot=pd.apply(m, pivot) if pivot else None,
+        )
         self.drawing.layers.append(spec)
         return spec
 
@@ -486,4 +612,14 @@ def parse(text: str, width: int | None = None) -> Drawing:
     return reader.drawing
 
 
-__all__ = ["IDENTITY", "Drawing", "Item", "Label", "LayerSpec", "SvgError", "parse", "to_hex"]
+__all__ = [
+    "IDENTITY",
+    "Drawing",
+    "Item",
+    "Label",
+    "LayerSpec",
+    "RigSpec",
+    "SvgError",
+    "parse",
+    "to_hex",
+]

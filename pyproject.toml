@@ -16,13 +16,22 @@ dev = [
 [tool.pytest.ini_options]
 testpaths = [
     "plugins/impact-review/tests",
+    "packages/chronicle-engine/tests",
+    "packages/sources/tests",
     "plugins/chronicle/tests",
+    "plugins/sources/tests",
+    "plugins/briefing/tests",
+    "plugins/blueprint/tests",
     "plugins/speedup/tests",
     "plugins/tokenwise/tests",
 ]
 pythonpath = [
     "plugins/impact-review/src",
+    "packages/chronicle-engine/src",
+    "packages/sources/src",
     "plugins/chronicle/src",
+    "plugins/briefing/src",
+    "plugins/blueprint/src",
     "plugins/speedup/src",
     "plugins/tokenwise/src",
 ]

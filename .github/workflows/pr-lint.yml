@@ -37,6 +37,9 @@ jobs:
             chronicle
             speedup
             tokenwise
+            sources
+            briefing
+            blueprint
             marketplace
             deps
             release

@@ -3,8 +3,8 @@ from __future__ import annotations
 from typing import Any
 
 import pytest
-from chronicle.core.story import derive
-from chronicle.core.story.facts import FactError
+from chronicle_engine.core.story import derive
+from chronicle_engine.core.story.facts import FactError
 
 BASE: dict[str, Any] = {
     "plan": {

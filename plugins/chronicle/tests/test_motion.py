@@ -6,8 +6,8 @@ import re
 from typing import Any
 
 import pytest
-from chronicle.core.motion import embed, model
-from chronicle.core.motion.timeline import Timeline, changes, held, redraws
+from chronicle_engine.core.motion import embed, model
+from chronicle_engine.core.motion.timeline import Timeline, changes, held, redraws
 
 ANIM: dict[str, Any] = {
     "kind": "diagram",

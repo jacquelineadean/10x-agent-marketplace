@@ -1,0 +1,47 @@
+{
+ "upstreams": [
+  {
+   "tableInfo": {
+    "name": "raw_orders",
+    "catalog_name": "main",
+    "schema_name": "bronze",
+    "table_type": "TABLE",
+    "lineage_timestamp": "2026-10-30 08:00:00.0"
+   }
+  },
+  {
+   "tableInfo": {
+    "name": "raw_payments",
+    "catalog_name": "main",
+    "schema_name": "bronze",
+    "table_type": "TABLE"
+   }
+  },
+  {
+   "tableInfo": {
+    "name": "raw_orders",
+    "catalog_name": "main",
+    "schema_name": "bronze",
+    "table_type": "TABLE"
+   }
+  }
+ ],
+ "downstreams": [
+  {
+   "tableInfo": {
+    "name": "daily_revenue",
+    "catalog_name": "main",
+    "schema_name": "gold",
+    "table_type": "TABLE"
+   }
+  },
+  {
+   "notebookInfos": [
+    {
+     "workspace_id": 1,
+     "notebook_id": 2
+    }
+   ]
+  }
+ ]
+}

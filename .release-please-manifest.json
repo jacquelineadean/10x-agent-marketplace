@@ -2,5 +2,8 @@
   "plugins/impact-review": "0.1.0",
   "plugins/chronicle": "0.4.0",
   "plugins/speedup": "0.1.0",
-  "plugins/tokenwise": "0.1.0"
+  "plugins/tokenwise": "0.1.0",
+  "plugins/sources": "0.0.0",
+  "plugins/briefing": "0.0.0",
+  "plugins/blueprint": "0.0.0"
 }

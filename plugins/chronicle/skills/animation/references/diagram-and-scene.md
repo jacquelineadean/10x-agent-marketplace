@@ -9,8 +9,8 @@
 `svg` is a file beside `animation.json` or inline `<svg>` markup. The drawing is the story
 diagram format: the classes `box`, `box accent`, `box legacy`, `box soft`, `line`,
 `line accent`, `line legacy`, `line dashed`, `head`, `title`, `label`, `small`, `hand`,
-and `f-<color>`, `s-<color>` for theme fills and strokes (see the story skill's
-`references/story-format.md`). The same sanitizer runs: plain shapes, text, groups,
+and `f-<color>`, `s-<color>` for theme fills and strokes (see
+`${CLAUDE_PLUGIN_ROOT}/src/chronicle_engine/references/blocks.md`). The same sanitizer runs: plain shapes, text, groups,
 markers and gradients only; no scripts, styles, images or links out. Text may hold fact
 tokens. A diagram from a story page plays as it is.
 
@@ -55,3 +55,20 @@ times for a small drawing.
 
 A story's plate becomes a scene by pointing `art.svg` at the story's drawing and
 `facts_file` at its facts, as `examples/animation-scene/` does with Keystone.
+
+## Rigs (`kind: "rig"`)
+
+```json
+"rig": {"art": {"svg": "hog.svg", "width": 600, "seed": 11, "alt": "A hog trotting."},
+        "gait": "walk"}
+```
+
+The drawing holds one or more `data-rig` groups of `data-part` groups (the story skill's
+`references/illustration.md`, Rigs). The animation paints it once and turns each part
+about its pivot on the loop: legs and flippers swing on the stride, the head nods or
+drops to graze, tails, wings and ears keep their own time, and walking figures bob.
+`gait` replaces the gait the drawing names; leave it out to play the drawing's own.
+Strides and swings repeat a whole number of times in the loop, so it restarts without a
+jump. Steps carry captions only. A `scene` whose drawing holds rigs plays them the same
+way, under its spots.
+

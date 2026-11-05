@@ -50,7 +50,7 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Plugin:** a folder with `.claude-plugin/plugin.json` plus skills, agents, commands or hooks.
 - **Skill:** a `SKILL.md` file of instructions Claude loads on demand, invoked as `/<plugin>:<skill>`.
 - **Timeframe:** the inclusive start and end dates of one impact-review run; default year to date, any period up to all time.
-- **Collector:** the impact-review Python command that calls GitHub APIs and writes local files.
+- **Collector:** code that reads one system with keys from the environment and writes local files: impact-review's GitHub collector, and the sources package's script-lane collectors (one per system).
 - **Contribution:** a commit, pull request, review or issue GitHub attributes to a person in scope inside the timeframe.
 - **Digest:** the compact Markdown summary the collector writes for Claude to read.
 - **Scope:** whose work a run covers: one person, a list of people, a team, an organization or an enterprise.
@@ -65,7 +65,7 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Widget:** a script Claude writes for one page when no block fits; `chronicle check` lints it.
 - **Preset:** a named, composed painting such as `bridge-hero`; **motif:** a paintable element such as `sky` or `arch_bridge`.
 - **Artifact:** a web page hosted privately on claude.ai, where a story page is published.
-- **Animation:** chronicle's `animation.json` and the one self-contained SVG built from it, with its HTML, PNG, GIF and video exports; its kind is `tad`, `diagram` or `scene`.
+- **Animation:** an `animation.json` and the one self-contained SVG built from it, with its HTML, PNG, GIF and video exports; its kind is `diagram` (engine), `scene` or `rig` (chronicle), or `tad`, `sequence` or `erd` (blueprint).
 - **TAD:** a technical architecture diagram: components (nodes), groups such as a VPC or vendors, links (edges) and flows, written as data; code places and routes it.
 - **Step:** one beat of an animation with one caption; it shows, draws, focuses, pulses or sets states on parts, and runs flows.
 - **Flow:** a path through a TAD's nodes, along its edges, that a packet runs during a step.
@@ -82,3 +82,27 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Conventional Commit:** a PR title of the form `<type>(<scope>): <subject>`, such as `feat(chronicle): add a timeline block`; release-please reads it to pick the version bump.
 - **Release PR:** the pull request release-please keeps open on `main` with the next version bumps and changelog entries; merging it tags and publishes the release.
 - **Data folder:** speedup's local, never-committed folder of history, benchmark runs and outputs for one project.
+- **Engine:** `packages/chronicle-engine`, the facts, page and animation code the chronicle plugins share; each links it into its own `src/`.
+- **Gatherer:** the sources plugin's subagent that reads company systems through the session's connectors or the script-lane collectors and writes `facts.json`, `queries.json` and `digest.md`.
+- **Recipe:** one system's page in the sources plugin: how to reach it, what to read and what never to do.
+- **Queries file:** `queries.json` in a run folder: the query behind each fact, with its system, lane, connection, window and as-of date.
+- **Lane:** how a fact was read: `mcp` through a connector in the session, or `script` through a collector with keys.
+- **Request:** a script-lane entry's description of what to read, in the shape its system's recipe gives, such as a JQL count per month or one SQL statement.
+- **SQL guard:** the check every statement passes before a collector connects: one `SELECT` or `WITH`, no write keyword or side-effect function, named parameters only.
+- **Refresh:** `briefing refresh`: the script-lane queries run again over windows moved to the last complete period, and the page rebuilds with no model call; facts read through connectors show as not refreshed.
+- **Named connection:** an entry in `connections.json` holding a system's host and the names of the variables with its keys, never a key.
+- **Architecture block:** blueprint's page figure around a built animation, with part details, pins for decisions and a step player.
+- **Prototype:** blueprint's layout of clickable screens behind tabs, fed by facts.
+- **Layout:** how a story file becomes a document: a scrolling `page`, a `deck` of 16:9 slides or a `dashboard`.
+- **Brand kit:** `brand.json`, an organization's colors and fonts applied under every page's theme; `--brand` picks it.
+- **Slice:** one precomputed copy of a dashboard block for one filter option, such as a team or a region.
+- **Researcher:** chronicle's subagent that reads provided material and writes `research/facts.json`, a locator on every fact, and `research/material.md`, a digest under 12 KB.
+- **Rig:** a figure drawn in parts (`data-rig`, `data-part`) that each turn about a pivot by a rule for their role: legs, flippers, head, tail, ear, wing, claw.
+- **Gait:** what a rig does where it stands: `still`, `walk`, `swim`, `crawl`, or `graze` and `root` (head down at rest).
+- **Panorama:** chronicle's block for a wide painting to drag along, with animals placed by their foot point, zones, a tide slider and a journal.
+- **Journal:** the species a reader has found across a page's panoramas, kept in the browser's storage under one key.
+- **Rooms:** chronicle's block of paintings joined by doorways, each with numbered details.
+- **Tour:** chronicle's block for a painted map whose stops open a plate, rooms or a panorama, walked by a route in the page's bar.
+- **Hole:** a quiz played as golf in a story with `game`: each pick is a stroke, scored against par; a **scorecard** totals the round.
+- **Plate note:** a pen mark (circle, underline, arrow, cross, tick, box) with words, drawn over a plate after it develops.
+- **Widget library:** drills written once and copied into runs by `chronicle widgets`: bundled with the plugin, in a repository's `.chronicle/widgets/` or in the user's config folder.

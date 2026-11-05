@@ -1,0 +1,59 @@
+{
+ "statement_id": "01ef8b2f",
+ "status": {
+  "state": "SUCCEEDED"
+ },
+ "manifest": {
+  "format": "JSON_ARRAY",
+  "schema": {
+   "column_count": 4,
+   "columns": [
+    {
+     "name": "month",
+     "type_text": "STRING",
+     "type_name": "STRING",
+     "position": 0
+    },
+    {
+     "name": "orders",
+     "type_text": "BIGINT",
+     "type_name": "LONG",
+     "position": 1
+    },
+    {
+     "name": "revenue",
+     "type_text": "DECIMAL(20,2)",
+     "type_name": "DECIMAL",
+     "position": 2
+    },
+    {
+     "name": "first_day",
+     "type_text": "TIMESTAMP",
+     "type_name": "TIMESTAMP",
+     "position": 3
+    }
+   ]
+  },
+  "total_chunk_count": 1,
+  "chunks": [
+   {
+    "chunk_index": 0,
+    "row_offset": 0,
+    "row_count": 2
+   },
+   {
+    "chunk_index": 1,
+    "row_offset": 2,
+    "row_count": 1
+   }
+  ],
+  "total_row_count": 3,
+  "truncated": true
+ },
+ "result": {
+  "chunk_index": 0,
+  "row_offset": 0,
+  "row_count": 0,
+  "data_array": []
+ }
+}

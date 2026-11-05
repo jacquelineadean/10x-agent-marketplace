@@ -1,0 +1,33 @@
+{
+ "schema_version": 1,
+ "kind": "sequence",
+ "meta": {
+  "title": "Placing an order",
+  "description": "A shopper places an order: the gateway forwards it, the order service saves it, Payments charges the card, and an event tells the warehouse.",
+  "credit": "Example data"
+ },
+ "theme": {"concept": "A plain engineering figure: ink on white paper, one accent for what moves."},
+ "sequence": {
+  "participants": [
+   {"id": "web", "label": "Web app"},
+   {"id": "gateway", "label": "API gateway"},
+   {"id": "orders", "label": "Order service"},
+   {"id": "payments", "label": "Payments"},
+   {"id": "bus", "label": "Event bus"}
+  ],
+  "messages": [
+   {"from": "web", "to": "gateway", "label": "POST /orders"},
+   {"from": "gateway", "to": "orders", "label": "create order"},
+   {"from": "orders", "to": "orders", "label": "save in orders DB"},
+   {"from": "orders", "to": "payments", "label": "charge card"},
+   {"from": "payments", "to": "orders", "label": "charged", "kind": "reply"},
+   {"from": "orders", "to": "bus", "label": "order.placed", "kind": "async"},
+   {"from": "orders", "to": "web", "label": "201 Created", "kind": "reply"}
+  ]
+ },
+ "steps": [
+  {"caption": "The web app posts the order, and the gateway passes it to the order service.", "show": ["p-web", "p-gateway", "p-orders", "p-payments", "p-bus"], "draw": ["m1", "m2"], "flow": ["m1-path", "m2-path"]},
+  {"caption": "The order service saves the order, then asks Payments to charge the card.", "draw": ["m3", "m4", "m5"], "flow": ["m4-path", "m5-path"]},
+  {"caption": "It publishes order.placed for the workers and answers the shopper at once.", "draw": ["m6", "m7"], "flow": ["m6-path", "m7-path"]}
+ ]
+}

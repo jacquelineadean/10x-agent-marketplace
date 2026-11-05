@@ -158,3 +158,8 @@ uv run mypy plugins/impact-review/src/impact_review
 claude plugin validate .
 ```
 Tests use recorded responses under `tests/fixtures/`; no test calls GitHub.
+
+The GitHub transport (hosts, retries, token lookup and errors) lives in the shared sources
+package, linked at `src/sources` under RFC-0007 phase 5; Claude Code copies linked files at
+install. impact-review keeps its queries, parsing, caching and collection in
+`connectors/github/`, and its own script-free charts (see spec 002).

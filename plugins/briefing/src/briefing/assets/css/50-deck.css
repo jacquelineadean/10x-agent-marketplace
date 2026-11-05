@@ -1,0 +1,85 @@
+/* ------------------------------------------------------------------- deck */
+/* Fixed 16:9 slides on a horizontal track. Every size inside a slide is in cqw, a share
+   of the slide's width, so a slide reads the same on a laptop, a projector and in print. */
+body:has(main.deck) { overflow: hidden; background: var(--surface); }
+.deck { position: fixed; inset: 0 0 3.25rem; overflow: hidden; padding: 0; }
+.deck-track { display: flex; height: 100%; transition: transform .45s cubic-bezier(.3, .7, .3, 1); }
+.slide { flex: 0 0 100%; height: 100%; display: grid; place-items: center; min-width: 0; }
+.slide-in {
+  container-type: inline-size; position: relative; overflow: hidden;
+  width: min(calc(100vw - 2rem), calc((100vh - 5.25rem) * 16 / 9)); aspect-ratio: 16 / 9;
+  padding: 4.2cqw 5cqw; background: var(--paper); color: var(--ink);
+  border-radius: calc(.4cqw * var(--round, 1)); box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 18px 48px -24px rgba(0, 0, 0, .45);
+  display: flex; flex-direction: column; gap: 1.6cqw; font-size: 1.55cqw; line-height: 1.45;
+}
+.slide-head .kicker { margin: 0 0 .5cqw; font: 600 1cqw/1.2 var(--f-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--accent-text); }
+.slide-head h2 { margin: 0; font: 400 3.4cqw/1.08 var(--f-display); letter-spacing: -.01em; }
+.slide-dek { margin: .8cqw 0 0; font-size: 1.7cqw; color: var(--ink-2); max-width: 70cqw; }
+.slide-body { flex: 1; min-height: 0; display: grid; gap: 2.4cqw; align-content: start; }
+.slide-body.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.slide-body.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.slide-body > *, .slide-body .wide, .slide-body .col { max-width: none; margin: 0; min-width: 0; }
+.slide-body .prose p { font-size: 1.75cqw; margin: 0 0 1cqw; }
+.slide-body .fig, .slide-body .stats-wrap { margin: 0; }
+.slide-notes { display: none; }
+.slide-cover .slide-in { justify-content: center; padding-inline: 8cqw; }
+.cover-in .kicker { font: 600 1.2cqw/1.2 var(--f-ui); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-text); margin: 0 0 1.4cqw; }
+.cover-in h1 { margin: 0; font: 400 5.6cqw/1.02 var(--f-display); letter-spacing: -.015em; max-width: 70cqw; }
+.cover-in .dek { margin: 2cqw 0 0; font-size: 2cqw; color: var(--ink-2); max-width: 62cqw; }
+.cover-in .byline { margin: 3cqw 0 0; font: 500 1.2cqw/1.4 var(--f-ui); color: var(--muted); display: flex; gap: 2cqw; }
+.slide-sources .sources { max-width: none; margin: 0; font-size: 1.3cqw; overflow: auto; }
+.build { transition: opacity .35s ease, transform .35s ease; }
+.build:not(.on) { opacity: 0; transform: translateY(.6cqw); pointer-events: none; }
+
+.deck-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; height: 3.25rem; display: flex; align-items: center;
+  justify-content: center; gap: .6rem; padding: 0 1rem; font: 500 .85rem/1 var(--f-ui); color: var(--ink-2);
+}
+.deck-bar button:not(.theme-btn) {
+  min-width: 2.4rem; height: 2.1rem; padding: 0 .8rem; border-radius: 999px; border: 1px solid var(--rule);
+  background: var(--paper); cursor: pointer;
+}
+.deck-bar button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.deck-count { margin: 0 .4rem; min-width: 4.5rem; text-align: center; font-variant-numeric: tabular-nums; }
+.deck-notes-panel {
+  position: fixed; left: 50%; bottom: 3.6rem; transform: translateX(-50%); width: min(46rem, calc(100vw - 2rem));
+  max-height: 32vh; overflow: auto; padding: .9rem 1.1rem; border-radius: 10px; background: var(--ink); color: var(--paper);
+  font: 400 .95rem/1.5 var(--f-ui); box-shadow: 0 12px 40px rgba(0, 0, 0, .35); z-index: 5;
+}
+.deck-notes-panel p { margin: 0 0 .5em; }
+
+.deck.overview { overflow-y: auto; }
+.deck.overview .deck-track {
+  transform: none !important; flex-wrap: wrap; height: auto; gap: 1.2rem; padding: 1.2rem; align-content: flex-start;
+}
+.deck.overview .slide { flex: 0 0 calc(25% - .9rem); height: auto; cursor: pointer; place-items: start; }
+/* Thumbnails keep each slide's full layout and shrink it whole. */
+.deck.overview .slide-in { zoom: .23; }
+.deck.overview .slide-in > * { pointer-events: none; }
+.deck.overview .slide.on .slide-in { outline: 3px solid var(--accent); outline-offset: 3px; }
+.deck.overview .build { opacity: 1; transform: none; }
+
+.deck.capture { inset: 0; }
+.deck.capture .deck-track, .deck.capture .build { transition: none; }
+.deck.capture .slide-in { width: 100vw; border-radius: 0; box-shadow: none; }
+.deck.capture ~ .deck-bar { display: none; }
+
+@media (max-width: 720px) {
+  .deck.overview .slide { flex-basis: calc(50% - .6rem); }
+  .deck.overview .slide-in { zoom: .46; }
+  .slide-body.cols-2, .slide-body.cols-3 { grid-template-columns: 1fr; overflow: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-track, .build { transition: none; }
+}
+@page { size: 13.333in 7.5in; margin: 0; }
+@media print {
+  body:has(main.deck) { overflow: visible; background: none; }
+  .deck { position: static; overflow: visible; }
+  .deck-track { display: block; transform: none !important; height: auto; }
+  .slide { height: 7.5in; break-after: page; display: block; }
+  .slide:last-child { break-after: auto; }
+  .deck .slide-in, .deck.capture .slide-in { width: 13.333in; border-radius: 0; box-shadow: none; }
+  .build { opacity: 1 !important; transform: none !important; }
+  .deck-bar, .deck-notes-panel, .tip { display: none; }
+}

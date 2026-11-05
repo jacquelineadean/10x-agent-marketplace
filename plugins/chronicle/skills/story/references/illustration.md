@@ -128,6 +128,61 @@ its own sheet and moved by the page.
 Moving solid objects get transparency from their paint, so they cover what they pass.
 Keep moving parts few (one or two a painting) and small.
 
+## Rigs: animals and machines in parts
+
+A rig is a figure drawn in parts that turn about their joints: a hog whose legs swing and
+whose head drops to root, a crab waving its claw, a gull's wings. Wrap the figure in
+`<g data-rig="hog" data-gait="root">` and each part in
+`<g data-part="leg-fore-near" data-pivot="410 230">`. Each part is painted on its own
+sheet, opaque, and turns about its pivot (in the part's own coordinates) by a rule for
+its role. `examples/field-guide/art/hog.svg` is a complete rig.
+
+Draw rigs facing right. Parts paint in document order, so draw the far legs, the near
+legs, the tail and the head, then the body on top: the body hides the joints.
+
+| Role | Moves | Numbers (defaults) |
+| --- | --- | --- |
+| `leg`, `flipper` | swings while the figure moves, one cycle a stride | `data-amp` 18 degrees (22 for flippers); `data-phase` in cycles, 0 and 0.5 for opposite legs |
+| `head` | nods twice a stride, drops by `down` at rest, looks about slowly | `data-down` 0, `data-nod` 3, `data-look` 2 |
+| `tail`, `wing` | swings all the time | `data-amp` 10 (wings 6), `data-speed` 3 (wings 1.4) radians a second |
+| `ear` | flicks about every seven seconds | `data-amp` -30, `data-speed` 0.9 |
+| `claw` | waves at rest | `data-amp` -24, `data-speed` 5 |
+| `static` | never turns | none |
+
+The role comes from `data-role`, else from the part's name: `leg-*`, `fl-*` and `rl-*`
+(front and rear limbs), `flipper-*`, `head`, `tail`, `ear-*`, `wing-*` and `claw`; any
+other name is static. Positive angles turn clockwise, so a positive `down` lowers a
+right-facing snout.
+
+The gait says what the rig does where it stands, on a plate and in a `rig` animation:
+
+| `data-gait` | Plays |
+| --- | --- |
+| `still` (default) | tails, wings, ears and claws only |
+| `walk`, `swim` | legs or flippers stride, the head nods, the body bobs by `data-bob` (default 2) |
+| `crawl` | flippers stroke on time, 0.45 seconds a stroke |
+| `graze`, `root` | the head drops by `down` and dips slowly; the legs rest |
+
+`data-foot="x y"` marks where the figure stands (default: the bottom middle of its
+parts); a panorama places an animal by this point and mirrors it about it. `data-stride`
+(pixels a leg cycle, default 60) and `data-speed` (pixels a second, default 30) set how a
+walking figure moves; a panorama scales both with the animal.
+
+An animal for a panorama is drawn alone in its own file, one rig a file, painted small:
+`"hog": {"svg": "art/hog.svg", "width": 600, "seed": 11, "alt": ""}`.
+
+## Panoramas and tour maps
+
+A `panorama` painting is wide (3200 by 1000 for a walk across a place) and holds no rigs:
+its animals come from their own drawings. Name its layers for the block: one the tide
+fills (a wash over the flats), one the surf slides up the beach, and a strip of grass or
+reeds the block draws in front of the animals. Leave out their `data-motion`; the
+panorama moves them. Leave the bottom fifth clear enough for animals to stand on.
+
+A `tour` map marks each stop and pin with a `data-anchor` and leaves room beside each for a
+numbered badge and its label. Rooms for a `rooms` block mark each detail and doorway with
+an anchor too.
+
 ## Repeated details
 
 Generate repeats with a short script rather than by hand: pegboard holes, barcode bars,

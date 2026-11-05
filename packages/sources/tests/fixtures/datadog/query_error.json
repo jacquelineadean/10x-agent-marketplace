@@ -1,0 +1,5 @@
+{
+ "status": "error",
+ "error": "Error parsing query: unexpected token at col 5",
+ "series": []
+}

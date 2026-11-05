@@ -7,8 +7,8 @@ docs, READMEs, chat and slides.
 
 Give Claude a brief ("the Q4 portfolio review of our order-platform migration", "a
 first-week handbook for new store staff", "a guide to this podcast episode") and point it
-at your data: connected GitHub, Jira, Confluence or Datadog, files, transcripts or pasted
-notes. chronicle returns one long-form page in the manner of a newspaper graphics feature,
+at your material: files, transcripts, links or pasted notes, and company systems through
+the sources plugin. chronicle returns one long-form page in the manner of a newspaper graphics feature,
 designed for that subject:
 
 - **An identity from the subject's world.** A theme sets the palette, the type and a
@@ -33,14 +33,21 @@ designed for that subject:
 - **Interactive figures.** Flows that compare a process then and now, tile maps that play
   through time, diagrams that step through a mechanism, quizzes and checklists for
   teaching, scrollytelling, an incident stepper, flip cards, a risk matrix, a roadmap, a
-  team map, models with sliders, and custom widgets when nothing else fits.
+  team map, models with sliders, and custom widgets when nothing else fits. A widget
+  library keeps drills written once (order, match, sort, flash cards) for the next page.
+- **Places to explore.** A panorama to drag along, with animals drawn in parts that walk,
+  swim, crawl, glide and leap, places named along the top, a tide slider and a field
+  journal that remembers every animal found; rooms walked through painted doorways; and a
+  map tour whose stops open those scenes while a route in the top bar follows the reader.
+- **Games and notes.** Quizzes played as golf holes, with a flag per hole in the top bar
+  and a closing scorecard; red-pen notes that write themselves over a painting.
 - **A source behind every number.** Prose and painting labels hold tokens such as
   `{{plan.done_pct}}`; the page fills them from a facts file and shows each number's
   source on hover. Computed numbers come from code in a `derive` table, never the model.
 - **Light and dark themes**, phone layouts (wide paintings pan as you scroll), keyboard
   access and reduced motion.
 
-Three worked examples ship with the plugin, all with invented data:
+Four worked examples ship with the plugin, all with invented data:
 
 - `examples/keystone/`: a status page for Fernhill Outfitters' order-platform migration,
   told through parcels, packing slips and a warehouse. A parcel rides a conveyor in the top
@@ -52,21 +59,22 @@ Three worked examples ship with the plugin, all with invented data:
 - `examples/quarterly/`: a short support-desk review for Lantern Bay, told as a lighthouse
   keeper's log: a lighthouse walks a coastline in the top bar, the paper is ruled, the
   numbers print on a ticket stub and chapters are stamped as watches.
+- `examples/field-guide/`: a field guide to Marrow Key, an invented barrier island. A map
+  tour opens the dock, the keeper's house (walked room to room), the salt marsh and the
+  live oaks; the marsh is a panorama with a heron, hogs, fiddler crabs, a gull and a
+  dolphin, a tide and a journal; pen notes mark the plates; a quiz plays as two holes.
 
 ## Animations
 
 `/chronicle:animation` makes one animation that plays outside a story page. Three kinds
-share one timeline, stage and theme:
+share one timeline, stage and theme (technical architecture diagrams moved to blueprint):
 
-- **`tad`**: a technical architecture diagram written as data: components with icons and
-  their technology, groups (a VPC, a cluster, a trust boundary, vendors), sync and async
-  links, and flows. Code places the parts in tiers, routes every line around the boxes,
-  and plays the steps: parts appear and lines draw themselves on, packets run along a
-  flow, the view focuses, and parts turn new, failing, down or planned.
 - **`diagram`**: an SVG drawing in the story diagram format, played by id: parts appear,
   lines draw, packets run, the rest dims. A story page's diagram plays as it is.
 - **`scene`**: a watercolor painting from a story drawing that washes from sketch into
-  color, keeps its moving layers, and adds numbered callouts step by step.
+  color, keeps its moving layers and rigs, and adds numbered callouts step by step.
+- **`rig`**: an animal or machine drawn in parts, playing its gait on the loop: a trot, a
+  grazing head, a waving claw, beating wings.
 
 Every animation is one SVG with no script: CSS keyframes on one clock, the theme scoped
 to it, captions and a step strip, alt text with every step, and a still that shows the
@@ -75,14 +83,13 @@ pause button, and, with a local Chromium or Chrome, a poster PNG, a contact shee
 steps, a GIF from its own encoder, and an MP4 through ffmpeg (WebM without it).
 
 ```bash
-scripts/chronicle animate new chronicle-runs/checkout --kind tad --title "Checkout"
-scripts/chronicle animate check examples/animation-tad/animation.json
-scripts/chronicle animate build examples/animation-tad/animation.json --formats svg,html,png,gif,mp4
+scripts/chronicle animate new chronicle-runs/release --kind diagram --title "Release"
+scripts/chronicle animate check examples/animation-diagram/animation.json
+scripts/chronicle animate build examples/animation-diagram/animation.json --formats svg,html,png,gif,mp4
 ```
 
 | Example | Shows |
 | --- | --- |
-| `examples/animation-tad/` | an order's path through a checkout system: 10 components in 4 groups, 3 flows, a card processor going down and a planned fraud check |
 | `examples/animation-diagram/` | a pull request's path to production, drawn as SVG, with a retry loop and a canary |
 | `examples/animation-scene/` | the Keystone story's jammed conveyor, animated from the story's own drawing and facts |
 
@@ -104,7 +111,8 @@ needs `ffmpeg` on PATH.
 
 In Claude Code: `/chronicle:story` with a brief, or ask for "an illustrated status page
 for ...". For an animation: `/chronicle:animation`, or ask to "animate our checkout
-architecture for the onboarding deck". The skill settles the brief, has the `chronicle-gatherer` subagent collect facts,
+architecture for the onboarding deck". The skill settles the brief, has the `researcher` subagent digest the material (and,
+with the sources plugin, `sources:gatherer` read company systems),
 designs the page's identity, draws the illustrations, writes the story, builds it and
 publishes it as a private Artifact.
 
@@ -116,6 +124,9 @@ scripts/chronicle check examples/keystone/story.json     # validate story, theme
 scripts/chronicle build examples/keystone/story.json     # derive, paint, render into build/
 scripts/chronicle shoot examples/keystone/story.json     # desktop and phone screenshots
 scripts/chronicle motifs                                 # landscape presets and motifs
+scripts/chronicle widgets list                           # the widget library
+scripts/chronicle widgets add sort-drill chronicle-runs/q4      # copy a drill into a run
+scripts/chronicle widgets save chronicle-runs/q4 shot-timer     # keep a run's widget
 ```
 
 `shoot` uses a Chromium or Chrome already installed (`--browser PATH` names one).
@@ -136,22 +147,22 @@ scripts/chronicle motifs                                 # landscape presets and
 | Path | Holds |
 | --- | --- |
 | `skills/story/` | the skill and its references: identity, illustration, story format, facts, sources, outlines, widgets, voice |
-| `skills/animation/` | the animation skill and its references: the animation file, TADs, diagrams and scenes, export formats |
-| `agents/chronicle-gatherer.md` | subagent that gathers facts from connected tools |
+| `skills/animation/` | the animation skill and its reference on diagrams and scenes; the animation file and export formats are engine references |
+| `agents/researcher.md` | subagent that reads the material (files, transcripts, links, web, document connectors) and writes `research/facts.json` with a locator on every fact and `research/material.md` |
 | `scripts/chronicle` | launcher used by the skill through `${CLAUDE_PLUGIN_ROOT}` |
-| `src/chronicle/core/story/` | facts, derive, story checks, themes, the diagram sanitizer and the HTML renderer (standard library) |
-| `src/chronicle/core/watercolor/` | the painting engine, the SVG reader and ink-and-wash painter, landscape motifs and presets |
-| `src/chronicle/core/motion/` | animations: step clock, CSS keyframe timeline, stage, the diagram and scene kinds, the HTML figure and the GIF encoder |
-| `src/chronicle/core/motion/tad/` | TADs: spec reader, layout, line routing, icons and the drawing |
-| `src/chronicle/assets/` | the page's stylesheets, runtime scripts and font list; `motion/` holds the animations' stylesheets |
-| `src/chronicle/connectors/files/` | every file read and write |
-| `src/chronicle/connectors/browser/` | screenshots and animation frames through a headless Chromium or Chrome |
-| `src/chronicle/connectors/video/` | MP4 through ffmpeg, WebM through OpenCV |
-| `src/chronicle/entrypoints/cli/` | the command line |
+| `src/chronicle_engine` | a link to `packages/chronicle-engine/src/chronicle_engine`, the shared engine: facts, derive, story checks and renderer, theme tokens, the animation clock and stage, the diagram kind, file, browser and video connectors, and the command line. Claude Code copies the linked files at install |
+| `src/chronicle/pack.py` | chronicle's registrations with the engine: the painter as art provider, the `plate`, `panorama`, `rooms`, `tour` and `scorecard` blocks and quizzes as holes, the page chrome, the scene and rig kinds, the sameness review (`distinct` policy) and the `motifs`, `research` and `widgets` commands |
+| `src/chronicle/core/story/` | plates, pen notes and rigs on the page (`plates.py`), the panorama, rooms and tour blocks, game scoring (`game.py`), the widget library's format (`library.py`), the progress devices, chapter marks, stat slips and frames a theme picks (`chrome.py`), and the sameness review (`review.py`) |
+| `src/chronicle/core/watercolor/` | the painting engine, the SVG reader (layers, anchors, rigs) and ink-and-wash painter, landscape motifs and presets |
+| `src/chronicle/core/motion/` | the scene and rig kinds |
+| `src/chronicle/assets/` | chronicle's own page and animation parts: plates, notes, rigs, panorama, rooms, tour and game stylesheets and runtimes, the identity stylesheets and progress devices, the scene stylesheet |
+| `src/chronicle/entrypoints/cli/` | painting shared by `build`, `paint` and `animate` (`art.py`), and the `motifs`, `research` and `widgets` commands |
+| `widgets/` | the bundled widget library: order, match, sort and flash drills |
 | `examples/keystone/` | status page example: story, facts, SVG drawings and a diagram, with invented data |
 | `examples/onboarding/` | handbook example: story, facts, drawings and a custom widget, with invented data |
 | `examples/quarterly/` | support-desk review with a drawn route and icon, with invented data |
-| `examples/animation-*/` | a TAD, a drawn diagram and a painted scene animation |
+| `examples/field-guide/` | island field guide: a tour, rooms, a panorama with rigged animals, notes and holes, with invented data |
+| `examples/animation-*/` | a drawn diagram and a painted scene animation |
 | `tests/` | pytest suite |
 
 ## Privacy
@@ -189,15 +200,23 @@ scripts/chronicle motifs                                 # landscape presets and
     numbers.
 12. `scripts/chronicle shoot examples/quarterly/story.json --out /tmp/quarterly` writes
     `shots/desktop.png` and `shots/phone.png` with the painting in color.
-13. `scripts/chronicle animate build examples/animation-tad/animation.json --out /tmp/tad
-    --formats svg,html,png,gif,mp4`, then open `/tmp/tad/index.html`. The web app and
-    gateway appear, the order service's lines draw on, a packet runs from the web app to
-    the card processor, events run to the workers, the view dims around a card processor
-    marked DOWN, and a planned fraud check appears. Hover the figure and press Pause.
-14. Open `/tmp/tad/animation.gif`, `animation.mp4` and `poster.png`; the poster shows every
-    part. Look at `steps.png`: one frame per step.
+13. `scripts/chronicle animate build examples/animation-diagram/animation.json --out
+    /tmp/diagram --formats svg,html,png,gif,mp4`, then open `/tmp/diagram/index.html`. The
+    pull request, CI and review boxes appear, the retry loop draws, and a packet runs to
+    production through the canary. Hover the figure and press Pause.
+14. Open `/tmp/diagram/animation.gif`, `animation.mp4` and `poster.png`; the poster shows
+    every part. Look at `steps.png`: one frame per step.
 15. Build `examples/animation-scene/animation.json`: the painting washes from gray to color,
     the beacon turns, and three numbered spots come in with the focus.
+16. Build `examples/field-guide/story.json` and open it. Pick stop 2 on the map: the map
+    zooms into the keeper's house; walk in through the door, then press "Next stop" for
+    the marsh. The route in the top bar marks the stops visited.
+17. In the marsh chapter, press "Mudflat", then move the tide to High: the crabs go and
+    the dolphin leaps off the beach. Pick the heron; the journal counts 1 of 5. Reload:
+    the journal and the tour's visits stay.
+18. Play the two holes in the last chapter: each flag in the top bar takes the hole's
+    color and the scorecard totals the round. The hog under the oaks roots with its head
+    down and its tail going; the pen notes write themselves over the plates.
 
 ## License
 

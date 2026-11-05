@@ -6,9 +6,9 @@ import re
 from typing import Any
 
 import pytest
-from chronicle.core.story import model
-from chronicle.core.story.diagram import DiagramError, sanitize
-from chronicle.core.story.render import Assets, render
+from chronicle_engine.core.story import model
+from chronicle_engine.core.story.diagram import DiagramError, sanitize
+from chronicle_engine.core.story.render import Assets, render
 
 DIAGRAM = """<svg viewBox="0 0 400 200">
   <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"><path d="M0 0 L10 5 L0 10 Z"/>
@@ -93,7 +93,7 @@ def test_new_blocks_render_static_html_and_register_their_data(
     story: dict[str, Any], facts: dict[str, Any], assets: Assets
 ) -> None:
     files = {**assets.files, "w/pack.js": "root.textContent = String(data.n);"}
-    page = render(add_blocks(story), facts, {}, Assets(assets.css, assets.js, assets.fonts, files))
+    page = render(add_blocks(story), facts, {}, Assets(assets.parts, assets.fonts, files))
     html = page.fragment
     raw = re.search(r'id="chronicle-data">(.*?)</script>', html)
     assert raw

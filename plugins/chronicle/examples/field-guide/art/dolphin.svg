@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260">
+  <!-- a bottlenose dolphin, facing right, drawn in one piece for its leaps -->
+  <g data-rig="dolphin" data-bob="0" data-foot="300 200">
+    <g data-part="body" data-role="static">
+      <path d="M60 150 C 140 100 300 80 430 110 C 480 120 530 130 570 140 C 530 150 500 156 470 160 C 380 190 220 200 120 175 Z" fill="#7d8b93"/>
+      <path d="M300 92 L330 40 L350 100 Z" fill="#6c7980"/>
+      <path d="M70 150 L20 120 L40 160 L18 196 Z" fill="#6c7980"/>
+      <circle cx="470" cy="132" r="4" fill="#1e1a16"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200">
+  <!-- Marrow Key from above: salt marsh to the west, live oaks in the middle, the keeper's
+       house on the rise and the north dock where the ferry lands -->
+  <rect x="-20" y="-20" width="1640" height="1240" fill="#b8cfcb" data-paint="wet" data-shade="0" stroke="none"/>
+  <path d="M120 980 C 360 1060 900 1120 1500 1010" fill="none" stroke="#9fbcb9" stroke-width="18" data-paint="wet"/>
+  <path d="M60 160 C 300 90 700 70 1000 110" fill="none" stroke="#9fbcb9" stroke-width="14" data-paint="wet"/>
+  <!-- the island: sand rim, then the green -->
+  <path d="M260 300 C 420 140 900 120 1180 220 C 1420 300 1460 560 1380 760 C 1300 960 1000 1080 700 1050 C 420 1020 220 900 200 680 C 190 520 200 380 260 300 Z" fill="#e6d7ab" stroke="#2b231d" stroke-width="3" data-shade="0.15"/>
+  <path d="M310 330 C 460 200 880 190 1140 270 C 1360 350 1390 560 1320 740 C 1250 920 980 1010 710 990 C 460 970 290 870 270 680 C 260 540 260 410 310 330 Z" fill="#a9b67a" stroke="none" data-shade="0.3"/>
+  <!-- the salt marsh, with its creeks -->
+  <path d="M280 430 C 390 410 480 480 530 570 C 570 660 530 790 450 870 C 370 910 296 850 280 710 C 270 600 266 490 280 430 Z" fill="#c9c48a" stroke="none" data-paint="wet" data-shade="0.1"/>
+  <path d="M290 520 C 360 560 420 600 400 680 C 380 760 430 800 470 830" fill="none" stroke="#6f97a0" stroke-width="12"/>
+  <path d="M400 680 C 450 650 480 640 500 600" fill="none" stroke="#6f97a0" stroke-width="7"/>
+  <!-- the live oak woods -->
+  <g stroke="#2b231d" stroke-width="2" fill="#4f6b3c" data-shade="0.5">
+    <circle cx="820" cy="640" r="70"/>
+    <circle cx="905" cy="700" r="82"/>
+    <circle cx="985" cy="618" r="66"/>
+    <circle cx="755" cy="725" r="60"/>
+    <circle cx="1065" cy="705" r="72"/>
+    <circle cx="945" cy="805" r="64"/>
+    <circle cx="840" cy="820" r="56"/>
+  </g>
+  <!-- the road from the dock past the house into the woods -->
+  <path d="M1196 252 C 1110 300 1020 330 978 362 M 922 392 C 905 470 896 540 884 590" fill="none" stroke="#a88c5c" stroke-width="7"/>
+  <!-- the keeper's house -->
+  <g stroke="#2b231d" stroke-width="2.4">
+    <rect x="882" y="332" width="90" height="60" fill="#e2b1a0" data-shade="0.4"/>
+    <path d="M870 334 L927 290 L984 334 Z" fill="#8a4b3a"/>
+    <rect x="918" y="360" width="16" height="32" fill="#5a3a2a"/>
+  </g>
+  <!-- the north dock -->
+  <path d="M1182 240 L1300 150 L1316 166 L1198 256 Z" fill="#9b7653" stroke="#2b231d" stroke-width="2.4"/>
+  <!-- where the stops are -->
+  <circle cx="1250" cy="200" r="5" data-anchor="dock" data-paint="none" data-line="none"/>
+  <circle cx="927" cy="360" r="5" data-anchor="house" data-paint="none" data-line="none"/>
+  <circle cx="400" cy="640" r="5" data-anchor="marsh" data-paint="none" data-line="none"/>
+  <circle cx="905" cy="700" r="5" data-anchor="woods" data-paint="none" data-line="none"/>
+  <circle cx="640" cy="320" r="5" data-anchor="well" data-paint="none" data-line="none"/>
+  <circle cx="1240" cy="840" r="5" data-anchor="beach" data-paint="none" data-line="none"/>
+  <!-- the ferry crossing to the dock -->
+  <g data-layer="ferry" data-motion="cross" data-travel="260" stroke="#2b231d" stroke-width="2">
+    <path d="M1250 52 L1350 52 L1332 80 L1268 80 Z" fill="#7a4b33"/>
+    <path d="M1296 52 L1296 14 L1324 48 Z" fill="#f4efe3" stroke-width="1.6"/>
+  </g>
+  <text x="800" y="110" font-size="64" data-label="display" text-anchor="middle" fill="#23302a">Marrow Key</text>
+  <text x="330" y="400" font-size="32" data-label="hand" fill="#3b4a2c">Salt marsh</text>
+  <text x="1010" y="900" font-size="32" data-label="hand" fill="#e9efe0">Live oak woods</text>
+  <text x="1380" y="120" font-size="30" data-label="hand" fill="#23302a">Ferry from Breton</text>
+</svg>

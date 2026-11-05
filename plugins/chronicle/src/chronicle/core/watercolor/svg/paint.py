@@ -76,7 +76,16 @@ def paint_drawing(
         )
         for item in spec.items:
             paint_item(sheet, item, st)
-        opaque = spec.motion in ("cross", "rise", "descend", "bob", "sway", "spin", "pop")
+        # A rig's parts overlap each other, so each covers what lies behind it.
+        opaque = bool(spec.rig) or spec.motion in (
+            "cross",
+            "rise",
+            "descend",
+            "bob",
+            "sway",
+            "spin",
+            "pop",
+        )
         image, box = sheet.sprite(opaque=opaque)
         if box is not None:
             painting.layers.append(
@@ -87,9 +96,21 @@ def paint_drawing(
                     motion=spec.motion,
                     travel=spec.travel,
                     blend="normal" if opaque else "multiply",
+                    rig=spec.rig,
+                    part=dict(spec.part),
+                    pivot=spec.pivot,
                 )
             )
     painting.anchors.update(drawing.anchors)
+    for name, rig in drawing.rigs.items():
+        painting.rigs[name] = {
+            "gait": rig.gait,
+            "bob": round(rig.bob, 1),
+            "speed": round(rig.speed, 1),
+            "stride": round(rig.stride, 1),
+            **({"foot": [round(rig.foot[0], 1), round(rig.foot[1], 1)]} if rig.foot else {}),
+            **({"roam": [round(rig.roam[0], 1), round(rig.roam[1], 1)]} if rig.roam else {}),
+        }
     painting.labels.extend(
         {
             "x": round(lab.x, 1),

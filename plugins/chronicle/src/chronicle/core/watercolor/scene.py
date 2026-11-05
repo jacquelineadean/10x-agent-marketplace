@@ -39,6 +39,9 @@ class Layer:
     motion: str = "none"
     travel: float = 0.0
     blend: str = "multiply"
+    rig: str = ""
+    part: dict[str, Any] = field(default_factory=dict)
+    pivot: tuple[float, float] | None = None
 
 
 @dataclass
@@ -51,6 +54,7 @@ class Painting:
     layers: list[Layer] = field(default_factory=list)
     anchors: dict[str, tuple[float, float]] = field(default_factory=dict)
     labels: list[dict[str, Any]] = field(default_factory=list)
+    rigs: dict[str, dict[str, Any]] = field(default_factory=dict)
 
 
 MotifFn = Callable[..., Any]

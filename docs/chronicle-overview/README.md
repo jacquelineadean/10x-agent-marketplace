@@ -20,13 +20,14 @@ leadership. The page is built with chronicle from its own repository; every figu
 
 ```bash
 S=plugins/chronicle/scripts/chronicle
+B=plugins/blueprint/scripts/blueprint  # TADs build with blueprint since RFC-0007 phase 4
 $S check docs/chronicle-overview/story.json
 $S build docs/chronicle-overview/story.json --out /tmp/overview
-$S animate build docs/chronicle-overview/tad/animation-page.json --out /tmp/overview-tad --formats svg,png
+$B animate build docs/chronicle-overview/tad/animation-page.json --out /tmp/overview-tad --formats svg,png
 mkdir -p /tmp/overview/motion
 cp /tmp/overview-tad/animation.svg /tmp/overview/motion/chronicle-tad.svg
 cp /tmp/overview-tad/poster.png /tmp/overview/motion/chronicle-tad-poster.png
-$S animate build docs/chronicle-overview/tad/animation.json --out /tmp/overview-export --formats svg,html,png,gif,mp4
+$B animate build docs/chronicle-overview/tad/animation.json --out /tmp/overview-export --formats svg,html,png,gif,mp4
 $S animate build docs/chronicle-overview/plugin-diagram/animation.json --out /tmp/plugin-export --formats svg,html,png,gif
 ```
 
