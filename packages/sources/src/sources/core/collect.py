@@ -80,6 +80,21 @@ def only(request: Mapping[str, Any], allowed: set[str]) -> None:
         raise RequestError(f"request.{extra[0]} is not read here; use {', '.join(sorted(allowed))}")
 
 
+def reduce(values: list[float], how: str) -> Number:
+    """Many samples as one number: sum, max, min, last, or the mean by default."""
+    if not values:
+        return None
+    if how == "sum":
+        return sum(values)
+    if how == "max":
+        return max(values)
+    if how == "min":
+        return min(values)
+    if how == "last":
+        return values[-1]
+    return sum(values) / len(values)
+
+
 def measured(
     span: Window, every: str, name: str, measure: Callable[[Window], Number]
 ) -> tuple[Number, dict[str, list[Any]] | None]:

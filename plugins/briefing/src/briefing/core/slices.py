@@ -14,6 +14,7 @@ from typing import Any
 from chronicle_engine.core.story.dispatch import render_block
 from chronicle_engine.core.story.html import tag
 from chronicle_engine.core.story.markup import plain
+from chronicle_engine.core.story.model import blocks_of
 from chronicle_engine.core.story.render import Builder
 
 REQUIRED = ("by",)
@@ -23,12 +24,10 @@ OPTIONAL = ("title",)
 def filters_of(story: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
     """Every filter the story's filters blocks define, by key."""
     found: dict[str, dict[str, Any]] = {}
-    for chapter in story.get("chapters", []):
-        for block in chapter.get("blocks", []):
-            if isinstance(block, Mapping) and block.get("type") == "filters":
-                for spec in block.get("by", []):
-                    if isinstance(spec, Mapping) and spec.get("key"):
-                        found[str(spec["key"])] = dict(spec)
+    for _, block in blocks_of(story, "filters"):
+        for spec in block.get("by", []):
+            if isinstance(spec, Mapping) and spec.get("key"):
+                found[str(spec["key"])] = dict(spec)
     return found
 
 

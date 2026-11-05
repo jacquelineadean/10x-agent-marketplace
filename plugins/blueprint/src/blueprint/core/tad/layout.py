@@ -203,8 +203,8 @@ class _Packer:
         taken: list[tuple[int, int, float, float]] = []
         rows: dict[str, float] = {}
         while items:
-            item = max(items, key=lambda b: (self._pull(b, rows), -items.index(b)))
-            items.remove(item)
+            at_i, item = max(enumerate(items), key=lambda p: (self._pull(p[1], rows), -p[0]))
+            items.pop(at_i)
             at = self._spot(item, taken, rows)
             taken.append((item.lo, item.hi, at, at + item.height))
             rows.update({n: r + at for n, r in item.rows.items()})

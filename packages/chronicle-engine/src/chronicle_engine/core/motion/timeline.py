@@ -176,17 +176,6 @@ def eased(
     return out
 
 
-def periodic(period: float, duration: float, samples: int = 16) -> list[tuple[float, float]]:
-    """(time, cycles) samples of a repeating motion: cycles counts up from 0 by 1 a period.
-
-    The period is stretched a little so a whole number of cycles fills the loop, so the
-    motion joins up when the animation starts over.
-    """
-    loops = max(1, round(duration / max(period, 0.2)))
-    step = duration / loops / samples
-    return [(i * step, i / samples) for i in range(loops * samples + 1)]
-
-
 # ---------------------------------------------------------------------- helpers
 def _ordered(points: Sequence[Point], duration: float) -> list[Point]:
     out: list[Point] = []

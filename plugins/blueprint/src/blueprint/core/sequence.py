@@ -52,7 +52,7 @@ def message_id(k: int, m: Mapping[str, Any]) -> str:
     return str(m.get("id") or f"m{k + 1}")
 
 
-def _label_box(m: Mapping[str, Any], a: float, b: float, y: float) -> tuple[float, float, float]:
+def _label_box(m: Mapping[str, Any], a: float, b: float) -> tuple[float, float, float]:
     """Where a message's label sits: its baseline x, the anchor, and its left and right x."""
     width = len(str(m.get("label", ""))) * 6.6 + 8
     if a == b:
@@ -85,7 +85,7 @@ def draw(spec: Mapping[str, Any]) -> str:
     for k, m in enumerate(messages):
         y = TOP + BOX_H + 34 + ROW * k
         a, b = x[str(m["from"])], x[str(m["to"])]
-        rows.append((k, m, y, a, b, *_label_box(m, a, b, y)))
+        rows.append((k, m, y, a, b, *_label_box(m, a, b)))
     parts = ""
     for p in people:
         cx = x[str(p["id"])]

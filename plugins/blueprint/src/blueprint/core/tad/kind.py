@@ -34,15 +34,12 @@ def _prepare(anim: Mapping[str, Any], facts: Mapping[str, Any]) -> Prepared:
         raise ValueError("; ".join(found.errors) or "the tad object is invalid")
     if not anim.get("steps"):
         anim = {**anim, "steps": draw.default_steps(tad)}
-    return Prepared(anim, _floor(tad), lambda plan: draw.captions(plan, tad), tad)
-
-
-def _floor(tad: Tad) -> Callable[[Mapping[str, Any]], float]:
-    return lambda raw: draw.floor(raw, tad)
+    return Prepared(
+        anim, lambda raw: draw.floor(raw, tad), lambda plan: draw.captions(plan, tad), tad
+    )
 
 
 def _figure(
-    anim: Mapping[str, Any],
     prepared: Prepared,
     plan: Plan,
     box: stage.Box,

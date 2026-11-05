@@ -74,7 +74,7 @@ def render(
     def words(text: str) -> str:
         return fill(text, facts)
 
-    figure, more = kind.figure(prepared.anim, prepared, plan, frame.stage, timeline, sources, words)
+    figure, more = kind.figure(prepared, plan, frame.stage, timeline, sources, words)
     look = theme.scoped(anim.get("theme"), fonts, f".chr-a-{plan.slug}", frozenset({"mono"}))
     svg = stage.document(plan, look.css, look.fonts_url, [css], under, figure, over, timeline)
     return Animation(plan, svg, warnings + more + look.warnings)

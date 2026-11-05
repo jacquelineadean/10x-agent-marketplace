@@ -15,6 +15,7 @@ from typing import Any
 
 from chronicle_engine.core.story import lessons
 from chronicle_engine.core.story.html import tag
+from chronicle_engine.core.story.model import blocks_of
 from chronicle_engine.core.story.render import Builder
 
 from chronicle.core.story import keys
@@ -32,16 +33,10 @@ NAMES = {
 Block = Mapping[str, Any]
 
 
-def holes(story: Mapping[str, Any]) -> Iterator[tuple[int, str, Block]]:
-    """Every hole in story order: its number, the chapter id it sits in, and its block."""
-    n = 0
-    for chapter in story.get("chapters", []):
-        if not isinstance(chapter, Mapping):
-            continue
-        for block in chapter.get("blocks", []):
-            if isinstance(block, Mapping) and block.get("type") == "quiz":
-                n += 1
-                yield n, str(chapter.get("id", "")), block
+def holes(story: Mapping[str, Any]) -> Iterator[tuple[int, Block]]:
+    """Every hole in story order: its number and its block."""
+    for n, (_, block) in enumerate(blocks_of(story, "quiz"), start=1):
+        yield n, block
 
 
 def par(block: Block) -> int:
@@ -61,10 +56,8 @@ def _settings(b: Builder) -> dict[str, Any]:
 
 
 def _card_id(story: Mapping[str, Any]) -> str:
-    for chapter in story.get("chapters", []):
-        for block in chapter.get("blocks", []) if isinstance(chapter, Mapping) else []:
-            if isinstance(block, Mapping) and block.get("type") == "scorecard":
-                return str(block.get("id") or "scorecard")
+    for _, block in blocks_of(story, "scorecard"):
+        return str(block.get("id") or "scorecard")
     return ""
 
 
@@ -72,10 +65,9 @@ def quiz(b: Builder, block: Block) -> str:
     """A hole when the story is a game; otherwise the engine's quiz."""
     if not isinstance(b.story.get("game"), Mapping):
         return lessons.quiz(b, block)
-    found = [(n, chapter, h) for n, chapter, h in holes(b.story) if h is block]
-    n, _, _ = found[0] if found else (0, "", block)
     every = list(holes(b.story))
-    later = [hole_id(m, h) for m, _, h in every if m == n + 1]
+    n = next((m for m, h in every if h is block), 0)
+    later = [hole_id(m, h) for m, h in every if m == n + 1]
     card = _card_id(b.story)
     if later:
         follow = {"href": f"#{later[0]}", "label": "Next hole"}
@@ -162,7 +154,7 @@ def scorecard(b: Builder, block: Block) -> str:
             "par": par(h),
             "title": str(b.plain_text(str(h.get("title") or f"Hole {n}"))),
         }
-        for n, _, h in every
+        for n, h in every
     ]
     fid = b.register({"type": "scorecard", "holes": rows, **_settings(b)})
     head = tag("th", "Hole", scope="col") + "".join(
@@ -170,7 +162,7 @@ def scorecard(b: Builder, block: Block) -> str:
     )
     head += tag("th", "Total", scope="col")
     pars = tag("th", "Par", scope="row") + "".join(tag("td", str(r["par"])) for r in rows)
-    pars += tag("td", str(sum(par(h) for _, _, h in every)))
+    pars += tag("td", str(sum(par(h) for _, h in every)))
     strokes = tag("th", "Strokes", scope="row") + "".join(tag("td", "–") for _ in rows)
     strokes += tag("td", "–")
     table = tag(
@@ -204,7 +196,7 @@ def check(story: Mapping[str, Any], report: Any) -> None:
     ):
         report.errors.append('game.names maps strokes against par ("-1", "0", "1") to words')
     seen: set[str] = set()
-    for n, _, block in holes(story):
+    for n, block in holes(story):
         where = f"hole {n}"
         hid = hole_id(n, block)
         if not keys.ID.match(hid) or hid in seen:

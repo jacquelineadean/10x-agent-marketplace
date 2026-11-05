@@ -13,35 +13,24 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from chronicle_engine import registry
 from chronicle_engine.connectors.files import store
-from chronicle_engine.core.story.model import Report
 from sources.config import settings
-from sources.connectors import databricks, oracle, postgres
 from sources.connectors.errors import SourceError
 from sources.connectors.files import store as source_store
 from sources.connectors.wire import Wire
 from sources.core import connections, reach, sql
 from sources.core.periods import Window
-from sources.entrypoints.cli.main import main as sources_main
 
 from blueprint.core import checks, lineage, schema
 
-READERS = {"postgres": postgres.run, "oracle": oracle.run}
 FAILURES = (SourceError, sql.SqlError, reach.ReachError, connections.ConnectionsError)
 
 
-def check(story: Any, facts: Any, path: Path, report: Report) -> None:
-    """blueprint's checks, with the animation files they read beside the story."""
-    files = {
-        str(block["svg"]): store.read_text(path.parent / str(block["svg"]))
-        for chapter in story.get("chapters", [])
-        for block in chapter.get("blocks", [])
-        if isinstance(block, dict)
-        and block.get("type") == "architecture"
-        and (path.parent / str(block.get("svg", ""))).is_file()
-    }
-    checks.architecture(story, files, report)
-    checks.links(story, report)
+def check(checked: registry.Checked) -> None:
+    """blueprint's checks, over the story and the animation files the engine read."""
+    checks.architecture(checked.story, checked.files, checked.report)
+    checks.links(checked.story, checked.report)
 
 
 def schema_parser(sub: Any) -> None:
@@ -65,13 +54,14 @@ def _where(name: str) -> tuple[reach.Reach, Wire]:
 
 
 def _live_rows(name: str, owner: str | None) -> list[dict[str, Any]]:
+    from sources.connectors.collectors import RUNNERS
+
     where, wire = _where(name)
-    if where.system not in READERS:
+    run = RUNNERS.get(where.system)
+    if run is None:
         raise reach.ReachError(f"schema reads postgres or oracle; {name} is {where.system}")
     default = "public" if where.system == "postgres" else where.key("user").upper()
-    rows = READERS[where.system](
-        schema.QUERIES[where.system], {"schema": owner or default}, where, wire
-    )
+    rows = run(schema.QUERIES[where.system], {"schema": owner or default}, where, wire)
     return [{k: str(v or "") for k, v in row.items()} for row in rows]
 
 
@@ -113,6 +103,8 @@ def lineage_run(args: argparse.Namespace) -> int:
         if where.system != "databricks":
             raise reach.ReachError(f"lineage reads databricks; {args.connection} is {where.system}")
         today = date.today()
+        from sources.connectors import databricks
+
         found = databricks.read({"lineage": args.table}, Window(today, today), where, wire)
     except FAILURES as exc:
         print(f"error: {exc}", file=sys.stderr)
@@ -127,12 +119,3 @@ def lineage_run(args: argparse.Namespace) -> int:
         f"{len(table.get('downstream', []))} downstream tables; next: animate check, then build"
     )
     return 0
-
-
-def sources_parser(sub: Any) -> None:
-    p = sub.add_parser("sources", help="the linked sources command: detect, check, digest")
-    p.add_argument("args", nargs=argparse.REMAINDER, help="arguments for sources")
-
-
-def sources_run(args: argparse.Namespace) -> int:
-    return sources_main(args.args)

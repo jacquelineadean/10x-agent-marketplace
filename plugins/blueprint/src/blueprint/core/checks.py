@@ -3,25 +3,18 @@ links open screens that exist."""
 
 from __future__ import annotations
 
-from collections.abc import Iterator, Mapping
+from collections.abc import Mapping
 from typing import Any
 
 from chronicle_engine.core.motion.embed import check_built
-from chronicle_engine.core.story.model import Report
+from chronicle_engine.core.story.model import Report, blocks_of
 
 from blueprint.core.architecture import has_part
 
 
-def _blocks(story: Mapping[str, Any]) -> Iterator[tuple[str, Mapping[str, Any]]]:
-    for i, chapter in enumerate(story.get("chapters", [])):
-        for j, block in enumerate(chapter.get("blocks", [])):
-            if isinstance(block, Mapping):
-                yield f"chapters[{i}].blocks[{j}]", block
-
-
 def architecture(story: Mapping[str, Any], files: Mapping[str, str], report: Report) -> None:
     """Every part and pin names a part the built animation holds."""
-    for where, block in _blocks(story):
+    for where, block in blocks_of(story):
         if block.get("type") != "architecture":
             continue
         svg = files.get(str(block.get("svg", "")), "")
@@ -41,7 +34,7 @@ def architecture(story: Mapping[str, Any], files: Mapping[str, str], report: Rep
 def links(story: Mapping[str, Any], report: Report) -> None:
     """A card or list row's link names a screen, that is a chapter id."""
     screens = {str(c.get("id")) for c in story.get("chapters", [])}
-    for where, block in _blocks(story):
+    for where, block in blocks_of(story):
         if block.get("type") in ("cards", "list"):
             for k, item in enumerate(block.get("items", [])):
                 link = item.get("link") if isinstance(item, Mapping) else None

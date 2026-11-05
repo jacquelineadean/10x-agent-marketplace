@@ -35,11 +35,6 @@ SIZES = {
     "wide": (1600, 700),
 }
 ACTIONS = ("show", "hide", "focus", "draw", "flow", "pulse", "state")
-KIND_ACTIONS = {
-    "scene": ("show", "hide", "focus", "pulse"),
-    "diagram": ("show", "hide", "focus", "draw", "flow", "pulse"),
-    "tad": ACTIONS,
-}
 THEME_KEYS = ("concept", "palette", "dark", "fonts")
 BACKGROUNDS = ("paper", "surface", "none")
 THEME_MODES = ("auto", "light", "dark")
@@ -143,7 +138,8 @@ def check(anim: Any, facts: Mapping[str, Any]) -> Report:
     if not isinstance(steps, list):
         report.errors.append("steps must be a list")
         steps = []
-    allowed = KIND_ACTIONS.get(str(kind), ACTIONS)
+    registered = registry.KINDS.get(str(kind))
+    allowed = (registered.actions if registered else None) or ACTIONS
     for i, step in enumerate(steps):
         where = f"steps[{i}]"
         if not isinstance(step, Mapping):
@@ -275,12 +271,3 @@ def slug(title: str) -> str:
     """A CSS-safe name for one animation, so several can share a page."""
     base = _SLUG.sub("-", title.lower()).strip("-")[:24].strip("-")
     return f"a-{base or 'figure'}"
-
-
-def ids_in(step: Step) -> list[tuple[str, str]]:
-    """Every (action, id) a step names, for checks that all ids exist."""
-    out: list[tuple[str, str]] = []
-    for key in ("show", "hide", "focus", "draw", "flow", "pulse"):
-        out.extend((key, i) for i in getattr(step, key))
-    out.extend(("state", i) for i in step.state)
-    return out

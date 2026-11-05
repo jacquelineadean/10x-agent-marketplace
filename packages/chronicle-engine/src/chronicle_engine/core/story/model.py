@@ -262,13 +262,15 @@ def check_text(text: str, where: str, key: str, facts: Mapping[str, Any], report
             report.warnings.append(f"{where}: number {number!r} has no fact token")
 
 
-def blocks_of(story: Mapping[str, Any], kind: str) -> Iterator[tuple[str, Mapping[str, Any]]]:
-    """Every block of one type, with its path for messages."""
+def blocks_of(
+    story: Mapping[str, Any], kind: str | None = None
+) -> Iterator[tuple[str, Mapping[str, Any]]]:
+    """Every block, or every block of one type, with its path for messages."""
     for i, chapter in enumerate(story.get("chapters", [])):
         if not isinstance(chapter, Mapping):
             continue
         for j, block in enumerate(chapter.get("blocks", [])):
-            if isinstance(block, Mapping) and block.get("type") == kind:
+            if isinstance(block, Mapping) and kind in (None, block.get("type")):
                 yield f"chapters[{i}].blocks[{j}]", block
 
 

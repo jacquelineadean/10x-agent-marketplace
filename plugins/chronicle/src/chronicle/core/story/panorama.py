@@ -278,10 +278,10 @@ def check(story: Mapping[str, Any], drawn: Mapping[str, Drawing], report: Any) -
     """Animals name drawn rigs, zones and the tide fit the painting, the journal is a key."""
     art = story.get("art", {}) if isinstance(story.get("art"), Mapping) else {}
     for where, block in blocks(story, "panorama"):
-        check_block(block, where, art, drawn, report)
+        _check_block(block, where, art, drawn, report)
 
 
-def check_block(
+def _check_block(
     block: Block, where: str, art: Mapping[str, Any], drawn: Mapping[str, Drawing], report: Any
 ) -> None:
     key = str(block.get("art", ""))

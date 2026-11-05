@@ -21,6 +21,9 @@ from sources.core.periods import Window
 from sources.core.reach import Reach
 
 Reader = Callable[[Mapping[str, Any], Window, Reach, Wire], Result]
+# A runner takes a statement and its parameters and gives the rows back as they came, for a
+# catalog read that is not a measure. Only the script-lane databases have one.
+Runner = Callable[[str, Mapping[str, str], Reach, Wire], list[dict[str, Any]]]
 
 READERS: dict[str, Reader] = {
     "github": counts.read,
@@ -32,4 +35,9 @@ READERS: dict[str, Reader] = {
     "databricks": databricks.read,
     "postgres": postgres.read,
     "oracle": oracle.read,
+}
+
+RUNNERS: dict[str, Runner] = {
+    "postgres": postgres.run,
+    "oracle": oracle.run,
 }

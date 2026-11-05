@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
-from chronicle_engine.core.story.html import tag
+from chronicle_engine.core.story.html import escape, tag
 
 ELEMENTS = {
     "svg",
@@ -168,11 +168,11 @@ def _node(
         attrs["class_"] = attrs.pop("class")
     inner = ""
     if el.text and el.text.strip() and name in ("text", "tspan", "title", "desc"):
-        inner += _escape(fill_text(el.text))
+        inner += escape(fill_text(el.text))
     for child in el:
         inner += _node(child, prefix, ids, out, fill_text)
         if child.tail and child.tail.strip() and name in ("text", "tspan"):
-            inner += _escape(fill_text(child.tail))
+            inner += escape(fill_text(child.tail))
     return tag(name, inner, **attrs)
 
 
@@ -194,7 +194,3 @@ def _value(key: str, value: str, prefix: str, ids: set[str], name: str) -> str:
     if key in ("fill", "stroke", "stop-color") and not _PLAIN_COLOR.match(v):
         raise DiagramError(f"{key}={v!r}: use a #hex color, none, or a class such as f-accent")
     return v
-
-
-def _escape(text: str) -> str:
-    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")

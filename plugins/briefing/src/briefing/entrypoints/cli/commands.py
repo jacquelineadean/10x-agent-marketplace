@@ -12,13 +12,11 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from chronicle_engine import registry
 from chronicle_engine.connectors.browser import devtools, shoot
 from chronicle_engine.connectors.files import store
-from chronicle_engine.core.story.model import Report
 from chronicle_engine.entrypoints.cli import main as engine
 from chronicle_engine.entrypoints.cli import runs
-from sources.entrypoints.cli import gather
-from sources.entrypoints.cli.main import main as sources_main
 
 from briefing.core import checks, export, upload
 
@@ -27,26 +25,18 @@ SLIDE = (1600, 900)
 PAGE_IN = (13.333, 7.5)
 
 
-def check(story: Any, facts: Any, path: Path, report: Report) -> None:
-    """briefing's checks, with the files they read beside the story."""
+def check(checked: registry.Checked) -> None:
+    """briefing's checks, over the story and the animation files the engine read."""
+    story, facts, report = checked.story, checked.facts, checked.report
     checks.kpis(story, facts, report)
     checks.sliced(story, facts, report)
     checks.slides(story, report)
-    queries = path.parent / "queries.json"
+    queries = checked.path.parent / "queries.json"
     if queries.is_file():
         data = store.read_json(queries)
         entries = data.get("queries", {}) if isinstance(data, dict) else {}
         checks.stale(entries if isinstance(entries, dict) else {}, date.today(), report)
-    files = {
-        str(block["svg"]): store.read_text(path.parent / str(block["svg"]))
-        for chapter in story.get("chapters", [])
-        for block in chapter.get("blocks", [])
-        if isinstance(block, dict)
-        and block.get("type") == "animation"
-        and block.get("svg")
-        and (path.parent / str(block["svg"])).is_file()
-    }
-    checks.animations(story, files, report)
+    checks.animations(story, checked.files, report)
 
 
 def export_parser(sub: Any) -> None:
@@ -107,6 +97,8 @@ def refresh_run(args: argparse.Namespace) -> int:
             f"error: {folder / 'queries.json'} does not exist; gather facts first", file=sys.stderr
         )
         return 1
+    from sources.entrypoints.cli import gather
+
     gathered = gather.run(folder, roll=True, until=args.until, strict=False)
     built = engine.main(["build", str(args.story), "--brand", args.brand])
     return gathered or built
@@ -147,12 +139,3 @@ def slides_run(args: argparse.Namespace) -> int:
             store.write_bytes(out / "deck.pdf", capture.pdf(*PAGE_IN))
             print(f"wrote {out / 'deck.pdf'} ({count} pages)")
     return 0
-
-
-def sources_parser(sub: Any) -> None:
-    p = sub.add_parser("sources", help="the linked sources command: detect, check, digest")
-    p.add_argument("args", nargs=argparse.REMAINDER, help="arguments for sources")
-
-
-def sources_run(args: argparse.Namespace) -> int:
-    return sources_main(args.args)

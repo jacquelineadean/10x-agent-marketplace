@@ -47,9 +47,8 @@ def _tiles(block: Mapping[str, Any], facts: Mapping[str, Any]) -> list[dict[str,
 
 
 def _content(
-    blocks: list[Any], facts: Mapping[str, Any], story: Mapping[str, Any]
+    blocks: list[Any], facts: Mapping[str, Any], found: Mapping[str, Mapping[str, Any]]
 ) -> dict[str, Any]:
-    found = slices.filters_of(story)
     text: list[str] = []
     tiles: list[dict[str, Any]] = []
     figures: list[dict[str, str]] = []
@@ -76,6 +75,7 @@ def _content(
 def slides(story: Mapping[str, Any], facts: Mapping[str, Any]) -> dict[str, Any]:
     """One entry per slide in deck order, the cover first and the sources last."""
     meta = story["meta"]
+    found = slices.filters_of(story)
     chapters = story["chapters"]
     count = len(chapters) + 2
     out = [
@@ -96,7 +96,7 @@ def slides(story: Mapping[str, Any], facts: Mapping[str, Any]) -> dict[str, Any]
                 "title": _plain(chapter["title"], facts),
                 "kicker": _plain(chapter.get("kicker", ""), facts),
                 "dek": _plain(chapter.get("dek", ""), facts),
-                **_content(chapter.get("blocks", []), facts, story),
+                **_content(chapter.get("blocks", []), facts, found),
                 "notes": _plain(chapter.get("notes", ""), facts),
                 "image": f"slides/slide-{i:02d}.png",
             }
@@ -119,12 +119,13 @@ def slides(story: Mapping[str, Any], facts: Mapping[str, Any]) -> dict[str, Any]
 def dashboard(story: Mapping[str, Any], facts: Mapping[str, Any]) -> dict[str, Any]:
     """Each section's tiles, figures and text, with the as-of date and the sources."""
     meta = story["meta"]
+    found = slices.filters_of(story)
     return {
         "title": _plain(meta["title"], facts),
         "dek": _plain(meta.get("dek", ""), facts),
         "as_of": as_of(story),
         "sections": [
-            {"title": _plain(ch["title"], facts), **_content(ch.get("blocks", []), facts, story)}
+            {"title": _plain(ch["title"], facts), **_content(ch.get("blocks", []), facts, found)}
             for ch in story["chapters"]
         ],
         "sources": [

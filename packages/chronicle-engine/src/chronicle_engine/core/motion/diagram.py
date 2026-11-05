@@ -292,7 +292,6 @@ def _diagram_prepare(anim: Mapping[str, Any], facts: Mapping[str, Any]) -> Prepa
 
 
 def _diagram_figure(
-    anim: Mapping[str, Any],
     prepared: Prepared,
     plan: Plan,
     box: stage.Box,
@@ -318,6 +317,7 @@ registry.add_kind(
         check=_diagram_check,
         prepare=_diagram_prepare,
         figure=_diagram_figure,
+        actions=("show", "hide", "focus", "draw", "flow", "pulse"),
         drawing=_diagram_drawing,
         new_files={"drawing.svg": DRAWING},
     ),

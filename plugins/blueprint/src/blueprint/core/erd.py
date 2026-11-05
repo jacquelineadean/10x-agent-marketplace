@@ -70,7 +70,7 @@ def validate(spec: Mapping[str, Any], report: Report) -> None:
 class Grid:
     """Where each table sits: its column, row and box, and the bounds of every row."""
 
-    cells: dict[str, tuple[int, int, float, float, float]]
+    cells: dict[str, tuple[int, int, float, float]]
     rows: list[tuple[float, float]]
     left: float
     height: float
@@ -95,7 +95,7 @@ def _place(spec: Mapping[str, Any]) -> Grid:
     per_row = min(per_row, math.ceil(math.sqrt(len(entities) * 2)))
     width = per_row * BOX_W + (per_row - 1) * GAP_X
     left = (WIDTH - width) / 2
-    cells: dict[str, tuple[int, int, float, float, float]] = {}
+    cells: dict[str, tuple[int, int, float, float]] = {}
     rows: list[tuple[float, float]] = []
     y = GAP_Y / 2 + 6
     for r, start in enumerate(range(0, len(entities), per_row)):
@@ -103,7 +103,7 @@ def _place(spec: Mapping[str, Any]) -> Grid:
         tallest = 0.0
         for c, e in enumerate(row):
             h = HEAD + ROW * len(e.get("columns", [])) + 8
-            cells[str(e["id"])] = (c, r, left + c * (BOX_W + GAP_X), y, h)
+            cells[str(e["id"])] = (c, r, y, h)
             tallest = max(tallest, h)
         rows.append((y, y + tallest))
         y += tallest + GAP_Y
@@ -163,7 +163,8 @@ def draw(spec: Mapping[str, Any]) -> str:
     parts = ""
     for e in spec["entities"]:
         eid = str(e["id"])
-        _, _, x, y, h = grid.cells[eid]
+        col, _, y, h = grid.cells[eid]
+        x = grid.col_x(col)
         rows = ""
         for i, c in enumerate(e.get("columns", [])):
             key = {"pk": "PK ", "fk": "FK "}.get(str(c.get("key", "")), "")
@@ -182,8 +183,8 @@ def draw(spec: Mapping[str, Any]) -> str:
         )
     for k, r in enumerate(spec.get("relations", [])):
         (ta, ca), (tb, cb) = (str(r[end]).split(".", 1) for end in ("from", "to"))
-        ya = grid.cells[ta][3] + HEAD + 11 + ROW * known[ta].index(ca)
-        yb = grid.cells[tb][3] + HEAD + 11 + ROW * known[tb].index(cb)
+        ya = grid.cells[ta][2] + HEAD + 11 + ROW * known[ta].index(ca)
+        yb = grid.cells[tb][2] + HEAD + 11 + ROW * known[tb].index(cb)
         lane = (k % 5 - 2) * 5.0
         path, xa, xb, sa, sb = _route(grid, ta, ya, tb, yb, lane)
         kind = str(r.get("kind", "many-to-one"))

@@ -9,11 +9,11 @@ session is read-only as well; the guard stops a write before a connection opens.
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass
 from typing import Any
 
-from sources.core.collect import Result
+from sources.core.collect import RequestError, Result, only
 from sources.core.periods import Window
 
 MAX_SQL = 2000
@@ -196,12 +196,17 @@ def tidy(value: Any) -> Any:
     return value
 
 
+def cap(count: int) -> None:
+    """Raise when a result passes the row cap, so every lane words the limit the same way."""
+    if count > MAX_ROWS:
+        raise SqlError(f"the query returned more than {MAX_ROWS:,} rows; aggregate in SQL")
+
+
 def columns(rows: Iterable[Mapping[str, Any]], names: list[str]) -> dict[str, list[Any]]:
     """Rows as one list per column, refusing more than 10,000 rows."""
     table: dict[str, list[Any]] = {name: [] for name in names}
     for count, row in enumerate(rows, start=1):
-        if count > MAX_ROWS:
-            raise SqlError(f"the query returned more than {MAX_ROWS:,} rows; aggregate in SQL")
+        cap(count)
         for name in names:
             table[name].append(tidy(row.get(name)))
     return table
@@ -215,3 +220,17 @@ def result(statement: str, rows: list[dict[str, Any]]) -> Result:
         return Result(rebuild(statement), value=table[names[0]][0])
     warnings = [] if rows else ["the query returned no rows"]
     return Result(rebuild(statement), table=table, warnings=warnings)
+
+
+def read(
+    request: Mapping[str, Any],
+    span: Window,
+    runner: Callable[[str, dict[str, str]], list[dict[str, Any]]],
+) -> Result:
+    """The script lane's read: check the request, bind the window, run the statement."""
+    only(request, {"sql", "params"})
+    statement = request.get("sql")
+    if not isinstance(statement, str):
+        raise RequestError("request.sql must be the statement")
+    values = params(request.get("params"), window_params(span))
+    return result(statement, runner(statement, values))

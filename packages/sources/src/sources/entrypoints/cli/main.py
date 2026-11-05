@@ -8,6 +8,7 @@ import sys
 from collections.abc import Sequence
 from datetime import date
 from pathlib import Path
+from typing import Any
 
 from sources.config import settings
 from sources.connectors.files import store
@@ -89,9 +90,12 @@ def _detect(args: argparse.Namespace) -> int:
     return 0
 
 
-def _check(run: Path) -> contract.Report:
-    facts = store.read_json(run / "facts.json")
-    queries = store.read_json(run / "queries.json")
+def _read(run: Path) -> tuple[Any, Any]:
+    """A run's facts and queries, read once for both the check and the digest."""
+    return store.read_json(run / "facts.json"), store.read_json(run / "queries.json")
+
+
+def _check(facts: Any, queries: Any) -> contract.Report:
     report = contract.check(facts, queries, date.today())
     for line in report.errors:
         print(f"error: {line}", file=sys.stderr)
@@ -101,11 +105,10 @@ def _check(run: Path) -> contract.Report:
 
 
 def _digest(run: Path) -> int:
-    if _check(run).errors:
+    facts, queries = _read(run)
+    if _check(facts, queries).errors:
         return 1
-    text = digest.render(
-        store.read_json(run / "facts.json"), store.read_json(run / "queries.json"), date.today()
-    )
+    text = digest.render(facts, queries, date.today())
     store.write_text(run / "digest.md", text)
     print(f"wrote {run / 'digest.md'} ({len(text.encode('utf-8'))} bytes)")
     return 0
@@ -170,7 +173,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.command == "gather":
             return gather.run(args.run, args.only, args.roll, args.until)
         if args.command == "check":
-            return 1 if _check(args.run).errors else 0
+            return 1 if _check(*_read(args.run)).errors else 0
         if args.command == "digest":
             return _digest(args.run)
         if args.command == "connection":

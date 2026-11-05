@@ -19,6 +19,7 @@ from chronicle_engine.core.story.dispatch import render_block
 from chronicle_engine.core.story.facts import fill, format_value, lookup, resolve_refs
 from chronicle_engine.core.story.html import tag
 from chronicle_engine.core.story.markup import inline, paragraphs, plain
+from chronicle_engine.core.story.model import blocks_of
 
 
 @dataclass
@@ -241,7 +242,7 @@ class Builder:
         """
         css = ""
         seen: set[str] = set()
-        for _, block in _blocks(self.story, "widget"):
+        for _, block in blocks_of(self.story, "widget"):
             path = str(block.get("style") or "")
             if path and path in self.files and path not in seen:
                 seen.add(path)
@@ -330,15 +331,6 @@ class Builder:
             class_="sources col",
             id="sources",
         )
-
-
-def _blocks(story: Mapping[str, Any], kind: str) -> list[tuple[int, Mapping[str, Any]]]:
-    out = []
-    for i, chapter in enumerate(story.get("chapters", [])):
-        for block in chapter.get("blocks", []):
-            if isinstance(block, Mapping) and block.get("type") == kind:
-                out.append((i, block))
-    return out
 
 
 def _font_needs(manifest: Mapping[str, Any]) -> frozenset[str]:

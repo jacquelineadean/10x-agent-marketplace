@@ -140,10 +140,10 @@ def check(story: Mapping[str, Any], anchors: Mapping[str, set[str]], report: Any
     """Room ids, paintings, details and doorways of every rooms block, tour stops included."""
     art = story.get("art", {}) if isinstance(story.get("art"), Mapping) else {}
     for where, block in blocks(story, "rooms"):
-        check_block(block, where, art, anchors, report)
+        _check_block(block, where, art, anchors, report)
 
 
-def check_block(
+def _check_block(
     block: Block, where: str, art: Mapping[str, Any], anchors: Mapping[str, set[str]], report: Any
 ) -> None:
     found = block.get("rooms")

@@ -11,6 +11,7 @@ from __future__ import annotations
 from importlib import resources
 
 from chronicle_engine import registry
+from sources.entrypoints.cli import linked
 
 from blueprint.core import architecture, erd, prototype, sequence
 from blueprint.core.tad import kind as tad
@@ -42,7 +43,7 @@ registry.add_parts(
 registry.CHECKS["blueprint"] = commands.check
 registry.COMMANDS["schema"] = registry.Command(commands.schema_parser, commands.schema_run)
 registry.COMMANDS["lineage"] = registry.Command(commands.lineage_parser, commands.lineage_run)
-registry.COMMANDS["sources"] = registry.Command(commands.sources_parser, commands.sources_run)
+registry.COMMANDS["sources"] = registry.Command(linked.add_parser, linked.run)
 registry.add_asset_root(resources.files("blueprint.assets"))
 # Engineering pages number their chapters with a step pill.
 registry.CHROME.mark_default = "step"

@@ -15,6 +15,7 @@ from typing import Any
 
 from chronicle_engine.core.story.dispatch import render_block
 from chronicle_engine.core.story.html import tag
+from chronicle_engine.core.story.model import blocks_of
 from chronicle_engine.core.story.render import Builder
 
 from chronicle.core.story import keys, plates
@@ -191,11 +192,8 @@ def check(story: Mapping[str, Any], anchors: Mapping[str, set[str]], report: Any
     """The map, the stops and their scenes, the pins."""
     art = story.get("art", {}) if isinstance(story.get("art"), Mapping) else {}
     chapters = {str(c.get("id")) for c in story.get("chapters", []) if isinstance(c, Mapping)}
-    for i, chapter in enumerate(story.get("chapters", [])):
-        blocks = chapter.get("blocks", []) if isinstance(chapter, Mapping) else []
-        for j, block in enumerate(blocks):
-            if isinstance(block, Mapping) and block.get("type") == "tour":
-                _check(block, f"chapters[{i}].blocks[{j}]", art, anchors, chapters, report)
+    for where, block in blocks_of(story, "tour"):
+        _check(block, where, art, anchors, chapters, report)
 
 
 def _check(

@@ -11,7 +11,7 @@ from typing import Any
 
 from chronicle_engine.core.motion.embed import check_built
 from chronicle_engine.core.story.facts import TOKEN, FactError, lookup
-from chronicle_engine.core.story.model import Report, check_text
+from chronicle_engine.core.story.model import Report, blocks_of, check_text
 
 from briefing.core import slices
 from briefing.core.kpi import ITEM_KEYS
@@ -23,17 +23,10 @@ STALE_DAYS = 7
 TEXT_KEYS = ("text", "caption", "subtitle", "dek", "note")
 
 
-def _blocks(story: Mapping[str, Any]) -> Iterator[tuple[str, int, Mapping[str, Any]]]:
-    for i, chapter in enumerate(story.get("chapters", [])):
-        for j, block in enumerate(chapter.get("blocks", [])):
-            if isinstance(block, Mapping):
-                yield f"chapters[{i}].blocks[{j}]", i, block
-
-
 def _expanded(story: Mapping[str, Any]) -> Iterator[tuple[str, Mapping[str, Any]]]:
     """Each block as it renders: a sliced block once per option of its filter."""
     found = slices.filters_of(story)
-    for where, _, block in _blocks(story):
+    for where, block in blocks_of(story):
         key = block.get("slice")
         if key and str(key) in found:
             for option, copy in slices.variants(block, found[str(key)]):
@@ -81,7 +74,7 @@ def kpis(story: Mapping[str, Any], facts: Mapping[str, Any], report: Report) -> 
 def sliced(story: Mapping[str, Any], facts: Mapping[str, Any], report: Report) -> None:
     """A sliced block names a defined filter, and every copy's tokens name facts."""
     found = slices.filters_of(story)
-    for where, _, block in _blocks(story):
+    for where, block in blocks_of(story):
         key = block.get("slice")
         if not key:
             continue
@@ -154,7 +147,7 @@ def stale(entries: Mapping[str, Any], today: date, report: Report) -> None:
 
 
 def animations(story: Mapping[str, Any], files: Mapping[str, str], report: Report) -> None:
-    for where, _, block in _blocks(story):
+    for where, block in blocks_of(story):
         if block.get("type") == "animation":
             for problem in check_built(files.get(str(block.get("svg", "")), "")):
                 report.errors.append(f"{where}.svg {block.get('svg')}: {problem}")

@@ -16,7 +16,17 @@ from typing import Any
 from sources.connectors.errors import SourceError
 from sources.connectors.http import JsonTransport
 from sources.connectors.wire import Wire
-from sources.core.collect import Number, RequestError, Result, choice, measured, only, per, text
+from sources.core.collect import (
+    Number,
+    RequestError,
+    Result,
+    choice,
+    measured,
+    only,
+    per,
+    reduce,
+    text,
+)
 from sources.core.periods import Window
 from sources.core.reach import Reach, ReachError
 
@@ -74,20 +84,6 @@ def _days(transport: JsonTransport, query: str, span: Window) -> dict[date, floa
     return days
 
 
-def _reduce(values: list[float], how: str) -> Number:
-    if not values:
-        return None
-    if how == "sum":
-        return sum(values)
-    if how == "max":
-        return max(values)
-    if how == "min":
-        return min(values)
-    if how == "last":
-        return values[-1]
-    return sum(values) / len(values)
-
-
 def _total(body: Any) -> Number:
     buckets = (body.get("data") or {}).get("buckets") if isinstance(body, Mapping) else None
     if not buckets:
@@ -118,7 +114,7 @@ def read(request: Mapping[str, Any], span: Window, reach: Reach, wire: Wire) -> 
         days = _days(transport, query, span)
 
         def reduced(w: Window) -> Number:
-            return _reduce([v for d, v in sorted(days.items()) if w.start <= d <= w.end], how)
+            return reduce([v for d, v in sorted(days.items()) if w.start <= d <= w.end], how)
 
         value, table = measured(span, every, how, reduced)
         return Result(f"{query} {span.text()}, {how} of days{suffix}", value, table)

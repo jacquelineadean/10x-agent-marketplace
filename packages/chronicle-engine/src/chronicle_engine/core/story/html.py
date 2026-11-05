@@ -2,9 +2,19 @@
 
 from __future__ import annotations
 
+import html as _html
+
 from chronicle_engine.core.story.markup import plain
 
 AttrValue = str | int | float | bool | None
+
+
+def escape(text: object) -> str:
+    """Text for a node's content: &, < and > escaped, and nothing else touched.
+
+    Fact tokens survive, so a figure can escape its labels before the renderer fills them.
+    """
+    return _html.escape(str(text), quote=False)
 
 
 def attrs(values: dict[str, AttrValue]) -> str:

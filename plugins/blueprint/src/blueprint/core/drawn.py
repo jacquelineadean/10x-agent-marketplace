@@ -13,6 +13,7 @@ from typing import Any
 from chronicle_engine.core.motion import diagram, stage
 from chronicle_engine.core.motion.model import Plan
 from chronicle_engine.core.motion.timeline import Timeline
+from chronicle_engine.core.story.html import escape
 from chronicle_engine.core.story.model import Report
 from chronicle_engine.registry import Kind, Prepared, Sources
 
@@ -42,7 +43,6 @@ def kind(
         return Prepared(anim, diagram.floor)
 
     def figure(
-        anim: Mapping[str, Any],
         prepared: Prepared,
         plan: Plan,
         box: stage.Box,
@@ -69,15 +69,10 @@ def kind(
     )
 
 
-def esc(text: Any) -> str:
-    """Text for an SVG text node; tokens stay for the diagram kind to fill."""
-    return str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
-
 def text(cls: str, x: float, y: float, words: Any, anchor: str = "start") -> str:
     """One text element; `anchor` is start, middle or end."""
     where = f'x="{x:g}" y="{y:g}"' + (f' text-anchor="{anchor}"' if anchor != "start" else "")
-    return f'<text class="{cls}" {where}>{esc(words)}</text>'
+    return f'<text class="{cls}" {where}>{escape(words)}</text>'
 
 
 def svg(width: float, height: float, body: str) -> str:

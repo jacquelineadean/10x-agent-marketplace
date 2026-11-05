@@ -99,9 +99,10 @@ class Kind:
     check: Callable[[Mapping[str, Any], Mapping[str, Any], Sources, Report], None]
     prepare: Callable[[Mapping[str, Any], Mapping[str, Any]], Prepared]
     figure: Callable[
-        [Mapping[str, Any], Prepared, Plan, Box, Timeline, Sources, Callable[[str], str]],
-        tuple[str, list[str]],
+        [Prepared, Plan, Box, Timeline, Sources, Callable[[str], str]], tuple[str, list[str]]
     ]
+    # The step actions this kind draws; None means every action the motion model defines.
+    actions: tuple[str, ...] | None = None
     drawing: Callable[[Mapping[str, Any]], str] | None = None
     build_sources: (
         Callable[[Mapping[str, Any], Path, Mapping[str, Any], Path, bool], Sources] | None
@@ -119,8 +120,27 @@ class Command:
 
 # Theme policies take the story's theme and the story's path and return warnings.
 Policy = Callable[[Mapping[str, Any] | None, Path], list[str]]
-# Checks take the story, its facts and its path, and add errors or warnings to the report.
-Check = Callable[[Mapping[str, Any], Mapping[str, Any], Path, "Report"], None]
+
+
+@dataclass(frozen=True)
+class Checked:
+    """What a plugin's check reads: the story, its facts and path, and what the engine read.
+
+    `files` holds the text of every file a block names, by the path the block spells, and
+    `drawings` the text of every drawing `story.art` names. The engine reads both before the
+    checks run, so a check never opens a file the engine already opened.
+    """
+
+    story: Mapping[str, Any]
+    facts: Mapping[str, Any]
+    path: Path
+    files: Mapping[str, str]
+    drawings: Mapping[str, str]
+    report: Report
+
+
+# Checks add errors or warnings to the report on the record they are given.
+Check = Callable[["Checked"], None]
 
 
 @dataclass(frozen=True)

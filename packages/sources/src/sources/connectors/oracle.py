@@ -18,7 +18,7 @@ from typing import Any
 from sources.connectors.errors import SourceError
 from sources.connectors.wire import Wire
 from sources.core import sql
-from sources.core.collect import RequestError, Result, only
+from sources.core.collect import Result
 from sources.core.periods import Window
 from sources.core.reach import Reach, ReachError
 
@@ -81,9 +81,10 @@ def rows_of(output: str) -> list[dict[str, Any]]:
         items = result.get("items") or []
     except (json.JSONDecodeError, KeyError, IndexError, TypeError) as exc:
         raise SourceError("SQLcl printed a result in an unexpected shape") from exc
-    if len(items) > sql.MAX_ROWS:
-        raise sql.SqlError(f"the query returned more than {sql.MAX_ROWS:,} rows; aggregate in SQL")
-    return [{n: {k.lower(): v for k, v in item.items()}.get(n) for n in names} for item in items]
+    sql.cap(len(items))
+    # Lowercase each row once, not once per column: SQLcl names columns as the query spells them.
+    lowered = ({str(k).lower(): v for k, v in item.items()} for item in items)
+    return [{n: row.get(n) for n in names} for row in lowered]
 
 
 def run(
@@ -113,9 +114,4 @@ def run(
 
 
 def read(request: Mapping[str, Any], span: Window, reach: Reach, wire: Wire) -> Result:
-    only(request, {"sql", "params"})
-    statement = request.get("sql")
-    if not isinstance(statement, str):
-        raise RequestError("request.sql must be the statement")
-    values = sql.params(request.get("params"), sql.window_params(span))
-    return sql.result(statement, run(statement, values, reach, wire))
+    return sql.read(request, span, lambda statement, values: run(statement, values, reach, wire))

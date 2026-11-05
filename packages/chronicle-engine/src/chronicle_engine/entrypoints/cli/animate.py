@@ -1,6 +1,7 @@
 """Command line for standalone animations: `python -m chronicle animate <command>`.
 
-new    FOLDER        start a run folder with animation.json for a tad, diagram or scene
+new    FOLDER        start a run folder with animation.json for one of the kinds the
+                     plugin registers (see --kind)
 check  ANIMATION     validate the animation, its ids, fact tokens and theme
 build  ANIMATION     write animation.svg, embed.html and index.html, and with a browser
                      poster.png, steps.png and the GIF or video formats asked for
@@ -34,11 +35,11 @@ SEEK = (
 
 def add_parser(sub: Any) -> None:
     """Register `animate` and its commands on the main parser."""
-    animate = sub.add_parser("animate", help="standalone animations: tad, diagram or scene")
+    kinds = list(registry.KINDS)
+    animate = sub.add_parser("animate", help=f"standalone animations: {', '.join(kinds)}")
     commands = animate.add_subparsers(dest="action", required=True)
     new = commands.add_parser("new")
     new.add_argument("folder", type=Path, help="run folder to create, e.g. chronicle-runs/flow")
-    kinds = list(registry.KINDS)
     new.add_argument("--kind", choices=kinds, default=registry.DEFAULTS.kind or kinds[0])
     new.add_argument("--title", default="", help="the animation's title")
     for name in ("check", "build"):

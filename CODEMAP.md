@@ -113,7 +113,7 @@ sources' code follows the same layout under `packages/sources/src/sources/`, lin
 | `connectors/github/` | the GitHub transport, host endpoints, token lookup and errors (moved from impact-review, which links them) and the search and workflow-run counts (`counts.py`) |
 | `connectors/files/` | JSON and Markdown reads and writes |
 | `connectors/system/` | which programs are on `PATH` |
-| `entrypoints/cli/` | the `sources` command: detect, gather (`gather.py`), check, digest, connection, agent |
+| `entrypoints/cli/` | the `sources` command: detect, gather (`gather.py`), check, digest, connection, agent, and the same command as a host plugin exposes it (`linked.py`) |
 | `config/` | the only environment reads: the environment for collectors, which key names are set, the connections file, Claude's user folder |
 | `packages/sources/tests/` | `test_sources_*.py` with `sources_helpers.py` (recorded replies, fake psql and SQLcl); `fixtures/` holds a recorded reply per collector; no test calls a system |
 | `plugins/sources/` | the plugin shell: `agents/gatherer.md`, `skills/connect/`, `recipes/` (one per system), `references/facts.md` (a link to the engine's), `scripts/sources`, `tests/` |

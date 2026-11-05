@@ -113,8 +113,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         policy = registry.POLICIES.get(registry.DEFAULTS.policy)
         if policy is not None:
             report.warnings.extend(policy(story.get("theme"), args.story))
-        for extra in registry.CHECKS.values():
-            extra(story, facts, args.story, report)
         files = _files(story, args.story.parent, report)
         texts: dict[str, str] = {}
         if provider is not None:
@@ -124,6 +122,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "art names images, and this plugin makes none: remove art, hero.art and "
                 "chapters[].art"
             )
+        checked = registry.Checked(story, facts, args.story, files, texts, report)
+        for extra in registry.CHECKS.values():
+            extra(checked)
         for warning in report.warnings:
             print(f"warning: {warning}", file=sys.stderr)
         for error in report.errors:

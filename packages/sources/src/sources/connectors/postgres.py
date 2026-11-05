@@ -18,7 +18,7 @@ from typing import Any
 from sources.connectors.errors import SourceError
 from sources.connectors.wire import Wire
 from sources.core import sql
-from sources.core.collect import RequestError, Result, only
+from sources.core.collect import Result
 from sources.core.periods import Window
 from sources.core.reach import Reach, ReachError
 
@@ -101,15 +101,9 @@ def run(
         rows = json.loads(done.stdout.strip() or "[]")
     except json.JSONDecodeError as exc:
         raise SourceError("psql printed something other than the JSON rows") from exc
-    if len(rows) > sql.MAX_ROWS:
-        raise sql.SqlError(f"the query returned more than {sql.MAX_ROWS:,} rows; aggregate in SQL")
+    sql.cap(len(rows))
     return [dict(row) for row in rows]
 
 
 def read(request: Mapping[str, Any], span: Window, reach: Reach, wire: Wire) -> Result:
-    only(request, {"sql", "params"})
-    statement = request.get("sql")
-    if not isinstance(statement, str):
-        raise RequestError("request.sql must be the statement")
-    values = sql.params(request.get("params"), sql.window_params(span))
-    return sql.result(statement, run(statement, values, reach, wire))
+    return sql.read(request, span, lambda statement, values: run(statement, values, reach, wire))

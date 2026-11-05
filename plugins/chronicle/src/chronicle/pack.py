@@ -95,10 +95,10 @@ def _plate_block(b: Builder, block: Mapping[str, Any]) -> str:
     )
 
 
-def _drawings(story: Mapping[str, Any], path: Path, facts: Any) -> dict[str, Drawing]:
-    """Each painting's drawing, read; drawings that fail to read report elsewhere."""
+def _drawings(texts: Mapping[str, str]) -> dict[str, Drawing]:
+    """Each painting's drawing, parsed; drawings that fail to parse report elsewhere."""
     found: dict[str, Drawing] = {}
-    for key, text in art.drawings(story, path.parent, facts, Report()).items():
+    for key, text in texts.items():
         try:
             found[key] = parse(text)
         except SvgError:
@@ -106,9 +106,10 @@ def _drawings(story: Mapping[str, Any], path: Path, facts: Any) -> dict[str, Dra
     return found
 
 
-def _check(story: Mapping[str, Any], facts: Any, path: Path, report: Report) -> None:
+def _check(checked: registry.Checked) -> None:
     """chronicle's block checks, with the anchors, layers and rigs its drawings define."""
-    drawn = _drawings(story, path, facts)
+    story, report = checked.story, checked.report
+    drawn = _drawings(checked.drawings)
     anchors = {key: set(drawing.anchors) for key, drawing in drawn.items()}
     checks.notes(story, anchors, report)
     game.check(story, report)
@@ -164,7 +165,6 @@ def _scene_prepare(anim: Mapping[str, Any], facts: Mapping[str, Any]) -> Prepare
 
 
 def _scene_figure(
-    anim: Mapping[str, Any],
     prepared: Prepared,
     plan: Plan,
     box: stage.Box,
@@ -174,7 +174,9 @@ def _scene_figure(
 ) -> tuple[str, list[str]]:
     if sources.painting is None:
         raise ValueError("a scene animation needs its painting; paint it first")
-    return scene.figure(anim["scene"], sources.painting, sources.images, plan, box, timeline, words)
+    return scene.figure(
+        prepared.anim["scene"], sources.painting, sources.images, plan, box, timeline, words
+    )
 
 
 def _scene_drawing(body: Mapping[str, Any]) -> str:
@@ -209,6 +211,7 @@ SCENE = Kind(
     check=_scene_check,
     prepare=_scene_prepare,
     figure=_scene_figure,
+    actions=("show", "hide", "focus", "pulse"),
     drawing=_scene_drawing,
     build_sources=_scene_sources,
 )
@@ -241,7 +244,6 @@ def _rig_check(
 
 
 def _rig_figure(
-    anim: Mapping[str, Any],
     prepared: Prepared,
     plan: Plan,
     box: stage.Box,
@@ -251,7 +253,7 @@ def _rig_figure(
 ) -> tuple[str, list[str]]:
     if sources.painting is None:
         raise ValueError("a rig animation needs its painting; paint it first")
-    body = anim["rig"]
+    body = prepared.anim["rig"]
     painting = dict(sources.painting)
     if body.get("gait"):
         rigs = dict(painting.get("rigs", {}))
