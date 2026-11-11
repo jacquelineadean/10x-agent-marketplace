@@ -25,9 +25,11 @@ updates:
     cooldown:
       default-days: 14
     # Every package in uv.lock is a dev tool; plugins use the standard library at runtime.
+    # A fixed "chore(deps)" prefix: `include: scope` writes "deps-dev" for dev
+    # dependencies, which the PR title check rejects.
     commit-message:
-      prefix: chore
-      include: scope
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps)"
     groups:
       dev-tools:
         patterns: ["*"]
