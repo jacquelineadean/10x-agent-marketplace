@@ -11,6 +11,9 @@ permissions: {}
 jobs:
   title:
     name: Conventional Commit title
+    # Dependabot sets its own title and branch (.github/dependabot.yml). Checks the PR author,
+    # which stays Dependabot when a person edits or pushes to its PR.
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -40,6 +43,7 @@ jobs:
             sources
             briefing
             blueprint
+            contributing
             marketplace
             deps
             release
@@ -52,6 +56,9 @@ jobs:
 
   branch:
     name: Branch name
+    # Dependabot sets its own title and branch (.github/dependabot.yml). Checks the PR author,
+    # which stays Dependabot when a person edits or pushes to its PR.
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -63,7 +70,6 @@ jobs:
             '^(feat|fix|perf|revert|docs|refactor|test|build|ci|chore)/[a-z0-9][a-z0-9._-]*$'
             '^release/([a-z0-9-]+-)?[0-9]+\.[0-9]+\.x$'
             '^release-please--.+$'
-            '^dependabot/.+$'
             '^claude/[a-z0-9._-]+$'
           )
           for pattern in "${patterns[@]}"; do

@@ -130,6 +130,23 @@
         "hooks",
         "audit"
       ]
+    },
+    {
+      "name": "contributing",
+      "source": "./plugins/contributing",
+      "description": "Pull request descriptions a reviewer can approve fast (template, Playwright screenshots and recordings, GitHub advanced formatting), branch names and Conventional Commit messages, deferring to each repo's own rules.",
+      "version": "0.0.0",
+      "author": {
+        "name": "Jacqueline Dean"
+      },
+      "category": "development",
+      "keywords": [
+        "github",
+        "pull-request",
+        "code-review",
+        "conventional-commits",
+        "git"
+      ]
     }
   ]
 }

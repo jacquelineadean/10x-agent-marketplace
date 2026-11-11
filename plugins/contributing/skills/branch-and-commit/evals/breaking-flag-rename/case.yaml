@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: breaking-flag-rename
+expected_outcome: |
+  A new type/slug branch off main and one commit marked breaking with "!" in the header,
+  a BREAKING CHANGE footer telling users to switch from --out to --output, and Closes #12.
+  main gets no new commit.
+context:
+  scaffold_script: place-files.sh

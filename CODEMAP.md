@@ -144,3 +144,10 @@ tokenwise follows the same cli layout under `plugins/tokenwise/src/tokenwise/`:
 | `config/` | the only environment reads: runs folder, auto-apply switch, Claude config folder |
 | `plugins/tokenwise/hooks/` | `hooks.json`: Stop, PostToolUse and PostToolUseFailure on Bash, PreCompact |
 | `plugins/tokenwise/tests/` | pytest suite; `fixtures/` holds transcript lines in the shape Claude Code writes |
+
+contributing has no code, only skills:
+
+| Folder | Holds |
+| --- | --- |
+| `plugins/contributing/skills/pull-request/` | `SKILL.md` for PR titles and descriptions; `references/` holds the default PR template, GitHub advanced formatting and the Playwright screenshot and recording guide |
+| `plugins/contributing/skills/branch-and-commit/` | `SKILL.md` for branch names, Conventional Commit messages, commit shaping and safe rewrites |

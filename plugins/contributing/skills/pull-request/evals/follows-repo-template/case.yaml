@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: follows-repo-template
+expected_outcome: |
+  The body keeps the repo template's headings in order (What, Why, QA notes, Deploy notes,
+  Checklist), fills each one, explains the rounding bug with the 3 x 0.335 example, links
+  issue 318, and the title uses the billing scope from CONTRIBUTING.md.
+context:
+  scaffold_script: place-files.sh
