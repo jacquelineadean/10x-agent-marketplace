@@ -1,0 +1,38 @@
+{
+ "schema_version": 1,
+ "layout": "prototype",
+ "facts_file": ["facts.json", "solutions-results.json"],
+ "meta": {
+  "title": "Product page reads",
+  "kicker": "Solution visualizer · invented data",
+  "dek": "Three ways to read price and stock on the product page. Move the inputs, change each approach's settings, switch scenarios, feel the wait, then choose one and copy the decision."
+ },
+ "theme": {"concept": "A plain engineering console: white surfaces, one accent for the choice, green and red for budgets."},
+ "sources": [
+  {"id": "datadog", "label": "Datadog", "detail": "Traffic and query timings (invented for this example).", "as_of": "2026-10-31"},
+  {"id": "postgres", "label": "Postgres", "detail": "Catalog counts (invented for this example).", "as_of": "2026-10-31"},
+  {"id": "model", "label": "Simulation model", "detail": "Computed from the formulas in solutions.json."}
+ ],
+ "chapters": [
+  {
+   "id": "compare",
+   "title": "Compare",
+   "blocks": [{"type": "solutions", "file": "solutions.json", "source": "model"}]
+  },
+  {
+   "id": "reading",
+   "title": "What breaks where",
+   "dek": "Each approach misses a budget in a different scenario, at its own settings.",
+   "blocks": [
+    {
+     "type": "list",
+     "items": [
+      {"title": "Query the database", "meta": "Sale peak", "status": "Misses", "text": "The replicas run out: {{solutions.sale.direct.errors|dec1}} of reads fail and the rest wait {{solutions.sale.direct.p95_ms|int}}, the timeout."},
+      {"title": "Read through a cache", "meta": "Database degraded", "status": "Misses", "text": "Misses reach the slow database, so the p95 read takes {{solutions.slow_db.cache.p95_ms|int}}. Serving the old entry while refreshing hides the miss and doubles the age of a price."},
+      {"title": "Read a view kept by events", "meta": "Catalog reprice", "status": "Misses", "text": "The consumers fall behind and the oldest price shown is {{solutions.reprice.view.stale_s|int}} old. More consumers close the gap for {{solutions.typical.view.cost}} a month at the usual settings."}
+     ]
+    }
+   ]
+  }
+ ]
+}

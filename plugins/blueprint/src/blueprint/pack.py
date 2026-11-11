@@ -1,6 +1,6 @@
 """blueprint's registrations with the engine: the tad, sequence and erd kinds, the
-architecture, cards and list blocks, the prototype layout, their page parts, the checks and
-the commands.
+architecture, cards, list and solutions blocks, the prototype layout, their page parts, the
+checks and the commands.
 
 Importing this module registers everything once; `python -m blueprint` imports it before
 running the engine's command line.
@@ -14,8 +14,9 @@ from chronicle_engine import registry
 from sources.entrypoints.cli import linked
 
 from blueprint.core import architecture, erd, prototype, sequence
+from blueprint.core.solutions import block as solutions_block
 from blueprint.core.tad import kind as tad
-from blueprint.entrypoints.cli import commands
+from blueprint.entrypoints.cli import commands, solutions
 
 registry.add_kind("tad", tad.TAD, first=True)
 registry.add_kind("sequence", sequence.SEQUENCE)
@@ -29,20 +30,35 @@ registry.add_block(
 )
 registry.add_block("cards", *prototype.CARDS, prototype.cards, after="stats")
 registry.add_block("list", *prototype.LIST, prototype.plist, after="table")
+registry.add_block(
+    "solutions",
+    solutions_block.REQUIRED,
+    solutions_block.OPTIONAL,
+    solutions_block.solutions,
+    after="list",
+)
 registry.LAYOUTS["prototype"] = registry.Layout(prototype.render, tuple(prototype.SKELETON))
 registry.BLOCK_KEYS.add("span")
 registry.FILES["architecture"] = ("svg",)
+registry.FILES["solutions"] = ("file",)
 registry.add_parts(
     by_type={
         "architecture": ("css/60-architecture.css", "js/80-architecture.js"),
         "cards": ("css/61-blocks.css", "js/82-prototype.js"),
         "list": ("css/61-blocks.css", "js/82-prototype.js"),
         "layout:prototype": ("css/61-blocks.css", "css/62-prototype.css", "js/82-prototype.js"),
+        "solutions": (
+            "css/63-solutions.css",
+            "js/84-solutions-model.js",
+            "js/85-solutions.js",
+            "js/86-solutions-feel.js",
+        ),
     }
 )
 registry.CHECKS["blueprint"] = commands.check
 registry.COMMANDS["schema"] = registry.Command(commands.schema_parser, commands.schema_run)
 registry.COMMANDS["lineage"] = registry.Command(commands.lineage_parser, commands.lineage_run)
+registry.COMMANDS["solutions"] = registry.Command(solutions.parser, solutions.run)
 registry.COMMANDS["sources"] = registry.Command(linked.add_parser, linked.run)
 registry.add_asset_root(resources.files("blueprint.assets"))
 # Engineering pages number their chapters with a step pill.

@@ -1,0 +1,324 @@
+{
+ "solutions": {
+  "typical": {
+   "direct": {
+    "p95_ms": {
+     "value": 116.8,
+     "unit": "ms",
+     "source": "model",
+     "note": "Query the database, Typical weekday, at the approach's own settings"
+    },
+    "errors": {
+     "value": 0.0,
+     "unit": "%",
+     "source": "model",
+     "note": "Query the database, Typical weekday, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 0.0,
+     "unit": "s",
+     "source": "model",
+     "note": "Query the database, Typical weekday, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1240.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Query the database, Typical weekday, at the approach's own settings"
+    }
+   },
+   "cache": {
+    "p95_ms": {
+     "value": 44.5333,
+     "unit": "ms",
+     "source": "model",
+     "note": "Read through a cache, Typical weekday, at the approach's own settings"
+    },
+    "errors": {
+     "value": 0.0,
+     "unit": "%",
+     "source": "model",
+     "note": "Read through a cache, Typical weekday, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 60.0,
+     "unit": "s",
+     "source": "model",
+     "note": "Read through a cache, Typical weekday, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1620.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Read through a cache, Typical weekday, at the approach's own settings"
+    }
+   },
+   "view": {
+    "p95_ms": {
+     "value": 5.0,
+     "unit": "ms",
+     "source": "model",
+     "note": "Read a view kept by events, Typical weekday, at the approach's own settings"
+    },
+    "errors": {
+     "value": 0.0,
+     "unit": "%",
+     "source": "model",
+     "note": "Read a view kept by events, Typical weekday, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 0.533333,
+     "unit": "s",
+     "source": "model",
+     "note": "Read a view kept by events, Typical weekday, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1880.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Read a view kept by events, Typical weekday, at the approach's own settings"
+    }
+   }
+  },
+  "sale": {
+   "direct": {
+    "p95_ms": {
+     "value": 250.0,
+     "unit": "ms",
+     "source": "model",
+     "note": "Query the database, Sale peak, at the approach's own settings"
+    },
+    "errors": {
+     "value": 79.1667,
+     "unit": "%",
+     "source": "model",
+     "note": "Query the database, Sale peak, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 0.0,
+     "unit": "s",
+     "source": "model",
+     "note": "Query the database, Sale peak, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1240.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Query the database, Sale peak, at the approach's own settings"
+    }
+   },
+   "cache": {
+    "p95_ms": {
+     "value": 41.3333,
+     "unit": "ms",
+     "source": "model",
+     "note": "Read through a cache, Sale peak, at the approach's own settings"
+    },
+    "errors": {
+     "value": 0.0,
+     "unit": "%",
+     "source": "model",
+     "note": "Read through a cache, Sale peak, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 60.0,
+     "unit": "s",
+     "source": "model",
+     "note": "Read through a cache, Sale peak, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1620.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Read through a cache, Sale peak, at the approach's own settings"
+    }
+   },
+   "view": {
+    "p95_ms": {
+     "value": 5.0,
+     "unit": "ms",
+     "source": "model",
+     "note": "Read a view kept by events, Sale peak, at the approach's own settings"
+    },
+    "errors": {
+     "value": 0.0,
+     "unit": "%",
+     "source": "model",
+     "note": "Read a view kept by events, Sale peak, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 2.0,
+     "unit": "s",
+     "source": "model",
+     "note": "Read a view kept by events, Sale peak, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1880.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Read a view kept by events, Sale peak, at the approach's own settings"
+    }
+   }
+  },
+  "slow_db": {
+   "direct": {
+    "p95_ms": {
+     "value": 250.0,
+     "unit": "ms",
+     "source": "model",
+     "note": "Query the database, Database degraded, at the approach's own settings"
+    },
+    "errors": {
+     "value": 61.0834,
+     "unit": "%",
+     "source": "model",
+     "note": "Query the database, Database degraded, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 0.0,
+     "unit": "s",
+     "source": "model",
+     "note": "Query the database, Database degraded, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1240.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Query the database, Database degraded, at the approach's own settings"
+    }
+   },
+   "cache": {
+    "p95_ms": {
+     "value": 226.933,
+     "unit": "ms",
+     "source": "model",
+     "note": "Read through a cache, Database degraded, at the approach's own settings"
+    },
+    "errors": {
+     "value": 0.0,
+     "unit": "%",
+     "source": "model",
+     "note": "Read through a cache, Database degraded, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 60.0,
+     "unit": "s",
+     "source": "model",
+     "note": "Read through a cache, Database degraded, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1620.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Read through a cache, Database degraded, at the approach's own settings"
+    }
+   },
+   "view": {
+    "p95_ms": {
+     "value": 5.0,
+     "unit": "ms",
+     "source": "model",
+     "note": "Read a view kept by events, Database degraded, at the approach's own settings"
+    },
+    "errors": {
+     "value": 0.0,
+     "unit": "%",
+     "source": "model",
+     "note": "Read a view kept by events, Database degraded, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 0.533333,
+     "unit": "s",
+     "source": "model",
+     "note": "Read a view kept by events, Database degraded, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1880.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Read a view kept by events, Database degraded, at the approach's own settings"
+    }
+   }
+  },
+  "reprice": {
+   "direct": {
+    "p95_ms": {
+     "value": 116.8,
+     "unit": "ms",
+     "source": "model",
+     "note": "Query the database, Catalog reprice, at the approach's own settings"
+    },
+    "errors": {
+     "value": 0.0,
+     "unit": "%",
+     "source": "model",
+     "note": "Query the database, Catalog reprice, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 0.0,
+     "unit": "s",
+     "source": "model",
+     "note": "Query the database, Catalog reprice, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1240.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Query the database, Catalog reprice, at the approach's own settings"
+    }
+   },
+   "cache": {
+    "p95_ms": {
+     "value": 44.5333,
+     "unit": "ms",
+     "source": "model",
+     "note": "Read through a cache, Catalog reprice, at the approach's own settings"
+    },
+    "errors": {
+     "value": 0.0,
+     "unit": "%",
+     "source": "model",
+     "note": "Read through a cache, Catalog reprice, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 60.0,
+     "unit": "s",
+     "source": "model",
+     "note": "Read through a cache, Catalog reprice, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1620.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Read through a cache, Catalog reprice, at the approach's own settings"
+    }
+   },
+   "view": {
+    "p95_ms": {
+     "value": 5.0,
+     "unit": "ms",
+     "source": "model",
+     "note": "Read a view kept by events, Catalog reprice, at the approach's own settings"
+    },
+    "errors": {
+     "value": 0.0,
+     "unit": "%",
+     "source": "model",
+     "note": "Read a view kept by events, Catalog reprice, at the approach's own settings"
+    },
+    "stale_s": {
+     "value": 3571.43,
+     "unit": "s",
+     "source": "model",
+     "note": "Read a view kept by events, Catalog reprice, at the approach's own settings"
+    },
+    "cost": {
+     "value": 1880.0,
+     "unit": "$",
+     "source": "model",
+     "note": "Read a view kept by events, Catalog reprice, at the approach's own settings"
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "schema_version": 1,
+ "file": "solutions.json",
+ "title": "Product page reads",
+ "chosen": "cache_9",
+ "inputs": {"rps": 400, "db_ms": 220, "keys": 2000, "writes": 5, "replica_rps": 250},
+ "scenarios": [
+  {"label": "Launch day", "inputs": {"rps": 1000, "db_ms": 40, "keys": 6000, "writes": 60, "replica_rps": 250}}
+ ],
+ "variants": [
+  {"id": "cache", "approach": "cache", "label": "Read through a cache", "settings": {"replicas": 2, "timeout_ms": 250, "ttl_s": 60, "swr": 0}, "off": []},
+  {"id": "cache_9", "approach": "cache", "label": "Cache, two-minute lifetime", "settings": {"replicas": 2, "timeout_ms": 250, "ttl_s": 120, "swr": 0}, "off": []},
+  {"id": "view", "approach": "view", "label": "Read a view kept by events", "settings": {"consumers": 2, "store_ms": 2}, "off": []}
+ ]
+}

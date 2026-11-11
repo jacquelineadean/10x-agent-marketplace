@@ -85,13 +85,16 @@ blueprint's code lives under `plugins/blueprint/src/blueprint/`, beside links to
 
 | Folder | Holds |
 | --- | --- |
-| `pack.py` | blueprint's registrations: the tad, sequence and erd kinds, the architecture, cards and list blocks, the prototype layout, their page parts, checks and the schema, lineage and sources commands |
+| `pack.py` | blueprint's registrations: the tad, sequence and erd kinds, the architecture, cards, list and solutions blocks, the prototype layout, their page parts, checks and the schema, lineage, solutions and sources commands |
 | `core/tad/` | technical architecture diagrams (moved from chronicle): spec reader, tier and lane layout, line routing, icons, the drawing with its motion, and the kind (`kind.py`) |
 | `core/` | kinds drawn as diagrams (`drawn.py`, `sequence.py`, `erd.py`), the architecture block (`architecture.py`), the prototype layout with cards and lists (`prototype.py`), checks (`checks.py`), schema rows and the catalog queries for ERDs (`schema.py`), Unity Catalog lineage as a TAD (`lineage.py`) |
-| `entrypoints/cli/` | the check that reads animation files beside the story, `schema` (CSV or a live read through the sources collectors), `lineage`, and the linked `sources` command |
-| `assets/` | the architecture, cards and lists, and prototype stylesheets and scripts; `motion/20-tad.css` |
-| `plugins/blueprint/examples/` | `animation-tad/`, `checkout-sequence/`, `orders-erd/`, `checkout-architecture/`, `oncall-prototype/` |
-| `plugins/blueprint/tests/` | `test_blueprint_*.py` with `blueprint_helpers.py`; TAD tests register the kind per test, builds run in their own process |
+| `core/solutions/` | the solution visualizer, no I/O: formulas read into trees and evaluated (`formula.py`), the solutions file's checks and plain form (`spec.py`), results per scenario and swings per control (`simulate.py`), the results as facts and `digest.md` with the 12 KB cap (`digest.py`), the exported decision's check and `decision.md` (`decision.py`), the block's HTML (`block.py`) |
+| `entrypoints/cli/` | the check that reads animation files beside the story, `schema` (CSV or a live read through the sources collectors), `lineage`, `solutions` with `new`, `simulate` and `decide` (`solutions.py`), and the linked `sources` command |
+| `assets/` | the architecture, cards and lists, prototype and solutions stylesheets and scripts (`css/63-solutions.css`; `js/84-solutions-model.js` walks the formula trees, `js/85-solutions.js` draws the controls, `js/86-solutions-feel.js` plays waits and failures); `motion/20-tad.css` |
+| `plugins/blueprint/skills/` | `architecture/`, `prototype/` and `solution-visualizer/`, each a `SKILL.md` with `references/` |
+| `plugins/blueprint/agents/` | `solution-scout.md`, the Haiku subagent that reads a repository into `context.md` or `locate.md` |
+| `plugins/blueprint/examples/` | `animation-tad/`, `checkout-sequence/`, `orders-erd/`, `checkout-architecture/`, `oncall-prototype/`, `catalog-solutions/` |
+| `plugins/blueprint/tests/` | `test_blueprint_*.py` with `blueprint_helpers.py`; TAD tests register the kind per test, builds run in their own process, and `test_blueprint_solutions.py` drives the built page in a local Chromium |
 
 briefing's code lives under `plugins/briefing/src/briefing/`, beside links to the engine and to `packages/sources`:
 

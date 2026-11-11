@@ -115,7 +115,7 @@ and judges every session; Claude reads only the digest and writes recommendation
 | chronicle plugin shell `plugins/chronicle/` (`.claude-plugin/plugin.json`, `skills/story/`, `skills/animation/`, `agents/researcher.md`, `scripts/chronicle`) | The story workflow (brief, gather, write, build, publish) and the animation workflow (write, build, look, deliver) | Markdown, POSIX sh | Jacqueline Dean |
 | chronicle builder `plugins/chronicle/src/chronicle/` | Facts and derive, story and widget checks, themes, diagram sanitizer, HTML renderer, page runtime (CSS and JS), SVG reader and watercolor painter; the animation timeline, GIF encoder and frame capture (TADs moved to blueprint) | Python 3.11+; standard library for rendering; NumPy and OpenCV for painting and raster exports; a local Chromium for frames and ffmpeg for MP4 | Jacqueline Dean |
 
-| blueprint plugin `plugins/blueprint/` (`.claude-plugin/plugin.json`, `skills/{architecture,prototype}/`, `scripts/blueprint`, `src/blueprint/`, `examples/`) | Architecture, sequence and ERD figures and pages, and prototypes: write, check, build, look, publish | Python 3.11+, standard library; Markdown, POSIX sh; a local Chromium for frames | Jacqueline Dean |
+| blueprint plugin `plugins/blueprint/` (`.claude-plugin/plugin.json`, `skills/{architecture,prototype,solution-visualizer}/`, `agents/solution-scout.md`, `scripts/blueprint`, `src/blueprint/`, `examples/`) | Architecture, sequence and ERD figures and pages, and prototypes: write, check, build, look, publish. The solution visualizer: model approaches to a design question, simulate, compare on a page, and implement the exported decision | Python 3.11+, standard library; Markdown, POSIX sh; a local Chromium for frames | Jacqueline Dean |
 | briefing plugin `plugins/briefing/` (`.claude-plugin/plugin.json`, `skills/{deck,dashboard}/`, `references/`, `scripts/briefing`, `src/briefing/`, `examples/`) | Decks and dashboards from facts: write, check, build, look, export, publish | Python 3.11+, standard library; Markdown, POSIX sh; a local Chromium for slide images and PDFs | Jacqueline Dean |
 | sources plugin shell `plugins/sources/` (`.claude-plugin/plugin.json`, `agents/gatherer.md`, `skills/connect/`, `recipes/`, `scripts/sources`) | Reads company systems through the session's connectors or the script collectors into facts, queries and a digest; sets up each system | Markdown, POSIX sh | Jacqueline Dean |
 | sources package `packages/sources/src/sources/` | Detection, the source picker, named connections, the facts and queries contract, the digest, the user-level database agent, the SQL guard, the HTTPS transport and the nine script-lane collectors (the GitHub one shared with impact-review) | Python 3.11+, standard library only; the user's `psql` and SQLcl | Jacqueline Dean |
@@ -181,6 +181,41 @@ Postgres or Oracle catalog live through the sources collectors, and `lineage` tu
 Databricks table's Unity Catalog lineage into a TAD. It links the engine and
 `packages/sources` and declares `"dependencies": ["sources"]`.
 
+blueprint's solution visualizer (spec 003) compares approaches to one design question
+before any is built, with the same split: Claude writes the model, code computes.
+
+```
+ user ──/blueprint:solution-visualizer──▶ Claude Code (skill)
+            │ 1. solution-scout (Haiku; Read, Grep, Glob, Write) reads the repository
+            │    into context.md (8 KB); sources:gatherer reads company numbers
+            ▼
+   run folder blueprint-runs/<slug>/ (local, never committed)
+     solutions.json   approaches, inputs, settings, scenarios, a formula per measure
+            │ 2. scripts/blueprint solutions simulate
+            ▼
+     formula text → tree (standard `ast` reader, nothing run as text) → every approach
+     in every scenario and at each control's min and max
+     solutions-results.json (facts, source `model`), solutions-digest.md (12 KB) ← Claude reads
+            │ 3. check, build: the `solutions` block ships the trees and the results;
+            │    the page's script walks the same trees and compares its first numbers
+            ▼
+     private claude.ai Artifact (after the user confirms): inputs, settings, variants,
+     scenarios, a wait played in real time, "Copy the decision"
+            │ 4. scripts/blueprint solutions decide --decision decision.json
+            ▼
+     decision.md: settings with keys, expectations per scenario, acceptance checks
+            │ 5. solution-scout locates each key (locate.md, 6 KB); Claude implements
+            ▼
+     the user's repository, after the user confirms the plan
+```
+
+`core/solutions/` holds the formula reader (`formula.py`), the file's checks and plain form
+(`spec.py`), the simulator (`simulate.py`), the results facts and digest (`digest.py`), the
+decision check and brief (`decision.py`) and the block (`block.py`). A variant is an
+approach with its own setting values; a setting with `off` can be turned off. The skill
+adds no hook and no MCP server: the workflow starts when a user asks, and the page reads
+nothing after it loads.
+
 sources (RFC-0007, spec 002) gives the data plugins read-only access to company systems.
 Its code, `packages/sources/src/sources/`, uses the same layout and imports neither the
 engine nor a plugin: `core/` detects which systems a session can reach, builds the source
@@ -228,7 +263,7 @@ tokenwise uses the same layout under `plugins/tokenwise/src/tokenwise/`: `core/`
 ## Cross-cutting concerns
 - **Auth:** token from `GITHUB_TOKEN` or `GH_TOKEN`, else `gh auth token --hostname <host>`. Read-only use only. Enterprise orgs with single sign-on need an SSO-authorized token. speedup reads `DD_API_KEY`, `DD_APP_KEY`, `DD_SITE`, `PROMETHEUS_URL`, `PROMETHEUS_TOKEN`; Datadog keys go only to Datadog API hosts, and a POST goes only to the RUM aggregation query path.
 - **Privacy:** run folders hold corporate data. They live outside the repo by default, and `.gitignore` blocks them inside it. Nothing is sent anywhere except GitHub API requests.
-- **Model tokens:** Claude never reads raw responses or `metrics.json` in full; the digest is capped at 12,000 bytes and `budget.json` checks the run against `--max-tokens` (default 25,000). In chronicle, briefing and blueprint, raw tool output and material stay inside the `sources:gatherer` and `researcher` subagents, which run on Sonnet as the impact-review and speedup writers do.
+- **Model tokens:** Claude never reads raw responses or `metrics.json` in full; the digest is capped at 12,000 bytes and `budget.json` checks the run against `--max-tokens` (default 25,000). In chronicle, briefing and blueprint, raw tool output and material stay inside the `sources:gatherer` and `researcher` subagents, which run on Sonnet as the impact-review and speedup writers do. blueprint's `solution-scout` only finds and copies lines from a repository, so it runs on Haiku with Read, Grep, Glob and Write; modeling and implementing stay in the session on the user's model.
 - **Untrusted text:** chronicle escapes every string from sources in HTML and in the page's JSON blob; links allow only http(s) and page anchors.
 - **Rate limits:** GraphQL allows 5,000 points per hour; the collector caches, paginates in pages of 100 and backs off on secondary limits.
 - **Secrets in logs:** the collector never prints the token or request headers.

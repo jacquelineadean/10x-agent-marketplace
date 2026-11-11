@@ -1,0 +1,17 @@
+{
+ "traffic": {
+  "views_rps": {"value": 400, "unit": "rps", "source": "datadog", "note": "product page views per second, weekday median, October 2026"},
+  "views_rps_sale": {"value": 2400, "unit": "rps", "source": "datadog", "note": "product page views per second, peak hour of the September 2026 sale"}
+ },
+ "database": {
+  "read_ms": {"value": 40, "unit": "ms", "source": "datadog", "note": "p95 of the price and stock query at low load, October 2026"},
+  "read_ms_degraded": {"value": 220, "unit": "ms", "source": "datadog", "note": "p95 of the same query during the 14 October 2026 slowdown"}
+ },
+ "catalog": {
+  "hot_products": {"value": 2000, "unit": "products", "source": "postgres", "note": "products with a view in the last hour, weekday median"},
+  "hot_products_sale": {"value": 6000, "unit": "products", "source": "postgres", "note": "products with a view in the sale's peak hour"},
+  "changes_ps": {"value": 5, "unit": "per second", "source": "postgres", "note": "price and stock changes per second, weekday median"},
+  "changes_ps_reprice": {"value": 180, "unit": "per second", "source": "postgres", "note": "price changes per second during the last catalog reprice"}
+ },
+ "derive": {}
+}
