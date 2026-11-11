@@ -21,7 +21,7 @@ This file covers branches, commits, pull requests and checks.
 | `<type>/<issue>-<slug>` | A change that closes an issue | `fix/42-ghes-sso-retry` |
 | `release/<plugin>-<major>.<minor>.x` | A hotfix line cut from a release tag | `release/impact-review-0.2.x` |
 | `release-please--*` | Opened by release-please; never by hand | `release-please--branches--main` |
-| `dependabot/*` | Opened by Dependabot | `dependabot/uv/dev-tools-1a2b3c` |
+| `dependabot/*` | Opened by Dependabot; PR lint skips it | `dependabot/uv/dev-tools-1a2b3c` |
 | `claude/<slug>` | Opened by a Claude Code session | `claude/release-management-workflows-7mc214` |
 
 Slugs are lower case with `a-z`, `0-9`, `.`, `_` and `-`.
@@ -39,7 +39,7 @@ Format: `<type>(<scope>)!: <subject>`. The scope and `!` are optional.
 | `revert` | Reverts an earlier commit | patch |
 | `docs`, `refactor`, `test`, `build`, `ci`, `chore` | No user-visible change | none |
 
-- Scopes: `impact-review`, `chronicle`, `speedup`, `tokenwise`, `contributing`, `marketplace`, `deps`, `release`, `security`.
+- Scopes: `impact-review`, `chronicle`, `speedup`, `tokenwise`, `sources`, `briefing`, `blueprint`, `contributing`, `marketplace`, `deps`, `release`, `security`.
   A new plugin adds its name to `pr-lint.yml` in the PR that adds the plugin.
 - The subject starts lower case, uses the imperative ("add", "fix") and has no trailing period.
 - `!` marks a breaking change. Below 1.0.0 it bumps the minor version, from 1.0.0 the major.
@@ -68,10 +68,10 @@ docs: describe the release flow in RELEASING.md
 
 | Workflow | Job | What it checks |
 | --- | --- | --- |
-| `CI` | format, lint, types, tests | `uv sync --locked`, `ruff format --check`, `ruff check`, mypy on the 4 plugin packages, `pytest` |
+| `CI` | format, lint, types, tests | `uv sync --locked`, `ruff format --check`, `ruff check`, mypy on the 7 plugin packages and 2 shared packages, `pytest` |
 | `CI` | plugin and release manifests | `.github/scripts/check-versions.sh` and `claude plugin validate .` |
 | `PR lint` | Conventional Commit title | Type, scope and subject rules above |
 | `PR lint` | Branch name | The branch patterns above |
 
 Dependabot opens one grouped PR a week for GitHub Actions (`ci(deps): ...`) and one for dev tools in `uv.lock` (`chore(deps): ...`).
-Neither type cuts a plugin release.
+Neither type cuts a plugin release. PR lint skips Dependabot PRs; GitHub counts the skipped checks as passed.

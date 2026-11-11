@@ -1,0 +1,40 @@
+/* -------------------------------------------------------------------- kpis */
+/* A tile's status shows as a colored rule, a dot and a word, so color is never alone. */
+.kpis { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .9rem; border-top: 0; }
+.kpis.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.kpis.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.kpis.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.kpi { --kpi: var(--rule); }
+.kpi.kpi-good { --kpi: var(--good); }
+.kpi.kpi-warn { --kpi: var(--warn); }
+.kpi.kpi-bad { --kpi: var(--bad); }
+.kpi, .kpi + .kpi {
+  padding: 1rem 1.1rem 1.05rem; border: 1px solid var(--rule); border-top: 4px solid var(--kpi);
+  border-radius: calc(8px * var(--round, 1)); background: var(--surface-2);
+}
+.kpi .stat-label { min-height: 0; }
+.kpi .stat-value { font-size: clamp(1.6rem, 2.6vw, 2.2rem); overflow-wrap: anywhere; }
+.kpi-target { margin: .3rem 0 0; font: 500 .8rem/1.35 var(--f-ui); color: var(--muted); }
+.kpi-status { margin: .45rem 0 0; font: 600 .78rem/1.2 var(--f-ui); color: var(--ink-2); display: flex; align-items: center; gap: .4rem; }
+.kpi-dot { width: .6rem; height: .6rem; border-radius: 50%; background: var(--kpi); flex: none; }
+.kpi .spark { display: block; width: 100%; height: 30px; margin-top: .5rem; }
+.kpi-note { margin: .4rem 0 0; font: 400 .78rem/1.4 var(--f-ui); color: var(--muted); }
+/* A refresh could not read this number again: the tile says so beside its own status. */
+.kpi-stale { margin: .4rem 0 0; font: 600 .74rem/1.3 var(--f-ui); color: var(--warn); }
+.slide-body .kpis { font-size: 1.2cqw; }
+.slide-body .kpi .stat-value { font-size: 2.6cqw; }
+@media (max-width: 760px) {
+  .kpis.cols-3, .kpis.cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.slide-body .kpi .stat-label, .slide-body .kpi-target, .slide-body .kpi-status { font-size: 1.05cqw; }
+
+/* ----------------------------------------------------------------- filters */
+.filters { margin: 0 0 1rem; }
+.filters-title { margin: 0 0 .5rem; font: 600 .74rem/1.3 var(--f-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.filter-row { display: flex; flex-wrap: wrap; gap: .8rem 1.4rem; }
+.filter { display: flex; align-items: center; gap: .5rem; font: 500 .85rem/1.2 var(--f-ui); color: var(--ink-2); }
+.filter select {
+  font: 500 .9rem/1.2 var(--f-ui); color: var(--ink); background: var(--surface-2); border: 1px solid var(--rule);
+  border-radius: calc(6px * var(--round, 1)); padding: .35rem 1.8rem .35rem .6rem;
+}
+.slice[hidden] { display: none; }

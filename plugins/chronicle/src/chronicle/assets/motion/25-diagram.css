@@ -1,4 +1,0 @@
-/* Drawn diagrams: packets that run along Claude's paths take the accent unless a part
-   sets its own --tone. */
-.chr-a .dg-svg .m-packet { --tone: var(--accent); }
-.chr-a .dg-svg { overflow: visible; }

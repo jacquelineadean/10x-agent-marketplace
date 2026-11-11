@@ -1,0 +1,93 @@
+/* ------------------------------------------------------------------ tour */
+/* A painted map with a dotted route through numbered stops. A stop opens its scene in the
+   same box; the page's bar carries the route with a walker at the open stop. */
+.tour .plate { margin: 0; }
+.tour .plate.inset { max-width: none; }
+.tr-head { display: flex; align-items: center; gap: .7rem; margin-bottom: .6rem; }
+.tr-where { flex: 1; margin: 0; font: 600 .85rem/1.3 var(--f-ui); color: var(--ink-2); }
+.tr-nav { display: flex; gap: .3rem; }
+.tr-nav button, .tr-btn {
+  padding: .4rem .75rem; font: 600 .82rem/1.2 var(--f-ui); color: var(--on-accent, var(--paper)); background: var(--accent);
+  border: 1px solid var(--accent); border-radius: calc(4px * var(--round, 1)); cursor: pointer; text-decoration: none;
+}
+.tr-nav .tr-prev, .tr-nav .tr-next { min-width: 2.2rem; color: var(--ink); background: var(--surface); border-color: var(--rule); }
+.tr-nav button:disabled { opacity: .4; cursor: default; }
+.tr-btn.ghost { color: var(--ink); background: transparent; border-color: var(--rule); }
+.tr-nav button:focus-visible, .tr-btn:focus-visible, .tr-stop:focus-visible, .tr-pin:focus-visible, .tr-mark:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.tr-hub { position: relative; }
+.tr-hub .frame { transition: transform .62s cubic-bezier(.5, 0, .3, 1), opacity .62s ease, filter .62s ease; }
+.tr-hub.tr-zoom .frame { transform: scale(2.6); opacity: 0; filter: blur(1.5px); }
+.tr-hub.tr-instant .frame { transition: none; }
+.tr-routes { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.tr-route-shadow { fill: none; stroke: color-mix(in srgb, var(--paper) 80%, transparent); stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+.tr-route { fill: none; stroke: var(--legacy, var(--accent)); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 1 16; }
+.tr-stop {
+  position: absolute; translate: -1.2rem -50%; display: flex; align-items: center; gap: .4rem; text-decoration: none; z-index: 3;
+}
+.tr-stop.lbl-left { flex-direction: row-reverse; translate: calc(-100% + 1.2rem) -50%; }
+.tr-badge {
+  width: 2.4rem; height: 2.4rem; border-radius: 50%; display: grid; place-items: center; flex: none;
+  font: 700 .95rem/1 var(--f-ui); color: #FFFFFF; background: var(--legacy, var(--accent)); box-shadow: 0 0 0 3px var(--paper);
+}
+.tr-stop.visited .tr-badge { background: var(--accent); }
+.tr-stop.current .tr-badge { box-shadow: 0 0 0 3px var(--paper), 0 0 0 6px var(--legacy, var(--accent)); }
+.tr-lbl {
+  font: 600 .78rem/1.2 var(--f-ui); color: #1E2026; background: rgba(252, 251, 247, .92); padding: 3px 7px;
+  border: 1px solid rgba(30, 32, 38, .2); border-radius: 3px; white-space: nowrap;
+}
+.tr-pin {
+  position: absolute; translate: -50% -50%; width: 18px; height: 18px; padding: 0; border-radius: 50%;
+  background: #2E58A6; border: 2px solid #FCFBF7; cursor: pointer; z-index: 2;
+}
+.tr-pin-card { position: absolute; left: .8rem; bottom: 3.2rem; max-width: 22rem; padding: .7rem .9rem; background: var(--surface); border-left: 3px solid #2E58A6; box-shadow: 0 2px 10px rgba(0, 0, 0, .12); z-index: 4; }
+.tr-pin-card h4 { margin: 0 0 .2rem; font: 600 .95rem/1.3 var(--f-ui); }
+.tr-pin-card dd, .tr-pin-card p { margin: 0; font: 400 .9rem/1.45 var(--f-body); }
+.tr-pins { margin: .8rem 0 0; font: 400 .95rem/1.5 var(--f-body); }
+.tr-pins dt { font: 600 .9rem/1.3 var(--f-ui); }
+.tr-pins dd { margin: 0 0 .5rem; }
+.js .tour .tr-pins { display: none; }
+.tr-hub-foot { margin: .6rem 0 0; font: 400 .9rem/1.4 var(--f-ui); color: var(--ink-2); }
+.tr-scene + .tr-scene { margin-top: 2.4rem; }
+.tour.live .tr-scenes { display: grid; }
+.tour.live .tr-scene { grid-area: 1 / 1; margin: 0; transition: transform .32s ease, opacity .32s ease; }
+.tour.live .tr-scene[hidden], .tour.live .tr-hub[hidden] { display: none; }
+.tr-scene.tr-enter { opacity: 0; transform: scale(.97); transition: none; }
+.tr-scene.tr-leave-l { opacity: 0; transform: translateX(-40px); }
+.tr-scene.tr-leave-r { opacity: 0; transform: translateX(40px); }
+.tr-scene.tr-enter-r { opacity: 0; transform: translateX(40px); transition: none; }
+.tr-scene.tr-enter-l { opacity: 0; transform: translateX(-40px); transition: none; }
+.tr-kicker { margin: 0; font: 600 .72rem/1.3 var(--f-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.tr-title { margin: .15rem 0 .3rem; font: 400 1.6rem/1.15 var(--f-display); }
+.tr-title:focus { outline: none; }
+.tr-text { max-width: var(--col); font: 400 1rem/1.55 var(--f-body); }
+.tr-scene .fig { margin-block: 1rem; }
+.tr-foot { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: space-between; margin-top: 1rem; }
+.tr-app.tr-full { overflow-y: auto; padding: 1rem max(16px, 3vw); background: var(--paper); }
+/* The route in the page's bar, where the progress track was. */
+.spanbar.has-trail .spanbar-track { display: none; }
+/* A game's tally and the route share the bar: the tally keeps its width, the route the rest. */
+.spanbar.has-tally.has-trail .spanbar-in { grid-template-columns: auto auto minmax(0, 1fr) auto auto; }
+.tr-trail { position: relative; height: 34px; min-width: 6rem; margin-inline: 14px; }
+.tr-road { position: absolute; left: 0; right: 0; top: 50%; border-top: 2px dashed var(--rule); }
+.tr-mark {
+  position: absolute; top: 50%; translate: -50% -50%; width: 22px; height: 22px; padding: 0; border-radius: 50%;
+  font: 700 .62rem/1 var(--f-ui); color: var(--muted); background: var(--surface); border: 1.5px solid var(--rule); cursor: pointer;
+}
+.tr-mark.passed { color: #FFFFFF; background: var(--accent); border-color: var(--accent); }
+.tr-mark.current { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--legacy, var(--accent)); }
+.tr-walker {
+  position: absolute; top: 2px; translate: -50% 0; width: 0; height: 0; transition: left .5s ease;
+  border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--legacy, var(--accent));
+}
+@media (max-width: 720px) {
+  .spanbar.has-tally.has-trail .spanbar-in { grid-template-columns: auto auto minmax(0, 1fr) auto; }
+}
+@media (max-width: 640px) {
+  .tr-badge { width: 1.9rem; height: 1.9rem; font-size: .8rem; }
+  .tr-lbl { display: none; }
+  .tr-stop, .tr-stop.lbl-left { translate: -50% -50%; }
+  .tr-mark { width: 16px; height: 16px; font-size: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tr-hub .frame, .tour.live .tr-scene, .tr-walker { transition: none; }
+}

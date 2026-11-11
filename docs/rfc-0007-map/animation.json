@@ -1,0 +1,389 @@
+{
+  "schema_version": 1,
+  "kind": "tad",
+  "facts_file": "facts.json",
+  "meta": {
+    "title": "{{rfc.id}} proposal map",
+    "kicker": "{{rfc.id}}, draft",
+    "description": "chronicle splits into a creative plugin and a data plugin that link one shared engine; read-only collectors or a gatherer subagent fill the run folder, and the engine builds every page and export.",
+    "sources": [
+      {
+        "label": "RFC-0007",
+        "detail": "DECISIONS/RFC-0007-chronicle-two-branches.md, 31 Oct 2026"
+      }
+    ]
+  },
+  "theme": {
+    "concept": "A design-review board on drafting film: graphite parts on a cool blueprint grid, madder rose for the creative branch, cobalt for the data branch, and amber pins where a question is still open.",
+    "palette": {
+      "paper": "#EEF2F4",
+      "ink": "#15202A",
+      "accent": "#1D5C96",
+      "legacy": "#9A6A12",
+      "series": [
+        "#1D5C96",
+        "#B23A62",
+        "#2E7D6B",
+        "#94640A",
+        "#6B5BA8",
+        "#47535E"
+      ],
+      "colors": {
+        "creative": "#B23A62",
+        "data": "#1D5C96",
+        "engine": "#47535E",
+        "pin": "#C88A12"
+      }
+    },
+    "fonts": {
+      "display": "Big Shoulders Display",
+      "body": "Archivo",
+      "ui": "Archivo",
+      "mono": "JetBrains Mono"
+    },
+    "dark": {
+      "paper": "#121A21",
+      "ink": "#E2E9EE"
+    }
+  },
+  "frame": {
+    "width": 1040,
+    "height": 750,
+    "title": false,
+    "captions": false,
+    "progress": false,
+    "background": "none"
+  },
+  "timing": {
+    "pace": 1.0,
+    "hold": 2.5
+  },
+  "tad": {
+    "direction": "down",
+    "groups": [
+      {
+        "id": "chron",
+        "label": "chronicle plugin, creative",
+        "style": "cluster"
+      },
+      {
+        "id": "brief",
+        "label": "briefing plugin, data",
+        "style": "cluster"
+      },
+      {
+        "id": "shared",
+        "label": "packages/",
+        "style": "boundary"
+      },
+      {
+        "id": "systems",
+        "label": "Company systems",
+        "style": "external"
+      },
+      {
+        "id": "cloud",
+        "label": "claude.ai",
+        "style": "external"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "cskills",
+        "label": "Creative skills",
+        "kind": "model",
+        "tech": "story, animation",
+        "group": "chron",
+        "tone": "c-creative"
+      },
+      {
+        "id": "painter",
+        "label": "Watercolor painter",
+        "kind": "function",
+        "tech": "NumPy, OpenCV",
+        "group": "chron",
+        "tone": "c-creative"
+      },
+      {
+        "id": "bskills",
+        "label": "Data skills",
+        "kind": "model",
+        "tech": "deck, dashboard",
+        "group": "brief",
+        "tone": "c-data"
+      },
+      {
+        "id": "brand",
+        "label": "Brand kit",
+        "kind": "storage",
+        "tech": "brand.json",
+        "group": "brief",
+        "tone": "c-data",
+        "tier": 0
+      },
+      {
+        "id": "gatherer",
+        "label": "Gatherer",
+        "kind": "model",
+        "tech": "subagent",
+        "group": "brief",
+        "tone": "c-data"
+      },
+      {
+        "id": "collectors",
+        "label": "Collectors",
+        "kind": "job",
+        "tech": "packages/sources",
+        "group": "brief",
+        "tone": "c-data"
+      },
+      {
+        "id": "engine",
+        "label": "chronicle-engine",
+        "kind": "service",
+        "tech": "one copy in git",
+        "group": "shared",
+        "tone": "c-engine"
+      },
+      {
+        "id": "run",
+        "label": "Run folder",
+        "kind": "storage",
+        "tech": "facts, digest",
+        "tone": "c-engine"
+      },
+      {
+        "id": "sys",
+        "label": "Source systems",
+        "kind": "db",
+        "tech": "GitHub, Oracle",
+        "group": "systems"
+      },
+      {
+        "id": "mcp",
+        "label": "MCP connectors",
+        "kind": "external",
+        "tech": "your connectors",
+        "group": "systems"
+      },
+      {
+        "id": "page",
+        "label": "Artifact page",
+        "kind": "client",
+        "tech": "private link",
+        "group": "cloud",
+        "tier": 3
+      },
+      {
+        "id": "exports",
+        "label": "Exports",
+        "kind": "storage",
+        "tech": "SVG, GIF, MP4, PDF",
+        "tone": "c-engine",
+        "tier": 3
+      }
+    ],
+    "edges": [
+      {
+        "from": "cskills",
+        "to": "painter",
+        "label": "drawings"
+      },
+      {
+        "from": "painter",
+        "to": "engine",
+        "label": "paintings"
+      },
+      {
+        "from": "cskills",
+        "to": "engine",
+        "label": "story.json"
+      },
+      {
+        "from": "bskills",
+        "to": "engine",
+        "label": "deck.json"
+      },
+      {
+        "from": "bskills",
+        "to": "brand"
+      },
+      {
+        "from": "bskills",
+        "to": "collectors",
+        "label": "gather"
+      },
+      {
+        "from": "bskills",
+        "to": "gatherer",
+        "label": "delegate"
+      },
+      {
+        "from": "collectors",
+        "to": "sys",
+        "label": "read-only"
+      },
+      {
+        "from": "gatherer",
+        "to": "mcp",
+        "label": "read-only"
+      },
+      {
+        "from": "collectors",
+        "to": "run",
+        "label": "facts"
+      },
+      {
+        "from": "gatherer",
+        "to": "run",
+        "label": "facts"
+      },
+      {
+        "from": "run",
+        "to": "engine",
+        "label": "digest"
+      },
+      {
+        "from": "engine",
+        "to": "page",
+        "label": "publish"
+      },
+      {
+        "from": "engine",
+        "to": "exports"
+      },
+      {
+        "from": "cskills",
+        "to": "gatherer",
+        "label": "if installed",
+        "style": "async"
+      }
+    ],
+    "flows": [
+      {
+        "id": "creative",
+        "label": "A creative request becomes a painted page",
+        "path": [
+          "cskills",
+          "painter",
+          "engine",
+          "page"
+        ],
+        "tone": "c-creative"
+      },
+      {
+        "id": "data",
+        "label": "A data request runs read-only collectors",
+        "path": [
+          "bskills",
+          "collectors",
+          "sys",
+          "collectors",
+          "run",
+          "engine",
+          "page"
+        ]
+      },
+      {
+        "id": "mcplane",
+        "label": "The gatherer reads MCP connectors",
+        "path": [
+          "bskills",
+          "gatherer",
+          "mcp",
+          "gatherer",
+          "run"
+        ],
+        "tone": "s3"
+      },
+      {
+        "id": "refresh",
+        "label": "Refresh replays saved queries",
+        "path": [
+          "collectors",
+          "sys",
+          "collectors",
+          "run",
+          "engine",
+          "exports"
+        ],
+        "tone": "s5"
+      },
+      {
+        "id": "borrow",
+        "label": "chronicle borrows the gatherer",
+        "path": [
+          "cskills",
+          "gatherer",
+          "run"
+        ],
+        "tone": "c-creative"
+      }
+    ],
+    "legend": {
+      "sync": "Call or file",
+      "async": "Open question"
+    }
+  },
+  "steps": [
+    {
+      "caption": "chronicle takes painted, illustrated requests and briefing takes data requests; both plugins link the same engine folder.",
+      "pulse": [
+        "engine"
+      ]
+    },
+    {
+      "caption": "A creative request: the story skill draws in SVG, the painter washes it in watercolor, and the engine renders the page.",
+      "show": [
+        "painter",
+        "page"
+      ],
+      "flow": [
+        "creative"
+      ]
+    },
+    {
+      "caption": "A data request: read-only collectors query company systems and write facts, and Claude reads only the digest.",
+      "show": [
+        "collectors",
+        "sys",
+        "run",
+        "brand"
+      ],
+      "flow": [
+        "data"
+      ]
+    },
+    {
+      "caption": "Without keys, the gatherer subagent reads MCP connectors; raw output stays inside it and only facts come back.",
+      "show": [
+        "gatherer",
+        "mcp"
+      ],
+      "flow": [
+        "mcplane"
+      ]
+    },
+    {
+      "caption": "Refresh replays the saved queries with no model call, then the engine rebuilds the page and the slide exports.",
+      "show": [
+        "exports"
+      ],
+      "flow": [
+        "refresh"
+      ]
+    },
+    {
+      "caption": "The dashed line is still open: chronicle could borrow briefing's gatherer for company facts, with no dependency between plugins.",
+      "draw": [
+        "cskills-gatherer"
+      ],
+      "state": {
+        "cskills-gatherer": "planned"
+      },
+      "flow": [
+        "borrow"
+      ]
+    }
+  ]
+}

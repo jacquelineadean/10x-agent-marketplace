@@ -1,0 +1,6 @@
+{
+ "title": "Sort the cards",
+ "summary": "The reader sorts each card into its group; the score counts right first tries.",
+ "data": {"buckets": ["Marsh", "Beach", "Forest"], "items": [{"text": "Fiddler crab", "bucket": "Marsh"}, {"text": "Sanderling", "bucket": "Beach"}, {"text": "Painted bunting", "bucket": "Forest"}], "done": "Every animal is home."},
+ "fallback": "Fiddler crabs live in the marsh, sanderlings on the beach and painted buntings in the forest."
+}

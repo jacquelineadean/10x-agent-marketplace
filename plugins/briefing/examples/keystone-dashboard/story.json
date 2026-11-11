@@ -1,0 +1,64 @@
+{
+ "schema_version": 1,
+ "layout": "dashboard",
+ "meta": {
+  "title": "Keystone migration dashboard",
+  "kicker": "Fernhill Outfitters · Platform Engineering",
+  "dek": "{{migration.share_now}} of order traffic now runs on Keystone; payments cut over on {{migration.payments_cutover|date}}.",
+  "description": "KPI dashboard for the Keystone order platform migration, built from the Keystone example's facts. Demonstration data.",
+  "as_of": "2026-10-14"
+ },
+ "theme": {"concept": "Fernhill's own brand kit: forest green on warm paper, set in Fraunces and DM Sans."},
+ "sources": [
+  {"id": "github", "label": "GitHub", "detail": "Deployments and merged pull requests, fernhill organization.", "as_of": "2026-10-14"},
+  {"id": "jira", "label": "Jira", "detail": "KEY project sprints and story points.", "as_of": "2026-10-14"},
+  {"id": "datadog", "label": "Datadog", "detail": "APM latency, SLO history, traffic share and incidents.", "as_of": "2026-10-14"},
+  {"id": "analytics", "label": "Product analytics", "detail": "Checkout funnel conversion.", "as_of": "2026-09-30"},
+  {"id": "finance", "label": "Finance", "detail": "Monthly run cost by platform.", "as_of": "2026-09-30"}
+ ],
+ "chapters": [
+  {
+   "id": "headline",
+   "title": "Headline measures",
+   "dek": "Each tile against the target set at kickoff; hover a number for its source and query.",
+   "blocks": [
+    {
+     "type": "kpi",
+     "items": [
+      {"label": "Order traffic on Keystone", "value": "@migration.share_now", "target": 80, "better": "up", "spark": "@migration.share"},
+      {"label": "Deploys per week", "value": "@delivery.deploys_now", "target": 30, "better": "up", "spark": "@delivery.deploys_per_week"},
+      {"label": "Lead time for changes", "value": "@delivery.lead_now", "target": 2, "better": "down", "spark": "@delivery.lead_time_days"},
+      {"label": "Change failure rate", "value": "@delivery.cfr_now", "target": 5, "better": "down", "spark": "@delivery.change_failure_pct"},
+      {"label": "Checkout p95 latency", "value": "@experience.p95_now", "target": 500, "better": "down", "spark": "@experience.p95_ms"},
+      {"label": "Checkout conversion", "value": "@experience.conversion_now", "target": 3.5, "better": "up", "spark": "@experience.conversion_pct"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "delivery",
+   "title": "Delivery and experience",
+   "blocks": [
+    {"type": "chart", "chart": "line", "title": "Deploys per week", "source": "github", "y_min": 0, "data": {"x": "@delivery.month", "series": [{"name": "Deploys per week", "values": "@delivery.deploys_per_week"}]}},
+    {"type": "chart", "chart": "line", "title": "Checkout p95 latency, ms", "source": "datadog", "unit": "ms", "format": {"y": "int"}, "y_min": 0, "data": {"x": "@experience.month", "series": [{"name": "Checkout p95", "values": "@experience.p95_ms"}]}}
+   ]
+  },
+  {
+   "id": "rollout",
+   "title": "Fulfillment rollout by state",
+   "dek": "Share of a state's orders on the new fulfillment service, by week.",
+   "blocks": [
+    {"type": "filters", "by": [{"key": "state", "label": "State", "options": {"NV": "Nevada", "OR": "Oregon", "WA": "Washington", "CA": "California"}, "default": "NV"}]},
+    {"type": "chart", "chart": "line", "slice": "state", "title": "Orders on the new service, %", "source": "datadog", "unit": "%", "y_min": 0, "y_max": 100, "span": 2, "data": {"x": "@rollout.week", "series": [{"name": "Share of orders", "values": "@rollout.share.{state}"}]}}
+   ]
+  },
+  {
+   "id": "cost",
+   "title": "Cost and plan",
+   "blocks": [
+    {"type": "chart", "chart": "bars", "stacked": true, "title": "Monthly run cost, thousands of dollars", "source": "finance", "format": {"y": "money_k"}, "data": {"categories": "@cost.month", "series": [{"name": "Monolith", "values": "@cost.monolith_k", "color": "legacy"}, {"name": "Keystone cloud", "values": "@cost.cloud_k", "color": "accent"}]}},
+    {"type": "table", "title": "Customer journeys, then and now", "source": "datadog", "columns": ["Journey", "Monolith", "Keystone"], "rows": [["Browse a category", "{{journey.browse_then}}", "{{journey.browse_now}}"], ["Add to cart", "{{journey.cart_then}}", "{{journey.cart_now}}"], ["Pay", "{{journey.pay_then}}", "{{journey.pay_now}}"]]}
+   ]
+  }
+ ]
+}

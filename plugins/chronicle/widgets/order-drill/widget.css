@@ -1,0 +1,11 @@
+.w-order-drill .od-pool { display: flex; flex-wrap: wrap; gap: .5rem; margin: .8rem 0; }
+.w-order-drill .od-chip, .w-order-drill .od-again {
+  font: 600 .9rem/1.2 var(--f-ui); padding: .55rem .9rem; border: 1px solid var(--rule);
+  background: var(--surface); color: var(--ink); border-radius: calc(4px * var(--round, 1)); cursor: pointer;
+}
+.w-order-drill .od-chip:focus-visible, .w-order-drill .od-again:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.w-order-drill .od-miss { border-color: var(--legacy); animation: od-shake .4s; }
+.w-order-drill .od-done { margin: 0; padding-left: 1.4rem; font: 400 1rem/1.6 var(--f-body); }
+.w-order-drill .od-msg { margin: .4rem 0; font: 400 .95rem/1.4 var(--f-ui); color: var(--ink-2); }
+@keyframes od-shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@media (prefers-reduced-motion: reduce) { .w-order-drill .od-miss { animation: none; } }

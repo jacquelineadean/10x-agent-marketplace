@@ -1,0 +1,141 @@
+"""briefing's commands and its check: `export` writes Slides or Dashboard content or an
+upload manifest for Google or Microsoft, `slides` prints a built deck to a PNG per slide
+and a PDF, `refresh` reads the script-lane queries again and rebuilds.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from datetime import date
+from pathlib import Path
+from typing import Any
+
+from chronicle_engine import registry
+from chronicle_engine.connectors.browser import devtools, shoot
+from chronicle_engine.connectors.files import store
+from chronicle_engine.entrypoints.cli import main as engine
+from chronicle_engine.entrypoints.cli import runs
+
+from briefing.core import checks, export, upload
+
+# The deck's logical slide size; 13.333 x 7.5 inches is PowerPoint's 16:9 page.
+SLIDE = (1600, 900)
+PAGE_IN = (13.333, 7.5)
+
+
+def check(checked: registry.Checked) -> None:
+    """briefing's checks, over the story and the animation files the engine read."""
+    story, facts, report = checked.story, checked.facts, checked.report
+    checks.kpis(story, facts, report)
+    checks.sliced(story, facts, report)
+    checks.slides(story, report)
+    queries = checked.path.parent / "queries.json"
+    if queries.is_file():
+        data = store.read_json(queries)
+        entries = data.get("queries", {}) if isinstance(data, dict) else {}
+        checks.stale(entries if isinstance(entries, dict) else {}, date.today(), report)
+    checks.animations(story, checked.files, report)
+
+
+def export_parser(sub: Any) -> None:
+    p = sub.add_parser("export", help="write Slides or Dashboard content, or an upload manifest")
+    p.add_argument("story", type=Path, help="path to story.json")
+    p.add_argument("--to", choices=("slides", "dashboard", *upload.SERVICES), required=True)
+    p.add_argument("--out", type=Path, help="build folder (default: build/ beside the story)")
+    p.add_argument("--file", type=Path, help="for google or microsoft: the deck's .pptx or .pdf")
+
+
+def export_run(args: argparse.Namespace) -> int:
+    story = store.read_json(args.story)
+    if args.to in upload.SERVICES:
+        return _upload(args, story)
+    facts = runs.load_facts(args.story, story, None, default_required=True)
+    data = export.slides(story, facts) if args.to == "slides" else export.dashboard(story, facts)
+    out = (args.out or args.story.parent / "build") / f"{args.to}.json"
+    store.write_text(out, json.dumps(data, indent=1, ensure_ascii=False) + "\n")
+    print(f"wrote {out}")
+    if args.to == "slides":
+        print(f"next: briefing slides {args.story} --png, for the slide images it names")
+    return 0
+
+
+def _upload(args: argparse.Namespace, story: Any) -> int:
+    """Write build/upload.json: what Claude uploads, and the question the user answers first."""
+    if args.file is None:
+        print(
+            f"error: --to {args.to} needs --file: the .pptx from claude.ai's Slides "
+            "(export --to slides) or build/deck.pdf (slides --pdf)",
+            file=sys.stderr,
+        )
+        return 1
+    try:
+        data = upload.manifest(args.to, args.file.resolve(), store.read_bytes(args.file), story)
+    except upload.UploadError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    out = (args.out or args.story.parent / "build") / "upload.json"
+    store.write_text(out, json.dumps(data, indent=1, ensure_ascii=False) + "\n")
+    print(f"wrote {out}")
+    print(f"ask first: {data['confirm']}")
+    return 0
+
+
+def refresh_parser(sub: Any) -> None:
+    p = sub.add_parser("refresh", help="read the script-lane queries again, then rebuild")
+    p.add_argument("story", type=Path, help="path to story.json")
+    p.add_argument("--until", type=date.fromisoformat, help="the as-of date (default today)")
+    p.add_argument("--brand", default="run", help=engine.BRAND_HELP)
+
+
+def refresh_run(args: argparse.Namespace) -> int:
+    """Gather with each window rolled forward, then build; no model reads anything."""
+    folder = args.story.parent
+    if not (folder / "queries.json").is_file():
+        print(
+            f"error: {folder / 'queries.json'} does not exist; gather facts first", file=sys.stderr
+        )
+        return 1
+    from sources.entrypoints.cli import gather
+
+    gathered = gather.run(folder, roll=True, until=args.until, strict=False)
+    built = engine.main(["build", str(args.story), "--brand", args.brand])
+    return gathered or built
+
+
+def slides_parser(sub: Any) -> None:
+    p = sub.add_parser("slides", help="print a built deck: a PNG per slide and a PDF")
+    p.add_argument("story", type=Path, help="path to story.json (its build/ is printed)")
+    p.add_argument("--out", type=Path, help="build folder (default: build/ beside the story)")
+    p.add_argument("--png", action="store_true", help="write build/slides/slide-NN.png")
+    p.add_argument("--pdf", action="store_true", help="write build/deck.pdf")
+    p.add_argument("--browser", help="Chromium or Chrome to use (default: first found)")
+
+
+def slides_run(args: argparse.Namespace) -> int:
+    out = args.out or args.story.parent / "build"
+    page = out / "index.html"
+    if not page.exists():
+        print(f"error: {page} does not exist; run build first", file=sys.stderr)
+        return 1
+    if not (args.png or args.pdf):
+        print("error: pass --png, --pdf or both", file=sys.stderr)
+        return 1
+    width, height = SLIDE
+    with devtools.Capture(shoot.find(args.browser)) as capture:
+        capture.open(page.resolve().as_uri() + "#still", width, height)
+        count = int(capture.evaluate("document.querySelectorAll('.deck .slide').length"))
+        if args.png:
+            for n in range(count):
+                capture.evaluate(
+                    f"window.briefingDeck.show({n}, true);"
+                    " new Promise(r => requestAnimationFrame(() => setTimeout(r, 150)))"
+                )
+                image = out / "slides" / f"slide-{n + 1:02d}.png"
+                store.write_bytes(image, capture.png(width, height))
+            print(f"wrote {count} slide images to {out / 'slides'}")
+        if args.pdf:
+            store.write_bytes(out / "deck.pdf", capture.pdf(*PAGE_IN))
+            print(f"wrote {out / 'deck.pdf'} ({count} pages)")
+    return 0

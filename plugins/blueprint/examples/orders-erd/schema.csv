@@ -1,0 +1,15 @@
+table,column,type,key,references
+customers,id,bigint,pk,
+customers,email,text,,
+orders,id,bigint,pk,
+orders,customer_id,bigint,fk,customers.id
+orders,placed_at,timestamptz,,
+order_items,id,bigint,pk,
+order_items,order_id,bigint,fk,orders.id
+order_items,sku,text,fk,products.sku
+order_items,quantity,int,,
+products,sku,text,pk,
+products,name,text,,
+payments,id,bigint,pk,
+payments,order_id,bigint,fk,orders.id
+payments,status,text,,

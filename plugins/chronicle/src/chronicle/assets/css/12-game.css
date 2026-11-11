@@ -1,0 +1,98 @@
+/* ------------------------------------------------------------------ game */
+/* Holes: a quiz scored in strokes against par. Under par shows in the theme's amber, par
+   in its green, over par in its red; color always comes with words or a shape. */
+.hole { margin-block: 2rem; padding: 1.1rem 1.2rem 1.2rem; background: var(--surface); border-radius: calc(6px * var(--round, 1)); }
+.hl-head { display: grid; grid-template-columns: auto 1fr auto; gap: .9rem; align-items: center; }
+.hl-no {
+  width: 2.4rem; height: 2.4rem; border-radius: 50%; display: grid; place-items: center;
+  font: 400 1.35rem/1 var(--f-display); color: var(--paper); background: var(--accent);
+}
+.hl-kick { margin: 0; font: 600 .72rem/1.2 var(--f-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.hl-name { margin: .1rem 0 0; font: 400 1.4rem/1.15 var(--f-display); }
+.hl-meta { display: flex; gap: 1rem; margin: 0; }
+.hl-meta div { text-align: center; }
+.hl-meta dt { font: 600 .66rem/1.2 var(--f-ui); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.hl-meta dd { margin: .15rem 0 0; font: 400 1.5rem/1 var(--f-display); }
+.hl-list { list-style: none; margin: 1rem 0 0; padding: 0; }
+.hl-q + .hl-q { margin-top: 1.2rem; }
+.hl-count { margin: 0; font: 600 .72rem/1.2 var(--f-ui); color: var(--muted); }
+.hl-text { margin: .3rem 0 .7rem; font: 600 1.05rem/1.4 var(--f-ui); }
+.hl-text:focus { outline: none; }
+.hl-opts { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.hl-opt {
+  width: 100%; display: flex; gap: .7rem; align-items: baseline; text-align: left; padding: .6rem .8rem;
+  font: 400 .98rem/1.4 var(--f-body); color: var(--ink); background: var(--paper); border: 1px solid var(--rule);
+  border-radius: calc(4px * var(--round, 1)); cursor: pointer;
+}
+.hl-opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.hl-key { font: 700 .78rem/1 var(--f-ui); color: var(--muted); }
+.hl-opt.miss { opacity: .55; text-decoration: line-through; border-style: dashed; cursor: default; }
+.hl-opt.miss .hl-key::after { content: " ✕"; color: var(--bad); }
+.hl-opt.hit { border-color: var(--good); box-shadow: inset 3px 0 0 var(--good); }
+.hl-opt.hit .hl-key::after { content: " ✓"; color: var(--good); }
+.hl-opt:disabled { cursor: default; }
+.hl-explain { margin-top: .6rem; font: 400 .95rem/1.5 var(--f-body); color: var(--ink-2); }
+.hole.live .hl-q:not(.answered) .hl-explain { display: none; }
+.hl-feedback { min-height: 1.2em; margin: .7rem 0 0; font: 400 .92rem/1.4 var(--f-ui); color: var(--ink-2); }
+/* A finished hole shows its result; the live line still announces it to screen readers. */
+.hole.done .hl-feedback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.hl-btn {
+  display: inline-block; margin-top: .8rem; padding: .55rem 1rem; font: 600 .9rem/1.2 var(--f-ui); color: var(--paper);
+  background: var(--accent); border: 1px solid var(--accent); border-radius: calc(4px * var(--round, 1)); cursor: pointer; text-decoration: none;
+}
+.hl-btn.ghost { color: var(--ink); background: transparent; border-color: var(--rule); }
+.hl-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.hl-result { display: grid; grid-template-columns: auto 1fr; gap: .3rem 1.1rem; align-items: center; margin-top: .4rem; }
+.hl-stamp {
+  grid-row: span 2; width: 5.6rem; height: 5.6rem; border-radius: 50%; display: grid; place-content: center; text-align: center;
+  border: 2px solid currentColor; color: var(--good); transform: rotate(-8deg);
+  font: 600 .62rem/1.2 var(--f-ui); letter-spacing: .12em; text-transform: uppercase;
+}
+.hl-stamp b { display: block; font: 400 2rem/1 var(--f-display); letter-spacing: 0; text-transform: none; }
+.hl-result.under .hl-stamp { color: var(--warn); }
+.hl-result.over .hl-stamp { color: var(--bad); }
+.hl-result-name { margin: 0; font: 400 1.8rem/1.05 var(--f-display); }
+.hl-result-name:focus { outline: none; }
+.hl-result-line { margin: 0; font: 400 .95rem/1.45 var(--f-ui); color: var(--ink-2); }
+.hl-review-h, .hl-review, .hl-actions { grid-column: 1 / -1; }
+.hl-review-h { margin: .8rem 0 0; font: 600 .78rem/1.2 var(--f-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.hl-review { list-style: none; margin: .3rem 0 0; padding: 0; display: grid; gap: .5rem; }
+.hl-review li { padding: .6rem .8rem; background: var(--paper); border-radius: calc(4px * var(--round, 1)); }
+.hl-review .hl-text { margin: 0 0 .2rem; font-size: .95rem; }
+.hl-right { margin: 0; font: 600 .92rem/1.4 var(--f-ui); color: var(--good); }
+.hl-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+.hole.pop .hl-stamp { animation: hl-pop .5s cubic-bezier(.2, 1.6, .4, 1); }
+@keyframes hl-pop { from { transform: rotate(-8deg) scale(.4); opacity: 0; } to { transform: rotate(-8deg) scale(1); opacity: 1; } }
+
+/* The tally: a flag per hole in the page's bar, where the progress track was. */
+.spanbar.has-tally .spanbar-track { display: none; }
+.tally { display: flex; align-items: center; gap: 2px; min-width: 0; height: 34px; overflow-x: auto; scrollbar-width: none; }
+.tally button { flex: none; width: 22px; height: 34px; padding: 0; border: 0; background: none; cursor: pointer; }
+.tally button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.tally svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.tally .cup { fill: var(--rule); }
+.tally .pole { stroke: var(--ink-2); stroke-width: 1.2; }
+.tally .cloth { fill: none; stroke: var(--ink-2); stroke-width: 1.2; }
+.tally-flag.started .cloth { fill: var(--accent-wash); stroke: var(--accent); }
+.tally-flag.even .cloth { fill: var(--good); stroke: var(--good); }
+.tally-flag.under .cloth { fill: var(--warn); stroke: var(--warn); }
+.tally-flag.over .cloth { fill: var(--bad); stroke: var(--bad); }
+.tally-card rect, .tally-card line { fill: none; stroke: var(--ink-2); stroke-width: 1.2; }
+
+/* The scorecard: a circle marks under par, a square over par, doubled at two or more. */
+.scorecard { margin-block: 2rem; }
+.sc-scroll { overflow-x: auto; }
+.sc-table { border-collapse: collapse; min-width: 28rem; font: 400 .95rem/1.2 var(--f-ui); }
+.sc-table th, .sc-table td { padding: .45rem .4rem; text-align: center; border-bottom: 1px solid var(--rule); }
+.sc-table th[scope="row"] { text-align: left; color: var(--muted); font-weight: 600; }
+.sc-table thead button { font: 700 .9rem/1 var(--f-ui); color: var(--accent-text); background: none; border: 0; cursor: pointer; padding: .2rem .4rem; }
+.sc-mark { display: inline-grid; place-items: center; min-width: 1.7em; height: 1.7em; }
+.sc-mark.under, .sc-mark.under2 { border: 1.5px solid var(--warn); border-radius: 50%; }
+.sc-mark.under2 { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--warn); }
+.sc-mark.over, .sc-mark.over2 { border: 1.5px solid var(--bad); }
+.sc-mark.over2 { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--bad); }
+.sc-big { margin: 1rem 0 0; font: 400 3rem/1 var(--f-display); }
+.sc-words { margin: .3rem 0 0; font: 400 .95rem/1.45 var(--f-ui); color: var(--ink-2); }
+@media (prefers-reduced-motion: reduce) {
+  .hole.pop .hl-stamp { animation: none; }
+}

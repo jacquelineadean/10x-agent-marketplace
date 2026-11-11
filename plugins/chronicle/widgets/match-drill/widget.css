@@ -1,0 +1,12 @@
+.w-match-drill .md-grid { display: grid; grid-template-columns: minmax(8rem, 1fr) 2fr; gap: .6rem 1rem; margin: .8rem 0; }
+.w-match-drill .md-col { display: flex; flex-direction: column; gap: .5rem; }
+.w-match-drill button {
+  font: 500 .92rem/1.35 var(--f-ui); text-align: left; padding: .55rem .8rem; border: 1px solid var(--rule);
+  background: var(--surface); color: var(--ink); border-radius: calc(4px * var(--round, 1)); cursor: pointer;
+}
+.w-match-drill .md-term { font-weight: 700; }
+.w-match-drill button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.w-match-drill button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.w-match-drill .md-done { opacity: .55; text-decoration: line-through; cursor: default; }
+.w-match-drill .md-msg { margin: .4rem 0; font: 400 .95rem/1.4 var(--f-ui); color: var(--ink-2); }
+@media (max-width: 560px) { .w-match-drill .md-grid { grid-template-columns: 1fr; } }

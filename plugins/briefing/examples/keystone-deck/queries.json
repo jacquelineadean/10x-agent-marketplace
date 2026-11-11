@@ -1,0 +1,15 @@
+{
+ "schema_version": 1,
+ "queries": {
+  "delivery": {"system": "github", "lane": "mcp", "connection": "github", "query": "deployments and merged pull requests, org:fernhill, by week, 2025-03-01..2026-10-14", "window": {"start": "2025-03-01", "end": "2026-10-14"}, "as_of": "2026-10-14"},
+  "delivery.cfr_now": {"system": "datadog", "lane": "mcp", "connection": "datadog", "query": "sum:deploys.failed{env:prod} / sum:deploys{env:prod}, September 2026", "window": {"start": "2026-09-01", "end": "2026-09-30"}, "as_of": "2026-10-14"},
+  "delivery.mttr_now": {"system": "datadog", "lane": "mcp", "connection": "datadog", "query": "incidents resolved, median minutes to restore, September 2026", "window": {"start": "2026-09-01", "end": "2026-09-30"}, "as_of": "2026-10-14"},
+  "experience": {"system": "datadog", "lane": "mcp", "connection": "datadog", "query": "p95:trace.http.request.duration{service:checkout}.rollup(avg, 2592000)", "window": {"start": "2025-03-01", "end": "2026-09-30"}, "as_of": "2026-10-14"},
+  "experience.conversion_now": {"system": "analytics", "lane": "mcp", "connection": "analytics", "query": "checkout funnel conversion, September 2026", "window": {"start": "2026-09-01", "end": "2026-09-30"}, "as_of": "2026-09-30"},
+  "migration": {"system": "datadog", "lane": "mcp", "connection": "datadog", "query": "sum:trace.http.request.hits{platform:keystone} by month as share of all requests", "window": {"start": "2025-07-01", "end": "2026-09-30"}, "as_of": "2026-10-14"},
+  "reliability": {"system": "datadog", "lane": "mcp", "connection": "datadog", "query": "SLO history, 30-day availability by month; incidents by severity", "window": {"start": "2025-09-01", "end": "2026-09-30"}, "as_of": "2026-10-14"},
+  "plan": {"system": "jira", "lane": "mcp", "connection": "claude_ai_Atlassian", "query": "JQL project = KEY AND sprint in closedSprints() ORDER BY sprint", "window": {"start": "2025-03-03", "end": "2026-10-14"}, "as_of": "2026-10-14"},
+  "cost": {"system": "finance", "lane": "mcp", "connection": "finance", "query": "monthly run cost by platform from cloud invoices and the data center allocation", "window": {"start": "2025-03-01", "end": "2026-09-30"}, "as_of": "2026-09-30"},
+  "rollout": {"system": "datadog", "lane": "mcp", "connection": "datadog", "query": "share of orders on the new fulfillment service, by state and week", "window": {"start": "2026-06-08", "end": "2026-10-12"}, "as_of": "2026-10-14"}
+ }
+}

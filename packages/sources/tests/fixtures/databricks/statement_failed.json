@@ -1,0 +1,10 @@
+{
+ "statement_id": "01ef8b2e",
+ "status": {
+  "state": "FAILED",
+  "error": {
+   "error_code": "BAD_REQUEST",
+   "message": "[TABLE_OR_VIEW_NOT_FOUND] The table or view `ordrs` cannot be found."
+  }
+ }
+}

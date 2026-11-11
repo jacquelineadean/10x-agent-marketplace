@@ -1,4 +1,4 @@
-# The four quality gates from AGENTS.md and CONSTITUTION.md (4 plugins), plus manifest checks.
+# The four quality gates from AGENTS.md and CONSTITUTION.md (7 plugins, 2 shared packages), plus manifest checks.
 # Runs on every pull request and every push to main and release/**.
 name: CI
 
@@ -27,7 +27,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
           version: "0.11.32"
           python-version: "3.11"
@@ -47,6 +47,10 @@ jobs:
           uv run mypy plugins/chronicle/src/chronicle
           uv run mypy plugins/speedup/src/speedup
           uv run mypy plugins/tokenwise/src/tokenwise
+          uv run mypy packages/chronicle-engine/src/chronicle_engine
+          uv run mypy packages/sources/src/sources
+          uv run mypy plugins/briefing/src/briefing
+          uv run mypy plugins/blueprint/src/blueprint
 
       # Ubuntu 24.04 blocks unprivileged user namespaces, so the runner's Chrome cannot start
       # its sandbox and exits; chronicle's frame-capture test needs that browser running.

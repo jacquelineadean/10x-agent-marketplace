@@ -139,14 +139,14 @@ def test_main_wires_settings_token_and_transport(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     import impact_review.__main__ as entry
-    from impact_review.connectors.github.http import GitHubTransport
+    from sources.connectors.github.http import GitHubTransport
 
     github = recorded_github()
     seen: list[str] = []
 
-    def transport(endpoints, token):  # type: ignore[no-untyped-def]
+    def transport(endpoints, token, **options):  # type: ignore[no-untyped-def]
         seen.append(token)
-        return GitHubTransport(endpoints, token, opener=github, sleeper=github.sleep)
+        return GitHubTransport(endpoints, token, opener=github, sleeper=github.sleep, **options)
 
     monkeypatch.setattr(entry, "GitHubTransport", transport)
     monkeypatch.setattr(
@@ -160,4 +160,5 @@ def test_main_wires_settings_token_and_transport(
         tmp_path / "github.com" / "srivera" / "2026-01-01_2026-09-30" / "metrics.json"
     ).is_file()
     assert github.sent[0].headers["Authorization"] == "Bearer env-token"
+    assert github.sent[0].headers["User-agent"].startswith("impact-review/")
     assert seen == ["env-token"]

@@ -1,0 +1,57 @@
+/* ---------------------------------------------------------------- span bar */
+.spanbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--rule);
+}
+.spanbar-in {
+  max-width: var(--wide); margin-inline: auto; height: var(--bar-h);
+  display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 18px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.spanbar-title { font: 400 1.45rem/1 var(--f-display); color: var(--ink); text-decoration: none; letter-spacing: .01em; }
+.spanbar-track { position: relative; height: 34px; min-width: 0; }
+.spanbar-track svg { display: block; width: 100%; height: 34px; overflow: visible; }
+.spanbar-track .pb-hit { fill: transparent; cursor: pointer; }
+.spanbar-track .arch-ring { fill: none; stroke: var(--ink-2); stroke-width: 1.2; }
+.spanbar-track .arch-fill { fill: var(--accent); opacity: .85; }
+.spanbar-track .arch-key { fill: var(--ink-2); }
+.spanbar-track .arch-key.on { fill: var(--accent); }
+.spanbar-track .deck { stroke: var(--ink-2); stroke-width: 1.2; }
+.spanbar-track .water { stroke: var(--rule); stroke-width: 1; }
+.spanbar-track .arch.current .arch-ring { stroke: var(--accent); stroke-width: 1.8; }
+.spanbar-track .arch:focus-visible { outline: none; }
+.spanbar-track .arch:focus-visible .arch-ring { stroke: var(--accent); stroke-width: 2.4; }
+.spanbar-now { margin: 0; font: 500 .8rem/1.2 var(--f-ui); color: var(--ink-2); white-space: nowrap; min-width: 9.5rem; text-align: right; }
+.spanbar-now b { font-weight: 600; color: var(--ink); }
+.theme-btn {
+  width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--rule); background: var(--surface);
+  cursor: pointer; position: relative;
+}
+.theme-btn::after {
+  content: ""; position: absolute; inset: 7px; border-radius: 50%;
+  background: linear-gradient(90deg, var(--ink) 50%, transparent 50%); border: 1.5px solid var(--ink);
+}
+@media (max-width: 720px) {
+  .spanbar-in { grid-template-columns: auto 1fr auto; gap: 10px; }
+  .spanbar-now { display: none; }
+  .spanbar-title { font-size: 1.2rem; }
+}
+/* -------------------------------------------------------------------- hero */
+.hero { padding-block: 3.5rem 1rem; }
+.kicker {
+  font: 600 .74rem/1.4 var(--f-ui); letter-spacing: .13em; text-transform: uppercase;
+  color: var(--accent-text); margin: 0 0 1rem;
+}
+h1 {
+  font: 400 clamp(4.2rem, 15vw, 9.5rem)/.86 var(--f-display);
+  letter-spacing: -.02em; margin: 0 0 1.4rem; color: var(--ink);
+}
+.dek {
+  font: italic 400 clamp(1.25rem, 2.6vw, 1.6rem)/1.4 var(--f-body);
+  color: var(--ink-2); margin: 0 0 1.5rem; max-width: 36rem;
+}
+.byline { display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; margin: 0; font: 500 .82rem/1.45 var(--f-ui); color: var(--muted); }
+.byline span:last-child { color: var(--legacy); }

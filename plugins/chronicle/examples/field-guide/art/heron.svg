@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600">
+  <!-- a heron in parts, facing right: legs, body, then the neck and head that drop to feed -->
+  <g data-rig="heron" data-bob="2" data-foot="205 585" data-stride="90" data-speed="30">
+    <g data-part="leg-far" data-pivot="190 380" data-amp="16" data-phase="0.5"><rect x="184" y="375" width="10" height="205" fill="#3c3a30"/></g>
+    <g data-part="leg-near" data-pivot="215 385" data-amp="16" data-phase="0"><rect x="209" y="380" width="11" height="205" fill="#2f2d26"/></g>
+    <g data-part="body" data-role="static">
+      <path d="M90 330 L30 360 L96 352 Z" fill="#6f8590"/>
+      <ellipse cx="190" cy="330" rx="110" ry="52" fill="#8fa3ad"/>
+    </g>
+    <g data-part="head" data-pivot="270 320" data-down="58" data-nod="6" data-look="2">
+      <path d="M262 322 C 304 300 252 222 300 182" stroke="#8fa3ad" stroke-width="22" fill="none"/>
+      <ellipse cx="310" cy="176" rx="28" ry="18" fill="#8fa3ad"/>
+      <path d="M330 170 L396 182 L330 186 Z" fill="#d9a640"/>
+      <circle cx="314" cy="171" r="4" fill="#1e1a16"/>
+    </g>
+  </g>
+</svg>

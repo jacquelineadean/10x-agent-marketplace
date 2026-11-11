@@ -2,7 +2,7 @@ import logging
 
 import pytest
 from conftest import TOKEN, FakeGitHub, Reply, fixture, transport_for
-from impact_review.connectors.github.errors import AuthError, GitHubError, NetworkError, SsoError
+from sources.connectors.github.errors import AuthError, GitHubError, NetworkError, SsoError
 
 
 def test_graphql_posts_query_with_bearer_token_and_api_headers() -> None:

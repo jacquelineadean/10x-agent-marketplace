@@ -6,10 +6,12 @@ import json
 from pathlib import Path
 from typing import Any
 
+import chronicle.pack  # noqa: F401  (registers chronicle's blocks, art, kinds and commands)
 import pytest
-from chronicle.connectors.files import store
-from chronicle.core.story import derive
-from chronicle.core.story.render import Assets
+from chronicle_engine import registry
+from chronicle_engine.connectors.files import store
+from chronicle_engine.core.story import derive
+from chronicle_engine.core.story.render import Assets
 
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples" / "keystone"
 
@@ -38,8 +40,7 @@ def example_dir() -> Path:
 
 @pytest.fixture
 def assets() -> Assets:
-    """Stub runtime, the real font list, and the files the example's blocks name."""
+    """A one-line stub for each runtime part, the real font list, and the example's files."""
     files = {"diagrams/jam.svg": (EXAMPLE / "diagrams" / "jam.svg").read_text(encoding="utf-8")}
-    return Assets(
-        css="/* css */", js="/* js */", fonts=json.loads(store.asset("fonts.json")), files=files
-    )
+    parts = {name: f"/* {name} */" for name in registry.all_parts()}
+    return Assets(parts=parts, fonts=json.loads(store.asset("fonts.json")), files=files)

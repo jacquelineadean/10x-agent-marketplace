@@ -14,11 +14,12 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from impact_review.connectors.github.hosts import endpoints_for
-from impact_review.connectors.github.http import GitHubTransport
+from impact_review import __version__
 from impact_review.connectors.github.source import GitHubSource
 from impact_review.core.models import Profile, Timeframe
 from impact_review.core.scope import Scope
+from sources.connectors.github.hosts import endpoints_for
+from sources.connectors.github.http import GitHubTransport
 
 FIXTURES = Path(__file__).parent / "fixtures"
 TODAY = date(2026, 10, 11)
@@ -159,7 +160,13 @@ def recorded_github() -> FakeGitHub:
 
 
 def transport_for(fake: FakeGitHub, host: str = "github.com") -> GitHubTransport:
-    return GitHubTransport(endpoints_for(host), TOKEN, opener=fake, sleeper=fake.sleep)
+    return GitHubTransport(
+        endpoints_for(host),
+        TOKEN,
+        opener=fake,
+        sleeper=fake.sleep,
+        user_agent=f"impact-review/{__version__}",
+    )
 
 
 @pytest.fixture

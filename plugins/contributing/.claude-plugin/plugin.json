@@ -1,6 +1,6 @@
 {
   "name": "contributing",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "license": "MIT",
   "description": "GitHub contribution practice for Claude Code: pull request titles and descriptions a reviewer can approve fast (template, Playwright screenshots, videos and GIFs, GitHub advanced formatting), branch names and Conventional Commit messages, all deferring to the repo's own rules.",
   "author": {

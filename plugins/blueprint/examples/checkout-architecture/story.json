@@ -1,0 +1,36 @@
+{
+ "schema_version": 1,
+ "meta": {
+  "title": "How Checkout is built",
+  "kicker": "Architecture walkthrough · invented example",
+  "dek": "Ten components in four groups take an order from the web app to the warehouse. Click a part for what it does, a pin for a decision, or step through the flows.",
+  "description": "An interactive architecture walkthrough of an invented checkout system, around a technical architecture diagram."
+ },
+ "theme": {"concept": "A plain engineering page: ink on white paper, one accent for what moves."},
+ "sources": [{"id": "design", "label": "Checkout design doc", "detail": "Invented for this example."}],
+ "chapters": [
+  {
+   "id": "system",
+   "title": "The parts and the paths between them",
+   "blocks": [
+    {
+     "type": "architecture",
+     "svg": "build/tad/animation.svg",
+     "alt": "Checkout's architecture: a web app and API gateway, an order service with its database, payments with a card processor and a planned fraud check, and an event bus feeding email and warehouse workers.",
+     "source": "design",
+     "parts": {
+      "orders": {"title": "Order service", "text": "Saves each order in the orders database, asks Payments to charge the card, then publishes order.placed."},
+      "payments": {"title": "Payments", "text": "Charges the card through the processor and retries a timeout twice before failing the order."},
+      "bus": {"title": "Event bus", "text": "Carries order.placed to the workers, so a slow email never holds up a purchase."},
+      "cards": {"title": "Card processor", "text": "An outside vendor. Its outages show up here first."}
+     },
+     "pins": [
+      {"part": "payments", "title": "Decision: retry twice, then fail", "text": "A third retry doubled checkout latency in the load test; two keep p95 under a second."},
+      {"part": "bus", "title": "Question: one bus or two?", "text": "Warehouse sync may move to its own bus when order volume triples."}
+     ]
+    },
+    {"type": "prose", "text": "The fraud check is planned for next quarter; it joins the payment path between Payments and the card processor."}
+   ]
+  }
+ ]
+}

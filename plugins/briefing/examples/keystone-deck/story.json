@@ -1,0 +1,85 @@
+{
+ "schema_version": 1,
+ "layout": "deck",
+ "meta": {
+  "title": "Keystone: approve the payments cutover",
+  "kicker": "Fernhill Outfitters · Q4 portfolio review",
+  "dek": "Three of five services run on Keystone. Payments is ready to move on {{migration.payments_cutover|date}}, two weeks before the peak-season freeze.",
+  "byline": ["Platform Engineering", "Demonstration: every figure here is invented"],
+  "description": "A slide deck for the Keystone migration review, built from the Keystone example's facts."
+ },
+ "theme": {"concept": "Fernhill's own brand kit: forest green on warm paper, set in Fraunces and DM Sans."},
+ "sources": [
+  {"id": "github", "label": "GitHub", "detail": "Deployments and merged pull requests, fernhill organization.", "as_of": "2026-10-14"},
+  {"id": "jira", "label": "Jira", "detail": "KEY project sprints, story points and change tickets.", "as_of": "2026-10-14"},
+  {"id": "datadog", "label": "Datadog", "detail": "Traffic share, APM latency and incidents.", "as_of": "2026-10-14"},
+  {"id": "analytics", "label": "Product analytics", "detail": "Checkout funnel conversion.", "as_of": "2026-09-30"},
+  {"id": "finance", "label": "Finance", "detail": "Monthly run cost by platform.", "as_of": "2026-09-30"},
+  {"id": "pipeline", "label": "Delivery dashboard", "detail": "CI and deploy timings (invented for this example)."}
+ ],
+ "chapters": [
+  {
+   "id": "decision",
+   "kicker": "The decision",
+   "title": "Approve the payments cutover on {{migration.payments_cutover|date}}",
+   "dek": "It leaves {{migration.cutover_to_freeze_days}} of normal traffic before the freeze starts.",
+   "notes": "Open with the ask. The cutover window closes when the freeze begins; after that, payments waits until December.",
+   "blocks": [
+    {
+     "type": "kpi",
+     "items": [
+      {"label": "Order traffic on Keystone", "value": "@migration.share_now", "target": 80, "better": "up", "spark": "@migration.share"},
+      {"label": "Checkout p95 latency", "value": "@experience.p95_now", "target": 500, "better": "down", "spark": "@experience.p95_ms"},
+      {"label": "Change failure rate", "value": "@delivery.cfr_now", "target": 5, "better": "down", "spark": "@delivery.change_failure_pct"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "progress",
+   "kicker": "Progress",
+   "title": "Traffic moved service by service, with no big-bang weekend",
+   "columns": 2,
+   "notes": "Each step up is one service going live. The dip in November is the peak-season freeze.",
+   "blocks": [
+    {"type": "chart", "chart": "line", "title": "Order traffic on Keystone, %", "source": "datadog", "unit": "%", "y_min": 0, "y_max": 100, "data": {"x": "@migration.share_month", "series": [{"name": "Keystone share", "values": "@migration.share"}]}},
+    {"type": "prose", "build": true, "text": "Catalog moved on {{migration.catalog_live|date}}, cart on {{migration.cart_live|date}} and checkout on {{migration.checkout_live|date}}. Payments is next; fulfillment follows by {{migration.fulfillment_target|date}}."}
+   ]
+  },
+  {
+   "id": "delivery",
+   "kicker": "Delivery",
+   "title": "Every change takes the same short path to production",
+   "columns": 2,
+   "notes": "Click through the animation one step at a time; each step is one stage of the pipeline.",
+   "blocks": [
+    {"type": "animation", "svg": "build/anim/animation.svg", "alt": "A change passes CI and one review, waits in the merge queue, then reaches production through a canary.", "source": "pipeline"},
+    {
+     "type": "kpi",
+     "items": [
+      {"label": "Deploys per week", "value": "@delivery.deploys_now", "target": 30, "better": "up"},
+      {"label": "Lead time for changes", "value": "@delivery.lead_now", "target": 2, "better": "down"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cost",
+   "kicker": "Cost",
+   "title": "Running two platforms costs {{cost.dual_run}} a month until the monolith retires",
+   "notes": "The dual-run cost ends when fulfillment moves and the monolith licence lapses.",
+   "blocks": [
+    {"type": "chart", "chart": "bars", "stacked": true, "title": "Monthly run cost, thousands of dollars", "source": "finance", "format": {"y": "money_k"}, "data": {"categories": "@cost.month", "series": [{"name": "Monolith", "values": "@cost.monolith_k", "color": "legacy"}, {"name": "Keystone cloud", "values": "@cost.cloud_k", "color": "accent"}]}}
+   ]
+  },
+  {
+   "id": "risks",
+   "kicker": "Risks",
+   "title": "Two risks, each with an owner",
+   "notes": "Both risks have a fallback switch tested in the last load test.",
+   "blocks": [
+    {"type": "table", "title": "Open risks", "source": "jira", "columns": ["Risk", "Owner", "Mitigation"], "rows": [["Payment provider timeouts during cutover", "Payments squad", "Fallback switch to the monolith path, tested at {{reliability.loadtest_multiple}} peak load"], ["Freeze starts before fixes ship", "Release management", "Cutover {{migration.cutover_to_freeze_days}} days before the freeze"]]}
+   ]
+  }
+ ]
+}

@@ -1,0 +1,4 @@
+/* ------------------------------------------------------------------ rigs */
+/* A figure painted in parts: the page turns each part about its pivot. */
+.stage .rig { position: absolute; display: block; pointer-events: none; }
+.stage .rig .part { position: absolute; display: block; max-width: none; user-select: none; will-change: rotate, translate; }

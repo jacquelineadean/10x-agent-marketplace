@@ -202,7 +202,7 @@ Prefer the figure a person from this world would draw on a whiteboard:
 | A mechanism (how something broke, how a system works) | `diagram` with steps |
 | Knowledge a reader should keep (training, onboarding, guides) | `quiz`, `checklist` |
 | A what-if the reader should feel | `model` sliders |
-| Something no block does (a calibration drill, a drag-to-order game, a simulator) | `widget` (see `references/widgets.md`) |
+| Something no block does (a calibration drill, a drag-to-order game, a simulator) | `widget` (see the engine's `references/widgets.md`) |
 
 ## Worked identities
 

@@ -5,11 +5,13 @@ from __future__ import annotations
 import sys
 from collections.abc import Sequence
 
+from sources.connectors.github.hosts import endpoints_for
+from sources.connectors.github.http import GitHubTransport
+from sources.connectors.github.token import resolve_token
+
+from impact_review import __version__
 from impact_review.config.settings import load_environment
-from impact_review.connectors.github.hosts import endpoints_for
-from impact_review.connectors.github.http import GitHubTransport
 from impact_review.connectors.github.source import GitHubSource
-from impact_review.connectors.github.token import resolve_token
 from impact_review.core.ports import ActivitySource
 from impact_review.entrypoints.cli.main import run
 
@@ -19,7 +21,10 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     def make_source(host: str) -> ActivitySource:
         endpoints = endpoints_for(host)
-        return GitHubSource(GitHubTransport(endpoints, resolve_token(env, endpoints.host)))
+        token = resolve_token(env, endpoints.host)
+        return GitHubSource(
+            GitHubTransport(endpoints, token, user_agent=f"impact-review/{__version__}")
+        )
 
     return run(argv, make_source, env)
 
