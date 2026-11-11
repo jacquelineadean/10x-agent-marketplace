@@ -32,6 +32,8 @@ cat > Makefile <<'P'
 test:
 	pytest -q
 P
+# An empty root conftest.py puts the repo root on sys.path so tests can import billing.
+: > conftest.py
 git add -A && git commit -qm "chore: initial billing service"
 git switch -qc fix/318-invoice-rounding
 cat > billing/invoice.py <<'P'

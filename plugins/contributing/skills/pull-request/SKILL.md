@@ -32,6 +32,8 @@ under the template's headings when the change needs them. With no template, use
 
 Run these and read the output. The description states facts from them, never guesses.
 
+Without an `origin` remote, use the local `<base>` branch in place of `origin/<base>`.
+
 ```bash
 git fetch origin
 git log --oneline origin/<base>..HEAD

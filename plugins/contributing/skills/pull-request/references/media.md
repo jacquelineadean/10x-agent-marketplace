@@ -72,17 +72,23 @@ Notes:
 - Freeze dates and random data (seeded fixtures, `page.clock`) so before and after differ
   only by the change.
 - Mobile: `newContext({ ...devices['iPhone 13'] })` from `import { devices } from 'playwright'`.
-- An existing Playwright test suite can record too: `npx playwright test --video=on --screenshot=on`,
-  then pick files from `test-results/`.
+- An existing Playwright test suite can record too: set `use: { video: 'on', screenshot: 'on' }`
+  in its config (the test CLI has no flags for these), run `npx playwright test`, then pick
+  files from `test-results/`.
 
 ## 3. Before shots from the base branch
 
-Run the base branch in a second worktree so the working branch stays untouched:
+Run the base branch in a second worktree so the working branch stays untouched. Start its
+dev server in the background on a free port, run `capture.mjs` from the scratch folder (it
+writes `media/` there), then stop the server and remove the worktree:
 
 ```bash
 git worktree add ../before origin/main
-cd ../before && npm ci && PORT=3001 npm run dev
+(cd ../before && npm ci)
+(cd ../before && npm run dev -- --port 3001) & server=$!   # flag differs per tool: Vite and Next take --port
+# wait until http://localhost:3001 answers, then, in the scratch folder:
 node capture.mjs http://localhost:3001 before
+kill "$server"
 git worktree remove ../before
 ```
 
@@ -120,8 +126,8 @@ writes media into the repo's history.
 1. Push the files to a separate branch so the PR branch and `main` stay free of them:
    ```bash
    git switch --orphan pr-media/<branch-slug>   # starts with no tracked files
-   cp /path/to/media/*.{png,gif} .
-   git add *.png *.gif && git commit -m "chore: media for <branch>"
+   cp /path/to/media/after-settings.png /path/to/media/save-flow.gif .   # name each file
+   git add after-settings.png save-flow.gif && git commit -m "chore: media for <branch>"
    git push -u origin pr-media/<branch-slug>
    git switch -
    ```
