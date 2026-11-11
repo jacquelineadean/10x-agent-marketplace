@@ -35,6 +35,10 @@ It never merges, approves or pushes to a branch you did not create. Screenshots 
 the repo (on a separate `pr-media/<slug>` branch) only after you agree; by default it
 saves them locally and tells you where to drag each one.
 
+Token scopes: branches, commits and messages need none. Opening a PR or pushing a media
+branch needs `gh auth login`, or a GitHub MCP token, with `repo` (classic token) or
+Contents and Pull requests read and write (fine-grained token).
+
 ## Manual test
 1. On a branch with a UI change, run `/contributing:pull-request`.
 2. Expect: a title such as `feat(settings): add save button`, a body that follows
