@@ -84,7 +84,7 @@
       "name": "blueprint",
       "source": "./plugins/blueprint",
       "description": "Interactive system and data design visuals and prototypes: technical architecture diagrams laid out in code, sequence diagrams and ERDs played step by step, pages with part details, pins and a step player, ERDs read live from Postgres or Oracle, Unity Catalog lineage, clickable prototype screens fed by facts, and a solution visualizer that simulates approaches to a design question across scenarios before one is implemented.",
-      "version": "0.0.0",
+      "version": "1.0.0",
       "author": {
         "name": "Jacqueline Dean"
       },
@@ -136,7 +136,7 @@
       "name": "contributing",
       "source": "./plugins/contributing",
       "description": "Pull request descriptions a reviewer can approve fast (template, Playwright screenshots and recordings, GitHub advanced formatting), branch names and Conventional Commit messages, deferring to each repo's own rules.",
-      "version": "0.0.0",
+      "version": "1.0.0",
       "author": {
         "name": "Jacqueline Dean"
       },

@@ -1,6 +1,6 @@
 {
   "name": "blueprint",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "description": "Interactive system and data design visuals and clickable prototypes from facts: technical architecture diagrams written as data and laid out in code, sequence diagrams, ERDs read live from Postgres or Oracle and Unity Catalog lineage, each animated step by step, with part details, pins for decisions and a step player; prototype screens with tabs, cards, lists, tables and charts; and a solution visualizer that simulates several approaches to a design question across scenarios, with inputs and settings to move, and hands the chosen one to the implementation. Exports SVG, HTML, PNG, GIF and MP4.",
   "author": {
