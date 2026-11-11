@@ -1,0 +1,75 @@
+{
+ "title": "Product page reads",
+ "question": "How should the product page read price and stock: from the database, through a cache, or from a view kept up to date by events?",
+ "inputs": [
+  {"id": "rps", "label": "Page views per second", "unit": "rps", "value": "@traffic.views_rps", "min": 50, "max": 3000, "step": 50, "source": "datadog"},
+  {"id": "db_ms", "label": "Database read at low load", "unit": "ms", "value": "@database.read_ms", "min": 10, "max": 300, "step": 5, "source": "datadog"},
+  {"id": "keys", "label": "Products viewed often", "unit": "products", "value": "@catalog.hot_products", "min": 200, "max": 10000, "step": 200, "source": "postgres"},
+  {"id": "writes", "label": "Price and stock changes per second", "unit": "per second", "value": "@catalog.changes_ps", "min": 1, "max": 200, "source": "postgres"},
+  {"id": "replica_rps", "label": "Reads one replica serves", "unit": "rps", "value": 250, "min": 100, "max": 600, "step": 10, "note": "from a load test still to run"}
+ ],
+ "settings": [
+  {"id": "replicas", "label": "Read replicas", "value": 2, "min": 1, "max": 8, "key": "DB_READ_REPLICAS", "approaches": ["direct", "cache"]},
+  {"id": "timeout_ms", "label": "Database timeout", "unit": "ms", "value": 250, "min": 50, "max": 1000, "step": 10, "off": 0, "key": "CATALOG_DB_TIMEOUT_MS", "approaches": ["direct", "cache"]},
+  {"id": "ttl_s", "label": "Cache lifetime", "unit": "s", "value": 60, "min": 5, "max": 600, "step": 5, "key": "CATALOG_CACHE_TTL_SECONDS", "approaches": ["cache"]},
+  {"id": "swr", "label": "Serve the old entry while refreshing", "kind": "toggle", "value": false, "key": "CATALOG_CACHE_STALE_WHILE_REVALIDATE", "approaches": ["cache"]},
+  {"id": "consumers", "label": "Event consumers", "value": 2, "min": 1, "max": 16, "key": "CATALOG_VIEW_CONSUMERS", "approaches": ["view"]},
+  {"id": "store_ms", "label": "View store", "kind": "choice", "value": 2, "key": "CATALOG_VIEW_STORE", "approaches": ["view"],
+   "options": [{"label": "In memory", "value": 2}, {"label": "On disk", "value": 8}]}
+ ],
+ "let": {
+  "raw_ms": "db_ms * (1 + 3 * min(util, 3) ** 2)",
+  "capped_ms": "min(raw_ms, timeout_ms) if timeout_ms > 0 else raw_ms",
+  "late_pct": "clamp(100 * (raw_ms - timeout_ms) / raw_ms, 0, 100) if timeout_ms > 0 else 0",
+  "shed_pct": "100 * max(0, 1 - 1 / util) if util > 0 else 0"
+ },
+ "scenarios": [
+  {"id": "typical", "label": "Typical weekday", "text": "The weekday medians from October."},
+  {"id": "sale", "label": "Sale peak", "text": "The peak hour of the September sale: six times the views, three times the products.",
+   "inputs": {"rps": "@traffic.views_rps_sale", "keys": "@catalog.hot_products_sale", "writes": 60}},
+  {"id": "slow_db", "label": "Database degraded", "text": "The database answers as slowly as in the October slowdown.",
+   "inputs": {"db_ms": "@database.read_ms_degraded"}},
+  {"id": "reprice", "label": "Catalog reprice", "text": "A bulk price update writes as fast as the last one did.",
+   "inputs": {"writes": "@catalog.changes_ps_reprice"}}
+ ],
+ "measures": [
+  {"id": "p95_ms", "label": "p95 page read", "unit": "ms", "better": "lower", "budget": 200, "feel": {"kind": "wait", "action": "Open the product page"}},
+  {"id": "errors", "label": "Failed reads", "unit": "%", "decimals": 1, "better": "lower", "budget": 1, "feel": "failures"},
+  {"id": "stale_s", "label": "Oldest price shown", "unit": "s", "better": "lower", "budget": 120},
+  {"id": "cost", "label": "Monthly cost", "unit": "$", "better": "lower"}
+ ],
+ "approaches": [
+  {
+   "id": "direct", "label": "Query the database",
+   "text": "Every page view reads price and stock from a read replica. Always current; load lands on the database.",
+   "let": {"util": "rps / (replicas * replica_rps)"},
+   "measures": {"p95_ms": "capped_ms", "errors": "max(late_pct, shed_pct)", "stale_s": "0", "cost": "replicas * 620"}
+  },
+  {
+   "id": "cache", "label": "Read through a cache",
+   "text": "A cache answers repeat views; a miss reads the database. Fast and cheap on the database; prices age up to the cache lifetime.",
+   "let": {
+    "miss": "min(1, keys / (ttl_s * rps))",
+    "util": "rps * miss / (replicas * replica_rps)",
+    "exposed": "0 if swr else min(1, miss / 0.05)"
+   },
+   "measures": {
+    "p95_ms": "4 + capped_ms * exposed",
+    "errors": "0 if swr else miss * max(late_pct, shed_pct)",
+    "stale_s": "ttl_s * (2 if swr else 1)",
+    "cost": "replicas * 620 + 380"
+   }
+  },
+  {
+   "id": "view", "label": "Read a view kept by events",
+   "text": "Each price or stock change updates a key-value view through a queue; the page reads the view. Reads never touch the database; freshness depends on the consumers keeping up.",
+   "let": {"busy": "min(1, writes / (consumers * 40))"},
+   "measures": {
+    "p95_ms": "store_ms + 3",
+    "errors": "0",
+    "stale_s": "min(3600, 0.5 / max(0.00014, 1 - busy))",
+    "cost": "(1400 if store_ms < 5 else 500) + consumers * 90 + 300"
+   }
+  }
+ ]
+}

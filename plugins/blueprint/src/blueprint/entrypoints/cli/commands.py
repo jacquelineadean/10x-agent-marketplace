@@ -31,6 +31,7 @@ def check(checked: registry.Checked) -> None:
     """blueprint's checks, over the story and the animation files the engine read."""
     checks.architecture(checked.story, checked.files, checked.report)
     checks.links(checked.story, checked.report)
+    checks.solutions(checked.story, checked.facts, checked.files, checked.report)
 
 
 def schema_parser(sub: Any) -> None:

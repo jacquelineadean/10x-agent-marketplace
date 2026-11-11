@@ -35,7 +35,7 @@ SKELETON: list[dict[str, Any]] = [
 STATUS = ("good", "warn", "bad", "none")
 CARDS = (("items",), ("title", "subtitle", "source"))
 LIST = (("items",), ("title", "subtitle", "source"))
-FULL = ("cards", "list", "table", "stats", "timeline", "roadmap")
+FULL = ("cards", "list", "table", "stats", "timeline", "roadmap", "solutions")
 
 
 def _status(item: Mapping[str, Any]) -> str:

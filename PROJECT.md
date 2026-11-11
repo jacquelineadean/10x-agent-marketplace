@@ -95,6 +95,14 @@ Teammates who install the marketplace are users with no sign-off role.
 - **Named connection:** an entry in `connections.json` holding a system's host and the names of the variables with its keys, never a key.
 - **Architecture block:** blueprint's page figure around a built animation, with part details, pins for decisions and a step player.
 - **Prototype:** blueprint's layout of clickable screens behind tabs, fed by facts.
+- **Solutions file:** blueprint's `solutions.json`: approaches to one design question, the inputs and settings a reader moves, scenarios, and a formula per measure and approach.
+- **Approach:** one candidate design in a solutions file; a **variant** is an approach with its own setting values, added on the page to compare configurations.
+- **Input:** a number the world sets, such as traffic; a **setting** is a number, switch or choice the team sets, with the configuration key it lands in.
+- **Scenario:** named input values, such as a sale peak; a reader can save the inputs as they stand as one more.
+- **Measure:** what decides a design question, computed per approach by formula: a p95 wait, failures, data age, cost. Its **budget** is the limit a value must meet.
+- **Feel:** how a page plays a measure: a wait runs in real time, failures mark some of 100 requests.
+- **Decision:** the JSON a reader copies from a solutions page (the chosen variant, its settings, the inputs), and the `decision.md` code writes from it for the implementation.
+- **Scout:** blueprint's Haiku subagent that reads a repository into `context.md` or `locate.md` with a file and line on every statement.
 - **Layout:** how a story file becomes a document: a scrolling `page`, a `deck` of 16:9 slides or a `dashboard`.
 - **Brand kit:** `brand.json`, an organization's colors and fonts applied under every page's theme; `--brand` picks it.
 - **Slice:** one precomputed copy of a dashboard block for one filter option, such as a team or a region.
