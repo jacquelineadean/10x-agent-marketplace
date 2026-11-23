@@ -10,7 +10,7 @@ dev = [
     "numpy>=2.4.6",
     "opencv-python-headless>=5.0.0.93",
     "pytest>=9.2.0",
-    "ruff>=0.17.3",
+    "ruff>=0.17.4",
 ]
 
 [tool.pytest.ini_options]
